@@ -13,7 +13,7 @@ interface TodoListProps {
 const TodoList = ({ todos, handleShowEditModal, handleShowAssignModal, handleToggleTodo, handleShowConfirmModal }: TodoListProps) => {
     return (
         <ListGroup>
-            {todos.map((todo) => 
+            {todos.map((todo) =>
                 <ListGroup.Item key={todo.id} className={'d-flex justify-content-between align-items-start ' + (todo.completed ? 'text-decoration-line-through' : '')}>
                     <div className="ms-2 me-auto">
                         {todo.title}

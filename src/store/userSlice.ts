@@ -3,7 +3,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../api/axiosInstance';
 import { RootState } from './store';
 
-interface User {
+export interface User {
   id: number;
   name: string;
 }

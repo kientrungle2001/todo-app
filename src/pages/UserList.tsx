@@ -1,7 +1,7 @@
 // src/pages/UserList.tsx
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { deleteUser, fetchUsers, addUser, updateUser } from '../store/userSlice';
+import { deleteUser, fetchUsers, addUser, updateUser, setPagination } from '../store/userSlice';
 import { Button, Container, Form, ListGroup, Modal, Pagination } from 'react-bootstrap';
 
 export default function UserList() {

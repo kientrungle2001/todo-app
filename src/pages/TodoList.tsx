@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Container, ListGroup, Button, Form, Modal } from 'react-bootstrap';
+import { Container, Button, Form } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setTodos, addTodo, editTodo, removeTodo, toggleTodo, Todo } from '../store/todoSlice';
+import { setTodos, editTodo, removeTodo, toggleTodo, Todo } from '../store/todoSlice';
 import { fetchUsers } from '@/store/userSlice';
 import { useRouter } from 'next/router';
-import { verifyToken } from '../hooks/useAuth';
-import TodoList from '../components/TodoList';
-import EditTodoModal from '../components/EditTodoModal';
-import AssignUsersModal from '../components/AssignUsersModal';
-import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
+import { verifyToken } from '@/hooks/useAuth';
+import TodoList from '@/components/TodoList';
+import EditTodoModal from '@/components/EditTodoModal';
+import AssignUsersModal from '@/components/AssignUsersModal';
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal';
 import { FaPlus, FaSignOutAlt } from 'react-icons/fa';
 import axios from '../api/axiosInstance';
 
@@ -152,21 +152,21 @@ export default function Home() {
         <FaPlus style={{ marginRight: '8px' }} />
         Add Todo
       </Button>
-      <TodoList 
+      <TodoList
         todos={todos}
         handleShowEditModal={handleShowEditModal}
         handleShowAssignModal={handleShowAssignModal}
         handleToggleTodo={handleToggleTodo}
         handleShowConfirmModal={handleShowConfirmModal}
       />
-      <EditTodoModal 
+      <EditTodoModal
         show={showEditModal}
         handleClose={handleCloseEditModal}
         handleEditTodo={handleEditTodo}
         editTitle={editTitle}
         setEditTitle={setEditTitle}
       />
-      <AssignUsersModal 
+      <AssignUsersModal
         show={showAssignModal}
         handleClose={handleCloseAssignModal}
         handleAssignTodo={handleAssignTodo}
@@ -175,7 +175,7 @@ export default function Home() {
         allUsers={allUsers}
         users={users}
       />
-      <ConfirmDeleteModal 
+      <ConfirmDeleteModal
         show={showConfirmModal}
         handleClose={handleCloseConfirmModal}
         handleDeleteTodo={handleDeleteTodo}
