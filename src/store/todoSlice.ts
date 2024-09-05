@@ -32,6 +32,7 @@ export const todoSlice = createSlice({
       }
     },
     setTodos: (state, action: PayloadAction<Todo[]>) => {
+      console.log(action);
       state.todos = action.payload;
     },
     editTodo: (state, action: PayloadAction<Todo>) => {

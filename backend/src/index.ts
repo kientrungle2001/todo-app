@@ -85,8 +85,14 @@ app.post('/api/todos/:id/users', (req, res) => {
     if (err) throw err;
     const values = userIds.map((userId: number) => [userId, id]);
     pool.query('INSERT INTO user_todos (user_id, todo_id) VALUES ?', [values], (err) => {
-      if (err) throw err;
-      res.status(200).send('Users assigned');
+      if (err) {
+        console.log(err);
+        console.log(id);
+        console.log(values);
+        res.status(200).send('Users not assigned');
+      } else {
+        res.status(200).send('Users assigned');
+      }
     });
   });
 });

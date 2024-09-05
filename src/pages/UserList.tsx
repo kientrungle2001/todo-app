@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteUser, fetchUsers, addUser, updateUser } from '../store/userSlice';
 import { Button, Container, Form, ListGroup, Modal, Pagination } from 'react-bootstrap';
-import axios from '../api/axiosInstance';
 
 export default function UserList() {
   const dispatch = useAppDispatch();

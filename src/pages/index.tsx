@@ -2,19 +2,27 @@
 import { useState, useEffect } from 'react';
 import axios from '../api/axiosInstance';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setTodos, addTodo, editTodo, removeTodo, toggleTodo } from '../store/todoSlice';
+import { setTodos, addTodo, editTodo, removeTodo, toggleTodo, Todo } from '../store/todoSlice';
 import { Container, ListGroup, Button, Form, Modal } from 'react-bootstrap';
-import Link from 'next/link';
+import { fetchUsers } from '@/store/userSlice';
 
 export default function Home() {
   const dispatch = useAppDispatch();
   const todos = useAppSelector((state) => state.todos.todos);
+  const allUsers = useAppSelector((state) => state.users);
   const [newTitle, setNewTitle] = useState('');
   const [editTitle, setEditTitle] = useState('');
   const [editingTodo, setEditingTodo] = useState<number | null>(null);
+
+  const [assignTitle, setAssignTitle] = useState('');
+  const [assignTodo, setAssignTodo] = useState<number | null>(null);
+
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showAssignModal, setShowAssignModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState<number | null>(null);
+
+  const [users, setUsers] = useState<number[]>([]);
 
   useEffect(() => {
     axios.get('/todos').then((response) => {
@@ -66,6 +74,35 @@ export default function Home() {
 
   const handleCloseEditModal = () => setShowEditModal(false);
 
+  const fetchAssignedUsers = (assignTodo: number) => {
+    axios.get(`/todos/${assignTodo}/users`).then((response) => {
+      setUsers(response.data.map((user: { id: number; name: string }) => user.id));
+    });
+  };
+  const handleShowAssignModal = (id: number, title: string) => {
+    setAssignTodo(id);
+    setAssignTitle(title);
+    setShowAssignModal(true);
+    dispatch(fetchUsers());
+    fetchAssignedUsers(id);
+  };
+
+  const handleCloseAssignModal = () => {
+    setShowAssignModal(false);
+  };
+
+  const handleAssignTodo = (userId: number) => {
+    if (users.includes(userId)) {
+      // remove the user from the list
+      const updatedUsers = users.filter((id) => id !== userId);
+      setUsers(updatedUsers);
+    } else {
+      const updatedUsers = [...users];
+      updatedUsers.push(userId);
+      setUsers(updatedUsers);
+    }
+  };
+
   const handleShowConfirmModal = (id: number) => {
     setTodoToDelete(id);
     setShowConfirmModal(true);
@@ -74,6 +111,13 @@ export default function Home() {
   const handleCloseConfirmModal = () => {
     setShowConfirmModal(false);
     setTodoToDelete(null);
+  };
+
+  const handleAssignsTodo = () => {
+    axios.post(`/todos/${assignTodo}/users`, { userIds: users }).then(() => {
+      setShowAssignModal(false);
+      setUsers([]);
+    });
   };
 
   return (
@@ -90,17 +134,25 @@ export default function Home() {
       </Button>
       <ListGroup>
         {todos.map((todo) => (
-          <ListGroup.Item key={todo.id} className={todo.completed ? 'text-decoration-line-through' : ''}>
-            {todo.title}
-            <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(todo.id, todo.title)}>
-              Edit
-            </Button>
-            <Button variant="success" className="mx-2" onClick={() => handleToggleTodo(todo.id, todo.completed)}>
-              {todo.completed ? 'Undo' : 'Done'}
-            </Button>
-            <Button variant="danger" onClick={() => handleShowConfirmModal(todo.id)}>
-              Delete
-            </Button>
+          <ListGroup.Item key={todo.id} className={'d-flex justify-content-between align-items-start ' + (todo.completed ? 'text-decoration-line-through' : '')}>
+            <div className="ms-2 me-auto">
+              {todo.title}
+            </div>
+            <div>
+              <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(todo.id, todo.title)}>
+                Edit
+              </Button>
+              <Button variant="warning" className="mx-2" onClick={() => handleShowAssignModal(todo.id, todo.title)}>
+                Assign Users
+              </Button>
+              <Button variant="success" className="mx-2" onClick={() => handleToggleTodo(todo.id, todo.completed)}>
+                {todo.completed ? 'Undo' : 'Done'}
+              </Button>
+              <Button variant="danger" onClick={() => handleShowConfirmModal(todo.id)}>
+                Delete
+              </Button>
+            </div>
+
           </ListGroup.Item>
         ))}
       </ListGroup>
@@ -123,6 +175,35 @@ export default function Home() {
             Close
           </Button>
           <Button variant="primary" onClick={handleEditTodo}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit Todo Modal */}
+      <Modal show={showAssignModal} onHide={handleCloseAssignModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Users for "{assignTitle}"</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {allUsers.items.map(user => {
+            return (
+              <Form.Check
+                key={assignTodo + ' ' + user.id}
+                type="checkbox"
+                id={`user-${assignTodo}-${user.id}`}
+                label={user.name}
+                checked={users.includes(user.id)}
+                onChange={(e) => handleAssignTodo(user.id)}
+              />
+            );
+          })}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseAssignModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleAssignsTodo}>
             Save Changes
           </Button>
         </Modal.Footer>
