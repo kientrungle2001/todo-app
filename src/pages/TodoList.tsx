@@ -5,10 +5,49 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setTodos, addTodo, editTodo, removeTodo, toggleTodo, Todo } from '../store/todoSlice';
 import { Container, ListGroup, Button, Form, Modal } from 'react-bootstrap';
 import { fetchUsers } from '@/store/userSlice';
+import { useRouter } from 'next/router';
+import { jwtVerify } from 'jose';
+import { FaCheck, FaEdit, FaPlus, FaSave, FaSignOutAlt, FaTimes, FaTrash, FaTrashAlt, FaUserPlus } from 'react-icons/fa';
+
+async function verifyToken(token: string) {
+  const secret = new TextEncoder().encode('your_secret_key');
+
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    return payload;
+  } catch (error) {
+    throw new Error('Invalid token');
+  }
+}
+
+
 
 export default function Home() {
+
+  const router = useRouter();
+
+  const logout = () => {
+    localStorage.removeItem('token');  // Remove the JWT token
+    router.push('/login');  // Redirect to the login page
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        verifyToken(token);
+      } catch (error) {
+        console.log(error);
+        localStorage.removeItem('token');
+        router.push('/login');
+      }
+    } else {
+      router.push('/login');
+    }
+  }, [router]);
+
   const dispatch = useAppDispatch();
-  const todos = useAppSelector((state) => state.todos.todos);
+  const todos: Todo[] = useAppSelector((state) => state.todos.todos);
   const allUsers = useAppSelector((state) => state.users);
   const [newTitle, setNewTitle] = useState('');
   const [editTitle, setEditTitle] = useState('');
@@ -122,7 +161,9 @@ export default function Home() {
 
   return (
     <Container>
-      <h1>Todo List</h1>
+      <h1>Todo List <Button variant="danger" onClick={logout}>
+        <FaSignOutAlt style={{ marginRight: '8px' }} /> Logout
+      </Button></h1>
       <Form.Control
         type="text"
         placeholder="Add new todo"
@@ -130,6 +171,7 @@ export default function Home() {
         onChange={(e) => setNewTitle(e.target.value)}
       />
       <Button onClick={handleAddTodo} className="my-3">
+        <FaPlus style={{ marginRight: '8px' }} />
         Add Todo
       </Button>
       <ListGroup>
@@ -140,15 +182,19 @@ export default function Home() {
             </div>
             <div>
               <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(todo.id, todo.title)}>
+                <FaEdit style={{ marginRight: '8px' }} />
                 Edit
               </Button>
               <Button variant="warning" className="mx-2" onClick={() => handleShowAssignModal(todo.id, todo.title)}>
+                <FaUserPlus style={{ marginRight: '8px' }} />
                 Assign Users
               </Button>
               <Button variant="success" className="mx-2" onClick={() => handleToggleTodo(todo.id, todo.completed)}>
+                <FaCheck style={{ marginRight: '8px' }} />
                 {todo.completed ? 'Undo' : 'Done'}
               </Button>
               <Button variant="danger" onClick={() => handleShowConfirmModal(todo.id)}>
+                <FaTrashAlt style={{ marginRight: '8px' }} />
                 Delete
               </Button>
             </div>
@@ -172,10 +218,10 @@ export default function Home() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseEditModal}>
-            Close
+            <FaTimes style={{ marginRight: '8px' }} /> Close
           </Button>
           <Button variant="primary" onClick={handleEditTodo}>
-            Save Changes
+            <FaSave style={{ marginRight: '8px' }} /> Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
@@ -201,10 +247,10 @@ export default function Home() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseAssignModal}>
-            Close
+            <FaTimes style={{ marginRight: '8px' }} /> Close
           </Button>
           <Button variant="primary" onClick={handleAssignsTodo}>
-            Save Changes
+            <FaSave style={{ marginRight: '8px' }} /> Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
@@ -219,10 +265,10 @@ export default function Home() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseConfirmModal}>
-            Cancel
+            <FaTimes style={{ marginRight: '8px' }} /> Cancel
           </Button>
           <Button variant="danger" onClick={handleDeleteTodo}>
-            Delete
+            <FaTrash style={{ marginRight: '8px' }} /> Delete
           </Button>
         </Modal.Footer>
       </Modal>
