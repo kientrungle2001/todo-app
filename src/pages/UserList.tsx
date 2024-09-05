@@ -1,8 +1,8 @@
-// src/pages/UserList.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteUser, fetchUsers, addUser, updateUser, setPagination } from '../store/userSlice';
-import { Button, Container, Form, ListGroup, Modal, Pagination } from 'react-bootstrap';
+import { Button, Container, ListGroup, Pagination } from 'react-bootstrap';
+import UserModals from '@/components/UserModals';
 
 export default function UserList() {
   const dispatch = useAppDispatch();
@@ -12,19 +12,10 @@ export default function UserList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ id: number; name: string } | null>(null);
-  const [newUserName, setNewUserName] = useState('');
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
-
-  const handleAddUser = () => {
-    if (newUserName.trim()) {
-      dispatch(addUser(newUserName));
-      setNewUserName('');
-      setShowAddModal(false);
-    }
-  };
 
   const handleDeleteUser = (id: number) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
@@ -59,60 +50,16 @@ export default function UserList() {
         <Pagination.Next onClick={() => dispatch(setPagination({ ...pagination, page: pagination.page + 1 }))} />
       </Pagination>
 
-      {/* Add User Modal */}
-      <Modal show={showAddModal} onHide={handleCloseAddModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formUserName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter user name"
-                value={newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddModal}>Close</Button>
-          <Button variant="primary" onClick={handleAddUser}>Add User</Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Edit User Modal */}
-      <Modal show={showEditModal} onHide={handleCloseEditModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {currentUser && (
-            <Form>
-              <Form.Group controlId="formUserName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  defaultValue={currentUser.name}
-                  onChange={e => setCurrentUser({ ...currentUser, name: e.target.value })}
-                />
-              </Form.Group>
-            </Form>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditModal}>Close</Button>
-          <Button variant="primary" onClick={() => {
-            if (currentUser) {
-              dispatch(updateUser(currentUser));
-              fetchUsers();
-              handleCloseEditModal();
-            }
-          }}>Save Changes</Button>
-        </Modal.Footer>
-      </Modal>
+      <UserModals
+        showAddModal={showAddModal}
+        handleCloseAddModal={handleCloseAddModal}
+        showEditModal={showEditModal}
+        handleCloseEditModal={handleCloseEditModal}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        addUser={user => dispatch(addUser(user))}
+        updateUser={user => dispatch(updateUser(user))}
+      />
     </Container>
   );
 }

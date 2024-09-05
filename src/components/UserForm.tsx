@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+
+interface UserFormProps {
+  initialData: { name: string; password: string; role: string; department: string };
+  onSubmit: (user: { name: string; password: string; role: string; department: string }) => void;
+}
+
+const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit }) => {
+  const [name, setName] = useState(initialData.name);
+  const [password, setPassword] = useState(initialData.password);
+  const [role, setRole] = useState(initialData.role);
+  const [department, setDepartment] = useState(initialData.department);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit({ name, password, role, department });
+  };
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="formUserName">
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter user name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group controlId="formUserPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group controlId="formUserRole">
+        <Form.Label>Role</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group controlId="formUserDepartment">
+        <Form.Label>Department</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter department"
+          value={department}
+          onChange={(e) => setDepartment(e.target.value)}
+        />
+      </Form.Group>
+      <Button variant="primary" type="submit">Save Changes</Button>
+    </Form>
+  );
+};
+
+export default UserForm;
