@@ -3,13 +3,51 @@
 import express from 'express';
 import cors from 'cors';
 import pool from './db';
-import mysql from 'mysql2/promise';
+import mysql, { QueryResult, RowDataPacket } from 'mysql2/promise';
+import jwt, { JWTPayload, SignJWT } from 'jose';
+import crypto from 'crypto';
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
 app.use(express.json());
+
+async function createToken(payload: JWTPayload | undefined): Promise<SignJWT> {
+  const secret = new TextEncoder().encode('your_secret_key');
+
+  const token = await new jwt.SignJWT(payload);
+  token.setProtectedHeader({ alg: 'HS256' });
+  token.setExpirationTime('1h');
+  token.sign(secret);
+  return token;
+};
+
+
+// create login api with jwt support, using jose for JWT generation and verification
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  // authenticate the user from database
+  pool.query<RowDataPacket[]>('SELECT * FROM users WHERE username =? limit 1', [username], (err, results) => {
+    // get first record from the results
+    let user = results[0];
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // compare hashed password with stored hashed password
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    if (user.password !== hashedPassword) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // create jwt token with user information
+    let token = createToken({ id: user.id, username: user.username, role: user.role, department: user.department });
+    res.status(200).json({ token });
+  });
+});
 
 // User Endpoints
 app.get('/api/users', (req, res) => {
@@ -20,8 +58,11 @@ app.get('/api/users', (req, res) => {
 });
 
 app.post('/api/users', (req, res) => {
-  const { name } = req.body;
-  pool.query('INSERT INTO users (name) VALUES (?)', [name], (err) => {
+  const { name, password, role, department } = req.body;
+  // hash the password before storing it in the database using crypto
+  const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+
+  pool.query('INSERT INTO users (name, password, role, department) VALUES (?,?,?,?)', [name, hashedPassword, role, department], (err) => {
     if (err) throw err;
     res.status(201).send('User created');
   });
@@ -29,8 +70,8 @@ app.post('/api/users', (req, res) => {
 
 app.put('/api/users/:id', (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
-  pool.query('UPDATE users SET name = ? WHERE id = ?', [name, id], (err) => {
+  const { name, password, role, department } = req.body;
+  pool.query('UPDATE users SET name = ?, password = ?, role = ?, department = ? WHERE id = ?', [name, password, role, department, id], (err) => {
     if (err) throw err;
     res.status(200).send('User updated');
   });
@@ -86,9 +127,6 @@ app.post('/api/todos/:id/users', (req, res) => {
     const values = userIds.map((userId: number) => [userId, id]);
     pool.query('INSERT INTO user_todos (user_id, todo_id) VALUES ?', [values], (err) => {
       if (err) {
-        console.log(err);
-        console.log(id);
-        console.log(values);
         res.status(200).send('Users not assigned');
       } else {
         res.status(200).send('Users assigned');
