@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Button, Form } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setTodos, editTodo, removeTodo, toggleTodo, Todo } from '../store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setTodos, editTodo, removeTodo, toggleTodo, Todo } from '@/store/todoSlice';
 import { fetchUsers } from '@/store/userSlice';
 import { useRouter } from 'next/router';
 import { verifyToken } from '@/hooks/useAuth';
@@ -10,7 +10,15 @@ import EditTodoModal from '@/components/EditTodoModal';
 import AssignUsersModal from '@/components/AssignUsersModal';
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal';
 import { FaPlus, FaSignOutAlt } from 'react-icons/fa';
-import axios from '../api/axiosInstance';
+import {
+  getTodos,
+  addTodo,
+  editTodo as apiEditTodo,
+  deleteTodo as apiDeleteTodo,
+  toggleTodo as apiToggleTodo,
+  getAssignedUsers,
+  assignUsersToTodo
+} from '@/api/apiClient';
 
 export default function Home() {
   const router = useRouter();
@@ -44,14 +52,14 @@ export default function Home() {
   }, [router]);
 
   useEffect(() => {
-    axios.get('/todos').then((response) => {
+    getTodos().then((response) => {
       dispatch(setTodos(response.data));
     });
   }, [dispatch]);
 
   const handleAddTodo = () => {
-    axios.post('/todos', { title: newTitle }).then(() => {
-      axios.get('/todos').then((response) => {
+    addTodo(newTitle).then(() => {
+      getTodos().then((response) => {
         dispatch(setTodos(response.data));
       });
     });
@@ -60,7 +68,7 @@ export default function Home() {
 
   const handleEditTodo = () => {
     if (editingTodo !== null) {
-      axios.put(`/todos/${editingTodo}`, { title: editTitle, completed: false }).then(() => {
+      apiEditTodo(editingTodo, editTitle, false).then(() => {
         dispatch(editTodo({ id: editingTodo, title: editTitle, completed: false }));
       });
       setEditingTodo(null);
@@ -71,7 +79,7 @@ export default function Home() {
 
   const handleDeleteTodo = () => {
     if (todoToDelete !== null) {
-      axios.delete(`/todos/${todoToDelete}`).then(() => {
+      apiDeleteTodo(todoToDelete).then(() => {
         dispatch(removeTodo(todoToDelete));
         setShowConfirmModal(false);
         setTodoToDelete(null);
@@ -80,7 +88,7 @@ export default function Home() {
   };
 
   const handleToggleTodo = (id: number, completed: boolean) => {
-    axios.put(`/todos/${id}`, { completed: !completed }).then(() => {
+    apiToggleTodo(id, completed).then(() => {
       dispatch(toggleTodo(id));
     });
   };
@@ -94,7 +102,7 @@ export default function Home() {
   const handleCloseEditModal = () => setShowEditModal(false);
 
   const fetchAssignedUsers = (assignTodo: number) => {
-    axios.get(`/todos/${assignTodo}/users`).then((response) => {
+    getAssignedUsers(assignTodo).then((response) => {
       setUsers(response.data.map((user: { id: number; name: string }) => user.id));
     });
   };
@@ -128,7 +136,7 @@ export default function Home() {
   };
 
   const handleAssignsTodo = () => {
-    axios.post(`/todos/${assignTodo}/users`, { userIds: users }).then(() => {
+    assignUsersToTodo(assignTodo!, users).then(() => {
       setShowAssignModal(false);
       setUsers([]);
     });
