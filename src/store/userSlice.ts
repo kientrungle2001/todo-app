@@ -25,7 +25,7 @@ const initialState: UserState = {
 // src/store/userSlice.ts
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
-  async ({ page, pageSize, searchText }: { page: number; pageSize: number; searchText: string }) => {
+  async ({ page, pageSize, searchText }: { page: number; pageSize: number; searchText?: string }) => {
     const response = await axios.get(`/users?page=${page}&pageSize=${pageSize}&search=${searchText}`);
     return response.data;
   }
