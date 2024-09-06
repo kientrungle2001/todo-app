@@ -11,7 +11,7 @@ export default function UserList() {
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{ id: number; name: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{ id: number; username: string } | null>(null);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -23,7 +23,7 @@ export default function UserList() {
     }
   };
 
-  const handleShowEditModal = (user: { id: number; name: string }) => {
+  const handleShowEditModal = (user: { id: number; username: string }) => {
     setCurrentUser(user);
     setShowEditModal(true);
   };
@@ -39,7 +39,7 @@ export default function UserList() {
       <ListGroup>
         {users.map(user => (
           <ListGroup.Item key={user.id}>
-            {user.name}
+            {user.username}
             <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(user)}>Edit</Button>
             <Button variant="danger" onClick={() => handleDeleteUser(user.id)}>Delete</Button>
           </ListGroup.Item>

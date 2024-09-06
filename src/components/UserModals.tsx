@@ -7,10 +7,10 @@ interface UserModalsProps {
   handleCloseAddModal: () => void;
   showEditModal: boolean;
   handleCloseEditModal: () => void;
-  currentUser: { id: number; name: string; password?: string; role?: string; department?: string } | null;
-  setCurrentUser: React.Dispatch<React.SetStateAction<{ id: number; name: string; password?: string; role?: string; department?: string } | null>>;
-  addUser: (user: { name: string; password: string; role: string; department: string }) => void;
-  updateUser: (user: { id: number; name: string; password?: string; role?: string; department?: string }) => void;
+  currentUser: { id: number; username: string; password?: string; role?: string; department?: string } | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<{ id: number; username: string; password?: string; role?: string; department?: string } | null>>;
+  addUser: (user: { username: string; password: string; role: string; department: string }) => void;
+  updateUser: (user: { id: number; username: string; password?: string; role?: string; department?: string }) => void;
 }
 
 const UserModals: React.FC<UserModalsProps> = ({
@@ -23,12 +23,12 @@ const UserModals: React.FC<UserModalsProps> = ({
   addUser,
   updateUser
 }) => {
-  const handleAddUser = (user: { name: string; password: string; role: string; department: string }) => {
+  const handleAddUser = (user: { username: string; password: string; role: string; department: string }) => {
     addUser(user);
     handleCloseAddModal();
   };
 
-  const handleUpdateUser = (user: { id: number; name: string; password?: string; role?: string; department?: string }) => {
+  const handleUpdateUser = (user: { id: number; username: string; password?: string; role?: string; department?: string }) => {
     if (currentUser) {
       updateUser({ ...currentUser, ...user });
       handleCloseEditModal();
@@ -44,7 +44,7 @@ const UserModals: React.FC<UserModalsProps> = ({
         </Modal.Header>
         <Modal.Body>
           <UserForm
-            initialData={{ name: '', password: '', role: '', department: '' }}
+            initialData={{ username: '', password: '', role: '', department: '' }}
             onSubmit={handleAddUser}
           />
         </Modal.Body>

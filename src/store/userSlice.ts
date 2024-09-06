@@ -4,8 +4,8 @@ import axios from '../api/axiosInstance';
 import { RootState } from './store';
 
 export interface User {
-  id: number;
-  name: string;
+  id?: number;
+  username: string;
   password: string;
   role: string;
   department: string;
@@ -27,8 +27,8 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   return response.data;
 });
 
-export const addUser = createAsyncThunk('users/addUser', async (userName: string) => {
-  const response = await axios.post('/users', { name: userName });
+export const addUser = createAsyncThunk('users/addUser', async (user: User) => {
+  const response = await axios.post('/users', user);
   return response.data; // Adjust according to API response
 });
 

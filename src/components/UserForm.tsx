@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 interface UserFormProps {
-  initialData: { name: string; password: string; role: string; department: string };
-  onSubmit: (user: { name: string; password: string; role: string; department: string }) => void;
+  initialData: { username: string; password: string; role: string; department: string };
+  onSubmit: (user: { username: string; password: string; role: string; department: string }) => void;
 }
 
 const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit }) => {
-  const [name, setName] = useState(initialData.name);
+  const [username, setUsername] = useState(initialData.username);
   const [password, setPassword] = useState(initialData.password);
   const [role, setRole] = useState(initialData.role);
   const [department, setDepartment] = useState(initialData.department);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ name, password, role, department });
+    onSubmit({ username, password, role, department });
   };
 
   return (
@@ -24,8 +24,8 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit }) => {
         <Form.Control
           type="text"
           placeholder="Enter user name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </Form.Group>
       <Form.Group controlId="formUserPassword">

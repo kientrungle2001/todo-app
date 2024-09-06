@@ -103,7 +103,7 @@ export default function Home() {
 
   const fetchAssignedUsers = (assignTodo: number) => {
     getAssignedUsers(assignTodo).then((response) => {
-      setUsers(response.data.map((user: { id: number; name: string }) => user.id));
+      setUsers(response.data.map((user: { id: number; username: string }) => user.id));
     });
   };
 

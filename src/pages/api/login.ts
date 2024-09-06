@@ -1,7 +1,7 @@
 // pages/api/login.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { JWTPayload, SignJWT } from 'jose';
-
+import axios from '@/api/axiosInstance';
 async function createToken(user: JWTPayload | undefined) {
   const secret = new TextEncoder().encode('your_secret_key');
   
@@ -18,10 +18,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { username, password } = req.body;
 
   // Simple authentication (replace with your own logic)
-  if (username === 'admin' && password === '123456') {
-    let token = await createToken({ username });
+  axios.post('/login', { username, password }).then(async (response) => {
+    const token = await createToken(response.data);
     res.status(200).json({ token });
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
-  }
+  }).catch((error) => {
+    res.status(401).json({ message: error.response.data.message });
+  });
 };
