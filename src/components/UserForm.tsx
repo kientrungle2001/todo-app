@@ -1,3 +1,4 @@
+// file components/UserForm.tsx
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
@@ -18,7 +19,7 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form id="userForm" onSubmit={handleSubmit}>
       <Form.Group controlId="formUserName">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -55,7 +56,6 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit }) => {
           onChange={(e) => setDepartment(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" type="submit">Save Changes</Button>
     </Form>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Row, Col } from 'react-bootstrap';
 import UserForm from '@/components/UserForm';
 import { User } from '@/store/userSlice';
 
@@ -50,7 +50,11 @@ const UserModals: React.FC<UserModalsProps> = ({
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddModal}>Close</Button>
+          <Row className="w-100">
+            <Col className="d-flex justify-content-end">
+              <Button variant="secondary" onClick={handleCloseAddModal}>Close</Button>
+            </Col>
+          </Row>
         </Modal.Footer>
       </Modal>
 
@@ -68,7 +72,12 @@ const UserModals: React.FC<UserModalsProps> = ({
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditModal}>Close</Button>
+          <Row className="w-100">
+            <Col className="d-flex justify-content-between">
+              <Button variant="secondary" onClick={handleCloseEditModal}>Close</Button>
+              <Button variant="primary" type="submit" form="userForm">Save Changes</Button>
+            </Col>
+          </Row>
         </Modal.Footer>
       </Modal>
     </>
