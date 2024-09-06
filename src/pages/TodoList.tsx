@@ -111,7 +111,10 @@ export default function Home() {
     setAssignTodo(id);
     setAssignTitle(title);
     setShowAssignModal(true);
-    dispatch(fetchUsers());
+    dispatch(fetchUsers({
+      page: 1,
+      pageSize: 1000000 // This will get all users
+    }));
     fetchAssignedUsers(id);
   };
 
