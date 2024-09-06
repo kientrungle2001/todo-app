@@ -1,16 +1,17 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import UserForm from '@/components/UserForm';
+import { User } from '@/store/userSlice';
 
 interface UserModalsProps {
   showAddModal: boolean;
   handleCloseAddModal: () => void;
   showEditModal: boolean;
   handleCloseEditModal: () => void;
-  currentUser: { id: number; username: string; password?: string; role?: string; department?: string } | null;
-  setCurrentUser: React.Dispatch<React.SetStateAction<{ id: number; username: string; password?: string; role?: string; department?: string } | null>>;
-  addUser: (user: { username: string; password: string; role: string; department: string }) => void;
-  updateUser: (user: { id: number; username: string; password?: string; role?: string; department?: string }) => void;
+  currentUser: User | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+  addUser: (user: User) => void;
+  updateUser: (user: User) => void;
 }
 
 const UserModals: React.FC<UserModalsProps> = ({
@@ -23,12 +24,12 @@ const UserModals: React.FC<UserModalsProps> = ({
   addUser,
   updateUser
 }) => {
-  const handleAddUser = (user: { username: string; password: string; role: string; department: string }) => {
+  const handleAddUser = (user: User) => {
     addUser(user);
     handleCloseAddModal();
   };
 
-  const handleUpdateUser = (user: { id: number; username: string; password?: string; role?: string; department?: string }) => {
+  const handleUpdateUser = (user: User) => {
     if (currentUser) {
       updateUser({ ...currentUser, ...user });
       handleCloseEditModal();

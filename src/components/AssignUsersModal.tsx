@@ -24,8 +24,8 @@ const AssignUsersModal = ({ show, handleClose, handleAssignTodo, handleAssignsTo
                     type="checkbox"
                     id={`user-${user.id}`}
                     label={user.username}
-                    checked={users.includes(user.id)}
-                    onChange={() => handleAssignTodo(user.id)}
+                    checked={users.includes(user.id ?? 0)}
+                    onChange={() => handleAssignTodo(user.id ?? 0)}
                 />
             ))}
         </Modal.Body>
