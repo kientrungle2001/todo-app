@@ -41,8 +41,12 @@ app.post('/api/login', async (req, res) => {
 });
 
 // User Endpoints
+// Example Node.js/Express API
 app.get('/api/users', (req, res) => {
-  pool.query('SELECT * FROM users', (err, results) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const pageSize = parseInt(req.query.pageSize as string) || 10;
+  const offset = (page - 1) * pageSize;
+  pool.query('SELECT * FROM users LIMIT ?, ?', [offset, pageSize], (err, results) => {
     if (err) throw err;
     res.json(results);
   });
@@ -62,8 +66,21 @@ app.post('/api/users', (req, res) => {
 app.put('/api/users/:id', (req, res) => {
   const { id } = req.params;
   const { username, password, role, department } = req.body;
-  const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-  pool.query('UPDATE users SET username = ?, password = ?, role = ?, department = ? WHERE id = ?', [username, hashedPassword, role, department, id], (err) => {
+
+  let query = 'UPDATE users SET username = ?, role = ?, department = ?';
+  const params = [username, role, department];
+
+  // If password is provided, include it in the update query
+  if (password) {
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    query += ', password = ?';
+    params.push(hashedPassword);
+  }
+
+  query += ' WHERE id = ?';
+  params.push(id);
+
+  pool.query(query, params, (err) => {
     if (err) throw err;
     res.status(200).send('User updated');
   });

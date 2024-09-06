@@ -1,7 +1,8 @@
+// src/pages/UserList.tsx
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteUser, fetchUsers, addUser, updateUser, setPagination, User } from '../store/userSlice';
-import { Button, Container, ListGroup, Pagination } from 'react-bootstrap';
+import { Button, Container, Table, Pagination } from 'react-bootstrap';
 import UserModals from '@/components/UserModals';
 
 export default function UserList() {
@@ -14,8 +15,8 @@ export default function UserList() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    dispatch(fetchUsers(pagination)); // Pass pagination info to fetch users
+  }, [dispatch, pagination]);
 
   const handleDeleteUser = (id: number) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
@@ -24,30 +25,56 @@ export default function UserList() {
   };
 
   const handleShowEditModal = (user: User) => {
-    setCurrentUser(user);
+    let currentUser = { ...user };
+    currentUser.password = '';
+    setCurrentUser(currentUser);
     setShowEditModal(true);
   };
 
   const handleCloseEditModal = () => setShowEditModal(false);
-
   const handleCloseAddModal = () => setShowAddModal(false);
+
+  const handlePageChange = (newPage: number) => {
+    dispatch(setPagination({ page: newPage, pageSize: pagination.pageSize }));
+  };
 
   return (
     <Container>
       <h1>User List</h1>
       <Button variant="primary" onClick={() => setShowAddModal(true)} className="mb-3">Add User</Button>
-      <ListGroup>
-        {users.map(user => (
-          <ListGroup.Item key={user.id}>
-            {user.username}
-            <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(user)}>Edit</Button>
-            <Button variant="danger" onClick={() => handleDeleteUser(user.id ?? 0)}>Delete</Button>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.username}</td>
+              <td>{user.role}</td>
+              <td>{user.department}</td>
+              <td>
+                <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(user)}>Edit</Button>
+                <Button variant="danger" onClick={() => handleDeleteUser(user.id ?? 0)}>Delete</Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
       <Pagination>
-        <Pagination.Prev onClick={() => dispatch(setPagination({ ...pagination, page: pagination.page - 1 }))} />
-        <Pagination.Next onClick={() => dispatch(setPagination({ ...pagination, page: pagination.page + 1 }))} />
+        <Pagination.Prev
+          onClick={() => handlePageChange(pagination.page - 1)}
+          disabled={pagination.page === 1}
+        />
+        <Pagination.Item active>{pagination.page}</Pagination.Item>
+        <Pagination.Next onClick={() => handlePageChange(pagination.page + 1)} />
       </Pagination>
 
       <UserModals
