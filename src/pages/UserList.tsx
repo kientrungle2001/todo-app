@@ -1,8 +1,7 @@
-// src/pages/UserList.tsx
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteUser, fetchUsers, addUser, updateUser, setPagination, User } from '../store/userSlice';
-import { Button, Container, Table, Pagination } from 'react-bootstrap';
+import { Button, Container, Table, Pagination, Form } from 'react-bootstrap';
 import UserModals from '@/components/UserModals';
 
 export default function UserList() {
@@ -13,10 +12,11 @@ export default function UserList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [searchText, setSearchText] = useState('');  // Add searchText state
 
   useEffect(() => {
-    dispatch(fetchUsers(pagination)); // Pass pagination info to fetch users
-  }, [dispatch, pagination]);
+    dispatch(fetchUsers({ page: pagination.page, pageSize: pagination.pageSize, searchText })); // Pass pagination info and search text to fetch users
+  }, [dispatch, pagination, searchText]);
 
   const handleDeleteUser = (id: number) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
@@ -41,7 +41,19 @@ export default function UserList() {
   return (
     <Container>
       <h1>User List</h1>
+
+      {/* Search Box */}
+      <Form.Group className="mb-3" controlId="search">
+        <Form.Control
+          type="text"
+          placeholder="Search by Username, Role, or Department"
+          value={searchText}
+          onChange={e => setSearchText(e.target.value)} // Update searchText state
+        />
+      </Form.Group>
+
       <Button variant="primary" onClick={() => setShowAddModal(true)} className="mb-3">Add User</Button>
+
       <Table striped bordered hover>
         <thead>
           <tr>

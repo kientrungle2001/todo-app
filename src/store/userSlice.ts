@@ -25,10 +25,9 @@ const initialState: UserState = {
 // src/store/userSlice.ts
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
-  async (pagination: { page: number; pageSize: number }) => {
-    const { page, pageSize } = pagination;
-    const response = await axios.get(`/users?page=${page}&pageSize=${pageSize}`);
-    return response.data; // Make sure the API supports pagination and returns the correct data
+  async ({ page, pageSize, searchText }: { page: number; pageSize: number; searchText: string }) => {
+    const response = await axios.get(`/users?page=${page}&pageSize=${pageSize}&search=${searchText}`);
+    return response.data;
   }
 );
 

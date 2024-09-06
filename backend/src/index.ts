@@ -42,14 +42,21 @@ app.post('/api/login', async (req, res) => {
 
 // User Endpoints
 // Example Node.js/Express API
+// src/index.ts
 app.get('/api/users', (req, res) => {
   const page = parseInt(req.query.page as string) || 1;
   const pageSize = parseInt(req.query.pageSize as string) || 10;
+  const search = req.query.search ? `%${req.query.search}%` : '%';
   const offset = (page - 1) * pageSize;
-  pool.query('SELECT * FROM users LIMIT ?, ?', [offset, pageSize], (err, results) => {
-    if (err) throw err;
-    res.json(results);
-  });
+
+  pool.query(
+    'SELECT * FROM users WHERE username LIKE ? OR role LIKE ? OR department LIKE ? LIMIT ?, ?',
+    [search, search, search, offset, pageSize],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
 });
 
 app.post('/api/users', (req, res) => {
