@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteUser, fetchUsers, addUser, updateUser, setPagination, User } from '../store/userSlice';
 import { Button, Container, Table, Pagination, Form } from 'react-bootstrap';
-import UserModals from '@/components/UserModals';
+import UserModals from '@/components/users/UserModals';
 
 export default function UserList() {
   const dispatch = useAppDispatch();

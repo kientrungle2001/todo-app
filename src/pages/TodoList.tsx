@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { verifyToken } from '@/hooks/useAuth';
 import TodoList from '@/components/TodoList';
 import EditTodoModal from '@/components/EditTodoModal';
-import AssignUsersModal from '@/components/AssignUsersModal';
+import AssignUsersModal from '@/components/users/AssignUsersModal';
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal';
 import { FaPlus, FaSignOutAlt } from 'react-icons/fa';
 import {

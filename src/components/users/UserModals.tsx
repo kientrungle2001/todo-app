@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
-import UserForm from '@/components/UserForm';
+import UserForm from '@/components/users/UserForm';
 import { User } from '@/store/userSlice';
 
 interface UserModalsProps {
