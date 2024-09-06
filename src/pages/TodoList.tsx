@@ -39,13 +39,12 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      try {
-        verifyToken(token);
-      } catch (error) {
-        console.log(error);
+      verifyToken(token).then((resp) => {
+        console.log(resp);
+      }).catch((err) => {
         localStorage.removeItem('token');
         router.push('/login');
-      }
+      });
     } else {
       router.push('/login');
     }
