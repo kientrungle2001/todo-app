@@ -22,7 +22,6 @@ const initialState: UserState = {
 };
 
 // Thunks
-// src/store/userSlice.ts
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async ({ page, pageSize, searchText }: { page: number; pageSize: number; searchText?: string }) => {

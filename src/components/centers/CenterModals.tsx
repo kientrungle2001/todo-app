@@ -1,53 +1,51 @@
-// file components/users/UserModals.tsx
 import React from 'react';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
-import UserForm from '@/components/users/UserForm';
-import { User } from '@/store/userSlice';
+import CenterForm from '@/components/centers/CenterForm';
+import { Center } from '@/store/centerSlice';
 
-interface UserModalsProps {
+interface CenterModalsProps {
   showAddModal: boolean;
   handleCloseAddModal: () => void;
   showEditModal: boolean;
   handleCloseEditModal: () => void;
-  currentUser: User | null;
-  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
-  addUser: (user: User) => void;
-  updateUser: (user: User) => void;
+  currentCenter: Center | null;
+  setCurrentCenter: React.Dispatch<React.SetStateAction<Center | null>>;
+  addCenter: (center: Center) => void;
+  updateCenter: (center: Center) => void;
 }
 
-const UserModals: React.FC<UserModalsProps> = ({
+const CenterModals: React.FC<CenterModalsProps> = ({
   showAddModal,
   handleCloseAddModal,
   showEditModal,
   handleCloseEditModal,
-  currentUser,
-  setCurrentUser,
-  addUser,
-  updateUser
+  currentCenter,
+  setCurrentCenter,
+  addCenter,
+  updateCenter
 }) => {
-  const handleAddUser = (user: User) => {
-    addUser(user);
+  const handleAddCenter = (center: Center) => {
+    addCenter(center);
     handleCloseAddModal();
   };
 
-  const handleUpdateUser = (user: User) => {
-    if (currentUser) {
-      updateUser({ ...currentUser, ...user });
+  const handleUpdateCenter = (center: Center) => {
+    if (currentCenter) {
+      updateCenter({ ...currentCenter, ...center });
       handleCloseEditModal();
     }
   };
 
   return (
     <>
-      {/* Add User Modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Add User</Modal.Title>
+          <Modal.Title>Add Center</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <UserForm
-            initialData={{ username: '', password: '', role: '', department: '' }}
-            onSubmit={handleAddUser}
+          <CenterForm
+            initialData={{ name: '', code: '', address: '', status: 1 }}
+            onSubmit={handleAddCenter}
           />
         </Modal.Body>
         <Modal.Footer>
@@ -59,16 +57,15 @@ const UserModals: React.FC<UserModalsProps> = ({
         </Modal.Footer>
       </Modal>
 
-      {/* Edit User Modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit User</Modal.Title>
+          <Modal.Title>Edit Center</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {currentUser && (
-            <UserForm
-              initialData={currentUser}
-              onSubmit={handleUpdateUser}
+          {currentCenter && (
+            <CenterForm
+              initialData={currentCenter}
+              onSubmit={handleUpdateCenter}
             />
           )}
         </Modal.Body>
@@ -76,7 +73,7 @@ const UserModals: React.FC<UserModalsProps> = ({
           <Row className="w-100">
             <Col className="d-flex justify-content-between">
               <Button variant="secondary" onClick={handleCloseEditModal}>Close</Button>
-              <Button variant="primary" type="submit" form="userForm">Save Changes</Button>
+              <Button variant="primary" type="submit" form="centerForm">Save Changes</Button>
             </Col>
           </Row>
         </Modal.Footer>
@@ -85,4 +82,4 @@ const UserModals: React.FC<UserModalsProps> = ({
   );
 };
 
-export default UserModals;
+export default CenterModals;

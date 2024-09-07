@@ -1,3 +1,4 @@
+// file src/pages/UserList.tsx
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteUser, fetchUsers, addUser, updateUser, setPagination, User } from '../store/userSlice';
