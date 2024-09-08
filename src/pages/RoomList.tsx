@@ -98,7 +98,9 @@ export default function RoomList() {
         handleCloseEditModal={handleCloseEditModal}
         currentRoom={currentRoom}
         setCurrentRoom={setCurrentRoom}
-        addRoom={room => dispatch(addRoom(room))}
+        addRoom={room => dispatch(addRoom(room)).then(() => {
+          dispatch(fetchRooms({ page: pagination.page, pageSize: pagination.pageSize, searchText }));
+        })}
         updateRoom={room => {
           dispatch(updateRoom(room)).then(() => {
             dispatch(fetchRooms({ page: pagination.page, pageSize: pagination.pageSize, searchText }));
