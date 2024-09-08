@@ -48,11 +48,11 @@ const CenterForm: React.FC<CenterFormProps> = ({ initialData, onSubmit }) => {
       </Form.Group>
       <Form.Group controlId="formCenterStatus">
         <Form.Label>Status</Form.Label>
-        <Form.Control
-          type="number"
-          placeholder="Enter status"
-          value={status}
-          onChange={(e) => setStatus(Number(e.target.value))}
+        <Form.Check
+          type="switch"
+          label={status === 1 ? 'Active' : 'Inactive'}
+          checked={status === 1}
+          onChange={() => setStatus(status === 1 ? 0 : 1)} // Toggle status between 1 (Active) and 0 (Inactive)
         />
       </Form.Group>
     </Form>

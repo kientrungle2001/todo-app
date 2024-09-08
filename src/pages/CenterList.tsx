@@ -69,7 +69,7 @@ export default function CenterList() {
               <td>{center.name}</td>
               <td>{center.code}</td>
               <td>{center.address}</td>
-              <td>{center.status}</td>
+              <td>{center.status === 1 ? 'Active' : 'Inactive'}</td> {/* Display Active/Inactive */}
               <td>
                 <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(center)}>Edit</Button>
                 <Button variant="danger" onClick={() => handleDeleteCenter(center.id ?? 0)}>Delete</Button>

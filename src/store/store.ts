@@ -4,6 +4,7 @@ import { todoReducer } from './todoSlice';
 import { userReducer } from './userSlice';
 import { todoUserReducer } from './todoUserSlice';
 import { centerReducer } from './centerSlice';
+import { roomReducer } from './roomSlice';
 
 // Configure the Redux store
 export const store = configureStore({
@@ -11,7 +12,8 @@ export const store = configureStore({
     todos: todoReducer,
     users: userReducer,
     todoUsers: todoUserReducer,
-    centers: centerReducer
+    centers: centerReducer,
+    rooms: roomReducer
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
   devTools: process.env.NODE_ENV !== 'production', // Optional: enable Redux DevTools
