@@ -52,6 +52,7 @@ const CenterModals: React.FC<CenterModalsProps> = ({
           <Row className="w-100">
             <Col className="d-flex justify-content-end">
               <Button variant="secondary" onClick={handleCloseAddModal}>Close</Button>
+              <Button variant="primary" type="submit" form="centerForm">Add Room</Button>
             </Col>
           </Row>
         </Modal.Footer>

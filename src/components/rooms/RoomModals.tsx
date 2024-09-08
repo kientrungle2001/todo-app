@@ -59,6 +59,7 @@ const RoomModals: React.FC<RoomModalsProps> = ({
                     <Row className="w-100">
                         <Col className="d-flex justify-content-end">
                             <Button variant="secondary" onClick={handleCloseAddModal}>Close</Button>
+                            <Button variant="primary" type="submit" form="roomForm">Add Room</Button>
                         </Col>
                     </Row>
                 </Modal.Footer>

@@ -16,12 +16,16 @@ interface RoomState {
     items: Room[];
     centers: { id: number; name: string }[];  // For the select box
     pagination: { page: number; pageSize: number };
+    loading: boolean;
+    error: string | null;
 }
 
 const initialState: RoomState = {
     items: [],
     centers: [],
     pagination: { page: 1, pageSize: 10 },
+    loading: false,
+    error: null,
 };
 
 // Thunks
@@ -30,6 +34,19 @@ export const fetchRooms = createAsyncThunk(
     async ({ page, pageSize, searchText }: { page: number; pageSize: number; searchText?: string }) => {
         const response = await axios.get(`/rooms?page=${page}&pageSize=${pageSize}&search=${searchText}`);
         return response.data;
+    }
+);
+
+// Fetch rooms by center ID
+export const fetchRoomsByCenter = createAsyncThunk(
+    'rooms/fetchRoomsByCenter',
+    async (centerId: number, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`/rooms/center/${centerId}`);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response.data);
+        }
     }
 );
 
@@ -50,6 +67,18 @@ export const updateRoom = createAsyncThunk('rooms/updateRoom', async (room: Room
     await axios.put(`/rooms/${room.id}`, room);
     return room;
 });
+
+export const editRoom = createAsyncThunk(
+    'rooms/editRoom',
+    async (roomData: { id: number; name: string; status: number; centerId: number; size: number; note: string }, { rejectWithValue }) => {
+        try {
+            const response = await axios.put(`/rooms/${roomData.id}`, roomData);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 export const deleteRoom = createAsyncThunk('rooms/deleteRoom', async (id: number) => {
     await axios.delete(`/rooms/${id}`);
@@ -83,6 +112,36 @@ const roomSlice = createSlice({
             })
             .addCase(fetchCenters.fulfilled, (state, action) => {
                 state.centers = action.payload;
+            });
+        builder
+            .addCase(fetchRoomsByCenter.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchRoomsByCenter.fulfilled, (state, action) => {
+                state.items = action.payload;
+                state.loading = false;
+            })
+            .addCase(fetchRoomsByCenter.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+        builder
+            // editRoom
+            .addCase(editRoom.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(editRoom.fulfilled, (state, action) => {
+                const index = state.items.findIndex(room => room.id === action.payload.id);
+                if (index !== -1) {
+                    state.items[index] = action.payload;
+                }
+                state.loading = false;
+            })
+            .addCase(editRoom.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
             });
     },
 });

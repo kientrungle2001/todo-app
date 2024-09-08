@@ -23,6 +23,16 @@ router.get('/', (req, res) => {
   );
 });
 
+// Backend API (room.ts)
+router.get('/center/:centerId', (req, res) => {
+  const { centerId } = req.params;
+  pool.query('SELECT * FROM room WHERE centerId = ?', [centerId], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+
 // Get all centers for the select box in the form
 router.get('/centers', async (req, res) => {
     try {

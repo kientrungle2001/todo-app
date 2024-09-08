@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteCenter, fetchCenters, addCenter, updateCenter, setPagination, Center } from '../store/centerSlice';
 import { Button, Container, Table, Pagination, Form } from 'react-bootstrap';
 import CenterModals from '@/components/centers/CenterModals';
+import RoomsModal from '@/components/centers/RoomsModal';
 
 export default function CenterList() {
   const dispatch = useAppDispatch();
@@ -13,6 +14,8 @@ export default function CenterList() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentCenter, setCurrentCenter] = useState<Center | null>(null);
   const [searchText, setSearchText] = useState('');
+  const [selectedCenter, setSelectedCenter] = useState<number | null>(null);
+  const [showRoomsModal, setShowRoomsModal] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCenters({ page: pagination.page, pageSize: pagination.pageSize, searchText }));
@@ -20,7 +23,9 @@ export default function CenterList() {
 
   const handleDeleteCenter = (id: number) => {
     if (window.confirm('Are you sure you want to delete this center?')) {
-      dispatch(deleteCenter(id));
+      dispatch(deleteCenter(id)).then(() => {
+        dispatch(fetchCenters({ page: pagination.page, pageSize: pagination.pageSize, searchText }));
+      });
     }
   };
 
@@ -34,6 +39,11 @@ export default function CenterList() {
 
   const handlePageChange = (newPage: number) => {
     dispatch(setPagination({ page: newPage, pageSize: pagination.pageSize }));
+  };
+
+  const handleManageRooms = (centerId: number) => {
+    setSelectedCenter(centerId);
+    setShowRoomsModal(true);
   };
 
   return (
@@ -71,6 +81,7 @@ export default function CenterList() {
               <td>{center.address}</td>
               <td>{center.status === 1 ? 'Active' : 'Inactive'}</td> {/* Display Active/Inactive */}
               <td>
+                <Button variant="primary" className="mx-2" onClick={() => handleManageRooms(center.id ?? 0)}>Manage Rooms</Button>
                 <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(center)}>Edit</Button>
                 <Button variant="danger" onClick={() => handleDeleteCenter(center.id ?? 0)}>Delete</Button>
               </td>
@@ -95,9 +106,21 @@ export default function CenterList() {
         handleCloseEditModal={handleCloseEditModal}
         currentCenter={currentCenter}
         setCurrentCenter={setCurrentCenter}
-        addCenter={center => dispatch(addCenter(center))}
-        updateCenter={center => dispatch(updateCenter(center))}
+        addCenter={center => dispatch(addCenter(center)).then(() => {
+          dispatch(fetchCenters({ page: pagination.page, pageSize: pagination.pageSize, searchText }));
+        })}
+        updateCenter={center => dispatch(updateCenter(center)).then(() => {
+          dispatch(fetchCenters({ page: pagination.page, pageSize: pagination.pageSize, searchText }));
+        })}
       />
+      {/* Rooms Modal */}
+      {selectedCenter !== null && (
+        <RoomsModal
+          centerId={selectedCenter}
+          show={showRoomsModal}
+          onHide={() => setShowRoomsModal(false)}
+        />
+      )}
     </Container>
   );
 }
