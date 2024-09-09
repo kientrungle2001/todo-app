@@ -45,7 +45,7 @@ const SubjectModals: React.FC<SubjectModalsProps> = ({
                 </Modal.Header>
                 <Modal.Body>
                     <SubjectForm
-                        initialData={{ name: '', code: '', status: 1 }}
+                        initialData={{ name: '', code: '', online: 0, status: 1 }}
                         onSubmit={handleAddSubject}
                     />
                 </Modal.Body>

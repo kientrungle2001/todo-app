@@ -32,6 +32,12 @@ export default function SubjectList() {
     const handleCloseEditModal = () => setShowEditModal(false);
     const handleCloseAddModal = () => setShowAddModal(false);
 
+    const onlines: any = {
+        '0': 'Center',
+        '1': 'Online',
+        '-1': 'Book'
+    };
+
     return (
         <Container>
             <h1>Subject List</h1>
@@ -64,6 +70,7 @@ export default function SubjectList() {
                             <td>{subject.id}</td>
                             <td>{subject.name}</td>
                             <td>{subject.code}</td>
+                            <td>{onlines['' + subject.online] ?? ''}</td>
                             <td>{subject.status === 1 ? 'Active' : 'Inactive'}</td>
                             <td>
                                 <Accordion>

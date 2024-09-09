@@ -17,6 +17,7 @@ export interface Subject {
   name: string;
   code: string;
   status: number;
+  online: number;
   classes?: Class[];
 }
 

@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     try {
         // Fetch subjects
         pool.query(
-            `SELECT * FROM subject WHERE name LIKE ? OR code LIKE ? LIMIT ?, ?`,
+            `SELECT * FROM subject WHERE name LIKE ? OR code LIKE ? ORDER BY online ASC LIMIT ?, ?`,
             [search, search, offset, pageSize], (err, response: any[]) => {
                 if (err) throw err;
                 response.forEach((subject) => {
@@ -46,10 +46,10 @@ router.get('/', async (req, res) => {
 
 // Create a new subject
 router.post('/', (req, res) => {
-    const { name, code, status } = req.body;
+    const { name, code, online, status } = req.body;
     pool.query(
-        'INSERT INTO subject (name, code, status) VALUES (?, ?, ?)',
-        [name, code, status],
+        'INSERT INTO subject (name, code, online, status) VALUES (?, ?, ?, ?)',
+        [name, code, online, status],
         (err) => {
             if (err) throw err;
             res.status(201).send('Subject created');
@@ -60,10 +60,10 @@ router.post('/', (req, res) => {
 // Update an existing subject by ID
 router.put('/:id', (req, res) => {
     const { id } = req.params;
-    const { name, code, status } = req.body;
+    const { name, code, online, status } = req.body;
     pool.query(
-        'UPDATE subject SET name = ?, code = ?, status = ? WHERE id = ?',
-        [name, code, status, id],
+        'UPDATE subject SET name = ?, code = ?, online = ?, status = ? WHERE id = ?',
+        [name, code, online, status, id],
         (err) => {
             if (err) throw err;
             res.status(200).send('Subject updated');
