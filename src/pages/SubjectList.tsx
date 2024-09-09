@@ -59,6 +59,7 @@ export default function SubjectList() {
                         <th>ID</th>
                         <th>Name</th>
                         <th>Code</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Active Classes</th>
                         <th>Actions</th>
