@@ -29,6 +29,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ initialData, onSubmit }) => {
           type="text"
           name="name"
           value={name || ''}
+          onChange={(e) => setName(e.target.value)}
         />
       </Form.Group>
       <Form.Group controlId="formSubjectCode">
@@ -37,6 +38,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ initialData, onSubmit }) => {
           type="text"
           name="code"
           value={code || ''}
+          onChange={(e) => setCode(e.target.value)}
         />
       </Form.Group>
       <Form.Group controlId="formSubjectStatus">

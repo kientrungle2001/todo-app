@@ -45,6 +45,8 @@ export default function SubjectList() {
                 />
             </Form.Group>
 
+            <Button variant="primary" onClick={() => setShowAddModal(true)} className="mb-3">Add Subject</Button>
+
             <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
@@ -58,7 +60,7 @@ export default function SubjectList() {
                 </thead>
                 <tbody>
                     {subjects.map((subject) => (
-                        <tr key={subject.id}>
+                        <tr key={'' + subject.id}>
                             <td>{subject.id}</td>
                             <td>{subject.name}</td>
                             <td>{subject.code}</td>

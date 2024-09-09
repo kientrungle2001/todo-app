@@ -7,7 +7,7 @@ const router = express.Router();
 // Get list of subjects with their active classes
 router.get('/', async (req, res) => {
     const page = parseInt(req.query.page as string) || 1;
-    const pageSize = parseInt(req.query.pageSize as string) || 10;
+    const pageSize = parseInt(req.query.pageSize as string) || 100;
     const search = req.query.search ? `%${req.query.search}%` : '%';
     const offset = (page - 1) * pageSize;
 
@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
 router.post('/', (req, res) => {
     const { name, code, status } = req.body;
     pool.query(
-        'INSERT INTO subject (name, code, status) VALUES (?, ?, ?, ?)',
+        'INSERT INTO subject (name, code, status) VALUES (?, ?, ?)',
         [name, code, status],
         (err) => {
             if (err) throw err;
