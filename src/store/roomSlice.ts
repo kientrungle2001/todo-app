@@ -1,3 +1,4 @@
+// file src/store/roomSlice.ts
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../api/axiosInstance';
 import { RootState } from './store';

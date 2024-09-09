@@ -1,3 +1,4 @@
+// file backend/routes/room.ts
 import express from 'express';
 import pool from '../db';
 import { RowDataPacket } from 'mysql2/promise';

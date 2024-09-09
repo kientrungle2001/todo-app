@@ -1,3 +1,4 @@
+// file src/components/centers/RoomsModal.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Table, Form } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -21,17 +22,23 @@ export default function RoomsModal({ centerId, show, onHide }: RoomsModalProps) 
   }, [centerId, show, dispatch]);
 
   const handleAddRoom = () => {
-    dispatch(addRoom({ ...newRoom, centerId }));
+    dispatch(addRoom({ ...newRoom, centerId })).then(() => {
+      dispatch(fetchRoomsByCenter(centerId));
+    });
     setNewRoom({ name: '', size: 0, status: 1, note: '' });
   };
 
   const handleEditRoom = (roomId: number) => {
-    dispatch(editRoom({ id: roomId, ...newRoom, centerId }));
+    dispatch(editRoom({ id: roomId, ...newRoom, centerId })).then(() => {
+      dispatch(fetchRoomsByCenter(centerId));
+    });
   };
 
   const handleDeleteRoom = (roomId: number) => {
     if (window.confirm('Are you sure you want to delete this room?')) {
-      dispatch(deleteRoom(roomId));
+      dispatch(deleteRoom(roomId)).then(() => {
+        dispatch(fetchRoomsByCenter(centerId));
+      });
     }
   };
 
