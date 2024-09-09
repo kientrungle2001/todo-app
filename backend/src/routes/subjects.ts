@@ -21,22 +21,26 @@ router.get('/', async (req, res) => {
                     subject.classes = [];
                 });
                 let subjectIds = response.map((subject) => subject.id);
-                pool.query(`SELECT * FROM classes WHERE subjectId IN (?) and status = 1`, [subjectIds], (clsError, classes: any[]) => {
-                    if (clsError) throw clsError;
-                    classes.forEach((cls) => {
-                        if (cls.startDate instanceof Date && cls.startDate.getFullYear() === 1899) {
-                            cls.startDate = null;
-                        }
-                        if (cls.endDate instanceof Date && cls.endDate.getFullYear() === 1899) {
-                            cls.endDate = null;
-                        }
-                        const subjectIndex = response.findIndex((subject) => subject.id === cls.subjectId);
-                        if (subjectIndex >= 0) {
-                            response[subjectIndex].classes.push(cls);
-                        }
-                    });
+                if (subjectIds.length === 0) {
                     res.json(response);
-                });
+                } else {
+                    pool.query(`SELECT * FROM classes WHERE subjectId IN (?) and status = 1`, [subjectIds], (clsError, classes: any[]) => {
+                        if (clsError) throw clsError;
+                        classes.forEach((cls) => {
+                            if (cls.startDate instanceof Date && cls.startDate.getFullYear() === 1899) {
+                                cls.startDate = null;
+                            }
+                            if (cls.endDate instanceof Date && cls.endDate.getFullYear() === 1899) {
+                                cls.endDate = null;
+                            }
+                            const subjectIndex = response.findIndex((subject) => subject.id === cls.subjectId);
+                            if (subjectIndex >= 0) {
+                                response[subjectIndex].classes.push(cls);
+                            }
+                        });
+                        res.json(response);
+                    });
+                }
             });
     } catch (err) {
         console.error(err);

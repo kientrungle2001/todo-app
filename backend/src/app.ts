@@ -5,6 +5,7 @@ import userRoutes from './routes/users';
 import centerRoutes from './routes/centers';
 import roomRoutes from './routes/rooms';
 import subjectRoutes from './routes/subjects';
+import teacherRoutes from './routes/teachers';
 import todoRoutes from './routes/todos';
 import userTodoRoutes from './routes/userTodos';
 
@@ -20,5 +21,6 @@ app.use('/api/rooms', roomRoutes);
 app.use('/api/subjects', subjectRoutes);
 app.use('/api/todos', todoRoutes);
 app.use('/api/todos', userTodoRoutes);
+app.use('/api/teachers', teacherRoutes);
 
 export default app;

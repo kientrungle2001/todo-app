@@ -6,6 +6,7 @@ import { todoUserReducer } from './todoUserSlice';
 import { centerReducer } from './centerSlice';
 import { roomReducer } from './roomSlice';
 import { subjectReducer } from './subjectSlice';
+import { teacherReducer } from './teacherSlice'; // Add your slice reducers here
 
 // Configure the Redux store
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     centers: centerReducer,
     rooms: roomReducer,
     subjects: subjectReducer,
+    teachers: teacherReducer, // Add your slice reducers here
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
   devTools: process.env.NODE_ENV !== 'production', // Optional: enable Redux DevTools
