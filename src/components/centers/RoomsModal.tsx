@@ -1,4 +1,3 @@
-// file src/components/centers/RoomsModal.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Table, Form } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -13,7 +12,9 @@ interface RoomsModalProps {
 export default function RoomsModal({ centerId, show, onHide }: RoomsModalProps) {
   const dispatch = useAppDispatch();
   const rooms = useAppSelector(state => state.rooms.items);
-  const [newRoom, setNewRoom] = useState({ name: '', size: 0, status: 1, note: '' });
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentRoomId, setCurrentRoomId] = useState<number | null>(null);
+  const [roomData, setRoomData] = useState({ name: '', size: 0, status: 1, note: '' });
 
   useEffect(() => {
     if (centerId && show) {
@@ -22,16 +23,33 @@ export default function RoomsModal({ centerId, show, onHide }: RoomsModalProps) 
   }, [centerId, show, dispatch]);
 
   const handleAddRoom = () => {
-    dispatch(addRoom({ ...newRoom, centerId })).then(() => {
+    dispatch(addRoom({ ...roomData, centerId })).then(() => {
       dispatch(fetchRoomsByCenter(centerId));
     });
-    setNewRoom({ name: '', size: 0, status: 1, note: '' });
+    resetForm();
   };
 
   const handleEditRoom = (roomId: number) => {
-    dispatch(editRoom({ id: roomId, ...newRoom, centerId })).then(() => {
-      dispatch(fetchRoomsByCenter(centerId));
-    });
+    const roomToEdit = rooms.find(room => room.id === roomId);
+    if (roomToEdit) {
+      setRoomData({
+        name: roomToEdit.name,
+        size: roomToEdit.size,
+        status: roomToEdit.status,
+        note: roomToEdit.note
+      });
+      setIsEditing(true);
+      setCurrentRoomId(roomId);
+    }
+  };
+
+  const handleUpdateRoom = () => {
+    if (currentRoomId !== null) {
+      dispatch(editRoom({ id: currentRoomId, ...roomData, centerId })).then(() => {
+        dispatch(fetchRoomsByCenter(centerId));
+      });
+      resetForm();
+    }
   };
 
   const handleDeleteRoom = (roomId: number) => {
@@ -40,6 +58,12 @@ export default function RoomsModal({ centerId, show, onHide }: RoomsModalProps) 
         dispatch(fetchRoomsByCenter(centerId));
       });
     }
+  };
+
+  const resetForm = () => {
+    setRoomData({ name: '', size: 0, status: 1, note: '' });
+    setIsEditing(false);
+    setCurrentRoomId(null);
   };
 
   return (
@@ -53,23 +77,23 @@ export default function RoomsModal({ centerId, show, onHide }: RoomsModalProps) 
             <Form.Label>Room Name</Form.Label>
             <Form.Control
               type="text"
-              value={newRoom.name}
-              onChange={e => setNewRoom({ ...newRoom, name: e.target.value })}
+              value={roomData.name}
+              onChange={e => setRoomData({ ...roomData, name: e.target.value })}
             />
           </Form.Group>
           <Form.Group>
             <Form.Label>Room Size</Form.Label>
             <Form.Control
               type="number"
-              value={newRoom.size}
-              onChange={e => setNewRoom({ ...newRoom, size: Number(e.target.value) })}
+              value={roomData.size}
+              onChange={e => setRoomData({ ...roomData, size: Number(e.target.value) })}
             />
           </Form.Group>
           <Form.Group>
             <Form.Label>Status</Form.Label>
             <Form.Select
-              value={newRoom.status}
-              onChange={e => setNewRoom({ ...newRoom, status: Number(e.target.value) })}
+              value={roomData.status}
+              onChange={e => setRoomData({ ...roomData, status: Number(e.target.value) })}
             >
               <option value={1}>Active</option>
               <option value={0}>Inactive</option>
@@ -79,11 +103,15 @@ export default function RoomsModal({ centerId, show, onHide }: RoomsModalProps) 
             <Form.Label>Note</Form.Label>
             <Form.Control
               as="textarea"
-              value={newRoom.note}
-              onChange={e => setNewRoom({ ...newRoom, note: e.target.value })}
+              value={roomData.note}
+              onChange={e => setRoomData({ ...roomData, note: e.target.value })}
             />
           </Form.Group>
-          <Button className="mt-3" onClick={handleAddRoom}>Add Room</Button>
+          {isEditing ? (
+            <Button className="mt-3" onClick={handleUpdateRoom}>Update Room</Button>
+          ) : (
+            <Button className="mt-3" onClick={handleAddRoom}>Add Room</Button>
+          )}
         </Form>
 
         <Table striped bordered hover className="mt-4">
