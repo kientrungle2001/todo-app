@@ -1,3 +1,4 @@
+// file src/components/centers/CenterModals.tsx
 import React from 'react';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
 import CenterForm from '@/components/centers/CenterForm';

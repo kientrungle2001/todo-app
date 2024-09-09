@@ -1,3 +1,4 @@
+// file src/components/centers/RoomsModal.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Table, Form } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';

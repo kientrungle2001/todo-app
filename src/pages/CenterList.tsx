@@ -1,3 +1,4 @@
+// file src/pages/CenterList.tsx
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteCenter, fetchCenters, addCenter, updateCenter, setPagination, Center } from '../store/centerSlice';
