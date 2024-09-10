@@ -9,6 +9,7 @@ import { subjectReducer } from './subjectSlice';
 import { teacherReducer } from './teacherSlice'; // Add your slice reducers here
 import { classReducer } from './classSlice'; // Add your slice reducers here
 import { studentReducer } from './studentSlice';
+import { scheduleReducer } from './scheduleSlice';
 
 // Configure the Redux store
 export const store = configureStore({
@@ -22,6 +23,7 @@ export const store = configureStore({
     teachers: teacherReducer, // Add your slice reducers here
     classes: classReducer, // Add your slice reducers here
     students: studentReducer,
+    schedules: scheduleReducer
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
   devTools: process.env.NODE_ENV !== 'production', // Optional: enable Redux DevTools

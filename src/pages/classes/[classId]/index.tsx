@@ -80,7 +80,7 @@ const ClassManagementPage = () => {
                     <Tab.Content>
                         {activeTab === 'classInformation' && <ClassInformation classId={classId ?? '0'} />}
                         {activeTab === 'students' && <Students classId={classId ?? '0'} />}
-                        {activeTab === 'classSchedules' && <ClassSchedules />}
+                        {activeTab === 'classSchedules' && <ClassSchedules classId={classId ?? '0'} />}
                         {activeTab === 'attendants' && <Attendants />}
                         {activeTab === 'paymentPeriods' && <PaymentPeriods />}
                         {activeTab === 'tuitionFees' && <TuitionFees />}
