@@ -21,8 +21,6 @@ const StudentForm: React.FC<StudentFormProps> = ({ initialData, onSubmit }) => {
         if (dateString === '0000-00-00') {
             return null;
         }
-        console.log('parseDate', dateString);
-        console.log(new Date(dateString));
         try {
             return new Date(dateString);
         } catch {
