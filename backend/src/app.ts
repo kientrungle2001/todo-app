@@ -9,6 +9,7 @@ import teacherRoutes from './routes/teachers';
 import classRoutes from './routes/classes';
 import todoRoutes from './routes/todos';
 import userTodoRoutes from './routes/userTodos';
+import studentRoutes from './routes/students';  // <-- Import students route
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use('/api/todos', todoRoutes);
 app.use('/api/todos', userTodoRoutes);
 app.use('/api/teachers', teacherRoutes);
 app.use('/api/classes', classRoutes);
+app.use('/api/students', studentRoutes);  // <-- Add students route
 
 export default app;

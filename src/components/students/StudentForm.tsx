@@ -1,136 +1,239 @@
-import { Student } from '@/store/studentSlice';
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Button, Form, Col, Row } from 'react-bootstrap';
+import { Student } from '@/store/studentSlice';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import { vi } from 'date-fns/locale';
+import "react-datepicker/dist/react-datepicker.css";
+import { format, parse } from 'date-fns';
+
+registerLocale("vi", vi);
 
 interface StudentFormProps {
-  initialData: Student;
-  onSubmit: (student: Student) => void;
+    initialData: Student;
+    onSubmit: (student: Student) => void;
 }
 
 const StudentForm: React.FC<StudentFormProps> = ({ initialData, onSubmit }) => {
-  const [name, setName] = useState(initialData.name);
-  const [phone, setPhone] = useState(initialData.phone);
-  const [address, setAddress] = useState(initialData.address);
-  const [school, setSchool] = useState(initialData.school);
-  const [salary, setSalary] = useState(initialData.salary);
-  const [password, setPassword] = useState(initialData.password);
-  const [subjectId, setSubjectId] = useState(initialData.subjectId);
-  const [status, setStatus] = useState(initialData.status);
-  const [departmentId, setDepartmentId] = useState(initialData.departmentId);
-  const [type, setType] = useState(initialData.type);
-  const [code, setCode] = useState(initialData.code);
+    const [studentData, setStudentData] = useState<Student>(initialData);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({ name, phone, address, school, salary, password, subjectId, status, departmentId, type, code, password, departmentId, subjectId });
-  };
+    // Parse date string from dd/mm/yyyy to Date object
+    const parseDate = (dateString: string): Date | null => {
+        if (dateString === '0000-00-00') {
+            return null;
+        }
+        console.log('parseDate', dateString);
+        console.log(new Date(dateString));
+        try {
+            return new Date(dateString);
+        } catch {
+            return null;
+        }
+    };
 
-  return (
-    <Form id="studentForm" onSubmit={handleSubmit}>
-      <Form.Group controlId="formStudentName">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </Form.Group>
+    // Format Date object to dd/mm/yyyy
+    const formatDate = (date: Date | null): string => {
+        if (date === null) {
+            return '';
+        }
+        return format(date, 'yyyy-MM-dd');
+    };
 
-      <Form.Group controlId="formStudentPhone">
-        <Form.Label>Phone</Form.Label>
-        <Form.Control
-          type="text"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
-      </Form.Group>
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setStudentData(prevData => ({ ...prevData, [name]: value }));
+    };
 
-      <Form.Group controlId="formStudentAddress">
-        <Form.Label>Address</Form.Label>
-        <Form.Control
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </Form.Group>
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSubmit(studentData);
+    };
 
-      <Form.Group controlId="formStudentSchool">
-        <Form.Label>School</Form.Label>
-        <Form.Control
-          type="text"
-          value={school}
-          onChange={(e) => setSchool(e.target.value)}
-        />
-      </Form.Group>
+    return (
+        <Form onSubmit={handleSubmit} id="studentForm">
+            <Row>
+                <Col>
+                    <Form.Group controlId="name">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="name"
+                            value={studentData.name}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="phone">
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="phone"
+                            value={studentData.phone}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
 
-      <Form.Group controlId="formStudentSalary">
-        <Form.Label>Salary</Form.Label>
-        <Form.Control
-          type="text"
-          value={salary}
-          onChange={(e) => setSalary(e.target.value)}
-        />
-      </Form.Group>
+            <Row>
+                <Col>
+                    <Form.Group controlId="school">
+                        <Form.Label>School</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="school"
+                            value={studentData.school}
+                            onChange={handleChange}
 
-      <Form.Group controlId="formStudentPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </Form.Group>
+                        />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="birthYear">
+                        <Form.Label>Birth Year</Form.Label>
+                        <Form.Control
+                            type="number"
+                            name="birthYear"
+                            value={studentData.birthYear}
+                            onChange={handleChange}
 
-      <Form.Group controlId="formStudentSubjectId">
-        <Form.Label>Subject ID</Form.Label>
-        <Form.Control
-          type="text"
-          value={subjectId}
-          onChange={(e) => setSubjectId(e.target.value)}
-        />
-      </Form.Group>
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
 
-      <Form.Group controlId="formStudentStatus">
-        <Form.Label>Status</Form.Label>
-        <Form.Check
-          type="switch"
-          label={status === 1 ? 'Active' : 'Inactive'}
-          checked={status === 1}
-          onChange={() => setStatus(status === 1 ? 0 : 1)}
-        />
-      </Form.Group>
+            <Row>
+                <Col>
+                    <Form.Group controlId="schoolYear">
+                        <Form.Label>School Year</Form.Label>
+                        <Form.Control
+                            type="number"
+                            name="schoolYear"
+                            value={studentData.schoolYear}
+                            onChange={handleChange}
 
-      <Form.Group controlId="formStudentDepartmentId">
-        <Form.Label>Department</Form.Label>
-        <Form.Select value={departmentId} onChange={e => setDepartmentId(e.target.value)}>
-          <option value="">Select Department</option>
-          {departments.map(department => (
-            <option key={department.id} value={department.id}>{department.name}</option>
-          ))}
-        </Form.Select>
-      </Form.Group>
+                        />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="birthDate">
+                        <Form.Label>Birth Date</Form.Label>
+                        <DatePicker className="form-control"
+                            locale="vi"
+                            selected={studentData.birthDate ? parseDate(studentData.birthDate) : null}
+                            onChange={(date: Date | null) => {
+                                setStudentData({ ...studentData, birthDate: date ? formatDate(date) : '' });
+                            }}
+                            dateFormat="dd/MMMM/yyyy"
+                            placeholderText="Select date"
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
 
-      <Form.Group controlId="formStudentType">
-        <Form.Label>Type</Form.Label>
-        <Form.Control
-          type="text"
-          value={type}
-          onChange={(e) => setType(parseInt(e.target.value) ?? 0)}
-        />
-      </Form.Group>
+            <Row>
+                <Col>
+                    <Form.Group controlId="address">
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="address"
+                            value={studentData.address}
+                            onChange={handleChange}
 
-      <Form.Group controlId="formStudentCode">
-        <Form.Label>Code</Form.Label>
-        <Form.Control
-          type="text"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-        />
-      </Form.Group>
-    </Form>
-  );
+                        />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="parentName">
+                        <Form.Label>Parent Name</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="parentName"
+                            value={studentData.parentName}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col>
+                    <Form.Group controlId="startStudyDate">
+                        <Form.Label>Start Study Date</Form.Label>
+                        <DatePicker className="form-control"
+                            locale="vi"
+                            selected={studentData.startStudyDate ? parseDate(studentData.startStudyDate) : null}
+                            onChange={(date: Date | null) => {
+                                setStudentData({ ...studentData, startStudyDate: date ? formatDate(date) : '' });
+                            }}
+                            dateFormat="dd/MMMM/yyyy"
+                            placeholderText="Select start date"
+                        />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="endStudyDate">
+                        <Form.Label>End Study Date</Form.Label>
+                        <DatePicker className="form-control"
+                            locale="vi"
+                            selected={studentData.endStudyDate ? parseDate(studentData.endStudyDate) : null}
+                            onChange={(date: Date | null) => {
+                                setStudentData({ ...studentData, endStudyDate: date ? formatDate(date) : '' });
+                            }}
+                            dateFormat="dd/MMMM/yyyy"
+                            placeholderText="Select start date"
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col>
+                    <Form.Group controlId="paid">
+                        <Form.Label>Paid</Form.Label>
+                        <Form.Control
+                            type="number"
+                            name="paid"
+                            value={studentData.paid}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="status">
+                        <Form.Label>Status</Form.Label>
+                        <Form.Control
+                            as="select"
+                            name="status"
+                            value={studentData.status}
+                            onChange={handleChange}
+
+                        >
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </Form.Control>
+                    </Form.Group>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col>
+                    <Form.Group controlId="extraFields">
+                        <Form.Label>Extra Fields</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            name="extraFields"
+                            value={studentData.extraFields}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
+        </Form>
+    );
 };
 
 export default StudentForm;

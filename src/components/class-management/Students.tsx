@@ -1,8 +1,7 @@
-// components/class-management/Students.tsx
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteStudent, fetchStudents, addStudent, updateStudent, setPagination, Student } from '../../store/studentSlice';
-import { Button, Container, Table, Pagination, Form } from 'react-bootstrap';
+import { Button, Container, Table, Pagination, Form, Spinner, Modal } from 'react-bootstrap';
 import StudentModals from '@/components/students/StudentModals';
 
 interface StudentsProps {
@@ -13,9 +12,12 @@ const Students: React.FC<StudentsProps> = ({ classId }) => {
   const dispatch = useAppDispatch();
   const students = useAppSelector(state => state.students.items);
   const pagination = useAppSelector(state => state.students.pagination);
+  const loading = useAppSelector(state => state.students.loading);
+  const error = useAppSelector(state => state.students.error);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [currentStudent, setCurrentStudent] = useState<Student | null>(null);
   const [searchText, setSearchText] = useState('');
 
@@ -24,18 +26,23 @@ const Students: React.FC<StudentsProps> = ({ classId }) => {
   }, [dispatch, pagination, searchText, classId]);
 
   const handleDeleteStudent = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this student?')) {
-      dispatch(deleteStudent(id));
+    setCurrentStudent(students.find(student => student.id === id) || null);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDeleteStudent = () => {
+    if (currentStudent?.id) {
+      dispatch(deleteStudent(currentStudent.id)).then(() => {
+        dispatch(fetchStudents({ page: pagination.page, pageSize: pagination.pageSize, searchText, classId: Number(classId) }));
+      });
     }
+    setShowConfirmModal(false);
   };
 
   const handleShowEditModal = (student: Student) => {
     setCurrentStudent(student);
     setShowEditModal(true);
   };
-
-  const handleCloseEditModal = () => setShowEditModal(false);
-  const handleCloseAddModal = () => setShowAddModal(false);
 
   const handlePageChange = (newPage: number) => {
     dispatch(setPagination({ page: newPage, pageSize: pagination.pageSize }));
@@ -44,6 +51,9 @@ const Students: React.FC<StudentsProps> = ({ classId }) => {
   return (
     <Container>
       <h1>Students Management</h1>
+
+      {loading && <Spinner animation="border" />}
+      {error && <p className="text-danger">Error: {error}</p>}
 
       <Form.Group className="mb-3" controlId="search">
         <Form.Control
@@ -64,7 +74,6 @@ const Students: React.FC<StudentsProps> = ({ classId }) => {
             <th>Phone</th>
             <th>School</th>
             <th>Address</th>
-            <th>Current Class Names</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -76,7 +85,6 @@ const Students: React.FC<StudentsProps> = ({ classId }) => {
               <td>{student.phone}</td>
               <td>{student.school}</td>
               <td>{student.address}</td>
-              <td>{student.currentClassNames}</td>
               <td>
                 <Button variant="info" className="mx-2" onClick={() => handleShowEditModal(student)}>Edit</Button>
                 <Button variant="danger" onClick={() => handleDeleteStudent(student.id ?? 0)}>Delete</Button>
@@ -97,20 +105,31 @@ const Students: React.FC<StudentsProps> = ({ classId }) => {
 
       <StudentModals
         showAddModal={showAddModal}
-        handleCloseAddModal={handleCloseAddModal}
+        handleCloseAddModal={() => setShowAddModal(false)}
         showEditModal={showEditModal}
-        handleCloseEditModal={handleCloseEditModal}
+        handleCloseEditModal={() => setShowEditModal(false)}
         currentStudent={currentStudent}
         setCurrentStudent={setCurrentStudent}
-        addStudent={student => dispatch(addStudent(student)).then(() => {
+        addStudent={(student: Student) => dispatch(addStudent(student)).then(() => {
           dispatch(fetchStudents({ page: pagination.page, pageSize: pagination.pageSize, searchText, classId: Number(classId) }));
         })}
-        updateStudent={student => {
+        updateStudent={(student: Student) => {
           dispatch(updateStudent(student)).then(() => {
             dispatch(fetchStudents({ page: pagination.page, pageSize: pagination.pageSize, searchText, classId: Number(classId) }));
           });
         }}
       />
+
+      <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete {currentStudent?.name}?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>Cancel</Button>
+          <Button variant="danger" onClick={confirmDeleteStudent}>Delete</Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

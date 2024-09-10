@@ -9,7 +9,20 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  charset: 'utf8mb4'
+  charset: 'utf8mb4',
+  timezone: 'UTC',
+  dateStrings: [
+      'DATE',
+      'DATETIME'
+  ]
 });
+
+pool.on('connection', conn => {
+  conn.query("SET time_zone='+00:00';", error => {
+      if(error){
+          throw error
+      }
+  })
+})
 
 export default pool;
