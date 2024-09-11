@@ -3,6 +3,7 @@ import { Table, Button, Container, Row, Col } from 'react-bootstrap';
 import ScheduleModals from '@/components/schedules/ScheduleModals';
 import { Schedule, fetchSchedules } from '@/store/scheduleSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { formatVNDate } from '@/utils';
 
 
 const ClassSchedules: React.FC<{classId: string | string[]}> = ({ classId }) => {
@@ -59,7 +60,7 @@ const ClassSchedules: React.FC<{classId: string | string[]}> = ({ classId }) => 
             <tr key={schedule.id}>
               <td>{index + 1}</td>
               <td>{schedule.classId}</td>
-              <td>{new Date(schedule.studyDate).toLocaleDateString()}</td>
+              <td> {formatVNDate(schedule.studyDate)}</td>
               <td>{schedule.studyTime}</td>
               <td>{schedule.status === 1 ? 'Active' : 'Inactive'}</td>
               <td>

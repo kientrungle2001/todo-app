@@ -1,6 +1,7 @@
 // components/class-management/ClassInformation.tsx
 import React, { useState, useEffect } from 'react';
 import axios from '@/api/axiosInstance';
+import { formatVNDate } from '@/utils';
 
 interface ClassInformationProps {
   classId: string | string[];
@@ -37,8 +38,8 @@ const ClassInformation: React.FC<ClassInformationProps> = ({ classId }) => {
       {classInfo ? (
         <div>
           <p><strong>Name:</strong> {classInfo.name}</p>
-          <p><strong>Start Date:</strong> {classInfo.startDate}</p>
-          <p><strong>End Date:</strong> {classInfo.endDate}</p>
+          <p><strong>Start Date:</strong> {formatVNDate(classInfo.startDate)}</p>
+          <p><strong>End Date:</strong> {formatVNDate(classInfo.endDate)}</p>
           <p><strong>Room:</strong> {classInfo.roomName}</p>
           <p><strong>Subject:</strong> {classInfo.subjectName}</p>
           <p><strong>Teacher:</strong> {classInfo.teacherName}</p>

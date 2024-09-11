@@ -1,7 +1,7 @@
 // pages/classes/[classId]/index.tsx
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
-import { Container, Nav, Tab } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Col, Container, Nav, Row, Tab } from 'react-bootstrap';
 import Students from '@/components/class-management/Students';
 import ClassSchedules from '@/components/class-management/ClassSchedules';
 import Attendants from '@/components/class-management/Attendants';
@@ -9,12 +9,31 @@ import PaymentPeriods from '@/components/class-management/PaymentPeriods';
 import TuitionFees from '@/components/class-management/TuitionFees';
 import ClassInformation from '@/components/class-management/ClassInformation';
 import MainMenu from '@/components/MainMenu';
+import { Class } from '@/store/classSlice';
+import axios from '@/api/axiosInstance';
+import { formatVNDate } from '@/utils';
 
 const ClassManagementPage = () => {
     const router = useRouter();
     const { classId } = router.query;
+    const [classInfo, setClassInfo] = useState<Class | null>(null);
 
     const [activeTab, setActiveTab] = useState('classInformation');
+
+    useEffect(() => {
+        if (classId) {
+            const fetchClassInfo = async () => {
+                try {
+                    const response = await axios.get(`/classes/${classId}`);
+                    setClassInfo(response.data);
+                } catch (err) {
+                    console.error(err);
+                }
+            };
+
+            fetchClassInfo();
+        }
+    }, [classId]);
 
     return (
         <>
@@ -23,7 +42,12 @@ const ClassManagementPage = () => {
             </Container>
             <Container fluid>
 
-
+                <Row>
+                    <Col xs="12" className="text-center">
+                        <h1>Class Management: {classInfo?.name || 'Loading...'}</h1>
+                        <p>Class Start Date: { classInfo?.startDate ? formatVNDate(classInfo.startDate) : 'Loading...'}</p>
+                    </Col>
+                </Row>
                 <div className="d-flex">
                     <div className="flex-shrink-0 bg-light p-3" style={{ width: '250px' }}>
                         <Nav variant="pills" className="flex-column">
