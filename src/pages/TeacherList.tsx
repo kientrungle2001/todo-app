@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchTeachers, addTeacher, editTeacher, deleteTeacher, Teacher } from '@/store/teacherSlice';
-import { Container, Table, Form, Button } from 'react-bootstrap';
+import { Container, Table, Form, Button, Navbar, Nav, Dropdown } from 'react-bootstrap';
 import TeacherModals from '@/components/teachers/TeacherModals';
+import MainMenu from '@/components/MainMenu';
 
 export default function TeacherList() {
     const dispatch = useAppDispatch();
@@ -31,7 +32,9 @@ export default function TeacherList() {
     const handleCloseAddModal = () => setShowAddModal(false);
 
     return (
+        
         <Container>
+            <MainMenu />
             <h1>Teacher List</h1>
 
             <Form.Group controlId="search" className="mb-3">

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteRoom, fetchRooms, addRoom, updateRoom, setPagination, Room } from '../store/roomSlice';
 import { Button, Container, Table, Pagination, Form } from 'react-bootstrap';
 import RoomModals from '@/components/rooms/RoomModals';
+import MainMenu from '@/components/MainMenu';
 
 export default function RoomList() {
   const dispatch = useAppDispatch();
@@ -39,6 +40,7 @@ export default function RoomList() {
 
   return (
     <Container>
+      <MainMenu />
       <h1>Room List</h1>
 
       <Form.Group className="mb-3" controlId="search">

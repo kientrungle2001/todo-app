@@ -5,6 +5,7 @@ import { deleteCenter, fetchCenters, addCenter, updateCenter, setPagination, Cen
 import { Button, Container, Table, Pagination, Form } from 'react-bootstrap';
 import CenterModals from '@/components/centers/CenterModals';
 import RoomsModal from '@/components/centers/RoomsModal';
+import MainMenu from '@/components/MainMenu';
 
 export default function CenterList() {
   const dispatch = useAppDispatch();
@@ -49,6 +50,7 @@ export default function CenterList() {
 
   return (
     <Container>
+      <MainMenu />
       <h1>Center List</h1>
 
       <Form.Group className="mb-3" controlId="search">

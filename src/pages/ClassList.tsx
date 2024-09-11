@@ -4,6 +4,7 @@ import { deleteClass, fetchClasses, addClass, updateClass, setPagination, Class 
 import { Button, Container, Table, Pagination, Form } from 'react-bootstrap';
 import ClassModals from '@/components/classes/ClassModals';
 import Link from 'next/link';
+import MainMenu from '@/components/MainMenu';
 
 const ClassList: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -39,6 +40,7 @@ const ClassList: React.FC = () => {
 
     return (
         <Container>
+            <MainMenu />
             <h1>Class List</h1>
 
             <Form.Group className="mb-3" controlId="search">

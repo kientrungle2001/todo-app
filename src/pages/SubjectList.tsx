@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchSubjects, createSubject, updateSubject, deleteSubject, Subject } from '@/store/subjectSlice';
 import { Container, Table, Form, Button, Accordion } from 'react-bootstrap';
 import SubjectModals from '@/components/subjects/SubjectModal';
+import MainMenu from '@/components/MainMenu';
 
 export default function SubjectList() {
     const dispatch = useAppDispatch();
@@ -40,6 +41,7 @@ export default function SubjectList() {
 
     return (
         <Container>
+            <MainMenu />
             <h1>Subject List</h1>
 
             <Form.Group controlId="search" className="mb-3">
