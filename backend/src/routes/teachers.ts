@@ -1,5 +1,6 @@
 import express from 'express';
 import pool from '../db';
+import { RowDataPacket } from 'mysql2';
 
 const router = express.Router();
 
@@ -11,6 +12,11 @@ router.get('/', async (req, res) => {
     const offset = (page - 1) * pageSize;
 
     try {
+        pool.query<RowDataPacket[]>('SELECT  COUNT(*) as total FROM teacher', (err, response) => {
+            if (err) throw err;
+            const total = response[0].total;
+            console.log(`Total teachers: ${total}`);
+        });
         pool.query(
             `SELECT * FROM teacher WHERE name LIKE ? OR phone LIKE ? OR code LIKE ? ORDER BY id ASC LIMIT ?, ?`,
             [search, search, search, offset, pageSize],
