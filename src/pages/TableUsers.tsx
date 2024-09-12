@@ -3,7 +3,7 @@ import { TableGrid } from "@/components/grid/TableGrid";
 import React from "react";
 import { Button } from "react-bootstrap";
 
-export default function Table(): React.ReactElement {
+export default function TableUsers(): React.ReactElement {
     
     const gridPagination: DataGridPagination = {
         currentPage: 1,
