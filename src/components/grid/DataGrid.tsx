@@ -59,10 +59,17 @@ interface DataGridProps {
     defaultSorts?: DataGridSort[];
     sortOptions?: DataGridSortOption[];
     pagination?: DataGridPagination;
+    sorts: DataGridSort[];
+    setSorts: (sorts: DataGridSort[]) => void;
+    searchText?: string;
+    setSearchText: (searchText: string) => void;
+    filterData?: any;
+    setFilterData: (filterData: any) => void;
+    setCurrentPage: (page: number) => void;
+    setPageSize: (pageSize: number) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination }) => {
-    const rows: number[] = Array.from({ length: 20 }, (_, index) => index + 1);
+const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts }) => {
     const getColumnElement = (column: DataGridColumn, item: any) => {
         if (!column.type || column.type === DataGridColumnType.TEXT || column.type === DataGridColumnType.NUMBER || column.type === DataGridColumnType.CURRENCY) {
             return column.customFormat ? column.customFormat(item[column.index], item) : item[column.index];
@@ -72,6 +79,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], 
             return column.customFormat ? column.customFormat(null, item) : '-';
         }
     };
+
     return (
         <Container fluid className="mb-3 mt-3">
             <Row>
@@ -84,7 +92,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], 
                             </div>
                         </Card.Header>
                         <Card.Body>
-                            <FiltersGrid filters={filters} sortOptions={sortOptions} />
+                            <FiltersGrid filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
                         </Card.Body>
                     </Card>
 
@@ -117,7 +125,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], 
                                     </tr>
                                     <tr>
                                         <td colSpan={columns.length + 1}>
-                                            <PaginationGrid pagination={pagination} />
+                                            <PaginationGrid setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
                                         </td>
                                     </tr>
                                 </thead>
@@ -138,7 +146,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], 
                                 <tfoot>
                                     <tr>
                                         <td colSpan={columns.length + 1}>
-                                            <PaginationGrid pagination={pagination} />
+                                            <PaginationGrid setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
                                         </td>
                                     </tr>
                                 </tfoot>

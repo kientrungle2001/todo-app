@@ -2,10 +2,12 @@ import { Form, Pagination } from "react-bootstrap";
 import { DataGridPagination } from "./DataGrid";
 
 interface PaginationGridProps {
-    pagination?: DataGridPagination
+    pagination?: DataGridPagination;
+    setCurrentPage: (page: number) => void;
+    setPageSize: (pageSize: number) => void;
 }
 
-export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination }) => {
+export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination, setCurrentPage, setPageSize }) => {
     if (!pagination) return <></>;
     let totalPages = Math.ceil(pagination.totalItems / pagination.pageSize);
     let pages = [];
@@ -15,7 +17,9 @@ export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination }) =>
         }
     }
     return <>
-        Số mục: <Form.Select size="sm" value={pagination.pageSize} style={{ width: "auto", display: "inline-block" }}>
+        Số mục: <Form.Select size="sm" value={pagination.pageSize} onChange={(event) => {
+            setPageSize(parseInt(event.target.value));
+        }} style={{ width: "auto", display: "inline-block" }}>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
@@ -31,7 +35,7 @@ export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination }) =>
             <Pagination.Prev />
             {
                 pages.map(page => (
-                    <Pagination.Item active={page === pagination.currentPage} key={page} onClick={() => console.log(page)}>
+                    <Pagination.Item active={page === pagination.currentPage} key={page} onClick={() => setCurrentPage(page)}>
                         {page}
                     </Pagination.Item>
                 ))

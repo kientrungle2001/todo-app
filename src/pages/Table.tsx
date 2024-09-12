@@ -1,7 +1,15 @@
-import DataGrid, { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSortDirection, DataGridSortOption } from "@/components/grid/DataGrid";
+import DataGrid, { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption } from "@/components/grid/DataGrid";
+import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 
 export default function Table(): React.ReactElement {
+    
+    const gridPagination: DataGridPagination = {
+        currentPage: 1,
+        pageSize: 10,
+        totalItems: 1
+    };
+    
     const gridColumns: DataGridColumn[] = [
         { index: "id", label: "ID" },
         { index: "name", label: "Name" },
@@ -45,11 +53,9 @@ export default function Table(): React.ReactElement {
         }
     ];
 
-    const gridPagination: DataGridPagination = {
-        currentPage: 3,
-        pageSize: 10,
-        totalItems: 100
-    };
+    const gridDefaultSorts: DataGridSort[] = [
+        { index: "id", direction: DataGridSortDirection.ASCENDING }
+    ];
 
     const gridItems: any[] = [
         {
@@ -61,7 +67,26 @@ export default function Table(): React.ReactElement {
         }
     ];
 
+    const setCurrentPage = (page: number) => {
+        setPagination({...pagination, currentPage: page});
+    };
+
+    const setPageSize = (pageSize: number) => {
+        setPagination({...pagination, pageSize: pageSize, currentPage: 1});
+    };
+
+    const [pagination, setPagination] = React.useState<DataGridPagination>(gridPagination);
+    const [items, setItems] = React.useState<any[]>(gridItems);
+    const [filterData, setFilterData] = React.useState<any>({});
+    const [searchText, setSearchText] = React.useState("");
+    const [sorts, setSorts] = React.useState<DataGridSort[]>(gridDefaultSorts);
+    useEffect(() => {
+        console.log("Filter data:", filterData);
+        console.log("Search text:", searchText);
+        console.log("Sorts:", sorts);
+        console.log("Pagination:", pagination);
+    }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid title="Person Management" columns={gridColumns} filters={gridFilters} sortOptions={gridSortOptions} items={gridItems} pagination={gridPagination} />
+        <DataGrid defaultSorts={gridDefaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={gridColumns} filters={gridFilters} sortOptions={gridSortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} />
     </>
 }

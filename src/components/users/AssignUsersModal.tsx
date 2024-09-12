@@ -16,14 +16,14 @@ interface AssignUsersModalProps {
 const AssignUsersModal = ({ show, handleClose, handleAssignTodo, handleAssignsTodo, assignTitle, allUsers, users }: AssignUsersModalProps) => (
     <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-            <Modal.Title>Assign Users for "{assignTitle}"</Modal.Title>
+            <Modal.Title>Assign Users for &quote;{assignTitle}&quote;</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             {allUsers.items.map(user => (
                 <Form.Check
                     key={user.id}
                     type="checkbox"
-                    id={`user-${user.id}`}
+                    id={"user-" + user.id}
                     label={user.username}
                     checked={users.includes(user.id ?? 0)}
                     onChange={() => handleAssignTodo(user.id ?? 0)}
