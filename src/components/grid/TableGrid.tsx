@@ -1,16 +1,20 @@
 import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortOption } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
+import axios from '@/api/axiosInstance';
+import stringifySafe from 'json-stringify-safe/stringify';
+
+export interface TableGridSettings {
+    pagination: DataGridPagination;
+    columns: DataGridColumn[];
+    filters: DataGridFilterColumn[];
+    sortOptions: DataGridSortOption[];
+    defaultSorts: DataGridSort[];
+    table: string;
+}
 
 interface TableGridProps {
     // Add any additional props you need here
-    settings: {
-        pagination: DataGridPagination;
-        columns: DataGridColumn[];
-        filters: DataGridFilterColumn[];
-        sortOptions: DataGridSortOption[];
-        defaultSorts: DataGridSort[];
-        table: string;
-    }
+    settings: TableGridSettings
 }
 
 export const TableGrid: React.FC<TableGridProps> = ({settings}): React.ReactElement => {
@@ -43,6 +47,12 @@ export const TableGrid: React.FC<TableGridProps> = ({settings}): React.ReactElem
         console.log("Search text:", searchText);
         console.log("Sorts:", sorts);
         console.log("Pagination:", pagination);
+        axios.get('/users', {
+            params: stringifySave(settings)
+        }).then((resp) => {
+            console.log(resp);
+            
+        });
     }, [pagination, searchText, sorts, filterData]);
     return <>
         <DataGrid table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} />
