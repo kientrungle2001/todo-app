@@ -1,5 +1,6 @@
-import DataGrid, { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption } from "@/components/grid/DataGrid";
-import React, { useEffect } from "react";
+import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption } from "@/components/grid/DataGrid";
+import { TableGrid } from "@/components/grid/TableGrid";
+import React from "react";
 import { Button } from "react-bootstrap";
 
 export default function Table(): React.ReactElement {
@@ -57,36 +58,15 @@ export default function Table(): React.ReactElement {
         { index: "id", direction: DataGridSortDirection.ASCENDING }
     ];
 
-    const gridItems: any[] = [
-        {
-            id: 1,
-            name: "John Doe",
-            email: "john.doe@example.com",
-            phone: "123-456-7890",
-            address: "123 Main St"
-        }
-    ];
-
-    const setCurrentPage = (page: number) => {
-        setPagination({...pagination, currentPage: page});
-    };
-
-    const setPageSize = (pageSize: number) => {
-        setPagination({...pagination, pageSize: pageSize, currentPage: 1});
-    };
-
-    const [pagination, setPagination] = React.useState<DataGridPagination>(gridPagination);
-    const [items, setItems] = React.useState<any[]>(gridItems);
-    const [filterData, setFilterData] = React.useState<any>({});
-    const [searchText, setSearchText] = React.useState("");
-    const [sorts, setSorts] = React.useState<DataGridSort[]>(gridDefaultSorts);
-    useEffect(() => {
-        console.log("Filter data:", filterData);
-        console.log("Search text:", searchText);
-        console.log("Sorts:", sorts);
-        console.log("Pagination:", pagination);
-    }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid defaultSorts={gridDefaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={gridColumns} filters={gridFilters} sortOptions={gridSortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} />
+        <TableGrid settings={
+            {
+                pagination: gridPagination,
+                columns: gridColumns,
+                filters: gridFilters,
+                sortOptions: gridSortOptions,
+                defaultSorts: gridDefaultSorts
+            }
+        } />
     </>
 }
