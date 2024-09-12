@@ -1,11 +1,13 @@
-import { Button, ButtonGroup, Card, Col, Container, Form, Pagination, Row, Table } from "react-bootstrap"
-import PaginationGrid from "./PaginationGrid";
+import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
+import { PaginationGrid } from "./PaginationGrid";
+import { FiltersGrid } from "./FiltersGrid";
 
 export enum DataGridColumnType {
     TEXT = "text",
     NUMBER = "number",
     DATE = "date",
-    CURRENCY = "currency"
+    CURRENCY = "currency",
+    ACTIONS = "actions"
 }
 
 export interface DataGridColumn {
@@ -15,6 +17,7 @@ export interface DataGridColumn {
     format?: string;
     customFormat?: (value: any, item: any) => string | React.ReactNode;
     options?: any[];
+    sortable?: boolean;
 }
 
 export interface DataGridFilterColumn {
@@ -26,14 +29,49 @@ export interface DataGridFilterColumn {
     options?: any[];
 }
 
+export interface DataGridSort {
+    index: string;
+    direction: DataGridSortDirection;
+}
+
+export enum DataGridSortDirection {
+    ASCENDING = "asc",
+    DESCENDING = "desc"
+}
+
+export interface DataGridSortOption {
+    index: string;
+    label: string;
+    sorts: DataGridSort[];
+}
+
+export interface DataGridPagination {
+    currentPage: number;
+    pageSize: number;
+    totalItems: number;
+}
+
 interface DataGridProps {
     title: string;
     columns: DataGridColumn[];
+    items: any[];
     filters?: DataGridFilterColumn[];
+    defaultSorts?: DataGridSort[];
+    sortOptions?: DataGridSortOption[];
+    pagination?: DataGridPagination;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [] }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination }) => {
     const rows: number[] = Array.from({ length: 20 }, (_, index) => index + 1);
+    const getColumnElement = (column: DataGridColumn, item: any) => {
+        if (!column.type || column.type === DataGridColumnType.TEXT || column.type === DataGridColumnType.NUMBER || column.type === DataGridColumnType.CURRENCY) {
+            return column.customFormat ? column.customFormat(item[column.index], item) : item[column.index];
+        } else if (column.type === DataGridColumnType.DATE) {
+            return new Date(item[column.index]).toLocaleString();
+        } else {
+            return column.customFormat ? column.customFormat(null, item) : '-';
+        }
+    };
     return (
         <Container fluid className="mb-3 mt-3">
             <Row>
@@ -46,14 +84,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [] }
                             </div>
                         </Card.Header>
                         <Card.Body>
-                            <Form>
-                                {filters.map(filter => (
-                                    <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className="mb-3">
-                                        <Form.Label>{filter.label}</Form.Label>
-                                        <Form.Control size="sm" type="text" placeholder={`Filter by ${filter.label}`} />
-                                    </Form.Group>
-                                ))}
-                            </Form>
+                            <FiltersGrid filters={filters} sortOptions={sortOptions} />
                         </Card.Body>
                     </Card>
 
@@ -86,32 +117,28 @@ const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [] }
                                     </tr>
                                     <tr>
                                         <td colSpan={columns.length + 1}>
-                                            <PaginationGrid />
+                                            <PaginationGrid pagination={pagination} />
                                         </td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {rows.map(index =>
+                                    {items.map((item, index) =>
                                         <tr key={index}>
                                             <td>
                                                 <Form.Check type="checkbox" />
                                             </td>
-                                            <td>{index}</td>
-                                            <td>John Doe</td>
-                                            <td>email@example.com</td>
-                                            <td>123456789</td>
-                                            <td>706A chung cu 9 tang Cau Buou</td>
-                                            <td>
-                                                <Button size="sm" variant="primary" className="me-2">Edit</Button>
-                                                <Button size="sm" variant="danger">Delete</Button>
-                                            </td>
+                                            {columns.map(column => (
+                                                <td key={column.index}>
+                                                    {getColumnElement(column, item)}
+                                                </td>
+                                            ))}
                                         </tr>)
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td colSpan={columns.length + 1}>
-                                            <PaginationGrid />
+                                            <PaginationGrid pagination={pagination} />
                                         </td>
                                     </tr>
                                 </tfoot>

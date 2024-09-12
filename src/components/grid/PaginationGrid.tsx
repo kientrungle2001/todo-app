@@ -1,8 +1,21 @@
 import { Form, Pagination } from "react-bootstrap";
+import { DataGridPagination } from "./DataGrid";
 
-export default function PaginationGrid() {
+interface PaginationGridProps {
+    pagination?: DataGridPagination
+}
+
+export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination }) => {
+    if (!pagination) return <></>;
+    let totalPages = Math.ceil(pagination.totalItems / pagination.pageSize);
+    let pages = [];
+    for(let i = pagination.currentPage - 5; i <= pagination.currentPage + 4; i++) {
+        if(i > 0 && i <= totalPages) {
+            pages.push(i);
+        }
+    }
     return <>
-        Số mục: <Form.Select size="sm" value={200} style={{ width: "auto", display: "inline-block" }}>
+        Số mục: <Form.Select size="sm" value={pagination.pageSize} style={{ width: "auto", display: "inline-block" }}>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
@@ -16,14 +29,16 @@ export default function PaginationGrid() {
         <Pagination size="sm" style={{ display: "inline-flex" }} className="ms-2 me-2 mb-0">
             {/* Previous button */}
             <Pagination.Prev />
-
-            <Pagination.Item active>1</Pagination.Item>
-            <Pagination.Item>2</Pagination.Item>
-            <Pagination.Item>3</Pagination.Item>
-
+            {
+                pages.map(page => (
+                    <Pagination.Item active={page === pagination.currentPage} key={page} onClick={() => console.log(page)}>
+                        {page}
+                    </Pagination.Item>
+                ))
+            }
             {/* Next button */}
             <Pagination.Next />
         </Pagination>
-        (2 bản ghi)
+        ({pagination.totalItems} bản ghi)
     </>
 }
