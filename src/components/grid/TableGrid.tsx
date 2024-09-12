@@ -1,7 +1,6 @@
 import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortOption } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
 import axios from '@/api/axiosInstance';
-import stringifySafe from 'json-stringify-safe/stringify';
 
 export interface TableGridSettings {
     pagination: DataGridPagination;
@@ -48,7 +47,7 @@ export const TableGrid: React.FC<TableGridProps> = ({settings}): React.ReactElem
         console.log("Sorts:", sorts);
         console.log("Pagination:", pagination);
         axios.get('/users', {
-            params: stringifySave(settings)
+            params: JSON.parse(JSON.stringify(settings))
         }).then((resp) => {
             console.log(resp);
             
