@@ -61,6 +61,7 @@ export default function Table(): React.ReactElement {
     return <>
         <TableGrid settings={
             {
+                table: "users",
                 pagination: gridPagination,
                 columns: gridColumns,
                 filters: gridFilters,

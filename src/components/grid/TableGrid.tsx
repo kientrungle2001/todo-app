@@ -9,6 +9,7 @@ interface TableGridProps {
         filters: DataGridFilterColumn[];
         sortOptions: DataGridSortOption[];
         defaultSorts: DataGridSort[];
+        table: string;
     }
 }
 
@@ -44,6 +45,6 @@ export const TableGrid: React.FC<TableGridProps> = ({settings}): React.ReactElem
         console.log("Pagination:", pagination);
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} />
+        <DataGrid table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} />
     </>
 }

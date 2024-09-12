@@ -53,6 +53,7 @@ export interface DataGridPagination {
 
 interface DataGridProps {
     title: string;
+    table: string;
     columns: DataGridColumn[];
     items: any[];
     filters?: DataGridFilterColumn[];
@@ -69,7 +70,7 @@ interface DataGridProps {
     setPageSize: (pageSize: number) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts }) => {
     const getColumnElement = (column: DataGridColumn, item: any) => {
         if (!column.type || column.type === DataGridColumnType.TEXT || column.type === DataGridColumnType.NUMBER || column.type === DataGridColumnType.CURRENCY) {
             return column.customFormat ? column.customFormat(item[column.index], item) : item[column.index];
