@@ -3,13 +3,14 @@ import { DataGridPagination } from "./DataGrid";
 
 interface PaginationGridProps {
     pagination?: DataGridPagination;
+    totalItems: number;
     setCurrentPage: (page: number) => void;
     setPageSize: (pageSize: number) => void;
 }
 
-export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination, setCurrentPage, setPageSize }) => {
+export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination, setCurrentPage, setPageSize, totalItems }) => {
     if (!pagination) return <></>;
-    let totalPages = Math.ceil(pagination.totalItems / pagination.pageSize);
+    let totalPages = Math.ceil(totalItems / pagination.pageSize);
     let pages = [];
     for(let i = pagination.currentPage - 5; i <= pagination.currentPage + 4; i++) {
         if(i > 0 && i <= totalPages) {
@@ -43,6 +44,6 @@ export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination, setC
             {/* Next button */}
             <Pagination.Next />
         </Pagination>
-        ({pagination.totalItems} bản ghi)
+        ({totalItems} bản ghi)
     </>
 }

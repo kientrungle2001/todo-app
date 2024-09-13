@@ -48,7 +48,6 @@ export interface DataGridSortOption {
 export interface DataGridPagination {
     currentPage: number;
     pageSize: number;
-    totalItems: number;
 }
 
 interface DataGridProps {
@@ -56,6 +55,7 @@ interface DataGridProps {
     table: string;
     columns: DataGridColumn[];
     items: any[];
+    totalItems: number;
     filters?: DataGridFilterColumn[];
     defaultSorts?: DataGridSort[];
     sortOptions?: DataGridSortOption[];
@@ -70,7 +70,7 @@ interface DataGridProps {
     setPageSize: (pageSize: number) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems }) => {
     const getColumnElement = (column: DataGridColumn, item: any) => {
         if (!column.type || column.type === DataGridColumnType.TEXT || column.type === DataGridColumnType.NUMBER || column.type === DataGridColumnType.CURRENCY) {
             return column.customFormat ? column.customFormat(item[column.index], item) : item[column.index];
@@ -126,7 +126,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                     </tr>
                                     <tr>
                                         <td colSpan={columns.length + 1}>
-                                            <PaginationGrid setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
+                                            <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
                                         </td>
                                     </tr>
                                 </thead>
@@ -147,7 +147,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                 <tfoot>
                                     <tr>
                                         <td colSpan={columns.length + 1}>
-                                            <PaginationGrid setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
+                                            <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
                                         </td>
                                     </tr>
                                 </tfoot>

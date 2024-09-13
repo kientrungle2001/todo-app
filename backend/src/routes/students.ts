@@ -37,17 +37,20 @@ router.get('/', (req, res) => {
     query += ` ORDER BY s.name ASC LIMIT ?, ?`;
     params.push(offset, pageSize);
 
-    pool.query<RowDataPacket[]>(query, params, (err, results) => {
+    let totalCountQuery = `
+    SELECT COUNT(*) as total FROM student AS s
+    LEFT JOIN class_student AS cs ON s.id = cs.studentId
+    WHERE (s.name LIKE? OR s.phone LIKE? OR s.address LIKE?)
+    `;
+
+    pool.query<RowDataPacket[]>(totalCountQuery, params, (err, response) => {
         if (err) throw err;
+        const total = response[0].total;
+        pool.query<RowDataPacket[]>(query, params, (err, items) => {
+            if (err) throw err;
 
-        // Format the date fields in dd/mm/yyyy before sending the response
-        const formattedResults = results.map(row => ({
-            ...row,
-            startClassDate: formatDate(row.startClassDate),
-            endClassDate: formatDate(row.endClassDate)
-        }));
-
-        res.json(formattedResults);
+            res.json({ items: items, totalItems: total });
+        });
     });
 });
 

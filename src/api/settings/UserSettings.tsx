@@ -5,8 +5,7 @@ import { Button } from "react-bootstrap";
 
 const gridPagination: DataGridPagination = {
     currentPage: 1,
-    pageSize: 10,
-    totalItems: 1
+    pageSize: 10
 };
 
 const gridColumns: DataGridColumn[] = [
@@ -59,10 +58,10 @@ const gridDefaultSorts: DataGridSort[] = [
 ];
 
 export const UserSettings: TableGridSettings = {
-    table: "users",
-                pagination: gridPagination,
-                columns: gridColumns,
-                filters: gridFilters,
-                sortOptions: gridSortOptions,
-                defaultSorts: gridDefaultSorts
+    table: "student",
+    pagination: gridPagination,
+    columns: gridColumns,
+    filters: gridFilters,
+    sortOptions: gridSortOptions,
+    defaultSorts: gridDefaultSorts
 }

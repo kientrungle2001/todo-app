@@ -1,6 +1,7 @@
 // file backend/src/routes/subject.ts
 import express from 'express';
 import pool from '../db';
+import { RowDataPacket } from 'mysql2';
 
 const router = express.Router();
 
@@ -9,49 +10,72 @@ const tableSearchConditions: any = {
 };
 
 // Get list of subjects with their active classes
-router.get('/:table', async (req, res) => {
-    const {table} = req.params;
-    const page = parseInt(req.query.page as string) || 1;
-    const pageSize = parseInt(req.query.pageSize as string) || 100;
-    const search = req.query.search ? `%${req.query.search}%` : '%';
+router.post('/search/:table', (req, res) => {
+    const table = req.params.table;
+    const page = parseInt(req.body.page as string) || 1;
+    const pageSize = parseInt(req.body.pageSize as string) || 10;
+    const search = req.body.search ? `%${req.body.search}%` : '%';
     const offset = (page - 1) * pageSize;
-    const likeConds = tableSearchConditions[table] ?? '';
+    const settings: any = req.body.settings;
+    const sorts: any = req.body.sorts;
+    const filterData: any = req.body.filterData;
 
-    try {
-        // Fetch subjects
-        pool.query(
-            `SELECT * FROM \`${table}\` WHERE ${likeConds} ORDER BY online ASC LIMIT ?, ?`,
-            [search, search, offset, pageSize], (err, response: any[]) => {
-                if (err) throw err;
-                response.forEach((subject) => {
-                    subject.classes = [];
-                });
-                let subjectIds = response.map((subject) => subject.id);
-                if (subjectIds.length === 0) {
-                    res.json(response);
-                } else {
-                    pool.query(`SELECT * FROM classes WHERE subjectId IN (?) and status = 1`, [subjectIds], (clsError, classes: any[]) => {
-                        if (clsError) throw clsError;
-                        classes.forEach((cls) => {
-                            if (cls.startDate instanceof Date && cls.startDate.getFullYear() === 1899) {
-                                cls.startDate = null;
-                            }
-                            if (cls.endDate instanceof Date && cls.endDate.getFullYear() === 1899) {
-                                cls.endDate = null;
-                            }
-                            const subjectIndex = response.findIndex((subject) => subject.id === cls.subjectId);
-                            if (subjectIndex >= 0) {
-                                response[subjectIndex].classes.push(cls);
-                            }
-                        });
-                        res.json(response);
-                    });
-                }
-            });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'An error occurred while fetching subjects' });
+    console.log('Settings:', settings);
+
+    let query = `
+      SELECT 
+        * FROM ${table} AS t
+      WHERE 
+    `;
+    const params: Array<string | number> = [];
+    let searchLikes: string[] = [];
+    settings.columns.forEach((column: any) => {
+        if (column.type !== 'actions') {
+            searchLikes.push(`${column.index} LIKE ?`);
+            params.push(search);
+        }
+    });
+
+    query += '(' + searchLikes.join(' OR ') + ')';
+
+    let filterConditions: string[] = [];
+
+    for(let index in filterData) {
+        if (filterData[index] !== '') {
+            filterConditions.push(`${index} like ?`);
+            params.push('%' + filterData[index] + '%');
+        }
     }
+    if (filterConditions.length > 0) {
+        query += ` AND (${filterConditions.join(' AND ')})`;
+    }
+
+    let orderBys: string[] = [];
+    sorts.forEach((sort: any) => {
+        orderBys.push(`${sort.index} ${sort.direction}`);
+    });
+    let orderBy = orderBys.join(', ');
+
+    query += ` ORDER BY ${orderBy} LIMIT ?, ?`;
+    params.push(offset, pageSize);
+
+    let totalCountQuery = `SELECT COUNT(*) as total FROM ${table} as t
+    WHERE 
+    `;
+    totalCountQuery += '(' + searchLikes.join(' OR ') + ')';
+    if (filterConditions.length > 0) {
+        totalCountQuery += ` AND (${filterConditions.join(' AND ')})`;
+    }
+
+    pool.query<RowDataPacket[]>(totalCountQuery, params, (err, response) => {
+        if (err) throw err;
+        const total = response[0].total;
+        pool.query<RowDataPacket[]>(query, params, (err, items) => {
+            if (err) throw err;
+
+            res.json({ items: items, totalItems: total });
+        });
+    });
 });
 
 // Create a new subject

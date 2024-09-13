@@ -11,6 +11,7 @@ import todoRoutes from './routes/todos';
 import userTodoRoutes from './routes/userTodos';
 import studentRoutes from './routes/students';  // <-- Import students route
 import scheduleRoutes from './routes/schedules';  // <-- Import schedules route
+import tableRoutes from './routes/tables';  // <-- Import table routes
 
 const app = express();
 
@@ -28,5 +29,6 @@ app.use('/api/teachers', teacherRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/students', studentRoutes);  // <-- Add students route
 app.use('/api/schedules', scheduleRoutes);
+app.use('/api/tables', tableRoutes);  // <-- Add table routes
 
 export default app;
