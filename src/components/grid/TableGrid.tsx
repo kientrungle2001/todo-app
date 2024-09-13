@@ -1,6 +1,7 @@
 import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortOption } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
 import axios from '@/api/axiosInstance';
+import { DataGridEditField } from "./DataGridEdit";
 
 export interface TableGridSettings {
     pagination: DataGridPagination;
@@ -9,6 +10,8 @@ export interface TableGridSettings {
     sortOptions: DataGridSortOption[];
     defaultSorts: DataGridSort[];
     table: string;
+    addFields: DataGridEditField[];
+    editFields?: DataGridEditField[];
 }
 
 interface TableGridProps {

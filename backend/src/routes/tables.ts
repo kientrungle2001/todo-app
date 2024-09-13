@@ -20,8 +20,6 @@ router.post('/search/:table', (req, res) => {
     const sorts: any = req.body.sorts;
     const filterData: any = req.body.filterData;
 
-    console.log('Settings:', settings);
-
     let query = `
       SELECT 
         * FROM ${table} AS t
@@ -40,7 +38,7 @@ router.post('/search/:table', (req, res) => {
 
     let filterConditions: string[] = [];
 
-    for(let index in filterData) {
+    for (let index in filterData) {
         if (filterData[index] !== '') {
             filterConditions.push(`${index} like ?`);
             params.push('%' + filterData[index] + '%');
@@ -75,6 +73,36 @@ router.post('/search/:table', (req, res) => {
 
             res.json({ items: items, totalItems: total });
         });
+    });
+});
+
+router.post('/:table/detail/:id', (req, res) => {
+    const table = req.params.table;
+    const { id } = req.params;
+    pool.query<RowDataPacket[]>(`SELECT * FROM ${table} WHERE id =?`, [id], (err, results) => {
+        if (err) throw err;
+        res.json(results[0]);
+    });
+});
+
+router.put('/:table/update/:id', (req, res) => {
+    const table = req.params.table;
+    const { id } = req.params;
+    const { fields, item } = req.body;
+    const params: any[] = [];
+    let updateQuery = `UPDATE \`${table}\` SET `;
+    let updateFields: string[] = [];
+    fields.forEach((field: any) => {
+        updateFields.push(`${field.index} =?`);
+        params.push(item[field.index]);
+    });
+    updateQuery += updateFields.join(', ');
+    updateQuery += ' WHERE id =?';
+    params.push(id);
+
+    pool.query(updateQuery, params, (err) => {
+        if (err) throw err;
+        res.status(200).send(item);
     });
 });
 
