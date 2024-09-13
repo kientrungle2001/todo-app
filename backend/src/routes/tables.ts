@@ -106,40 +106,31 @@ router.put('/:table/update/:id', (req, res) => {
     });
 });
 
-// Create a new subject
-router.post('/', (req, res) => {
-    const { name, code, online, status } = req.body;
-    pool.query(
-        'INSERT INTO subject (name, code, online, status) VALUES (?, ?, ?, ?)',
-        [name, code, online, status],
-        (err) => {
-            if (err) throw err;
-            res.status(201).send('Subject created');
-        }
-    );
-});
-
-// Update an existing subject by ID
-router.put('/:id', (req, res) => {
+router.delete('/:table/delete/:id', (req, res) => {
+    const table = req.params.table;
     const { id } = req.params;
-    const { name, code, online, status } = req.body;
-    pool.query(
-        'UPDATE subject SET name = ?, code = ?, online = ?, status = ? WHERE id = ?',
-        [name, code, online, status, id],
-        (err) => {
-            if (err) throw err;
-            res.status(200).send('Subject updated');
-        }
-    );
-});
-
-// Delete a subject by ID
-router.delete('/:id', (req, res) => {
-    const { id } = req.params;
-    pool.query('DELETE FROM subject WHERE id = ?', [id], (err) => {
+    pool.query('DELETE FROM \`' + table + '\` WHERE id =?', [id], (err) => {
         if (err) throw err;
-        res.status(200).send('Subject deleted');
+        res.status(200).send('Item deleted');
     });
+});
+
+router.post('/:table/create', (req, res) => {
+    const table = req.params.table;
+    const { fields, item } = req.body;
+    const params: any[] = [];
+    let insertQuery = `INSERT INTO \`${table}\` (${fields.map((field: any) => field.index).join(', ')}) VALUES (`;
+    let insertFields: string[] = [];
+    fields.forEach((field: any) => {
+        insertFields.push('?');
+        params.push(item[field.index]);
+    });
+    insertQuery += insertFields.join(', ') + ')';
+    pool.query(insertQuery, params, (err, result) => {
+        if (err) throw err;
+        res.status(201).send(item);
+    });
+    
 });
 
 export default router;

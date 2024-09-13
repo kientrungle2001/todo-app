@@ -35,23 +35,32 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
     const [filterData, setFilterData] = React.useState<any>({});
     const [searchText, setSearchText] = React.useState("");
     const [sorts, setSorts] = React.useState<DataGridSort[]>(settings.defaultSorts);
+
+    const handleAfterDelete = (item: any) => {
+        handleListItems();
+    };
+
+    const handleListItems = () => {
+        axios.post('/tables/search/' + settings.table, {
+            settings: JSON.parse(JSON.stringify(settings)),
+            search: searchText,
+            filterData: JSON.parse(JSON.stringify(filterData)),
+            sorts: JSON.parse(JSON.stringify(sorts)),
+            page: pagination.currentPage,
+            pageSize: pagination.pageSize,
+        }).then((resp) => {
+            setItems(resp.data.items);
+            setTotalItems(resp.data.totalItems);
+        });
+    };
+
+
     useEffect(() => {
         setPagination({ ...pagination, currentPage: 1 });
     }, [searchText]);
     useEffect(() => {
         const handler = setTimeout(() => {
-            axios.post('/tables/search/' + settings.table, {
-                settings: JSON.parse(JSON.stringify(settings)),
-                search: searchText,
-                filterData: JSON.parse(JSON.stringify(filterData)),
-                sorts: JSON.parse(JSON.stringify(sorts)),
-                page: pagination.currentPage,
-                pageSize: pagination.pageSize,
-            }).then((resp) => {
-                setItems(resp.data.items);
-                setTotalItems(resp.data.totalItems);
-            });
-
+            handleListItems();
         }, 300);
         return () => {
             clearTimeout(handler);
@@ -59,6 +68,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} />
+        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} />
     </>
 }

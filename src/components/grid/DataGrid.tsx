@@ -2,6 +2,7 @@ import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap"
 import { PaginationGrid } from "./PaginationGrid";
 import { FiltersGrid } from "./FiltersGrid";
 import { useRouter } from "next/router";
+import axios from "@/api/axiosInstance";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -76,9 +77,10 @@ interface DataGridProps {
     setFilterData: (filterData: any) => void;
     setCurrentPage: (page: number) => void;
     setPageSize: (pageSize: number) => void;
+    onAfterDelete: (item: any) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -88,10 +90,17 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         handleNavigation(`/Table/${table}/${item.id}/edit`);
     }
 
+    const handleAddItem = () => {
+        handleNavigation(`/Table/${table}/add`);
+    }
+
     const handleDeleteItem = (item: any) => {
         // Implement your delete logic here
         if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
             console.log(`Deleting item with ID: ${item.id}`);
+            axios.delete(`/tables/${table}/delete/${item.id}`).then(() => {
+                onAfterDelete(item);
+            });
         }
     };
 
@@ -200,7 +209,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                         </Card.Body>
                         <Card.Footer>
                             <div className="d-flex justify-content-end">
-                                <Button variant="primary" className="me-2">Add New</Button>
+                                <Button variant="primary" className="me-2" onClick={handleAddItem}>Add New</Button>
                                 <Button variant="danger" className="me-2">Delete Selecteds</Button>
                             </div>
                         </Card.Footer>
