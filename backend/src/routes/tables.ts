@@ -5,15 +5,11 @@ import { RowDataPacket } from 'mysql2';
 
 const router = express.Router();
 
-const tableSearchConditions: any = {
-
-};
-
 // Get list of subjects with their active classes
 router.post('/search/:table', (req, res) => {
     const table = req.params.table;
-    const page = parseInt(req.body.page as string) || 1;
-    const pageSize = parseInt(req.body.pageSize as string) || 10;
+    const page = req.body.page || 1;
+    const pageSize = req.body.pageSize || 10;
     const search = req.body.search ? `%${req.body.search}%` : '%';
     const offset = (page - 1) * pageSize;
     const settings: any = req.body.settings;

@@ -17,6 +17,10 @@ export interface DataGridEditField {
     type: DataGridEditFieldType;
     size?: number;
     options?: any[];
+    map?: any;
+    table?: string;
+    valueField?: string;
+    labelField?: string;
 }
 
 interface DataGridEditProps {
@@ -44,11 +48,27 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ table, itemId, fields, item
                                     <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
                                         <Form.Group controlId={field.index}>
                                             <Form.Label>{field.label}</Form.Label>
-                                            <Form.Control value={item[field.index]} onChange={(event) => {
-                                                let updatedItem = {...item };
-                                                updatedItem[field.index] = event.target.value;
-                                                setItem(updatedItem);
-                                            }} />
+                                            {
+                                                field.type === DataGridEditFieldType.STATUS ?
+                                                    <Form.Select value={item[field.index]} onChange={(event) => {
+                                                        let updatedItem = { ...item };
+                                                        updatedItem[field.index] = event.target.value;
+                                                        setItem(updatedItem);
+                                                    }}>
+                                                        <option value={1}>
+                                                            {field.map[1] ?? 'Active'}
+                                                        </option>
+                                                        <option value={0}>
+                                                            {field.map[0] ?? 'Inactive'}
+                                                        </option>
+                                                    </Form.Select> :
+                                                    <Form.Control value={item[field.index]} onChange={(event) => {
+                                                        let updatedItem = { ...item };
+                                                        updatedItem[field.index] = event.target.value;
+                                                        setItem(updatedItem);
+                                                    }} />
+                                            }
+
                                         </Form.Group>
                                     </Col>
                                 ))}

@@ -13,8 +13,14 @@ const gridColumns: DataGridColumn[] = [
     { index: "email", label: "Email" },
     { index: "phone", label: "Phone" },
     { index: "address", label: "Address" },
-    {index: "editAction", label: "Edit", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%"},
-    {index: "deleteAction", label: "Delete", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%"}
+    {
+        index: "status", type: DataGridColumnType.STATUS, label: "Status", map: {
+            0: 'Not Studying',
+            1: 'Studying'
+        }
+    },
+    { index: "editAction", label: "Edit", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
+    { index: "deleteAction", label: "Delete", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
 ];
 
 const gridFilters: DataGridFilterColumn[] = [
@@ -48,7 +54,16 @@ const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Name", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "email", label: "Email", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "phone", label: "Phone", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "address", label: "Address", type: DataGridEditFieldType.TEXT, size: 6 }
+    { index: "address", label: "Address", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "assignId", label: "Assigner", type: DataGridEditFieldType.SELECT, size: 6, 
+        table: "teacher",
+        valueField: "id",
+        labelField: "name"
+     },
+    { index: "status", label: "Status", type: DataGridEditFieldType.STATUS, size: 6, map: {
+        0: 'Not Studying',
+        1: 'Studying'
+    } }
 ];
 
 export const UserSettings: TableGridSettings = {

@@ -10,6 +10,7 @@ export enum DataGridColumnType {
     NUMBER = "number",
     DATE = "date",
     CURRENCY = "currency",
+    STATUS = "status",
     ACTIONS = "actions"
 }
 
@@ -28,6 +29,7 @@ export interface DataGridColumn {
     sortable?: boolean;
     actionType?: DataGridColumnActionType;
     width?: string;
+    map?: any;
 }
 
 export interface DataGridFilterColumn {
@@ -121,6 +123,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
             return column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index];
         } else if (column.type === DataGridColumnType.DATE) {
             return new Date(item[column.index]).toLocaleString();
+        } else if (column.type === DataGridColumnType.STATUS) {
+            if (column.map) {
+                return column.map[item[column.index]] ?? '-';
+            }
+            return (item[column.index]) ? 'Active' : 'Inactive';
         } else if (column.type === DataGridColumnType.ACTIONS) {
             if (column.customFormat) {
                 return column.customFormat ? column.customFormat(null, item, table) : '-';
@@ -228,9 +235,9 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                 </thead>
                                 <tbody>
                                     {items.length ? items.map((item, index) =>
-                                        <tr key={index}>
+                                        <tr key={index} onClick={() => toggleCheckedItem(item.id)} className={checkedItemIds.indexOf(item.id) !== -1 ? "table-success" : ""} style={{ "cursor": "pointer" }}>
                                             <td style={{ width: "1%" }}>
-                                                <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onClick={() => toggleCheckedItem(item.id)} />
+                                                <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
                                             </td>
                                             {columns.map(column => (
                                                 <td key={column.index} style={{ width: column.width }}>
