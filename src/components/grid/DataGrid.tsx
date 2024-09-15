@@ -151,7 +151,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         setMessages(updatedMessages);
     };
 
-    const handleCheckAll = (event) => {
+    const handleCheckAll = (event: React.ChangeEvent<HTMLInputElement>) => {
         let checked = event.target.checked;
         setIsCheckedAll(checked);
         if (checked === false) {
@@ -214,7 +214,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                 <thead>
                                     <tr>
                                         <th style={{ width: "1%" }}>
-                                            <Form.Check type="checkbox" checked={isCheckedAll} onClick={handleCheckAll} />
+                                            <Form.Check type="checkbox" checked={isCheckedAll} onChange={handleCheckAll} />
                                         </th>
                                         {columns.map(column => (
                                             <th key={column.index} style={{ width: column.width }}>{column.label}</th>
