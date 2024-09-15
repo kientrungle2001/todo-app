@@ -1,8 +1,9 @@
-import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { PaginationGrid } from "./PaginationGrid";
 import { FiltersGrid } from "./FiltersGrid";
 import { useRouter } from "next/router";
 import axios from "@/api/axiosInstance";
+import { ButtonVariant } from "react-bootstrap/esm/types";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -59,6 +60,11 @@ export interface DataGridPagination {
     pageSize: number;
 }
 
+export interface DataGridMessage {
+    label: string;
+    variant: ButtonVariant;
+}
+
 interface DataGridProps {
     title: string;
     table: string;
@@ -78,9 +84,11 @@ interface DataGridProps {
     setCurrentPage: (page: number) => void;
     setPageSize: (pageSize: number) => void;
     onAfterDelete: (item: any) => void;
+    messages: DataGridMessage[];
+    setMessages: (messages: DataGridMessage[]) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -133,6 +141,12 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         setSearchText('');
     };
 
+    const handleCloseMessage = (message: DataGridMessage, index: number) => {
+        let updatedMessages: DataGridMessage[] = [...messages];
+        updatedMessages.splice(index, 1);
+        setMessages(updatedMessages);
+    };
+
     return (
         <Container fluid className="mb-3 mt-3">
             <Row>
@@ -166,6 +180,13 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                             </div>
                         </Card.Header>
                         <Card.Body>
+                            {
+                                messages.map((message: DataGridMessage, index: number) => {
+                                    return (
+                                        <Alert key={index} variant={message.variant} dismissible onClose={() => handleCloseMessage(message, index)}>{message.label}</Alert>
+                                    )
+                                })
+                            }
                             <Table striped bordered hover size="sm">
                                 <thead>
                                     <tr>

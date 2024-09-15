@@ -1,4 +1,4 @@
-import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortOption } from "@/components/grid/DataGrid";
+import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
 import axios from '@/api/axiosInstance';
 import { DataGridEditField } from "./DataGridEdit";
@@ -35,8 +35,15 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
     const [filterData, setFilterData] = React.useState<any>({});
     const [searchText, setSearchText] = React.useState("");
     const [sorts, setSorts] = React.useState<DataGridSort[]>(settings.defaultSorts);
+    const [messages, setMessages] = React.useState<DataGridMessage[]>([]);
 
     const handleAfterDelete = (item: any) => {
+        let updatedMessages: DataGridMessage[] = [...messages];
+        updatedMessages.push({
+            label: `Item #${item.id} has been deleted successfully`,
+            variant: "success"
+        });
+        setMessages(updatedMessages);
         handleListItems();
     };
 
@@ -68,6 +75,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} />
+        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} messages={messages} setMessages={setMessages} />
     </>
 }
