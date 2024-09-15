@@ -86,9 +86,13 @@ interface DataGridProps {
     onAfterDelete: (item: any) => void;
     messages: DataGridMessage[];
     setMessages: (messages: DataGridMessage[]) => void;
+    isCheckedAll: boolean;
+    setIsCheckedAll: (isCheckedAll: boolean) => void;
+    checkedItemIds: number[];
+    setCheckedItemIds: (checkedItemIds: number[]) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -147,6 +151,26 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         setMessages(updatedMessages);
     };
 
+    const handleCheckAll = (event) => {
+        let checked = event.target.checked;
+        setIsCheckedAll(checked);
+        if (checked === false) {
+            setCheckedItemIds([]);
+        } else {
+            setCheckedItemIds(items.map(item => item.id));
+        }
+    };
+
+    const toggleCheckedItem = (id: number) => {
+        if (checkedItemIds.indexOf(id) === -1) {
+            checkedItemIds.push(id);
+            setCheckedItemIds([...checkedItemIds]);
+        } else {
+            checkedItemIds.splice(checkedItemIds.indexOf(id), 1);
+            setCheckedItemIds([...checkedItemIds]);
+        }
+    }
+
     return (
         <Container fluid className="mb-3 mt-3">
             <Row>
@@ -173,10 +197,9 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                             {/* Buttons on the right */}
                             <div>
                                 {/* Button as a link */}
-                                <Button size="sm" variant="primary" href="#link1" className="me-2">Link 1</Button>
-                                <Button size="sm" variant="secondary" href="#link2" className="me-2">Link 2</Button>
+                                <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>Add New</Button>
                                 {/* Regular Button */}
-                                <Button size="sm" variant="danger">Delete</Button>
+                                <Button size="sm" variant="danger">Delete Selecteds</Button>
                             </div>
                         </Card.Header>
                         <Card.Body>
@@ -191,7 +214,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                 <thead>
                                     <tr>
                                         <th style={{ width: "1%" }}>
-                                            <Form.Check type="checkbox" />
+                                            <Form.Check type="checkbox" checked={isCheckedAll} onClick={handleCheckAll} />
                                         </th>
                                         {columns.map(column => (
                                             <th key={column.index} style={{ width: column.width }}>{column.label}</th>
@@ -207,7 +230,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                     {items.length ? items.map((item, index) =>
                                         <tr key={index}>
                                             <td style={{ width: "1%" }}>
-                                                <Form.Check type="checkbox" />
+                                                <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onClick={() => toggleCheckedItem(item.id)} />
                                             </td>
                                             {columns.map(column => (
                                                 <td key={column.index} style={{ width: column.width }}>

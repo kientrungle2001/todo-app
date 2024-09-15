@@ -36,6 +36,8 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
     const [searchText, setSearchText] = React.useState("");
     const [sorts, setSorts] = React.useState<DataGridSort[]>(settings.defaultSorts);
     const [messages, setMessages] = React.useState<DataGridMessage[]>([]);
+    const [isCheckedAll, setIsCheckedAll] = React.useState<boolean>(false);
+    const [checkedItemIds, setCheckedItemIds] = React.useState<number[]>([]);
 
     const handleAfterDelete = (item: any) => {
         let updatedMessages: DataGridMessage[] = [...messages];
@@ -58,6 +60,8 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
         }).then((resp) => {
             setItems(resp.data.items);
             setTotalItems(resp.data.totalItems);
+            setIsCheckedAll(false);
+            setCheckedItemIds([]);
         });
     };
 
@@ -75,6 +79,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} messages={messages} setMessages={setMessages} />
+        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} />
     </>
 }

@@ -18,11 +18,7 @@ const gridColumns: DataGridColumn[] = [
 ];
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID" },
-    { index: "name", label: "Name" },
-    { index: "email", label: "Email" },
-    { index: "phone", label: "Phone" },
-    { index: "address", label: "Address" }
+    { index: "id", label: "ID" }
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
