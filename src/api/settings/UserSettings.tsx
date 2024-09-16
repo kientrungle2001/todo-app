@@ -9,6 +9,7 @@ const gridPagination: DataGridPagination = {
 
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
+    { index: "assignName", label: "Assign Name" },
     { index: "name", label: "Name" },
     { index: "email", label: "Email" },
     { index: "phone", label: "Phone" },
