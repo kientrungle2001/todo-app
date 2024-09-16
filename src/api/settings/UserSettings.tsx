@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -24,7 +24,7 @@ const gridColumns: DataGridColumn[] = [
 ];
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID" }
+    { index: "id", label: "ID", type: DataGridFilterColumnType.NUMBER },
 ];
 
 const gridSortOptions: DataGridSortOption[] = [

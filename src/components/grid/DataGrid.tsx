@@ -14,6 +14,16 @@ export enum DataGridColumnType {
     ACTIONS = "actions"
 }
 
+export enum DataGridFilterColumnType {
+    TEXT = "text",
+    NUMBER = "number",
+    DATE = "date",
+    CURRENCY = "currency",
+    SELECT = "select",
+    CHECKBOX = "checkbox",
+    STATUS = "status"
+}
+
 export enum DataGridColumnActionType {
     EDIT = "edit",
     DELETE = "delete"
@@ -35,7 +45,7 @@ export interface DataGridColumn {
 export interface DataGridFilterColumn {
     index: string;
     label: string;
-    type?: DataGridColumnType;
+    type?: DataGridFilterColumnType;
     format?: string;
     customFormat?: (value: any, item: any) => string | React.ReactNode;
     options?: any[];
