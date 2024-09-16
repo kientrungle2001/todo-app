@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -68,8 +68,14 @@ const gridAddFields: DataGridEditField[] = [
     } }
 ];
 
+const gridJoins: DataGridTableJoin[] = [
+    { table: "teacher", alias: "tc", type: "left", condition: "t.assignId = tc.id" }
+];
+
 export const UserSettings: TableGridSettings = {
     table: "student",
+    joins: gridJoins,
+    fields: ["id", "name", "email", "phone", "address", "status", "tc.name as assignName"],
     pagination: gridPagination,
     columns: gridColumns,
     filters: gridFilters,

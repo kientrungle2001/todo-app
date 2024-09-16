@@ -1,10 +1,11 @@
-import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption } from "@/components/grid/DataGrid";
+import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
 import axios from '@/api/axiosInstance';
 import { DataGridEditField } from "./DataGridEdit";
 
 export interface TableGridSettings {
     fields?: string | string[];
+    joins?: DataGridTableJoin[];
     pagination: DataGridPagination;
     columns: DataGridColumn[];
     filters: DataGridFilterColumn[];
