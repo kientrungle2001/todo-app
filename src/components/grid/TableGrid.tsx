@@ -4,6 +4,7 @@ import axios from '@/api/axiosInstance';
 import { DataGridEditField } from "./DataGridEdit";
 
 export interface TableGridSettings {
+    fields?: string | string[];
     pagination: DataGridPagination;
     columns: DataGridColumn[];
     filters: DataGridFilterColumn[];

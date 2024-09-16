@@ -29,6 +29,13 @@ export enum DataGridColumnActionType {
     DELETE = "delete"
 }
 
+export interface DataGridTableJoin {
+    table: string;
+    alias?: string;
+    type?: "inner" | "left" | "right";
+    condition?: string;
+}
+
 export interface DataGridColumn {
     index: string;
     label: string;
