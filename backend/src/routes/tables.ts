@@ -126,7 +126,15 @@ router.post('/:table/create', (req, res) => {
         if (err) throw err;
         res.status(201).send(item);
     });
-    
+});
+
+router.post('/:table/map', (req, res) => {
+    const table = req.params.table;
+    const { fields } = req.body;
+    pool.query<RowDataPacket[]>(`SELECT ${fields.join(', ')} FROM ${table}`, (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
 });
 
 export default router;

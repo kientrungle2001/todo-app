@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { TableGridSettings } from "./TableGrid";
 import axios from "@/api/axiosInstance";
-import DataGridEdit, { DataGridEditField } from "./DataGridEdit";
+import DataGridEdit, { DataGridEditField, DataGridEditMode } from "./DataGridEdit";
 import { useRouter } from "next/router";
 
 interface TableGridProps {
@@ -51,7 +51,7 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ settings, itemId }): R
 
     // make bootstrap edit form here
     return <>
-        <DataGridEdit itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
+        <DataGridEdit mode={DataGridEditMode.EDIT} itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
             handleUpdateItem={handleUpdateItem} handleCancelEdit={handleCancelEdit} />
     </>
 };

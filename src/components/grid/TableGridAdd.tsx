@@ -1,9 +1,8 @@
 import React from "react";
 import { TableGridSettings } from "./TableGrid";
 import axios from "@/api/axiosInstance";
-import { DataGridEditField } from "./DataGridEdit";
+import DataGridEdit, { DataGridEditField, DataGridEditMode } from "./DataGridEdit";
 import { useRouter } from "next/router";
-import DataGridAdd from "./DataGridAdd";
 
 interface TableGridProps {
     settings: TableGridSettings
@@ -42,7 +41,7 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ settings }): React.Reac
 
     // make bootstrap edit form here
     return <>
-        <DataGridAdd table={settings.table} item={item} setItem={setItem} fields={settings.addFields}
+        <DataGridEdit mode={DataGridEditMode.ADD} table={settings.table} item={item} setItem={setItem} fields={settings.addFields}
             handleAddItem={handleAddItem} handleCancelAdd={handleCancelAdd} />
     </>
 };
