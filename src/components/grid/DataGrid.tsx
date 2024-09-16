@@ -46,9 +46,13 @@ export interface DataGridFilterColumn {
     index: string;
     label: string;
     type?: DataGridFilterColumnType;
+    table?: string;
+    valueField?: string;
+    labelField?: string;
     format?: string;
     customFormat?: (value: any, item: any) => string | React.ReactNode;
     options?: any[];
+    map?: any;
 }
 
 export interface DataGridSort {

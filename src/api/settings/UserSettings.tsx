@@ -24,7 +24,9 @@ const gridColumns: DataGridColumn[] = [
 ];
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.NUMBER },
+    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
+    { index: "assignId", label: "Assigner ID", type: DataGridFilterColumnType.SELECT, table: "teacher", valueField: "id", labelField: "name" },
+    { index: "status", label: "Status", type: DataGridFilterColumnType.STATUS },
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
