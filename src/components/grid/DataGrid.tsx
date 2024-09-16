@@ -45,6 +45,8 @@ export interface DataGridColumn {
 export interface DataGridFilterColumn {
     index: string;
     label: string;
+    sqlIndex?: string;
+    comparisonOperator?: "like" | "equal";
     type?: DataGridFilterColumnType;
     table?: string;
     valueField?: string;
