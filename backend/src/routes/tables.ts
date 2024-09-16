@@ -5,6 +5,125 @@ import { RowDataPacket } from 'mysql2';
 
 const router = express.Router();
 
+enum DataGridColumnType {
+    TEXT = "text",
+    NUMBER = "number",
+    DATE = "date",
+    CURRENCY = "currency",
+    STATUS = "status",
+    ACTIONS = "actions"
+}
+
+enum DataGridFilterColumnType {
+    TEXT = "text",
+    NUMBER = "number",
+    DATE = "date",
+    CURRENCY = "currency",
+    SELECT = "select",
+    CHECKBOX = "checkbox",
+    STATUS = "status"
+}
+
+enum DataGridColumnActionType {
+    EDIT = "edit",
+    DELETE = "delete"
+}
+
+interface DataGridTableJoin {
+    table: string;
+    alias?: string;
+    type?: "inner" | "left" | "right";
+    condition?: string;
+}
+
+interface DataGridPagination {
+    page: number;
+    pageSize: number;
+}
+
+interface DataGridColumn {
+    index: string;
+    label: string;
+    type?: DataGridColumnType;
+    format?: string;
+    options?: any[];
+    sortable?: boolean;
+    actionType?: DataGridColumnActionType;
+    width?: string;
+    map?: any;
+}
+
+interface DataGridFilterColumn {
+    index: string;
+    label: string;
+    sqlIndex?: string;
+    comparisonOperator?: "like" | "equal";
+    type?: DataGridFilterColumnType;
+    table?: string;
+    valueField?: string;
+    labelField?: string;
+    format?: string;
+    options?: any[];
+    map?: any;
+}
+
+interface DataGridSort {
+    index: string;
+    direction: DataGridSortDirection;
+}
+
+enum DataGridSortDirection {
+    ASCENDING = "asc",
+    DESCENDING = "desc"
+}
+
+interface DataGridSortOption {
+    index: string;
+    label: string;
+    sorts: DataGridSort[];
+}
+
+enum DataGridEditFieldType {
+    TEXT = "text",
+    NUMBER = "number",
+    DATE = "date",
+    CURRENCY = "currency",
+    SELECT = "select",
+    CHECKBOX = "checkbox",
+    STATUS = "status",
+    EDITOR = "editor"
+};
+
+enum DataGridEditMode {
+    ADD = "add",
+    EDIT = "edit"
+}
+
+interface DataGridEditField {
+    index: string;
+    label: string;
+    type: DataGridEditFieldType;
+    size?: number;
+    options?: any[];
+    map?: any;
+    table?: string;
+    valueField?: string;
+    labelField?: string;
+}
+
+interface DataGridSettings {
+    fields?: string | string[];
+    joins?: DataGridTableJoin[];
+    pagination: DataGridPagination;
+    columns: DataGridColumn[];
+    filters: DataGridFilterColumn[];
+    sortOptions: DataGridSortOption[];
+    defaultSorts: DataGridSort[];
+    table: string;
+    addFields: DataGridEditField[];
+    editFields?: DataGridEditField[];
+}
+
 // Get list of subjects with their active classes
 router.post('/search/:table', (req, res) => {
     const table = req.params.table;
@@ -12,8 +131,8 @@ router.post('/search/:table', (req, res) => {
     const pageSize = req.body.pageSize || 10;
     const search = req.body.search ? `%${req.body.search}%` : '%';
     const offset = (page - 1) * pageSize;
-    const settings: any = req.body.settings;
-    const sorts: any = req.body.sorts;
+    const settings: DataGridSettings = req.body.settings;
+    const sorts: DataGridSort[] = req.body.sorts;
     const filterData: any = req.body.filterData;
 
     let query = `
@@ -23,7 +142,7 @@ router.post('/search/:table', (req, res) => {
     `;
     const params: Array<string | number> = [];
     let searchLikes: string[] = [];
-    settings.columns.forEach((column: any) => {
+    settings.columns.forEach(column => {
         if (column.type !== 'actions') {
             searchLikes.push(`${column.index} LIKE ?`);
             params.push(search);
