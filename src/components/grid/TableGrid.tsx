@@ -70,7 +70,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     useEffect(() => {
         setPagination({ ...pagination, currentPage: 1 });
-    }, [searchText]);
+    }, [searchText, filterData]);
     useEffect(() => {
         const handler = setTimeout(() => {
             handleListItems();
