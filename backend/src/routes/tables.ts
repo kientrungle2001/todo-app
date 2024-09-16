@@ -135,16 +135,36 @@ router.post('/search/:table', (req, res) => {
     const sorts: DataGridSort[] = req.body.sorts;
     const filterData: any = req.body.filterData;
 
+    let fields = '*';
+
+    if (settings.fields) {
+        if (typeof settings.fields ==='string') {
+            fields = settings.fields;
+        } else {
+            if (Array.isArray(settings.fields)) {
+                fields = (settings.fields as Array<string>).map(field => field.indexOf('.') === -1 ? `t.${field}` : field).join(', ');
+            }
+        }
+    }
+
+    let joins = '';
+
+    if (settings.joins) {
+        settings.joins.forEach(join => {
+            joins += ` ${join.type} JOIN ${join.table} AS ${join.alias || join.table} ON ${join.condition}`;
+        });
+    }
+
     let query = `
       SELECT 
-        * FROM ${table} AS t
+        ${fields} FROM ${table} AS t ${joins}
       WHERE 
     `;
     const params: Array<string | number> = [];
     let searchLikes: string[] = [];
     settings.columns.forEach(column => {
         if (column.type !== 'actions') {
-            searchLikes.push(`${column.index} LIKE ?`);
+            searchLikes.push(`t.${column.index} LIKE ?`);
             params.push(search);
         }
     });
@@ -155,7 +175,7 @@ router.post('/search/:table', (req, res) => {
 
     for (let index in filterData) {
         if (filterData[index] !== '') {
-            filterConditions.push(`${index} like ?`);
+            filterConditions.push(`t.${index} like ?`);
             params.push('%' + filterData[index] + '%');
         }
     }
@@ -165,14 +185,14 @@ router.post('/search/:table', (req, res) => {
 
     let orderBys: string[] = [];
     sorts.forEach((sort: any) => {
-        orderBys.push(`${sort.index} ${sort.direction}`);
+        orderBys.push(`t.${sort.index} ${sort.direction}`);
     });
     let orderBy = orderBys.join(', ');
 
     query += ` ORDER BY ${orderBy} LIMIT ?, ?`;
     params.push(offset, pageSize);
 
-    let totalCountQuery = `SELECT COUNT(*) as total FROM ${table} as t
+    let totalCountQuery = `SELECT COUNT(*) as total FROM ${table} AS t ${joins}
     WHERE 
     `;
     totalCountQuery += '(' + searchLikes.join(' OR ') + ')';
@@ -181,10 +201,16 @@ router.post('/search/:table', (req, res) => {
     }
 
     pool.query<RowDataPacket[]>(totalCountQuery, params, (err, response) => {
-        if (err) throw err;
+        if (err) {
+            console.log(totalCountQuery);
+            throw err;
+        }
         const total = response[0].total;
         pool.query<RowDataPacket[]>(query, params, (err, items) => {
-            if (err) throw err;
+            if (err) {
+                console.log(query);
+                throw err;
+            }
 
             res.json({ items: items, totalItems: total });
         });
