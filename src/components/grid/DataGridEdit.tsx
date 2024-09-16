@@ -64,6 +64,136 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, fields
     }, []);
     const [maps, setMaps] = React.useState<any>({});
 
+    const FieldTextRenderer = (field: DataGridEditField, item: any) => {
+        return (
+            <Form.Control type="text" value={item[field.index]} onChange={(event) => {
+                let updatedItem = { ...item };
+                updatedItem[field.index] = event.target.value;
+                setItem(updatedItem);
+            }} />
+        );
+    }
+
+    const FieldNumberRenderer = (field: DataGridEditField, item: any) => {
+        return (
+            <Form.Control type="number" value={item[field.index]} onChange={(event) => {
+                let updatedItem = { ...item };
+                updatedItem[field.index] = Number(event.target.value);
+                setItem(updatedItem);
+            }} />
+        );
+    }
+
+    const FieldStatusRenderer = (field: DataGridEditField, item: any) => {
+        return (
+            <Form.Select value={item[field.index]} onChange={(event) => {
+                let updatedItem = { ...item };
+                updatedItem[field.index] = event.target.value;
+                setItem(updatedItem);
+            }}>
+                <option value={1}>
+                    {field.map[1] ?? 'Active'}
+                </option>
+                <option value={0}>
+                    {field.map[0] ?? 'Inactive'}
+                </option>
+            </Form.Select>
+        );
+    }
+
+    const FieldDateRenderer = (field: DataGridEditField, item: any) => {
+        return (
+            <Form.Control type="date" value={item[field.index]} onChange={(event) => {
+                let updatedItem = {...item };
+                updatedItem[field.index] = event.target.value;
+                setItem(updatedItem);
+            }} />
+        );
+    }
+
+    const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
+        if (field.options) {
+            return (
+                <Form.Select value={item[field.index]} onChange={(event) => {
+                    let updatedItem = {...item };
+                    updatedItem[field.index] = event.target.value;
+                    setItem(updatedItem);
+                }}>
+                    <option value={0}>Select</option>
+                    {field.options.map(option => (
+                        <option key={option.id} value={option.id}>
+                            {field.map? field.map[option.id] : option.name}
+                        </option>
+                    ))}
+                </Form.Select>
+            );
+        } else if (typeof maps[field.index] === 'object') {
+            return (
+                <Form.Select value={item[field.index]} onChange={(event) => {
+                    let updatedItem = {...item };
+                    updatedItem[field.index] = event.target.value;
+                    setItem(updatedItem);
+                }}>
+                    <option value={0}>Select</option>
+                    {maps[field.index].map((option: any) => (
+                        <option key={option[field.valueField as string]} value={option[field.valueField as string]}>
+                            {field.map? field.map[option[field.valueField as string]] : option[field.labelField as string]}
+                        </option>
+                    ))}
+                </Form.Select>
+            );
+        } else {
+            return (
+                <Form.Select value={item[field.index]} onChange={(event) => {
+                    let updatedItem = {...item };
+                    updatedItem[field.index] = event.target.value;
+                    setItem(updatedItem);
+                }}>
+                    <option value={0}>Select</option>
+                </Form.Select>
+            );
+        }
+    }
+
+    const FieldCheckboxRenderer = (field: DataGridEditField, item: any) => {
+        return (
+            <Form.Check type="checkbox" checked={item[field.index]} onChange={(event) => {
+                let updatedItem = {...item };
+                updatedItem[field.index] = event.target.checked;
+                setItem(updatedItem);
+            }} />
+        );
+    }
+
+    const FieldUndefinedRenderer = (field: DataGridEditField, item: any) => {
+        return '-';
+    }
+
+    const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
+        switch (fieldType) {
+            case DataGridEditFieldType.TEXT:
+                return FieldTextRenderer;
+            case DataGridEditFieldType.NUMBER:
+                return FieldNumberRenderer;
+            case DataGridEditFieldType.STATUS:
+                return FieldStatusRenderer;
+            case DataGridEditFieldType.DATE:
+                return FieldDateRenderer;
+            case DataGridEditFieldType.SELECT:
+                return FieldSelectRenderer;
+            case DataGridEditFieldType.CHECKBOX:
+                return FieldCheckboxRenderer;
+            default:
+                return FieldUndefinedRenderer;
+        }
+    
+    }
+
+    const renderField = (field: DataGridEditField, item: any) => {
+        const renderer = getFieldRenderer(field.type);
+        return renderer(field, item);
+    }
+
     return (
         <>
             <Container fluid>
@@ -84,36 +214,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, fields
                                     <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
                                         <Form.Group controlId={field.index}>
                                             <Form.Label>{field.label}</Form.Label>
-                                            {
-                                                field.type === DataGridEditFieldType.STATUS ?
-                                                    <Form.Select value={item[field.index]} onChange={(event) => {
-                                                        let updatedItem = { ...item };
-                                                        updatedItem[field.index] = event.target.value;
-                                                        setItem(updatedItem);
-                                                    }}>
-                                                        <option value={1}>
-                                                            {field.map[1] ?? 'Active'}
-                                                        </option>
-                                                        <option value={0}>
-                                                            {field.map[0] ?? 'Inactive'}
-                                                        </option>
-                                                    </Form.Select> : (field.type === DataGridEditFieldType.SELECT ? <Form.Select value={item[field.index]} onChange={(event) => {
-                                                        let updatedItem = { ...item };
-                                                        updatedItem[field.index] = event.target.value;
-                                                        setItem(updatedItem);
-                                                    }}>
-                                                        <option value={0}>Select</option>
-                                                        {field.options ? field.options.map(option => <option key={option.value} value={option.value}>{option.label}</option>) : (
-                                                            typeof maps[field.index] !== 'undefined' && typeof field.valueField === 'string' && typeof field.labelField === 'string' ? maps[field.index].map((option: any) => <option key={option[field.valueField as string]} value={option[field.valueField as string]}>{option[field.labelField as string]}</option>) : <></>
-                                                        )}
-                                                    </Form.Select> :
-                                                        <Form.Control value={item[field.index]} onChange={(event) => {
-                                                            let updatedItem = { ...item };
-                                                            updatedItem[field.index] = event.target.value;
-                                                            setItem(updatedItem);
-                                                        }} />)
-                                            }
-
+                                            {renderField(field, item)}
                                         </Form.Group>
                                     </Col>
                                 ))}

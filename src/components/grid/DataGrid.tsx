@@ -118,33 +118,71 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         }
     };
 
-    const getColumnElement = (column: DataGridColumn, item: any) => {
-        if (!column.type || column.type === DataGridColumnType.TEXT || column.type === DataGridColumnType.NUMBER || column.type === DataGridColumnType.CURRENCY) {
-            return column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index];
-        } else if (column.type === DataGridColumnType.DATE) {
-            return new Date(item[column.index]).toLocaleString();
-        } else if (column.type === DataGridColumnType.STATUS) {
-            if (column.map) {
-                return column.map[item[column.index]] ?? '-';
-            }
-            return (item[column.index]) ? 'Active' : 'Inactive';
-        } else if (column.type === DataGridColumnType.ACTIONS) {
-            if (column.customFormat) {
-                return column.customFormat ? column.customFormat(null, item, table) : '-';
-            } else {
-                if (column.actionType === DataGridColumnActionType.EDIT) {
-                    return <Button variant="primary" size="sm" onClick={() => handleEditItem(item)}>
-                        Edit
-                    </Button>
-                } else if (column.actionType === DataGridColumnActionType.DELETE) {
-                    return <Button variant="danger" size="sm" onClick={() => handleDeleteItem(item)}>
-                        Delete
-                    </Button>
-                }
-            }
-        } else {
-            return '-';
+    const ColumnTextRenderer = (column: DataGridColumn, item: any) => {
+        return column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index];
+    };
+
+    const ColumnNumberRenderer = (column: DataGridColumn, item: any) => {
+        return column.customFormat ? column.customFormat(item[column.index], item, table) : String(item[column.index]);
+    };
+
+    const ColumnCurrencyRenderer = (column: DataGridColumn, item: any) => {
+        return column.customFormat ? column.customFormat(item[column.index], item, table) : `$${item[column.index]}`;
+    };
+
+    const ColumnDateRenderer = (column: DataGridColumn, item: any) => {
+        return column.customFormat ? column.customFormat(new Date(item[column.index]), item, table) : new Date(item[column.index]).toLocaleString();
+    };
+
+    const ColumnStatusRenderer = (column: DataGridColumn, item: any) => {
+        if (column.map) {
+            return column.map[item[column.index]] ?? '-';
         }
+        return (item[column.index]) ? 'Active' : 'Inactive';
+    };
+
+    const ColumnActionsRenderer = (column: DataGridColumn, item: any) => {
+        if (column.customFormat) {
+            return column.customFormat ? column.customFormat(null, item, table) : '-';
+        } else {
+            if (column.actionType === DataGridColumnActionType.EDIT) {
+                return <Button variant="primary" size="sm" onClick={() => handleEditItem(item)}>
+                    Edit
+                </Button>
+            } else if (column.actionType === DataGridColumnActionType.DELETE) {
+                return <Button variant="danger" size="sm" onClick={() => handleDeleteItem(item)}>
+                    Delete
+                </Button>
+            }
+        }
+    };
+
+    const ColumnUndefinedRenderer = (column: DataGridColumn, item: any) => {
+        return '-';
+    }
+
+    const getColumnRenderer = (columnType: DataGridColumnType) => {
+        switch (columnType) {
+            case DataGridColumnType.TEXT:
+                return ColumnTextRenderer;
+            case DataGridColumnType.NUMBER:
+                return ColumnNumberRenderer;
+            case DataGridColumnType.CURRENCY:
+                return ColumnCurrencyRenderer;
+            case DataGridColumnType.DATE:
+                return ColumnDateRenderer;
+            case DataGridColumnType.STATUS:
+                return ColumnStatusRenderer;
+            case DataGridColumnType.ACTIONS:
+                return ColumnActionsRenderer;
+            default:
+                return ColumnUndefinedRenderer;
+        }
+    };
+
+    const renderColumn = (column: DataGridColumn, item: any) => {
+        const columnRenderer = getColumnRenderer(column.type ?? DataGridColumnType.TEXT);
+        return columnRenderer(column, item);
     };
 
     const handleResetFilter = () => {
@@ -241,7 +279,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                             </td>
                                             {columns.map(column => (
                                                 <td key={column.index} style={{ width: column.width }}>
-                                                    {getColumnElement(column, item)}
+                                                    {renderColumn(column, item)}
                                                 </td>
                                             ))}
                                         </tr>)
