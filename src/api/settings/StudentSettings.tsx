@@ -70,7 +70,7 @@ const gridAddFields: DataGridEditField[] = [
     { index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
         0: 'Dừng học',
         1: 'Đang học'
-    } }
+    }, statusToggable: true }
 ];
 
 const gridJoins: DataGridTableJoin[] = [

@@ -22,6 +22,7 @@ export interface DataGridEditField {
     index: string;
     label: string;
     type: DataGridEditFieldType;
+    statusToggable?: boolean;
     multiple?: boolean;
     size?: number;
     options?: any[];
@@ -88,6 +89,21 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     }
 
     const FieldStatusRenderer = (field: DataGridEditField, item: any) => {
+        const getStatusLabel = (status: number) => {
+            if (field.map && typeof field.map === 'object') {
+                return field.map[status] ?? 'Unknown';
+            }
+            return status === 1 ? 'Active' : 'Inactive';
+        }
+        if (field.statusToggable) {
+            return (
+                <Form.Check type="switch" checked={item[field.index] === 1} onChange={(event) => {
+                    let updatedItem = { ...item };
+                    updatedItem[field.index] = updatedItem[field.index] === 1 ? 0 : 1;
+                    setItem(updatedItem);
+                }} label={getStatusLabel(item[field.index])} />
+            );
+        }
         return (
             <Form.Select value={item[field.index]} onChange={(event) => {
                 let updatedItem = { ...item };
@@ -107,7 +123,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     const FieldDateRenderer = (field: DataGridEditField, item: any) => {
         return (
             <Form.Control type="date" value={item[field.index]} onChange={(event) => {
-                let updatedItem = {...item };
+                let updatedItem = { ...item };
                 updatedItem[field.index] = event.target.value;
                 setItem(updatedItem);
             }} />
@@ -118,14 +134,14 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         if (field.options) {
             return (
                 <Form.Select value={item[field.index]} onChange={(event) => {
-                    let updatedItem = {...item };
+                    let updatedItem = { ...item };
                     updatedItem[field.index] = event.target.value;
                     setItem(updatedItem);
                 }}>
                     <option value={0}>Select</option>
                     {field.options.map(option => (
                         <option key={option.id} value={option.id}>
-                            {field.map? field.map[option.id] : option.name}
+                            {field.map ? field.map[option.id] : option.name}
                         </option>
                     ))}
                 </Form.Select>
@@ -133,14 +149,14 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         } else if (typeof maps[field.index] === 'object') {
             return (
                 <Form.Select value={item[field.index]} onChange={(event) => {
-                    let updatedItem = {...item };
+                    let updatedItem = { ...item };
                     updatedItem[field.index] = event.target.value;
                     setItem(updatedItem);
                 }}>
                     <option value={0}>Select</option>
                     {maps[field.index].map((option: any) => (
                         <option key={option[field.valueField as string]} value={option[field.valueField as string]}>
-                            {field.map? field.map[option[field.valueField as string]] : option[field.labelField as string]}
+                            {field.map ? field.map[option[field.valueField as string]] : option[field.labelField as string]}
                         </option>
                     ))}
                 </Form.Select>
@@ -148,7 +164,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         } else {
             return (
                 <Form.Select value={item[field.index]} onChange={(event) => {
-                    let updatedItem = {...item };
+                    let updatedItem = { ...item };
                     updatedItem[field.index] = event.target.value;
                     setItem(updatedItem);
                 }}>
@@ -161,7 +177,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     const FieldCheckboxRenderer = (field: DataGridEditField, item: any) => {
         return (
             <Form.Check type="checkbox" checked={item[field.index]} onChange={(event) => {
-                let updatedItem = {...item };
+                let updatedItem = { ...item };
                 updatedItem[field.index] = event.target.checked;
                 setItem(updatedItem);
             }} />
@@ -189,7 +205,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
             default:
                 return FieldUndefinedRenderer;
         }
-    
+
     }
 
     const renderField = (field: DataGridEditField, item: any) => {
@@ -202,12 +218,12 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
             <Container fluid>
                 {
                     mode === DataGridEditMode.EDIT ? (
-                        <h2 className="text-center">{updateLabel} - ID: {itemId}</h2>        
+                        <h2 className="text-center">{updateLabel} - ID: {itemId}</h2>
                     ) : (
-                        <h2 className="text-center">{addNewLabel}</h2>        
+                        <h2 className="text-center">{addNewLabel}</h2>
                     )
                 }
-                
+
                 <Row>
                     <Col md={12} sm={12}>
                         <Form onSubmit={(event) => {
