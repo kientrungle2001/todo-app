@@ -117,9 +117,11 @@ interface DataGridProps {
     setIsCheckedAll: (isCheckedAll: boolean) => void;
     checkedItemIds: number[];
     setCheckedItemIds: (checkedItemIds: number[]) => void;
+    addNewLabel?: string;
+    deleteSelectedsLabel?: string;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -172,11 +174,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         } else {
             if (column.actionType === DataGridColumnActionType.EDIT) {
                 return <Button variant="primary" size="sm" onClick={() => handleEditItem(item)}>
-                    Edit
+                    {column.label}
                 </Button>
             } else if (column.actionType === DataGridColumnActionType.DELETE) {
                 return <Button variant="danger" size="sm" onClick={() => handleDeleteItem(item)}>
-                    Delete
+                    {column.label}
                 </Button>
             }
         }
@@ -250,7 +252,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                 <Col sm={12} md={3} lg={2}>
                     <Card>
                         <Card.Header className="d-flex justify-content-between align-items-center">
-                            <span>Filters</span>
+                            <span>Bộ lọc</span>
                             <div>
                                 <Button size="sm" variant="danger" onClick={handleResetFilter}>Reset</Button>
                             </div>
@@ -270,9 +272,9 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                             {/* Buttons on the right */}
                             <div>
                                 {/* Button as a link */}
-                                <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>Add New</Button>
+                                <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
                                 {/* Regular Button */}
-                                <Button size="sm" variant="danger">Delete Selecteds</Button>
+                                <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
                             </div>
                         </Card.Header>
                         <Card.Body>
@@ -283,7 +285,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                     )
                                 })
                             }
-                            <Table striped bordered hover size="sm">
+                            <Table striped bordered hover>
                                 <thead>
                                     <tr>
                                         <th style={{ width: "1%" }}>
@@ -326,8 +328,8 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                         </Card.Body>
                         <Card.Footer>
                             <div className="d-flex justify-content-end">
-                                <Button variant="primary" className="me-2" onClick={handleAddItem}>Add New</Button>
-                                <Button variant="danger" className="me-2">Delete Selecteds</Button>
+                                <Button variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
+                                <Button variant="danger" className="me-2">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
                             </div>
                         </Card.Footer>
                     </Card>

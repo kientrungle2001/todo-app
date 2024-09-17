@@ -4,6 +4,7 @@ import axios from '@/api/axiosInstance';
 import { DataGridEditField } from "./DataGridEdit";
 
 export interface TableGridSettings {
+    title: string,
     fields?: string | string[];
     searchFields?: string[];
     joins?: DataGridTableJoin[];
@@ -15,6 +16,9 @@ export interface TableGridSettings {
     table: string;
     addFields: DataGridEditField[];
     editFields?: DataGridEditField[];
+    addNewLabel?: string;
+    deleteSelectedsLabel?: string;
+    updateLabel?: string;
 }
 
 interface TableGridProps {
@@ -82,6 +86,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title="Person Management" columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} />
+        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
     </>
 }

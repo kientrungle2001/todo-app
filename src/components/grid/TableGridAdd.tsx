@@ -41,7 +41,7 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ settings }): React.Reac
 
     // make bootstrap edit form here
     return <>
-        <DataGridEdit mode={DataGridEditMode.ADD} table={settings.table} item={item} setItem={setItem} fields={settings.addFields}
+        <DataGridEdit addNewLabel={settings.addNewLabel} mode={DataGridEditMode.ADD} table={settings.table} item={item} setItem={setItem} fields={settings.addFields}
             handleAddItem={handleAddItem} handleCancelAdd={handleCancelAdd} />
     </>
 };

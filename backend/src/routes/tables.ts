@@ -186,12 +186,18 @@ router.post('/search/:table', (req, res) => {
 
     let filterConditions: string[] = [];
 
-    for (let index in filterData) {
-        if (filterData[index] !== '') {
-            filterConditions.push(`t.${index} like ?`);
-            params.push('%' + filterData[index] + '%');
+    settings.filters.forEach((filter: any) => {
+        if (typeof filterData[filter.index] !== 'undefined' && filterData[filter.index] !== '') {
+            if (filter.type === DataGridFilterColumnType.SELECT) {
+                filterConditions.push(`t.${filter.index} = ?`);
+                params.push(filterData[filter.index]);
+            } else {
+                filterConditions.push(`t.${filter.index} like ?`);
+                params.push('%' + filterData[filter.index] + '%');
+            }
+
         }
-    }
+    });
     if (filterConditions.length > 0) {
         query += ` AND (${filterConditions.join(' AND ')})`;
     }

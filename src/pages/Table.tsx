@@ -7,8 +7,7 @@ export default function Table(): React.ReactElement {
     
     const gridPagination: DataGridPagination = {
         currentPage: 1,
-        pageSize: 10,
-        totalItems: 1
+        pageSize: 10
     };
     
     const gridColumns: DataGridColumn[] = [
@@ -61,12 +60,15 @@ export default function Table(): React.ReactElement {
     return <>
         <TableGrid settings={
             {
+                title: "User List",
                 table: "users",
                 pagination: gridPagination,
                 columns: gridColumns,
                 filters: gridFilters,
                 sortOptions: gridSortOptions,
-                defaultSorts: gridDefaultSorts
+                defaultSorts: gridDefaultSorts,
+                addFields: [],
+                editFields: []
             }
         } />
     </>

@@ -34,6 +34,8 @@ interface DataGridEditProps {
     mode: DataGridEditMode,
     table: string;
     itemId?: number;
+    addNewLabel?: string;
+    updateLabel?: string;
     fields: DataGridEditField[];
     item: any;
     setItem: (item: any) => void;
@@ -43,7 +45,7 @@ interface DataGridEditProps {
     handleCancelAdd?: () => void;
 }
 
-const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
+const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
 
     useEffect(() => {
         fields.forEach(field => {
@@ -197,7 +199,14 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, fields
     return (
         <>
             <Container fluid>
-                <h2 className="text-center">Edit {table} - ID: {itemId}</h2>
+                {
+                    mode === DataGridEditMode.EDIT ? (
+                        <h2 className="text-center">{updateLabel} - ID: {itemId}</h2>        
+                    ) : (
+                        <h2 className="text-center">{addNewLabel}</h2>        
+                    )
+                }
+                
                 <Row>
                     <Col md={12} sm={12}>
                         <Form onSubmit={(event) => {
@@ -219,7 +228,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, fields
                                     </Col>
                                 ))}
                                 <Col md={12} sm={12}>
-                                    <Button variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Update' : 'Add'} </Button>
+                                    <Button variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                                     <Button variant="secondary" onClick={() => {
                                         if (mode === DataGridEditMode.ADD && handleCancelAdd) {
                                             handleCancelAdd();
@@ -228,7 +237,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, fields
                                         if (mode === DataGridEditMode.EDIT && handleCancelEdit) {
                                             handleCancelEdit();
                                         }
-                                    }}>Cancel</Button>
+                                    }}>Hủy bỏ</Button>
                                 </Col>
                             </Row>
                         </Form>

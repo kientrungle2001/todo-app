@@ -102,7 +102,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
                 }}>
-                    <option value={0}>Select</option>
+                    <option value={''}>Chọn</option>
                     {maps[filter.index].map((option: any) => (
                         <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}>
                             {option[filter.labelField as string]}
@@ -133,7 +133,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                 updatedFilterData[filter.index] = event.target.value;
                 setFilterData(updatedFilterData);
             }}>
-                <option value="">Select</option>
+                <option value={''}>Chọn</option>
                 <option value={1}>
                     {filter?.map ? filter?.map[1] : 'Active'}
                 </option>
@@ -195,8 +195,8 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
 
     return <Form>
         <Form.Group controlId={"formGroupSearch"} className="mb-3">
-            <Form.Label>Search</Form.Label>
-            <Form.Control value={searchText} onChange={(event) => setSearchText(event.target.value)} size="sm" type="text" placeholder={`Search text`} />
+            <Form.Label>Tìm kiếm</Form.Label>
+            <Form.Control value={searchText} onChange={(event) => setSearchText(event.target.value)} size="sm" type="text" placeholder={`Từ khóa`} />
         </Form.Group>
         {filters.map(filter => (
             <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className="mb-3">
@@ -205,7 +205,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
             </Form.Group>
         ))}
         {sortOptions && <Form.Group controlId="formGroupSort" key="formGroupSort" className="mb-3">
-            <Form.Label>Sort by</Form.Label>
+            <Form.Label>Sắp xếp theo</Form.Label>
             <Form.Select value={sortOptionSelected} size="sm" onChange={(event) => {
                 setSortOptionSelected(event.target.value);
                 let selectedOption = sortOptions.find(option => option.index === event.target.value);
@@ -215,7 +215,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     setSorts(defaultSorts ?? []);
                 }
             }}>
-                <option value="">Select sort option</option>
+                <option value="">Chọn sắp xếp</option>
                 {sortOptions?.map(option => (
                     <option key={option.index} value={option.index}>{option.label}</option>
                 ))}

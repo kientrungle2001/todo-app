@@ -1,9 +1,9 @@
-import { UserSettings } from "@/api/settings/UserSettings";
+import { StudentSettings } from "@/api/settings/StudentSettings";
 import { TableGrid } from "@/components/grid/TableGrid";
 import React from "react";
 
 export default function TableUsers(): React.ReactElement {
     return <>
-        <TableGrid settings={UserSettings} />
+        <TableGrid settings={StudentSettings} />
     </>
 }
