@@ -18,7 +18,8 @@ const gridColumns: DataGridColumn[] = [
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
             0: 'Dừng học',
             1: 'Đang học'
-        }
+        },
+        statusToggable: true
     },
     { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
     { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }

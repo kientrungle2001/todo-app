@@ -5,6 +5,8 @@ import { DataGridEditField } from "./DataGridEdit";
 
 export interface TableGridSettings {
     title: string,
+    treeMode?: boolean;
+    treeParentField?: string;
     fields?: string | string[];
     searchFields?: string[];
     joins?: DataGridTableJoin[];
@@ -56,6 +58,34 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
         handleListItems();
     };
 
+    const handleAfterChangeStatus = (column: DataGridColumn, item: any) => {
+        handleListItems();
+    }
+
+    const buildTree = (items: any[], parentField: string, __level = 0): any[] => {
+        let result: any[] = [];
+        items.forEach((item) => {
+            item.__level = __level;
+            item.__children = buildTree(items.filter((i) => i[parentField] === item.id), parentField, __level + 1);
+        });
+        return result;
+    }
+
+    const getRootItems = (items: any[]): any[] => {
+        return items.filter((item) => item.__children.length === 0);
+    }
+
+    const flatTree = (items: any[]): any[] => {
+        let result: any[] = [];
+        items.forEach((item) => {
+            result.push(item);
+            if (item.__children) {
+                result = result.concat(flatTree(item.__children));
+            }
+        });
+        return result;
+    }
+
     const handleListItems = () => {
         axios.post('/tables/search/' + settings.table, {
             settings: JSON.parse(JSON.stringify(settings)),
@@ -65,7 +95,15 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
             page: pagination.currentPage,
             pageSize: pagination.pageSize,
         }).then((resp) => {
-            setItems(resp.data.items);
+            if (settings.treeMode) {
+                let items: any[] = resp.data.items;
+                items = buildTree(items, settings.treeParentField ?? 'parent');
+                items = getRootItems(items);
+                items = flatTree(items);
+                setItems(items);
+            } else {
+                setItems(resp.data.items);
+            }
             setTotalItems(resp.data.totalItems);
             setIsCheckedAll(false);
             setCheckedItemIds([]);
@@ -86,6 +124,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
+        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
     </>
 }

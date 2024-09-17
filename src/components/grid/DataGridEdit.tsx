@@ -22,6 +22,7 @@ export interface DataGridEditField {
     index: string;
     label: string;
     type: DataGridEditFieldType;
+    multiple?: boolean;
     size?: number;
     options?: any[];
     map?: any;

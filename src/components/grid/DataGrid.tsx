@@ -41,6 +41,9 @@ export interface DataGridColumn {
     index: string;
     label: string;
     type?: DataGridColumnType;
+    treeMode?: boolean;
+    multiple?: boolean;
+    statusToggable?: boolean;
     format?: string;
     customFormat?: (value: any, item: any, table: string) => string | React.ReactNode;
     options?: any[];
@@ -111,6 +114,7 @@ interface DataGridProps {
     setCurrentPage: (page: number) => void;
     setPageSize: (pageSize: number) => void;
     onAfterDelete: (item: any) => void;
+    onAfterChangeStatus: (column: DataGridColumn, item: any) => void;
     messages: DataGridMessage[];
     setMessages: (messages: DataGridMessage[]) => void;
     isCheckedAll: boolean;
@@ -121,7 +125,7 @@ interface DataGridProps {
     deleteSelectedsLabel?: string;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -146,7 +150,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
     };
 
     const ColumnTextRenderer = (column: DataGridColumn, item: any) => {
-        return column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index];
+        return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index]);
     };
 
     const ColumnNumberRenderer = (column: DataGridColumn, item: any) => {
@@ -162,10 +166,32 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
     };
 
     const ColumnStatusRenderer = (column: DataGridColumn, item: any) => {
-        if (column.map) {
-            return column.map[item[column.index]] ?? '-';
+        const handleChangeStatusField = (status: number) => {
+            axios.put(`/tables/${table}/update/${item.id}`, {item: { [column.index]: status }, fields: [column]}).then(() => {
+                item[column.index] = status;
+                onAfterChangeStatus(column, item);
+            });
         }
-        return (item[column.index]) ? 'Active' : 'Inactive';
+
+        const getStatusLabel = (status: number) => {
+            if (column.map) {
+                return column.map[status]?? '-';
+            }
+            return (status === 1)? 'Active' : 'Inactive';
+        }
+
+        if (column.statusToggable) {
+            return <Form.Check
+            type="switch"
+            label={getStatusLabel(item[column.index])}
+            checked={item[column.index] === 1}
+            onChange={() => handleChangeStatusField(item[column.index] === 1 ? 0 : 1)}
+          />
+
+        } else {
+            return getStatusLabel(item[column.index]);
+        }
+        
     };
 
     const ColumnActionsRenderer = (column: DataGridColumn, item: any) => {
