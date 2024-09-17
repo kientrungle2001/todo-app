@@ -5,6 +5,7 @@ import { DataGridEditField } from "./DataGridEdit";
 
 export interface TableGridSettings {
     fields?: string | string[];
+    searchFields?: string[];
     joins?: DataGridTableJoin[];
     pagination: DataGridPagination;
     columns: DataGridColumn[];

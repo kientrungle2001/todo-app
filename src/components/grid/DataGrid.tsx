@@ -4,6 +4,7 @@ import { FiltersGrid } from "./FiltersGrid";
 import { useRouter } from "next/router";
 import axios from "@/api/axiosInstance";
 import { ButtonVariant } from "react-bootstrap/esm/types";
+import Link from "next/link";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -43,6 +44,7 @@ export interface DataGridColumn {
     format?: string;
     customFormat?: (value: any, item: any, table: string) => string | React.ReactNode;
     options?: any[];
+    linkFormat?: (value: any, item: any) => string;
     sortable?: boolean;
     actionType?: DataGridColumnActionType;
     width?: string;
@@ -205,6 +207,9 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
 
     const renderColumn = (column: DataGridColumn, item: any) => {
         const columnRenderer = getColumnRenderer(column.type ?? DataGridColumnType.TEXT);
+        if (column.linkFormat) {
+            return <Link href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item)}</Link>;
+        }
         return columnRenderer(column, item);
     };
 

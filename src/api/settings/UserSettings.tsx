@@ -10,7 +10,7 @@ const gridPagination: DataGridPagination = {
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
     { index: "assignName", label: "Assign Name" },
-    { index: "name", label: "Name" },
+    { index: "name", label: "Name", linkFormat: (value: any, item: any) => `/Table/student/${item.id}/edit` },
     { index: "email", label: "Email" },
     { index: "phone", label: "Phone" },
     { index: "address", label: "Address" },
@@ -73,10 +73,13 @@ const gridJoins: DataGridTableJoin[] = [
     { table: "teacher", alias: "tc", type: "left", condition: "t.assignId = tc.id" }
 ];
 
+const gridSearchFields: string[] = ["id", "name", "email", "phone", "address", "tc.name"];
+
 export const UserSettings: TableGridSettings = {
     table: "student",
     joins: gridJoins,
     fields: ["id", "name", "email", "phone", "address", "status", "tc.name as assignName"],
+    searchFields: gridSearchFields,
     pagination: gridPagination,
     columns: gridColumns,
     filters: gridFilters,

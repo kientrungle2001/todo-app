@@ -113,6 +113,7 @@ interface DataGridEditField {
 
 interface DataGridSettings {
     fields?: string | string[];
+    searchFields?: string[];
     joins?: DataGridTableJoin[];
     pagination: DataGridPagination;
     columns: DataGridColumn[];
@@ -138,7 +139,7 @@ router.post('/search/:table', (req, res) => {
     let fields = '*';
 
     if (settings.fields) {
-        if (typeof settings.fields ==='string') {
+        if (typeof settings.fields === 'string') {
             fields = settings.fields;
         } else {
             if (Array.isArray(settings.fields)) {
@@ -162,12 +163,24 @@ router.post('/search/:table', (req, res) => {
     `;
     const params: Array<string | number> = [];
     let searchLikes: string[] = [];
-    settings.columns.forEach(column => {
-        if (column.type !== 'actions') {
-            searchLikes.push(`t.${column.index} LIKE ?`);
+    if (settings.searchFields) {
+        settings.searchFields.forEach(field => {
+            if (field.indexOf('.') === -1) {
+                searchLikes.push(`t.${field} LIKE ?`);
+            } else {
+                searchLikes.push(`(${field}) LIKE ?`);
+            }
             params.push(search);
-        }
-    });
+        });
+    } else {
+        settings.columns.forEach(column => {
+            if (column.type !== 'actions') {
+                searchLikes.push(`t.${column.index} LIKE ?`);
+                params.push(search);
+            }
+        });
+    }
+
 
     query += '(' + searchLikes.join(' OR ') + ')';
 
