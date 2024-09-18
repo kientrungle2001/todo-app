@@ -13,6 +13,7 @@ export enum DataGridColumnType {
     DATE = "date",
     CURRENCY = "currency",
     STATUS = "status",
+    WORKFLOW = "workflow",
     ACTIONS = "actions"
 }
 
@@ -38,6 +39,17 @@ export interface DataGridTableJoin {
     condition?: string;
 }
 
+export interface DataGridWorkflowState {
+    state: string | number;
+    label: string;
+    actions?: DataGridWorkflowAction[];
+}
+
+export interface DataGridWorkflowAction {
+    label: string;
+    state: string | number; // new state to transition to
+}
+
 export interface DataGridColumn {
     index: string;
     label: string;
@@ -54,6 +66,7 @@ export interface DataGridColumn {
     actionType?: DataGridColumnActionType;
     width?: string;
     map?: any;
+    workflow?: DataGridWorkflowState[]
 }
 
 export interface DataGridFilterColumn {

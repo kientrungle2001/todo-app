@@ -1,4 +1,4 @@
-// file backend/src/routes/subject.ts
+// file src/routes/tables.ts
 import express from 'express';
 import pool from '../db';
 import { RowDataPacket } from 'mysql2';
