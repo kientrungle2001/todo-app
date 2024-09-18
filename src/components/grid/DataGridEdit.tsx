@@ -133,10 +133,17 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
         if (field.options) {
             return (
-                <Form.Select value={item[field.index]} onChange={(event) => {
-                    let updatedItem = { ...item };
-                    updatedItem[field.index] = event.target.value;
-                    setItem(updatedItem);
+                <Form.Select multiple={field.multiple} value={item[field.index]} onChange={(event) => {
+                    if (field.multiple) {
+                        let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                        let updatedItem = {...item };
+                        updatedItem[field.index] = selectedOptions.join(',');
+                        setItem(updatedItem);
+                    } else {
+                        let updatedItem = { ...item };
+                        updatedItem[field.index] = event.target.value;
+                        setItem(updatedItem);
+                    }
                 }}>
                     <option value={0}>Select</option>
                     {field.options.map(option => (
@@ -148,10 +155,17 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
             );
         } else if (typeof maps[field.index] === 'object') {
             return (
-                <Form.Select value={item[field.index]} onChange={(event) => {
-                    let updatedItem = { ...item };
-                    updatedItem[field.index] = event.target.value;
-                    setItem(updatedItem);
+                <Form.Select multiple={field.multiple} value={item[field.index]} onChange={(event) => {
+                    if (field.multiple) {
+                        let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                        let updatedItem = {...item };
+                        updatedItem[field.index] = selectedOptions.join(',');
+                        setItem(updatedItem);
+                    } else {
+                        let updatedItem = { ...item };
+                        updatedItem[field.index] = event.target.value;
+                        setItem(updatedItem);
+                    }
                 }}>
                     <option value={0}>Select</option>
                     {maps[field.index].map((option: any) => (

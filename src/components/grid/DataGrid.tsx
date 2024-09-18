@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import axios from "@/api/axiosInstance";
 import { ButtonVariant } from "react-bootstrap/esm/types";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -43,6 +44,7 @@ export interface DataGridColumn {
     type?: DataGridColumnType;
     treeMode?: boolean;
     multiple?: boolean;
+    inputable?: boolean;
     statusToggable?: boolean;
     format?: string;
     customFormat?: (value: any, item: any, table: string) => string | React.ReactNode;
@@ -115,6 +117,7 @@ interface DataGridProps {
     setPageSize: (pageSize: number) => void;
     onAfterDelete: (item: any) => void;
     onAfterChangeStatus: (column: DataGridColumn, item: any) => void;
+    onAfterSaveInputableColumn: (column: DataGridColumn) => void;
     messages: DataGridMessage[];
     setMessages: (messages: DataGridMessage[]) => void;
     isCheckedAll: boolean;
@@ -125,7 +128,7 @@ interface DataGridProps {
     deleteSelectedsLabel?: string;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -149,11 +152,46 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         }
     };
 
+    const [inputableMap, setInputableMap] = useState<any>({});
+
     const ColumnTextRenderer = (column: DataGridColumn, item: any) => {
+        if (column.inputable) {
+            return <Form.Control style={{ width: "100%" }} type="text" value={typeof inputableMap[item.id]!== 'undefined' && typeof inputableMap[item.id][column.index]!== 'undefined' ? inputableMap[item.id][column.index] : ''} onChange={(e) => {
+                let updatedInputableMap = {...inputableMap };
+                if (typeof updatedInputableMap[item.id] === "undefined") {
+                    updatedInputableMap[item.id] = {};
+                }
+                updatedInputableMap[item.id][column.index] = e.target.value;
+                setInputableMap(updatedInputableMap);
+            }} />;
+        }
         return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index]);
     };
 
+    useEffect(() => {
+        let updatedInputableMap: any = {};
+        items.forEach((item) => {
+            updatedInputableMap[item.id] = {};
+            columns.forEach((column) => {
+                if (column.inputable) {
+                    updatedInputableMap[item.id][column.index] = item[column.index];
+                }
+            });
+        });
+        setInputableMap(updatedInputableMap);
+    }, [items]);
+
     const ColumnNumberRenderer = (column: DataGridColumn, item: any) => {
+        if (column.inputable) {
+            return <Form.Control style={{ width: "100px" }} type="number" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : 0} onChange={(e) => {
+                let updatedInputableMap = { ...inputableMap };
+                if (typeof updatedInputableMap[item.id] === "undefined") {
+                    updatedInputableMap[item.id] = {};
+                }
+                updatedInputableMap[item.id][column.index] = Number(e.target.value);
+                setInputableMap(updatedInputableMap);
+            }} />;
+        }
         return column.customFormat ? column.customFormat(item[column.index], item, table) : String(item[column.index]);
     };
 
@@ -167,7 +205,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
 
     const ColumnStatusRenderer = (column: DataGridColumn, item: any) => {
         const handleChangeStatusField = (status: number) => {
-            axios.put(`/tables/${table}/update/${item.id}`, {item: { [column.index]: status }, fields: [column]}).then(() => {
+            axios.put(`/tables/${table}/update/${item.id}`, { item: { [column.index]: status }, fields: [column] }).then(() => {
                 item[column.index] = status;
                 onAfterChangeStatus(column, item);
             });
@@ -175,23 +213,23 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
 
         const getStatusLabel = (status: number) => {
             if (column.map) {
-                return column.map[status]?? '-';
+                return column.map[status] ?? '-';
             }
-            return (status === 1)? 'Active' : 'Inactive';
+            return (status === 1) ? 'Active' : 'Inactive';
         }
 
         if (column.statusToggable) {
             return <Form.Check
-            type="switch"
-            label={getStatusLabel(item[column.index])}
-            checked={item[column.index] === 1}
-            onChange={() => handleChangeStatusField(item[column.index] === 1 ? 0 : 1)}
-          />
+                type="switch"
+                label={getStatusLabel(item[column.index])}
+                checked={item[column.index] === 1}
+                onChange={() => handleChangeStatusField(item[column.index] === 1 ? 0 : 1)}
+            />
 
         } else {
             return getStatusLabel(item[column.index]);
         }
-        
+
     };
 
     const ColumnActionsRenderer = (column: DataGridColumn, item: any) => {
@@ -272,6 +310,20 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
         }
     }
 
+    const handleSaveInputableColumn = (column: DataGridColumn) => {
+        let values: any[] = [];
+        for (let itemId in inputableMap) {
+            let inputableItem = inputableMap[itemId];
+            values.push({
+                id: itemId,
+                value: inputableItem[column.index]
+            });
+        }
+        axios.put(`/tables/${table}/update-column`, { column: column, values }).then(() => {
+            onAfterSaveInputableColumn(column);
+        });
+    }
+
     return (
         <Container fluid className="mb-3 mt-3">
             <Row>
@@ -318,7 +370,14 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                                             <Form.Check type="checkbox" checked={isCheckedAll} onChange={handleCheckAll} />
                                         </th>
                                         {columns.map(column => (
-                                            <th key={column.index} style={{ width: column.width }}>{column.label}</th>
+                                            <th key={column.index} style={{ width: column.width }}>
+                                                {column.label}
+                                                {column.inputable && <>
+                                                    <Button className="ms-2" size="sm" variant="primary" onClick={() => handleSaveInputableColumn(column)}>
+                                                        Lưu
+                                                    </Button>
+                                                </>}
+                                            </th>
                                         ))}
                                     </tr>
                                     <tr>

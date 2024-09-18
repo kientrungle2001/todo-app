@@ -12,7 +12,7 @@ const gridColumns: DataGridColumn[] = [
     { index: "assignName", label: "Người phụ trách" },
     { index: "name", label: "Họ và tên", linkFormat: (value: any, item: any) => `/Table/student/${item.id}/edit` },
     { index: "email", label: "Email" },
-    { index: "phone", label: "Phone" },
+    { index: "phone", label: "Phone", inputable: true },
     { index: "address", label: "Địa chỉ" },
     {
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
@@ -21,6 +21,7 @@ const gridColumns: DataGridColumn[] = [
         },
         statusToggable: true
     },
+    { index: "birthYear", label: "Năm sinh", type: DataGridColumnType.NUMBER, inputable: true },
     { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
     { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
 ];
@@ -28,10 +29,12 @@ const gridColumns: DataGridColumn[] = [
 const gridFilters: DataGridFilterColumn[] = [
     { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
     { index: "assignId", label: "Người phụ trách", type: DataGridFilterColumnType.SELECT, table: "teacher", valueField: "id", labelField: "name" },
-    { index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-        0: 'Dừng học',
-        1: 'Đang học'
-    } },
+    {
+        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
+            0: 'Dừng học',
+            1: 'Đang học'
+        }
+    },
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
@@ -62,15 +65,19 @@ const gridAddFields: DataGridEditField[] = [
     { index: "email", label: "Email", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "phone", label: "Phone", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "address", label: "Địa chỉ", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "assignId", label: "Người phụ trách", type: DataGridEditFieldType.SELECT, size: 6, 
+    {
+        index: "assignId", label: "Người phụ trách", type: DataGridEditFieldType.SELECT, size: 6,
         table: "teacher",
         valueField: "id",
-        labelField: "name"
-     },
-    { index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
-        0: 'Dừng học',
-        1: 'Đang học'
-    }, statusToggable: true }
+        labelField: "name",
+        multiple: false
+    },
+    {
+        index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
+            0: 'Dừng học',
+            1: 'Đang học'
+        }, statusToggable: true
+    }
 ];
 
 const gridJoins: DataGridTableJoin[] = [
@@ -83,7 +90,7 @@ export const StudentSettings: TableGridSettings = {
     title: "Quản lý học sinh",
     table: "student",
     joins: gridJoins,
-    fields: ["id", "name", "email", "phone", "address", "status", "tc.name as assignName"],
+    fields: ["id", "name", "email", "phone", "address", "status", "tc.name as assignName", "birthYear"],
     searchFields: gridSearchFields,
     pagination: gridPagination,
     columns: gridColumns,

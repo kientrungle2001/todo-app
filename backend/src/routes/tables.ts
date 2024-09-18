@@ -266,6 +266,21 @@ router.put('/:table/update/:id', (req, res) => {
     });
 });
 
+router.put('/:table/update-column', (req, res) => {
+    const table = req.params.table;
+    const column: DataGridColumn = req.body.column;
+    const values: any[] = req.body.values;
+    values.forEach((item: any, index: number) => {
+        let params:any[] = [];
+        let updateQuery = `UPDATE \`${table}\` SET \`${column.index}\` =? WHERE id =?`;
+        params.push(item.value, item.id);
+        pool.query(updateQuery, params, (err) => {
+            if (err) throw err;
+        });
+    });
+    res.status(200).send('Column updated');
+});
+
 router.delete('/:table/delete/:id', (req, res) => {
     const table = req.params.table;
     const { id } = req.params;

@@ -62,6 +62,15 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
         handleListItems();
     }
 
+    const handleAfterSaveInputableColumn = (column: DataGridColumn) => {
+        let updatedMessages: DataGridMessage[] = [...messages];
+        updatedMessages.push({
+            label: `Column #${column.label} has been updated successfully`,
+            variant: "success"
+        });
+        handleListItems();
+    }
+
     const buildTree = (items: any[], parentField: string, __level = 0): any[] => {
         let result: any[] = [];
         items.forEach((item) => {
@@ -124,6 +133,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
+        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus} onAfterSaveInputableColumn={handleAfterSaveInputableColumn} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
     </>
 }
