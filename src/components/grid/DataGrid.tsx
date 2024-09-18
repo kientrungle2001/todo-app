@@ -165,7 +165,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters
                 setInputableMap(updatedInputableMap);
             }} />;
         }
-        return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index]);
+        return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '');
     };
 
     useEffect(() => {
