@@ -171,14 +171,17 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
 
     const ColumnTextRenderer = (column: DataGridColumn, item: any) => {
         if (column.inputable) {
-            return <Form.Control style={{ width: "100%" }} type="text" value={typeof inputableMap[item.id]!== 'undefined' && typeof inputableMap[item.id][column.index]!== 'undefined' ? inputableMap[item.id][column.index] : ''} onChange={(e) => {
-                let updatedInputableMap = {...inputableMap };
+            return <Form.Control style={{ width: "100%" }} type="text" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : ''} onChange={(e) => {
+                let updatedInputableMap = { ...inputableMap };
                 if (typeof updatedInputableMap[item.id] === "undefined") {
                     updatedInputableMap[item.id] = {};
                 }
                 updatedInputableMap[item.id][column.index] = e.target.value;
                 setInputableMap(updatedInputableMap);
             }} />;
+        }
+        if (column.map) {
+            return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.map[item[column.index]] ?? '-');
         }
         return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '');
     };

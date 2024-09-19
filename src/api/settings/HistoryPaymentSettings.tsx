@@ -19,6 +19,17 @@ const gridColumns: DataGridColumn[] = [
         },
         statusToggable: true
     },
+    {
+        index: "paymentType",
+        type: DataGridColumnType.TEXT,
+        label: "Loại thanh toán",
+        map: {
+            "bank": 'Chuyển khoản',
+            "money": 'Tiền mặt',
+            "wallets": 'Ví điện tử',
+            "nganluong": 'Ngân lượng'
+        }
+    },
     { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
     { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
 ];
@@ -76,7 +87,7 @@ export const HistoryPaymentSettings: TableGridSettings = {
     title: "Lịch sử thanh toán",
     table: "history_payment",
     joins: gridJoins,
-    fields: ["id", "username", "u.name as name", "u.phone as phone", "status"],
+    fields: ["id", "username", "u.name as name", "u.phone as phone", "paymentType", "status"],
     searchFields: gridSearchFields,
     pagination: gridPagination,
     columns: gridColumns,
