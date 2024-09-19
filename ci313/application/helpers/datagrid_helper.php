@@ -113,6 +113,16 @@ class DataGridSettings {
     public $table;
 
     /**
+     * @validate type="numeric"
+     */
+    public $software;
+
+    /**
+     * @validate type="numeric"
+     */
+    public $site;
+
+    /**
      * @var DataGridEditField[]
      */
     public $addFields; // Đây là mảng của các đối tượng DataGridEditField

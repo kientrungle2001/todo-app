@@ -10,6 +10,8 @@ export interface TableGridSettings {
     fields?: string | string[];
     searchFields?: string[];
     joins?: DataGridTableJoin[];
+    software?: number;
+    site?: number;
     pagination: DataGridPagination;
     columns: DataGridColumn[];
     filters: DataGridFilterColumn[];
@@ -133,6 +135,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
 
     }, [pagination, searchText, sorts, filterData]);
     return <>
-        <DataGrid totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus} onAfterSaveInputableColumn={handleAfterSaveInputableColumn} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
+        <DataGrid software={settings.software} site={settings.site} totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus} onAfterSaveInputableColumn={handleAfterSaveInputableColumn} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
     </>
 }

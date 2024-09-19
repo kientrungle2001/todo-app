@@ -113,6 +113,8 @@ export interface DataGridMessage {
 interface DataGridProps {
     title: string;
     table: string;
+    software?: number;
+    site?: number;
     columns: DataGridColumn[];
     items: any[];
     totalItems: number;
@@ -141,7 +143,7 @@ interface DataGridProps {
     deleteSelectedsLabel?: string;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
