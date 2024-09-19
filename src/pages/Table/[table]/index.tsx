@@ -1,4 +1,5 @@
 import { StudentSettings } from "@/api/settings/StudentSettings";
+import { UserSettings } from "@/api/settings/UserSettings";
 import { TableGrid } from "@/components/grid/TableGrid";
 import { useRouter } from "next/router";
 import React from "react";
@@ -9,6 +10,10 @@ export default function TableIndex(): React.ReactElement {
     if (table === "student") {
         return <>
             <TableGrid settings={StudentSettings} />
+        </>
+    } else if (table === "user") {
+        return <>
+            <TableGrid settings={UserSettings} />
         </>
     }
     return <div>Not found</div>;
