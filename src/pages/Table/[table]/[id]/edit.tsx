@@ -1,3 +1,4 @@
+import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
 import { UserSettings } from "@/api/settings/UserSettings";
 import { TableGridEdit } from "@/components/grid/TableGridEdit";
@@ -19,6 +20,10 @@ export default function TableEdit(): React.ReactElement {
     } else if (table === "user") {
         return <>
             <TableGridEdit itemId={itemId} settings={UserSettings} />
+        </>
+    } else if (table === "history_payment") {
+        return <>
+            <TableGridEdit itemId={itemId} settings={HistoryPaymentSettings} />
         </>
     }
     return <div>Not found</div>;

@@ -1,3 +1,4 @@
+import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
 import { UserSettings } from "@/api/settings/UserSettings";
 import { TableGrid } from "@/components/grid/TableGrid";
@@ -14,6 +15,10 @@ export default function TableIndex(): React.ReactElement {
     } else if (table === "user") {
         return <>
             <TableGrid settings={UserSettings} />
+        </>
+    } else if (table === "history_payment") {
+        return <>
+            <TableGrid settings={HistoryPaymentSettings} />
         </>
     }
     return <div>Not found</div>;
