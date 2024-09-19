@@ -12,7 +12,7 @@ const gridColumns: DataGridColumn[] = [
     { index: "assignName", label: "Người phụ trách" },
     { index: "name", label: "Họ và tên", linkFormat: (value: any, item: any) => `/Table/student/${item.id}/edit` },
     { index: "email", label: "Email" },
-    { index: "phone", label: "Phone", inputable: true },
+    { index: "phone", label: "Phone", inputable: false },
     { index: "address", label: "Địa chỉ" },
     {
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
