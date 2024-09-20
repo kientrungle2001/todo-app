@@ -1,4 +1,5 @@
 import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
+import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
 import { UserSettings } from "@/api/settings/UserSettings";
 import { TableGridAdd } from "@/components/grid/TableGridAdd";
@@ -19,6 +20,10 @@ export default function TableAdd(): React.ReactElement {
     } else if (table === "history_payment") {
         return <>
             <TableGridAdd settings={HistoryPaymentSettings} />
+        </>
+    } else if (table === "service_packages") {
+        return <>
+            <TableGridAdd settings={ServicePackagesSettings} />
         </>
     }
     return <div>Not found</div>;
