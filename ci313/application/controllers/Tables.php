@@ -78,6 +78,10 @@ class Tables extends CI_Controller
         if ($softwareAndSiteFilters['siteFilter']) {
             $query.= ' AND '. $softwareAndSiteFilters['siteFilter'];
         }
+        $condition = $this->input->post('condition');
+        if ($condition) {
+            $query.= " AND $condition";
+        }
         $items = $this->db->query($query)->result_array();
         $response = $this->casting_numeric_fields($items);
         $this->output

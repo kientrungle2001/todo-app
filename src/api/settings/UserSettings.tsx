@@ -65,6 +65,18 @@ const gridAddFields: DataGridEditField[] = [
     { index: "phone", label: "Phone", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "address", label: "Địa chỉ", type: DataGridEditFieldType.TEXT, size: 6 },
     {
+        index: "areacode", label: "Tỉnh/Thành phố", type: DataGridEditFieldType.SELECT, size: 6,
+        table: "areacode", valueField: "id", labelField: "name", tableCondition: "type='province'"
+    },
+    {
+        index: "district", label: "Quận / Huyện", type: DataGridEditFieldType.SELECT, size: 6,
+        table: "areacode", valueField: "id", labelField: "name", tableCondition: (item) => "type='district' and parent = '" + item.areacode + "'",
+    },
+    {
+        index: "school", label: "Trường", type: DataGridEditFieldType.SELECT, size: 6,
+        table: "areacode", valueField: "id", labelField: "name", tableCondition: (item) => "type='school' and parent = '" + item.district + "'",
+    },
+    {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
             0: 'Dừng học',
             1: 'Đang học'
@@ -74,7 +86,7 @@ const gridAddFields: DataGridEditField[] = [
 
 const gridJoins: DataGridTableJoin[] = [];
 
-const gridSearchFields: string[] = ["id","username", "name", "email", "phone", "address"];
+const gridSearchFields: string[] = ["id", "username", "name", "email", "phone", "address"];
 
 export const UserSettings: TableGridSettings = {
     title: "Quản lý học sinh",

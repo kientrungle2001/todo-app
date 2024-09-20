@@ -28,6 +28,7 @@ export interface DataGridEditField {
     options?: any[];
     map?: any;
     table?: string;
+    tableCondition?: string | ((item: any) => string);
     valueField?: string;
     labelField?: string;
 }
@@ -50,22 +51,39 @@ interface DataGridEditProps {
 const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
 
     useEffect(() => {
-        fields.forEach(field => {
-            if (field.type === DataGridEditFieldType.SELECT && field.table) {
-                axios.post(`/tables/${field.table}/map`, {
-                    fields: [field.valueField, field.labelField]
-                })
-                    .then(response => {
-                        let updatedMaps = { ...maps };
-                        updatedMaps[field.index] = response.data;
-                        setMaps(updatedMaps);
+        const setMapsForFields = () => {
+            let updatedMaps = { ...maps };
+            fields.forEach((field) => {
+                if (field.type === DataGridEditFieldType.SELECT && field.table) {
+
+                    let condition = null;
+                    if (field.tableCondition) {
+                        if (typeof field.tableCondition === 'function') {
+                            condition = field.tableCondition(item);
+                        } else {
+                            condition = field.tableCondition;
+                        }
+                    }
+                    axios.post(`/tables/${field.table}/map`, {
+                        fields: [field.valueField, field.labelField],
+                        condition: condition
                     })
-                    .catch(error => {
-                        console.error('Error fetching map data:', error);
-                    });
-            }
-        });
-    }, []);
+                        .then(response => {
+                            updatedMaps[field.index] = response.data;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching map data:', error);
+                        });
+
+                }
+            });
+            setTimeout(() => {
+                setMaps(updatedMaps);
+            }, 1000);
+        };
+        setMapsForFields();
+
+    }, [item]);
     const [maps, setMaps] = React.useState<any>({});
 
     const FieldTextRenderer = (field: DataGridEditField, item: any) => {
@@ -136,7 +154,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                 <Form.Select multiple={field.multiple} value={item[field.index]} onChange={(event) => {
                     if (field.multiple) {
                         let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                        let updatedItem = {...item };
+                        let updatedItem = { ...item };
                         updatedItem[field.index] = selectedOptions.join(',');
                         setItem(updatedItem);
                     } else {
@@ -158,7 +176,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                 <Form.Select multiple={field.multiple} value={item[field.index]} onChange={(event) => {
                     if (field.multiple) {
                         let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                        let updatedItem = {...item };
+                        let updatedItem = { ...item };
                         updatedItem[field.index] = selectedOptions.join(',');
                         setItem(updatedItem);
                     } else {
