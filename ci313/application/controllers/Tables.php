@@ -106,6 +106,14 @@ class Tables extends CI_Controller
                 $data[$field['index']] = $item[$field['index']];
             }
         }
+        $software = $this->input->get_request_header('software');
+        $site = $this->input->get_request_header('site');
+        if ($this->isFieldExisted($table, 'software')) {
+            $data['software'] = $software;
+        }
+        if ($this->isFieldExisted($table,'site') && !isset($data['site'])) {
+            $data['site'] = $site;
+        }
         $this->db->where('id', $id);
         $this->db->update($table, $data);
         $response = ['message' => 'Update successful'];
@@ -135,6 +143,14 @@ class Tables extends CI_Controller
             if (isset($item[$field['index']])) {
                 $data[$field['index']] = $item[$field['index']];
             }
+        }
+        $software = $this->input->get_request_header('software');
+        $site = $this->input->get_request_header('site');
+        if ($this->isFieldExisted($table, 'software')) {
+            $data['software'] = $software;
+        }
+        if ($this->isFieldExisted($table,'site') && !isset($data['site'])) {
+            $data['site'] = $site;
         }
         $this->db->insert($table, $data);
         $response = ['id' => $this->db->insert_id()];
