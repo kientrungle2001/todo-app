@@ -6,9 +6,11 @@ const gridTitle: string = "Lịch sử thanh toán";
 const gridTable: string = "history_payment";
 const gridJoins: DataGridTableJoin[] = [{
     table: "user", alias: "u", type: "left", condition: "u.username = t.username"
+}, {
+    table: "service_packages", alias: "sp", type: "left", condition: "t.serviceId = sp.id"
 }];
-const gridSearchFields: string[] = ["id", "username", "bank", "u.name", "u.email", "u.phone", "u.address"];
-const gridFields: string[] = ["id", "username", "u.name as name", "u.phone as phone", "amount", "paymentType", "bank", "paymentDate", "expiredDate", "status", "paymentStatus"];
+const gridSearchFields: string[] = ["id", "username", "bank", "u.name", "u.email", "u.phone", "u.address", "sp.serviceName"];
+const gridFields: string[] = ["id", "username", "u.name as name", "u.phone as phone", "sp.serviceName as serviceName", "amount", "paymentType", "bank", "paymentDate", "expiredDate", "status", "paymentStatus"];
 
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
@@ -16,6 +18,7 @@ const gridColumns: DataGridColumn[] = [
     { index: "name", label: "Họ và tên", linkFormat: (value: any, item: any) => `/Table/history_payment/${item.id}/edit` },
     { index: "phone", label: "Phone" },
     { index: "amount", label: "Số tiền", type: DataGridColumnType.CURRENCY },
+    { index: "serviceName", label: "Dịch vụ" },
     {
         index: "paymentType",
         type: DataGridColumnType.TEXT,

@@ -268,11 +268,11 @@ class Tables extends CI_Controller
         $softwareFilter = '';
         $siteFilter = '';
         if ($this->isFieldExisted($table, 'software')) {
-            $softwareFilter = "software = '$software'";
+            $softwareFilter = "t.software = '$software'";
         }
 
         if ($this->isFieldExisted($table, 'site')) {
-            $siteFilter = "site in ($site, 0)";
+            $siteFilter = "t.site in ($site, 0)";
         }
         return array('softwareFilter' => $softwareFilter, 'siteFilter' => $siteFilter);
     }
