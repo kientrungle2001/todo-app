@@ -2,6 +2,13 @@ import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridF
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
+const gridJoins: DataGridTableJoin[] = [
+    {
+        table: "areacode", alias: "p", type: "left", condition: "t.areacode = p.id"
+    }
+];
+const gridFields: string[] = ["id", "username", "name", "email", "phone", "address", "p.name as provinceName", "status"];
+const gridSearchFields: string[] = ["id", "username", "name", "email", "phone", "address"];
 const gridPagination: DataGridPagination = {
     currentPage: 1,
     pageSize: 20
@@ -13,6 +20,7 @@ const gridColumns: DataGridColumn[] = [
     { index: "name", label: "Họ và tên", linkFormat: (value: any, item: any) => `/Table/user/${item.id}/edit` },
     { index: "email", label: "Email" },
     { index: "phone", label: "Phone", inputable: false },
+    { index: "provinceName", label: "Thành phố" },
     { index: "address", label: "Địa chỉ" },
     {
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
@@ -84,15 +92,11 @@ const gridAddFields: DataGridEditField[] = [
     }
 ];
 
-const gridJoins: DataGridTableJoin[] = [];
-
-const gridSearchFields: string[] = ["id", "username", "name", "email", "phone", "address"];
-
 export const UserSettings: TableGridSettings = {
     title: "Quản lý học sinh",
     table: "user",
     joins: gridJoins,
-    fields: ["id", "username", "name", "email", "phone", "address", "status"],
+    fields: gridFields,
     searchFields: gridSearchFields,
     pagination: gridPagination,
     columns: gridColumns,

@@ -79,7 +79,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
             });
             setTimeout(() => {
                 setMaps(updatedMaps);
-            }, 1000);
+            }, 200);
         };
         setMapsForFields();
 
