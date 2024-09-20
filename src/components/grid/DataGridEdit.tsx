@@ -147,8 +147,8 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                 }}>
                     <option value={0}>Select</option>
                     {field.options.map(option => (
-                        <option key={option.id} value={option.id}>
-                            {field.map ? field.map[option.id] : option.name}
+                        <option key={option.value} value={option.value}>
+                            {option.label}
                         </option>
                     ))}
                 </Form.Select>

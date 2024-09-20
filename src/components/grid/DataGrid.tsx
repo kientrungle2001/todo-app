@@ -7,6 +7,8 @@ import { ButtonVariant } from "react-bootstrap/esm/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { format } from "date-fns";
+
 export enum DataGridColumnType {
     TEXT = "text",
     NUMBER = "number",
@@ -213,12 +215,16 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
         return column.customFormat ? column.customFormat(item[column.index], item, table) : String(item[column.index]);
     };
 
+    function formatCurrency(amount: number) {
+        return amount.toLocaleString('vi-VN') + 'đ';
+    }
+
     const ColumnCurrencyRenderer = (column: DataGridColumn, item: any) => {
-        return column.customFormat ? column.customFormat(item[column.index], item, table) : `$${item[column.index]}`;
+        return column.customFormat ? column.customFormat(item[column.index], item, table) : formatCurrency(item[column.index]);
     };
 
     const ColumnDateRenderer = (column: DataGridColumn, item: any) => {
-        return column.customFormat ? column.customFormat(new Date(item[column.index]), item, table) : new Date(item[column.index]).toLocaleString();
+        return column.customFormat ? column.customFormat(new Date(item[column.index]), item, table) : format(new Date(item[column.index]), column.format ?? 'dd/MM/yyyy');
     };
 
     const ColumnStatusRenderer = (column: DataGridColumn, item: any) => {

@@ -70,7 +70,15 @@ class Tables extends CI_Controller
     {
         $fields = $this->input->post('fields');
         $fields = implode(', ', $fields);
-        $items = $this->db->query("SELECT {$fields} FROM `$table`")->result_array();
+        $query = "SELECT {$fields} FROM `$table` as t WHERE 1";
+        $softwareAndSiteFilters = $this->getSoftwareAndSiteFilters($table);
+        if ($softwareAndSiteFilters['softwareFilter']) {
+            $query .= ' AND ' . $softwareAndSiteFilters['softwareFilter'];
+        }
+        if ($softwareAndSiteFilters['siteFilter']) {
+            $query.= ' AND '. $softwareAndSiteFilters['siteFilter'];
+        }
+        $items = $this->db->query($query)->result_array();
         $response = $this->casting_numeric_fields($items);
         $this->output
             ->set_status_header(200)
@@ -211,6 +219,16 @@ class Tables extends CI_Controller
             $query .= " AND (" . implode(' AND ', $filterConditions) . ")";
         }
 
+        $softwareAndSiteFilters = $this->getSoftwareAndSiteFilters($settings->table);
+        if ($softwareAndSiteFilters['softwareFilter'] || $softwareAndSiteFilters['siteFilter']) {
+            if ($softwareAndSiteFilters['softwareFilter']) {
+                $query .= ' AND ' . $softwareAndSiteFilters['softwareFilter'];
+            }
+            if ($softwareAndSiteFilters['siteFilter']) {
+                $query.= ' AND '. $softwareAndSiteFilters['siteFilter'];
+            }
+        }
+
         $orderBys = [];
         foreach ($sorts as $sort) {
             $orderBys[] = "t.{$sort->index} {$sort->direction}";
@@ -225,6 +243,34 @@ class Tables extends CI_Controller
             'sql' => $query,
             'params' => $params
         ];
+    }
+
+    private function getSoftwareAndSiteFilters($table)
+    {
+        $software = $this->input->get_request_header('X-Api-Software');
+        $site = $this->input->get_request_header('X-Api-Site');
+        $softwareFilter = '';
+        $siteFilter = '';
+        if ($this->isFieldExisted($table, 'software')) {
+            $softwareFilter = "software = '$software'";
+        }
+
+        if ($this->isFieldExisted($table, 'site')) {
+            $siteFilter = "site in ($site, 0)";
+        }
+        return array('softwareFilter' => $softwareFilter, 'siteFilter' => $siteFilter);
+    }
+
+    private function isFieldExisted($table, $field)
+    {
+        $query = "DESCRIBE $table";
+        $result = $this->db->query($query)->result_array();
+        foreach ($result as $row) {
+            if ($row['Field'] === $field) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -267,6 +313,16 @@ class Tables extends CI_Controller
 
         if (!empty($filterConditions)) {
             $totalCountQuery .= " AND (" . implode(' AND ', $filterConditions) . ")";
+        }
+
+        $softwareAndSiteFilters = $this->getSoftwareAndSiteFilters($settings->table);
+        if ($softwareAndSiteFilters['softwareFilter'] || $softwareAndSiteFilters['siteFilter']) {
+            if ($softwareAndSiteFilters['softwareFilter']) {
+                $totalCountQuery.= ' AND '. $softwareAndSiteFilters['softwareFilter'];
+            }
+            if ($softwareAndSiteFilters['siteFilter']) {
+                $totalCountQuery.= ' AND '. $softwareAndSiteFilters['siteFilter'];
+            }
         }
 
         return [
