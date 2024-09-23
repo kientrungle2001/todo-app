@@ -1,3 +1,4 @@
+import { AdminMenuSettings } from "@/api/settings/AdminMenuSettings";
 import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
 import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
@@ -24,6 +25,10 @@ export default function TableAdd(): React.ReactElement {
     } else if (table === "service_packages") {
         return <>
             <TableGridAdd settings={ServicePackagesSettings} />
+        </>
+    } else if (table === "admin_menu") {
+        return <>
+            <TableGridAdd settings={AdminMenuSettings} />
         </>
     }
     return <div>Not found</div>;

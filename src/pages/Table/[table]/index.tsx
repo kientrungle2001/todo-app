@@ -1,3 +1,4 @@
+import { AdminMenuSettings } from "@/api/settings/AdminMenuSettings";
 import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
 import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
@@ -24,6 +25,10 @@ export default function TableIndex(): React.ReactElement {
     } else if (table === "service_packages") {
         return <>
             <TableGrid settings={ServicePackagesSettings} />
+        </>
+    } else if (table === "admin_menu") {
+        return <>
+            <TableGrid settings={AdminMenuSettings} />
         </>
     }
     return <div>Not found</div>;

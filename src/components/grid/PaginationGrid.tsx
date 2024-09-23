@@ -18,7 +18,8 @@ export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination, setC
             pages.push(i);
         }
     }
-    pages.push(totalPages);
+    if (pages.indexOf(totalPages) === -1)
+        pages.push(totalPages);
     return <>
         Số mục: <Form.Select size="sm" value={pagination.pageSize} onChange={(event) => {
             setPageSize(parseInt(event.target.value));

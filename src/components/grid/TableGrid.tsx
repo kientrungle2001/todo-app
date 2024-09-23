@@ -73,25 +73,30 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
         handleListItems();
     }
 
-    const buildTree = (items: any[], parentField: string, __level = 0): any[] => {
+    const buildTree = (items: any[], parentField: string, __level = 0, parent: any = null): any[] => {
         let result: any[] = [];
         items.forEach((item) => {
-            item.__level = __level;
-            item.__children = buildTree(items.filter((i) => i[parentField] === item.id), parentField, __level + 1);
+            if (item[parentField] === (parent?.id ?? 0)) {
+                let children: any[] = buildTree(items, parentField, __level + 1, item);
+                if (children.length > 0) {
+                    item.__children = children;
+                } else {
+                    delete item.__children;
+                }
+                result.push(item);
+            }
         });
         return result;
     }
 
-    const getRootItems = (items: any[]): any[] => {
-        return items.filter((item) => item.__children.length === 0);
-    }
 
-    const flatTree = (items: any[]): any[] => {
+    const flatTree = (items: any[], level = 0): any[] => {
         let result: any[] = [];
         items.forEach((item) => {
+            item.__level = level;
             result.push(item);
             if (item.__children) {
-                result = result.concat(flatTree(item.__children));
+                result = result.concat(flatTree(item.__children, level + 1));
             }
         });
         return result;
@@ -109,7 +114,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
             if (settings.treeMode) {
                 let items: any[] = resp.data.items;
                 items = buildTree(items, settings.treeParentField ?? 'parent');
-                items = getRootItems(items);
                 items = flatTree(items);
                 setItems(items);
             } else {

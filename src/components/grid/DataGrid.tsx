@@ -173,19 +173,22 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
 
     const ColumnTextRenderer = (column: DataGridColumn, item: any) => {
         if (column.inputable) {
-            return <Form.Control style={{ width: "100%" }} type="text" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : ''} onChange={(e) => {
-                let updatedInputableMap = { ...inputableMap };
-                if (typeof updatedInputableMap[item.id] === "undefined") {
-                    updatedInputableMap[item.id] = {};
-                }
-                updatedInputableMap[item.id][column.index] = e.target.value;
-                setInputableMap(updatedInputableMap);
-            }} />;
+            return <>
+                {(column.treeMode ? '|____'.repeat(item.__level) + ' ' : '')}
+                <Form.Control style={{ width: "100%" }} type="text" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : ''} onChange={(e) => {
+                    let updatedInputableMap = { ...inputableMap };
+                    if (typeof updatedInputableMap[item.id] === "undefined") {
+                        updatedInputableMap[item.id] = {};
+                    }
+                    updatedInputableMap[item.id][column.index] = e.target.value;
+                    setInputableMap(updatedInputableMap);
+                }} />
+            </>;
         }
         if (column.map) {
-            return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.map[item[column.index]] ?? '-');
+            return (column.treeMode ? '|____'.repeat(item.__level) + ' ' : '') + (column.map[item[column.index]] ?? '-');
         }
-        return (column.treeMode ? '|____'.repeat(item.__level) : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '');
+        return (column.treeMode ? '|____'.repeat(item.__level) + ' ' : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '');
     };
 
     useEffect(() => {
@@ -203,16 +206,22 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
 
     const ColumnNumberRenderer = (column: DataGridColumn, item: any) => {
         if (column.inputable) {
-            return <Form.Control style={{ width: "100px" }} type="number" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : 0} onChange={(e) => {
-                let updatedInputableMap = { ...inputableMap };
-                if (typeof updatedInputableMap[item.id] === "undefined") {
-                    updatedInputableMap[item.id] = {};
-                }
-                updatedInputableMap[item.id][column.index] = Number(e.target.value);
-                setInputableMap(updatedInputableMap);
-            }} />;
+            return <>
+                {(column.treeMode ? '|____'.repeat(item.__level) + ' ' : '')}
+                <Form.Control style={{ width: "100px", display: "inline-block" }} type="number" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : 0} onChange={(e) => {
+                    let updatedInputableMap = { ...inputableMap };
+                    if (typeof updatedInputableMap[item.id] === "undefined") {
+                        updatedInputableMap[item.id] = {};
+                    }
+                    updatedInputableMap[item.id][column.index] = Number(e.target.value);
+                    setInputableMap(updatedInputableMap);
+                }} />
+            </>;
         }
-        return column.customFormat ? column.customFormat(item[column.index], item, table) : String(item[column.index]);
+        return <>
+            {(column.treeMode ? '|____'.repeat(item.__level) + ' ' : '')}
+            {column.customFormat ? column.customFormat(item[column.index], item, table) : String(item[column.index])}
+        </>;
     };
 
     function formatCurrency(amount: number) {
@@ -298,7 +307,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
     const renderColumn = (column: DataGridColumn, item: any) => {
         const columnRenderer = getColumnRenderer(column.type ?? DataGridColumnType.TEXT);
         if (column.linkFormat) {
-            return <Link href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item)}</Link>;
+            return <Link style={{ textDecoration: "none" }} href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item)}</Link>;
         }
         return columnRenderer(column, item);
     };

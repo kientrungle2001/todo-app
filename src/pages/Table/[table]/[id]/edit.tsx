@@ -1,3 +1,4 @@
+import { AdminMenuSettings } from "@/api/settings/AdminMenuSettings";
 import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
 import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
@@ -29,6 +30,10 @@ export default function TableEdit(): React.ReactElement {
     } else if (table === "service_packages") {
         return <>
             <TableGridEdit itemId={itemId} settings={ServicePackagesSettings} />
+        </>
+    } else if (table === "admin_menu") {
+        return <>
+            <TableGridEdit itemId={itemId} settings={AdminMenuSettings} />
         </>
     }
     return <div>Not found</div>;
