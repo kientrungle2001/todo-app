@@ -96,7 +96,8 @@ const gridAddFields: DataGridEditField[] = [
                 value: "5",
                 label: "Lớp 5"
             }
-        ]
+        ],
+        select2: true
     },
     {
         index: "categoryIds", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
@@ -107,6 +108,7 @@ const gridAddFields: DataGridEditField[] = [
         treeMode: true,
         parentField: "parent",
         multipleSize: 10,
+        select2: true
     },
     {
         index: "testId", label: "Đề thi", type: DataGridEditFieldType.SELECT, size: 6,
@@ -117,6 +119,7 @@ const gridAddFields: DataGridEditField[] = [
         treeMode: true,
         parentField: "parent",
         multipleSize: 10,
+        select2: true
     },
     {
         index: "questionType", label: "Dạng câu hỏi", type: DataGridEditFieldType.SELECT, size: 6,
@@ -128,7 +131,8 @@ const gridAddFields: DataGridEditField[] = [
                 value: 4,
                 label: "Tự luận"
             }
-        ]
+        ],
+        select2: true
     },
     {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {

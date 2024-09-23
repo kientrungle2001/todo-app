@@ -4,6 +4,7 @@ import axios from "@/api/axiosInstance";
 import { buildTree, flatTree } from "@/api/tree";
 import { TopMenuGrid } from "./TopMenuGrid";
 import { Editor } from "@tinymce/tinymce-react";
+import $ from "jquery";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -38,6 +39,7 @@ export interface DataGridEditField {
     parentField?: string;
     orderBy?: string;
     multipleSize?: number;
+    select2?: boolean;
 }
 
 interface DataGridEditProps {
@@ -166,20 +168,58 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     }
 
     const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
+        const selectRef = React.useRef(null);
+    
+        useEffect(() => {
+            if (field.select2 && selectRef.current) {
+                const $select = $(selectRef.current);
+                $select.select2({
+                    theme: 'bootstrap-5', // Optional: you can customize the theme
+                    placeholder: 'Select',
+                    allowClear: true,
+                });
+    
+                // When the selection changes, update the item state
+                $select.on('change', function () {
+                    const selectedValues = $select.val();
+                    let updatedItem = { ...item };
+                    if (field.multiple) {
+                        updatedItem[field.index] = selectedValues;
+                    } else {
+                        updatedItem[field.index] = selectedValues?.[0] ?? '';
+                    }
+                    setItem(updatedItem);
+                });
+    
+                // Clean up Select2 on unmount
+                return () => {
+                    $select.select2('destroy');
+                };
+            }
+        }, [field, item, selectRef.current]);
+    
         if (field.options) {
             return (
-                <Form.Select multiple={field.multiple} htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} value={item[field.index]} onChange={(event) => {
-                    if (field.multiple) {
-                        let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = selectedOptions.join(',');
-                        setItem(updatedItem);
-                    } else {
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = event.target.value;
-                        setItem(updatedItem);
-                    }
-                }}>
+                <Form.Select 
+                    multiple={field.multiple} 
+                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} 
+                    value={item[field.index]} 
+                    ref={selectRef}
+                    onChange={(event) => {
+                        if (!field.select2) {
+                            if (field.multiple) {
+                                const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                                let updatedItem = { ...item };
+                                updatedItem[field.index] = selectedOptions.join(',');
+                                setItem(updatedItem);
+                            } else {
+                                let updatedItem = { ...item };
+                                updatedItem[field.index] = event.target.value;
+                                setItem(updatedItem);
+                            }
+                        }
+                    }}
+                >
                     <option value={0}>Select</option>
                     {field.options.map(option => (
                         <option key={option.value} value={option.value}>
@@ -190,18 +230,26 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
             );
         } else if (typeof maps[field.index] === 'object') {
             return (
-                <Form.Select multiple={field.multiple} htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} value={item[field.index]} onChange={(event) => {
-                    if (field.multiple) {
-                        let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = selectedOptions.join(',');
-                        setItem(updatedItem);
-                    } else {
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = event.target.value;
-                        setItem(updatedItem);
-                    }
-                }}>
+                <Form.Select 
+                    multiple={field.multiple} 
+                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} 
+                    value={item[field.index]} 
+                    ref={selectRef}
+                    onChange={(event) => {
+                        if (!field.select2) {
+                            if (field.multiple) {
+                                const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                                let updatedItem = { ...item };
+                                updatedItem[field.index] = selectedOptions.join(',');
+                                setItem(updatedItem);
+                            } else {
+                                let updatedItem = { ...item };
+                                updatedItem[field.index] = event.target.value;
+                                setItem(updatedItem);
+                            }
+                        }
+                    }}
+                >
                     <option value={0}>Select</option>
                     {maps[field.index].map((option: any) => (
                         <option key={option[field.valueField as string]} value={option[field.valueField as string]}>
@@ -222,7 +270,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                 </Form.Select>
             );
         }
-    }
+    };
 
     const FieldCheckboxRenderer = (field: DataGridEditField, item: any) => {
         return (
