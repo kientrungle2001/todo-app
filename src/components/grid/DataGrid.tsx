@@ -71,6 +71,7 @@ export interface DataGridColumn {
     map?: any;
     workflow?: DataGridWorkflowState[];
     hideLabel?: boolean;
+    isHtml?: boolean;
 }
 
 export interface DataGridFilterColumn {
@@ -186,6 +187,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                     updatedInputableMap[item.id][column.index] = e.target.value;
                     setInputableMap(updatedInputableMap);
                 }} />
+            </>;
+        }
+        if (column.isHtml) {
+            return <>
+                <div dangerouslySetInnerHTML={{ __html: column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '' }} />
             </>;
         }
         if (column.map) {
@@ -432,7 +438,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                                     <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
                                                 </td>
                                                 {columns.map(column => (
-                                                    <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap': 'normal' }}>
+                                                    <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap' : 'normal' }}>
                                                         {renderColumn(column, item)}
                                                     </td>
                                                 ))}

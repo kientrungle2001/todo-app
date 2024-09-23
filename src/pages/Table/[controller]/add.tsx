@@ -1,6 +1,7 @@
 import { AdminMenuSettings } from "@/api/settings/AdminMenuSettings";
 import { AdminCategoriesSettings } from "@/api/settings/CategoriesSettings";
 import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
+import { AdminQuestionSettings } from "@/api/settings/QuestionSettings";
 import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
 import { UserSettings } from "@/api/settings/UserSettings";
@@ -34,6 +35,10 @@ export default function TableAdd(): React.ReactElement {
     } else if (controller === "admin_category") {
         return <>
             <TableGridAdd controller={controller} settings={AdminCategoriesSettings} />
+        </>
+    } else if (controller === "admin_question2") {
+        return <>
+            <TableGridAdd controller={controller} settings={AdminQuestionSettings} />
         </>
     }
     return <div>Not found</div>;

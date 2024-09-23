@@ -36,6 +36,7 @@ export interface DataGridEditField {
     treeMode?: boolean;
     parentField?: string;
     orderBy?: string;
+    multipleSize?: number;
 }
 
 interface DataGridEditProps {
@@ -166,7 +167,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
         if (field.options) {
             return (
-                <Form.Select multiple={field.multiple} value={item[field.index]} onChange={(event) => {
+                <Form.Select multiple={field.multiple} htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} value={item[field.index]} onChange={(event) => {
                     if (field.multiple) {
                         let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
                         let updatedItem = { ...item };
@@ -188,7 +189,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
             );
         } else if (typeof maps[field.index] === 'object') {
             return (
-                <Form.Select multiple={field.multiple} value={item[field.index]} onChange={(event) => {
+                <Form.Select multiple={field.multiple} htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} value={item[field.index]} onChange={(event) => {
                     if (field.multiple) {
                         let selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
                         let updatedItem = { ...item };
