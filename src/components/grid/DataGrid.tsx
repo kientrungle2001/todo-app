@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { format } from "date-fns";
+import { TopMenuGrid } from "./TopMenuGrid";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -68,7 +69,8 @@ export interface DataGridColumn {
     actionType?: DataGridColumnActionType;
     width?: string;
     map?: any;
-    workflow?: DataGridWorkflowState[]
+    workflow?: DataGridWorkflowState[];
+    hideLabel?: boolean;
 }
 
 export interface DataGridFilterColumn {
@@ -114,6 +116,7 @@ export interface DataGridMessage {
 
 interface DataGridProps {
     title: string;
+    controller: string;
     table: string;
     software?: number;
     site?: number;
@@ -145,18 +148,18 @@ interface DataGridProps {
     deleteSelectedsLabel?: string;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
         router.push(path);
     };
     const handleEditItem = (item: any) => {
-        handleNavigation(`/Table/${table}/${item.id}/edit`);
+        handleNavigation(`/Table/${controller}/${item.id}/edit`);
     }
 
     const handleAddItem = () => {
-        handleNavigation(`/Table/${table}/add`);
+        handleNavigation(`/Table/${controller}/add`);
     }
 
     const handleDeleteItem = (item: any) => {
@@ -174,7 +177,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
     const ColumnTextRenderer = (column: DataGridColumn, item: any) => {
         if (column.inputable) {
             return <>
-                {(column.treeMode ? '|____'.repeat(item.__level) + ' ' : '')}
+                {(column.treeMode ? '|__'.repeat(item.__level) + ' ' : '')}
                 <Form.Control style={{ width: "100%" }} type="text" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : ''} onChange={(e) => {
                     let updatedInputableMap = { ...inputableMap };
                     if (typeof updatedInputableMap[item.id] === "undefined") {
@@ -186,9 +189,9 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
             </>;
         }
         if (column.map) {
-            return (column.treeMode ? '|____'.repeat(item.__level) + ' ' : '') + (column.map[item[column.index]] ?? '-');
+            return (column.treeMode ? '|__'.repeat(item.__level) + ' ' : '') + (column.map[item[column.index]] ?? '-');
         }
-        return (column.treeMode ? '|____'.repeat(item.__level) + ' ' : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '');
+        return (column.treeMode ? '|__'.repeat(item.__level) + ' ' : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '');
     };
 
     useEffect(() => {
@@ -207,8 +210,8 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
     const ColumnNumberRenderer = (column: DataGridColumn, item: any) => {
         if (column.inputable) {
             return <>
-                {(column.treeMode ? '|____'.repeat(item.__level) + ' ' : '')}
-                <Form.Control style={{ width: "100px", display: "inline-block" }} type="number" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : 0} onChange={(e) => {
+                {(column.treeMode ? '|__'.repeat(item.__level) + ' ' : '')}
+                <Form.Control size="sm" style={{ width: "60px", display: "inline-block" }} type="number" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : 0} onChange={(e) => {
                     let updatedInputableMap = { ...inputableMap };
                     if (typeof updatedInputableMap[item.id] === "undefined") {
                         updatedInputableMap[item.id] = {};
@@ -219,7 +222,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
             </>;
         }
         return <>
-            {(column.treeMode ? '|____'.repeat(item.__level) + ' ' : '')}
+            {(column.treeMode ? '|__'.repeat(item.__level) + ' ' : '')}
             {column.customFormat ? column.customFormat(item[column.index], item, table) : String(item[column.index])}
         </>;
     };
@@ -254,7 +257,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
         if (column.statusToggable) {
             return <Form.Check
                 type="switch"
-                label={getStatusLabel(item[column.index])}
+                label={column.hideLabel ? '' : getStatusLabel(item[column.index])}
                 checked={item[column.index] === 1}
                 onChange={() => handleChangeStatusField(item[column.index] === 1 ? 0 : 1)}
             />
@@ -358,102 +361,106 @@ const DataGrid: React.FC<DataGridProps> = ({ title, table, software, site, colum
     }
 
     return (
-        <Container fluid className="mb-3 mt-3">
-            <Row>
-                <Col sm={12} md={3} lg={2}>
-                    <Card>
-                        <Card.Header className="d-flex justify-content-between align-items-center">
-                            <span>Bộ lọc</span>
-                            <div>
-                                <Button size="sm" variant="danger" onClick={handleResetFilter}>Reset</Button>
-                            </div>
-                        </Card.Header>
-                        <Card.Body>
-                            <FiltersGrid filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
-                        </Card.Body>
-                    </Card>
+        <>
 
-                </Col>
-                <Col sm={12} md={9} lg={10}>
-                    <Card>
-                        <Card.Header className="d-flex justify-content-between align-items-center">
-                            {/* Title on the left */}
-                            <span>{title}</span>
+            <Container fluid className="mb-3 mt-3">
+                <TopMenuGrid />
+                <Row>
+                    <Col sm={12} md={3} lg={2}>
+                        <Card>
+                            <Card.Header className="d-flex justify-content-between align-items-center">
+                                <span>Bộ lọc</span>
+                                <div>
+                                    <Button size="sm" variant="danger" onClick={handleResetFilter}>Reset</Button>
+                                </div>
+                            </Card.Header>
+                            <Card.Body>
+                                <FiltersGrid filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
+                            </Card.Body>
+                        </Card>
 
-                            {/* Buttons on the right */}
-                            <div>
-                                {/* Button as a link */}
-                                <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
-                                {/* Regular Button */}
-                                <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
-                            </div>
-                        </Card.Header>
-                        <Card.Body>
-                            {
-                                messages.map((message: DataGridMessage, index: number) => {
-                                    return (
-                                        <Alert key={index} variant={message.variant} dismissible onClose={() => handleCloseMessage(message, index)}>{message.label}</Alert>
-                                    )
-                                })
-                            }
-                            <Table striped bordered hover>
-                                <thead>
-                                    <tr>
-                                        <th style={{ width: "1%" }}>
-                                            <Form.Check type="checkbox" checked={isCheckedAll} onChange={handleCheckAll} />
-                                        </th>
-                                        {columns.map(column => (
-                                            <th key={column.index} style={{ width: column.width }}>
-                                                {column.label}
-                                                {column.inputable && <>
-                                                    <Button className="ms-2" size="sm" variant="primary" onClick={() => handleSaveInputableColumn(column)}>
-                                                        Lưu
-                                                    </Button>
-                                                </>}
+                    </Col>
+                    <Col sm={12} md={9} lg={10}>
+                        <Card>
+                            <Card.Header className="d-flex justify-content-between align-items-center">
+                                {/* Title on the left */}
+                                <span>{title}</span>
+
+                                {/* Buttons on the right */}
+                                <div>
+                                    {/* Button as a link */}
+                                    <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
+                                    {/* Regular Button */}
+                                    <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
+                                </div>
+                            </Card.Header>
+                            <Card.Body>
+                                {
+                                    messages.map((message: DataGridMessage, index: number) => {
+                                        return (
+                                            <Alert key={index} variant={message.variant} dismissible onClose={() => handleCloseMessage(message, index)}>{message.label}</Alert>
+                                        )
+                                    })
+                                }
+                                <Table size="sm" striped bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th style={{ width: "1%" }}>
+                                                <Form.Check type="checkbox" checked={isCheckedAll} onChange={handleCheckAll} />
                                             </th>
-                                        ))}
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={columns.length + 1}>
-                                            <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {items.length ? items.map((item, index) =>
-                                        <tr key={index} onClick={() => toggleCheckedItem(item.id)} className={checkedItemIds.indexOf(item.id) !== -1 ? "table-success" : ""} style={{ "cursor": "pointer" }}>
-                                            <td style={{ width: "1%" }}>
-                                                <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
-                                            </td>
                                             {columns.map(column => (
-                                                <td key={column.index} style={{ width: column.width }}>
-                                                    {renderColumn(column, item)}
-                                                </td>
+                                                <th key={column.index} style={{ width: column.width }}>
+                                                    {column.label}
+                                                    {column.inputable && <>
+                                                        <Button className="ms-2" size="sm" variant="primary" onClick={() => handleSaveInputableColumn(column)}>
+                                                            Lưu
+                                                        </Button>
+                                                    </>}
+                                                </th>
                                             ))}
-                                        </tr>)
-                                        : <tr>
-                                            <td colSpan={columns.length + 1} className="text-center">No data available.</td>
-                                        </tr>}
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colSpan={columns.length + 1}>
-                                            <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </Table>
-                        </Card.Body>
-                        <Card.Footer>
-                            <div className="d-flex justify-content-end">
-                                <Button variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
-                                <Button variant="danger" className="me-2">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
-                            </div>
-                        </Card.Footer>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={columns.length + 1}>
+                                                <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {items.length ? items.map((item, index) =>
+                                            <tr key={index} onClick={() => toggleCheckedItem(item.id)} className={checkedItemIds.indexOf(item.id) !== -1 ? "table-success" : ""} style={{ "cursor": "pointer" }}>
+                                                <td style={{ width: "1%" }}>
+                                                    <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
+                                                </td>
+                                                {columns.map(column => (
+                                                    <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap': 'normal' }}>
+                                                        {renderColumn(column, item)}
+                                                    </td>
+                                                ))}
+                                            </tr>)
+                                            : <tr>
+                                                <td colSpan={columns.length + 1} className="text-center">No data available.</td>
+                                            </tr>}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colSpan={columns.length + 1}>
+                                                <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </Table>
+                            </Card.Body>
+                            <Card.Footer>
+                                <div className="d-flex justify-content-end">
+                                    <Button variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
+                                    <Button variant="danger" className="me-2">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
+                                </div>
+                            </Card.Footer>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     );
 }
 

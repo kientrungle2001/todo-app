@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
 import { buildTree, flatTree } from "@/api/tree";
+import { TopMenuGrid } from "./TopMenuGrid";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -75,7 +76,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     axios.post(`/tables/${field.table}/map`, {
                         fields: fields,
                         condition: condition,
-                        orderBy: field.orderBy?? 'id asc'
+                        orderBy: field.orderBy ?? 'id asc'
                     })
                         .then(response => {
                             let items = response.data;
@@ -133,7 +134,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     let updatedItem = { ...item };
                     updatedItem[field.index] = updatedItem[field.index] === 1 ? 0 : 1;
                     setItem(updatedItem);
-                }} label={getStatusLabel(item[field.index])} />
+                }} label={getStatusLabel(item[field.index] ?? 0)} />
             );
         }
         return (
@@ -262,6 +263,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
 
     return (
         <>
+            <TopMenuGrid />
             <Container fluid>
                 {
                     mode === DataGridEditMode.EDIT ? (

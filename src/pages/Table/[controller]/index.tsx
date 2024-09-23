@@ -1,0 +1,40 @@
+import { AdminMenuSettings } from "@/api/settings/AdminMenuSettings";
+import { AdminCategoriesSettings } from "@/api/settings/CategoriesSettings";
+import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
+import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
+import { StudentSettings } from "@/api/settings/StudentSettings";
+import { UserSettings } from "@/api/settings/UserSettings";
+import { TableGrid } from "@/components/grid/TableGrid";
+import { useRouter } from "next/router";
+import React from "react";
+
+export default function TableIndex(): React.ReactElement {
+    let router = useRouter();
+    const { controller } = router.query;
+    if (controller === "student") {
+        return <>
+            <TableGrid controller={controller} settings={StudentSettings} />
+        </>
+    } else if (controller === "user" || controller === "admin_user") {
+        return <>
+            <TableGrid controller={controller} settings={UserSettings} />
+        </>
+    } else if (controller === "history_payment" || controller === "admin_payment_historypayment") {
+        return <>
+            <TableGrid controller={controller} settings={HistoryPaymentSettings} />
+        </>
+    } else if (controller === "service_packages" || controller === "admin_service_servicepackages") {
+        return <>
+            <TableGrid controller={controller} settings={ServicePackagesSettings} />
+        </>
+    } else if (controller === "admin_menu") {
+        return <>
+            <TableGrid controller={controller} settings={AdminMenuSettings} />
+        </>
+    } else if (controller === "admin_category") {
+        return <>
+            <TableGrid controller={controller} settings={AdminCategoriesSettings} />
+        </>
+    }
+    return <div>Not found</div>;
+}

@@ -6,10 +6,11 @@ import { useRouter } from "next/router";
 
 interface TableGridProps {
     itemId: number;
+    controller: string;
     settings: TableGridSettings
 }
 
-export const TableGridEdit: React.FC<TableGridProps> = ({ settings, itemId }): React.ReactElement => {
+export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, itemId }): React.ReactElement => {
     const router = useRouter();
     const [item, setItem] = React.useState<any>(null);
 
@@ -38,7 +39,7 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ settings, itemId }): R
             fields: JSON.parse(JSON.stringify(fields))
         }).then(() => {
             setItem(updatedItem);
-            router.push(`/Table/${settings.table}`);
+            router.push(`/Table/${controller}`);
         }).catch((error: any) => {
             console.error("Error updating item:", error);
             alert("Error updating item. Please try again later.");
@@ -46,7 +47,7 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ settings, itemId }): R
     }
 
     const handleCancelEdit = (): void => {
-        router.push(`/Table/${settings.table}`);
+        router.push(`/Table/${controller}`);
     }
 
     // make bootstrap edit form here

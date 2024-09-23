@@ -114,8 +114,8 @@ class Tables extends CI_Controller
                 $data[$field['index']] = $item[$field['index']];
             }
         }
-        $software = $this->input->get_request_header('software');
-        $site = $this->input->get_request_header('site');
+        $software = $this->input->get_request_header('X-Api-Software');
+        $site = $this->input->get_request_header('X-Api-Site');
         if ($this->isFieldExisted($table, 'software')) {
             $data['software'] = $software;
         }
@@ -152,8 +152,8 @@ class Tables extends CI_Controller
                 $data[$field['index']] = $item[$field['index']];
             }
         }
-        $software = $this->input->get_request_header('software');
-        $site = $this->input->get_request_header('site');
+        $software = $this->input->get_request_header('X-Api-Software');
+        $site = $this->input->get_request_header('X-Api-Site');
         if ($this->isFieldExisted($table, 'software')) {
             $data['software'] = $software;
         }

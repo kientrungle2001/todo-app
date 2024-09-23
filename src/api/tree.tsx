@@ -1,17 +1,22 @@
 export const buildTree = (items: any[], parentField: string, parent: any = null): any[] => {
-    let result: any[] = [];
-    items.forEach((item) => {
-        if (item[parentField] === (parent?.id ?? 0)) {
-            let children: any[] = buildTree(items, parentField, item);
-            if (children.length > 0) {
-                item.__children = children;
+    const map: any = {};
+    items.forEach(item => {
+        map[item.id] = { ...item, __children: [] };
+    });
+
+    const forest: any[] = [];
+    items.forEach(item => {
+        if (item[parentField]) {
+            if (map[item[parentField]]) {
+                map[item[parentField]].__children.push(map[item.id]);
             } else {
-                delete item.__children;
+                forest.push(map[item.id]);
             }
-            result.push(item);
+        } else {
+            forest.push(map[item.id]);
         }
     });
-    return result;
+    return forest;
 }
 
 

@@ -5,10 +5,11 @@ import DataGridEdit, { DataGridEditField, DataGridEditMode } from "./DataGridEdi
 import { useRouter } from "next/router";
 
 interface TableGridProps {
+    controller: string;
     settings: TableGridSettings
 }
 
-export const TableGridAdd: React.FC<TableGridProps> = ({ settings }): React.ReactElement => {
+export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings }): React.ReactElement => {
     const router = useRouter();
     const [item, setItem] = React.useState<any>({});
 
@@ -28,7 +29,7 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ settings }): React.Reac
             fields: JSON.parse(JSON.stringify(fields))
         }).then(() => {
             setItem(updatedItem);
-            router.push(`/Table/${settings.table}`);
+            router.push(`/Table/${controller}`);
         }).catch((error: any) => {
             console.error("Error adding item:", error);
             alert("Error adding item. Please try again later.");
@@ -36,7 +37,7 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ settings }): React.Reac
     }
 
     const handleCancelAdd = (): void => {
-        router.push(`/Table/${settings.table}`);
+        router.push(`/Table/${controller}`);
     }
 
     // make bootstrap edit form here
