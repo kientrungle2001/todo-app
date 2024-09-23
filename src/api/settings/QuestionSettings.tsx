@@ -77,10 +77,10 @@ const gridDefaultSorts: DataGridSort[] = [
 ];
 
 const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Nội dung", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "name_vn", label: "Nội dung tiếng Việt", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "explaination", label: "Lý giải", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "answerTranslation", label: "Câu trả lời (Dịch)", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "name", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 6 },
+    { index: "name_vn", label: "Nội dung tiếng Việt", type: DataGridEditFieldType.EDITOR, size: 6 },
+    { index: "explaination", label: "Lý giải", type: DataGridEditFieldType.EDITOR, size: 6 },
+    { index: "answerTranslation", label: "Câu trả lời (Dịch)", type: DataGridEditFieldType.EDITOR, size: 6 },
     {
         index: "classes", label: "Khối, Lớp", type: DataGridEditFieldType.SELECT, size: 6,
         multiple: true,
