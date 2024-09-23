@@ -169,7 +169,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
 
     const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
         const selectRef = React.useRef(null);
-    
+
         useEffect(() => {
             if (field.select2 && selectRef.current) {
                 const $select = $(selectRef.current);
@@ -178,45 +178,44 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     placeholder: 'Select',
                     allowClear: true,
                 });
-    
+
                 // When the selection changes, update the item state
                 $select.on('change', function () {
                     const selectedValues = $select.val();
                     let updatedItem = { ...item };
                     if (field.multiple) {
-                        updatedItem[field.index] = selectedValues;
+                        updatedItem[field.index] = selectedValues?.join(',');
                     } else {
                         updatedItem[field.index] = selectedValues?.[0] ?? '';
                     }
                     setItem(updatedItem);
                 });
-    
+
                 // Clean up Select2 on unmount
                 return () => {
                     $select.select2('destroy');
                 };
             }
         }, [field, item, selectRef.current]);
-    
+
         if (field.options) {
             return (
-                <Form.Select 
-                    multiple={field.multiple} 
-                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} 
-                    value={item[field.index]} 
+                <Form.Select
+                    multiple={field.multiple}
+                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
+                    value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
                     ref={selectRef}
                     onChange={(event) => {
-                        if (!field.select2) {
-                            if (field.multiple) {
-                                const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                                let updatedItem = { ...item };
-                                updatedItem[field.index] = selectedOptions.join(',');
-                                setItem(updatedItem);
-                            } else {
-                                let updatedItem = { ...item };
-                                updatedItem[field.index] = event.target.value;
-                                setItem(updatedItem);
-                            }
+
+                        if (field.multiple) {
+                            const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                            let updatedItem = { ...item };
+                            updatedItem[field.index] = selectedOptions.join(',');
+                            setItem(updatedItem);
+                        } else {
+                            let updatedItem = { ...item };
+                            updatedItem[field.index] = event.target.value;
+                            setItem(updatedItem);
                         }
                     }}
                 >
@@ -230,23 +229,21 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
             );
         } else if (typeof maps[field.index] === 'object') {
             return (
-                <Form.Select 
-                    multiple={field.multiple} 
-                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1} 
-                    value={item[field.index]} 
+                <Form.Select
+                    multiple={field.multiple}
+                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
+                    value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
                     ref={selectRef}
                     onChange={(event) => {
-                        if (!field.select2) {
-                            if (field.multiple) {
-                                const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                                let updatedItem = { ...item };
-                                updatedItem[field.index] = selectedOptions.join(',');
-                                setItem(updatedItem);
-                            } else {
-                                let updatedItem = { ...item };
-                                updatedItem[field.index] = event.target.value;
-                                setItem(updatedItem);
-                            }
+                        if (field.multiple) {
+                            const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                            let updatedItem = { ...item };
+                            updatedItem[field.index] = selectedOptions.join(',');
+                            setItem(updatedItem);
+                        } else {
+                            let updatedItem = { ...item };
+                            updatedItem[field.index] = event.target.value;
+                            setItem(updatedItem);
                         }
                     }}
                 >
