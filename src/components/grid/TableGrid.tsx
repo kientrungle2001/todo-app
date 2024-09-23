@@ -2,6 +2,7 @@ import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGr
 import React, { useEffect } from "react";
 import axios from '@/api/axiosInstance';
 import { DataGridEditField } from "./DataGridEdit";
+import { buildTree, flatTree } from "@/api/tree";
 
 export interface TableGridSettings {
     title: string,
@@ -73,34 +74,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ settings }): React.ReactEl
         handleListItems();
     }
 
-    const buildTree = (items: any[], parentField: string, __level = 0, parent: any = null): any[] => {
-        let result: any[] = [];
-        items.forEach((item) => {
-            if (item[parentField] === (parent?.id ?? 0)) {
-                let children: any[] = buildTree(items, parentField, __level + 1, item);
-                if (children.length > 0) {
-                    item.__children = children;
-                } else {
-                    delete item.__children;
-                }
-                result.push(item);
-            }
-        });
-        return result;
-    }
-
-
-    const flatTree = (items: any[], level = 0): any[] => {
-        let result: any[] = [];
-        items.forEach((item) => {
-            item.__level = level;
-            result.push(item);
-            if (item.__children) {
-                result = result.concat(flatTree(item.__children, level + 1));
-            }
-        });
-        return result;
-    }
 
     const handleListItems = () => {
         axios.post('/tables/search/' + settings.table, {

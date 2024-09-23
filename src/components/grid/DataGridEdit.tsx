@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
+import { buildTree, flatTree } from "@/api/tree";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -31,6 +32,9 @@ export interface DataGridEditField {
     tableCondition?: string | ((item: any) => string);
     valueField?: string;
     labelField?: string;
+    treeMode?: boolean;
+    parentField?: string;
+    orderBy?: string;
 }
 
 interface DataGridEditProps {
@@ -64,12 +68,22 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                             condition = field.tableCondition;
                         }
                     }
+                    let fields = [field.valueField, field.labelField];
+                    if (field.treeMode) {
+                        fields.push(field.parentField ?? 'parent');
+                    }
                     axios.post(`/tables/${field.table}/map`, {
-                        fields: [field.valueField, field.labelField],
-                        condition: condition
+                        fields: fields,
+                        condition: condition,
+                        orderBy: field.orderBy?? 'id asc'
                     })
                         .then(response => {
-                            updatedMaps[field.index] = response.data;
+                            let items = response.data;
+                            if (field.treeMode) {
+                                items = buildTree(items, field.parentField ?? 'parent');
+                                items = flatTree(items, 1);
+                            }
+                            updatedMaps[field.index] = items;
                         })
                         .catch(error => {
                             console.error('Error fetching map data:', error);
@@ -188,6 +202,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     <option value={0}>Select</option>
                     {maps[field.index].map((option: any) => (
                         <option key={option[field.valueField as string]} value={option[field.valueField as string]}>
+                            {field.treeMode ? '|____'.repeat(option.__level) : ''}
                             {field.map ? field.map[option[field.valueField as string]] : option[field.labelField as string]}
                         </option>
                     ))}

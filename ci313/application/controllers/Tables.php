@@ -82,6 +82,10 @@ class Tables extends CI_Controller
         if ($condition) {
             $query.= " AND $condition";
         }
+        $orderBy = $this->input->post('orderBy');
+        if ($orderBy) {
+            $query.= " ORDER BY $orderBy";
+        }
         $items = $this->db->query($query)->result_array();
         $response = $this->casting_numeric_fields($items);
         $this->output

@@ -6,7 +6,7 @@ const gridTitle: string = "Quản lý Menu";
 const gridTable: string = "admin_menu";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name", "admin_controller"];
-const gridFields: string[] = ["id", "name", "admin_controller", "ordering", "status", "parent"];
+const gridFields: string[] = ["id", "name", "admin_controller", "ordering", "status", "shortcut", "parent"];
 
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
@@ -20,7 +20,13 @@ const gridColumns: DataGridColumn[] = [
         },
         statusToggable: true
     },
-
+    {
+        index: "shortcut", type: DataGridColumnType.STATUS, label: "Dashboard", map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        statusToggable: true
+    },
     { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
     { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
 ];
@@ -67,7 +73,7 @@ const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Menu", type: DataGridEditFieldType.TEXT, size: 6 },
     {
         index: "parent", label: "Menu cha", type: DataGridEditFieldType.SELECT, size: 6,
-        table: "admin_menu", valueField: "id", labelField: "name"
+        table: "admin_menu", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc"
     },
     { index: "admin_controller", label: "Đường dẫn URL", type: DataGridEditFieldType.TEXT, size: 6 },
     {
