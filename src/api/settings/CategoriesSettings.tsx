@@ -106,6 +106,7 @@ const gridDefaultSorts: DataGridSort[] = [
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Danh mục", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "img", label: "Ảnh Danh mục", type: DataGridEditFieldType.IMAGE, size: 6 },
     {
         index: "parent", label: "Danh mục cha", type: DataGridEditFieldType.SELECT, size: 6,
         table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc"

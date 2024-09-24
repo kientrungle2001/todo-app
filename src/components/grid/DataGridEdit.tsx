@@ -6,6 +6,7 @@ import { TopMenuGrid } from "./TopMenuGrid";
 import { Editor } from "@tinymce/tinymce-react";
 import $ from "jquery";
 import 'select2';
+import { ImageSelector } from "../media/ImageSelector";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -15,7 +16,8 @@ export enum DataGridEditFieldType {
     SELECT = "select",
     CHECKBOX = "checkbox",
     STATUS = "status",
-    EDITOR = "editor"
+    EDITOR = "editor",
+    IMAGE = "image",
 };
 
 export enum DataGridEditMode {
@@ -327,6 +329,19 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         );
     };
 
+    const FieldImageRenderer = (field: DataGridEditField, item: any) => {
+        return (
+            <ImageSelector
+                selectedImage={item[field.index]}
+                setSelectedImage={(imageUrl: string) => {
+                    let updatedItem = { ...item };
+                    updatedItem[field.index] = imageUrl;
+                    setItem(updatedItem);
+                }}
+            />
+        );
+    };    
+
     const FieldUndefinedRenderer = (field: DataGridEditField, item: any) => {
         return '-';
     }
@@ -347,6 +362,8 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                 return FieldCheckboxRenderer;
             case DataGridEditFieldType.EDITOR:
                 return FieldEditorRenderer;
+            case DataGridEditFieldType.IMAGE:
+                return FieldImageRenderer;
             default:
                 return FieldUndefinedRenderer;
         }
