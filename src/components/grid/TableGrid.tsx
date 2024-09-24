@@ -61,13 +61,15 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
     useEffect(() => {
         const savedFilterData = storage.get(controller + '.filterData');
         if (savedFilterData) {
-            setFilterData(savedFilterData);
+            setFilterData(savedFilterData.filterData);
+            setPagination({pageSize: savedFilterData.pageSize, currentPage: savedFilterData.currentPage });
+            setSearchText(savedFilterData.searchText);
         }
     }, []);
 
     useEffect(() => {
-        setSavedFilterData(filterData);
-    }, [filterData]);
+        setSavedFilterData({filterData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts});
+    }, [filterData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
 
     const handleAfterDelete = (item: any) => {
         let updatedMessages: DataGridMessage[] = [...messages];
