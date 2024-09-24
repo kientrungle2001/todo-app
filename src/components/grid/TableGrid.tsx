@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import axios from '@/api/axiosInstance';
 import { DataGridEditField } from "./DataGridEdit";
 import { buildTree, flatTree } from "@/api/tree";
+import { storage } from "@/api/storage";
 
 export interface TableGridSettings {
     title: string,
@@ -51,6 +52,22 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
     const [messages, setMessages] = React.useState<DataGridMessage[]>([]);
     const [isCheckedAll, setIsCheckedAll] = React.useState<boolean>(false);
     const [checkedItemIds, setCheckedItemIds] = React.useState<number[]>([]);
+
+
+    const setSavedFilterData = (data: any) => {
+        storage.set(controller + '.filterData', data);
+    };
+
+    useEffect(() => {
+        const savedFilterData = storage.get(controller + '.filterData');
+        if (savedFilterData) {
+            setFilterData(savedFilterData);
+        }
+    }, []);
+
+    useEffect(() => {
+        setSavedFilterData(filterData);
+    }, [filterData]);
 
     const handleAfterDelete = (item: any) => {
         let updatedMessages: DataGridMessage[] = [...messages];
