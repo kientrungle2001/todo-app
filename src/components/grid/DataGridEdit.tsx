@@ -5,6 +5,7 @@ import { buildTree, flatTree } from "@/api/tree";
 import { TopMenuGrid } from "./TopMenuGrid";
 import { Editor } from "@tinymce/tinymce-react";
 import $ from "jquery";
+import 'select2';
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -182,13 +183,15 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                 // When the selection changes, update the item state
                 $select.on('change', function () {
                     const selectedValues = $select.val();
-                    let updatedItem = { ...item };
-                    if (field.multiple) {
-                        updatedItem[field.index] = selectedValues?.join(',');
-                    } else {
-                        updatedItem[field.index] = selectedValues?.[0] ?? '';
+                    if (typeof selectedValues !== 'undefined') {
+                        let updatedItem = { ...item };
+                        if (field.multiple) {
+                            updatedItem[field.index] = (selectedValues as string[])?.join(',');
+                        } else {
+                            updatedItem[field.index] = (selectedValues as string[])?.[0] ?? '';
+                        }
+                        setItem(updatedItem);
                     }
-                    setItem(updatedItem);
                 });
 
                 // Clean up Select2 on unmount
