@@ -1,18 +1,29 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Button, Modal, ListGroup, Form } from 'react-bootstrap';
+import { Button, Modal, ListGroup, Form, InputGroup, Breadcrumb } from 'react-bootstrap';
 import axios from '@/api/axiosInstance';
 
 interface ImageDialogProps {
     show: boolean;
+    selectedImage: string;
     onClose: () => void;
     onImageSelect: (imagePath: string) => void;
 }
 
-export const ImageDialog: React.FC<ImageDialogProps> = ({ show, onClose, onImageSelect }) => {
+export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, onClose, onImageSelect }) => {
     const [currentFolder, setCurrentFolder] = useState<string>('/');
     const [files, setFiles] = useState<string[]>([]);
-    const [selectedFile, setSelectedFile] = useState<string | null>(null);
+    const [selectedFile, setSelectedFile] = useState<string | null>(selectedImage);
     const [newImage, setNewImage] = useState<File | null>(null);
+    const [newDirName, setNewDirName] = useState<string>('');
+    const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
+
+    useEffect(() => {
+        // reset current folder to the folder of selectedImage
+        if (selectedImage) {
+            const path = selectedImage.split('/').slice(0, -1).join('/'); // Remove file name from path
+            fetchDirectoryContents(path + '/');
+        }
+    }, [selectedImage]);
 
     // Function to fetch directory contents from the backend
     const fetchDirectoryContents = async (path: string) => {
@@ -23,6 +34,8 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ show, onClose, onImage
             const { files, folders } = response.data;
             setFiles([...folders, ...files]); // Assuming the response gives separate `files` and `folders`
             setCurrentFolder(path);
+            // Update breadcrumbs based on current folder
+            setBreadcrumbs(path.split('/').filter(Boolean)); // Filter to remove empty strings
         } catch (error) {
             console.error('Error fetching directory contents:', error);
         }
@@ -35,6 +48,17 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ show, onClose, onImage
         } else {
             setSelectedFile(`${currentFolder}${file}`);
         }
+    };
+
+    // Handle breadcrumb click
+    const handleBreadcrumbClick = (folder: string) => {
+        if (folder === '') {
+            fetchDirectoryContents('/');
+        } else {
+            const path = `/${folder}/`; // Start with root
+            fetchDirectoryContents(path);
+        }
+        
     };
 
     // Handle image upload to the backend
@@ -100,8 +124,6 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ show, onClose, onImage
         }
     };
 
-
-
     useEffect(() => {
         if (show) fetchDirectoryContents('/');
     }, [show]);
@@ -112,6 +134,29 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ show, onClose, onImage
                 <Modal.Title>Select Image</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <h5>Current Folder: {currentFolder}</h5>
+                {/* Breadcrumbs for folder navigation */}
+                <Breadcrumb>
+                    <Breadcrumb.Item
+                        onClick={() => handleBreadcrumbClick('')}
+                        style={{ cursor: 'pointer' }}
+                    >
+                        Root
+                    </Breadcrumb.Item>
+                    {breadcrumbs.map((folder, index) => {
+                        const isLast = index === breadcrumbs.length - 1;
+                        return (
+                            <Breadcrumb.Item
+                                key={index}
+                                active={isLast}
+                                onClick={() => !isLast && handleBreadcrumbClick(folder)}
+                                style={{ cursor: !isLast ? 'pointer' : 'default' }}
+                            >
+                                {folder}
+                            </Breadcrumb.Item>
+                        );
+                    })}
+                </Breadcrumb>
                 <ListGroup>
                     {files.map((file, index) => (
                         <ListGroup.Item
@@ -134,19 +179,25 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ show, onClose, onImage
                         Upload
                     </Button>
                 </Form.Group>
+                {/* Create Directory Section */}
                 <Form.Group className="mt-3">
                     <Form.Label>Create Directory</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="New directory name"
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            if (e.target.value) {
-                                handleCreateDirectory(e.target.value);
-                            }
-                        }}
-                    />
+                    <InputGroup>
+                        <Form.Control
+                            type="text"
+                            placeholder="New directory name"
+                            value={newDirName}
+                            onChange={(e) => setNewDirName(e.target.value)}
+                        />
+                        <Button
+                            variant="primary"
+                            onClick={() => handleCreateDirectory(newDirName)}
+                            disabled={!newDirName}
+                        >
+                            Create
+                        </Button>
+                    </InputGroup>
                 </Form.Group>
-
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>

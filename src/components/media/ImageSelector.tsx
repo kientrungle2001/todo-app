@@ -35,6 +35,7 @@ export const ImageSelector: React.FC<ImageSelectorProps> = ({selectedImage, setS
       <ImageDialog
         show={show}
         onClose={handleCloseDialog}
+        selectedImage={selectedImage}
         onImageSelect={handleImageSelect}
       />
     </div>
