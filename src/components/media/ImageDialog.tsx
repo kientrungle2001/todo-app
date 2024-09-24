@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Button, Modal, ListGroup, Form, InputGroup, Breadcrumb } from 'react-bootstrap';
+import { Button, Modal, ListGroup, Form, InputGroup, Breadcrumb, Row, Col, Card } from 'react-bootstrap';
 import axios from '@/api/axiosInstance';
 
 interface ImageDialogProps {
@@ -16,14 +16,6 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     const [newImage, setNewImage] = useState<File | null>(null);
     const [newDirName, setNewDirName] = useState<string>('');
     const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
-
-    useEffect(() => {
-        // reset current folder to the folder of selectedImage
-        if (selectedImage) {
-            const path = selectedImage.split('/').slice(0, -1).join('/'); // Remove file name from path
-            fetchDirectoryContents(path + '/');
-        }
-    }, [selectedImage]);
 
     // Function to fetch directory contents from the backend
     const fetchDirectoryContents = async (path: string) => {
@@ -58,7 +50,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             const path = `/${folder}/`; // Start with root
             fetchDirectoryContents(path);
         }
-        
+
     };
 
     // Handle image upload to the backend
@@ -129,7 +121,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     }, [show]);
 
     return (
-        <Modal show={show} onHide={onClose}>
+        <Modal show={show} onHide={onClose} size="xl">
             <Modal.Header closeButton>
                 <Modal.Title>Select Image</Modal.Title>
             </Modal.Header>
@@ -157,18 +149,24 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                         );
                     })}
                 </Breadcrumb>
-                <ListGroup>
+                <Row>
                     {files.map((file, index) => (
-                        <ListGroup.Item
+                        <Col md={3}
                             key={index}
                             action
                             onClick={() => handleItemClick(file)}
-                            active={selectedFile === `${currentFolder}${file}`}
+
                         >
-                            {file}
-                        </ListGroup.Item>
+                            {/** create card */}
+                            <Card style={{ cursor: 'pointer', width: '100%', height: "400px", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
+                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`http://localhost:3002/uploads${currentFolder}${file}`} />}
+                                <Card.Body>
+                                    <Card.Title>{file.replace('/', '')}</Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </Col>
                     ))}
-                </ListGroup>
+                </Row>
                 <Form.Group className="mt-3">
                     <Form.Label>Upload Image</Form.Label>
                     <Form.Control
