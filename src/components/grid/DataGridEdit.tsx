@@ -172,17 +172,18 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     }
 
     const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
-        const selectRef = React.useRef(null);
+        const selectRef: any = {};
+        selectRef[field.index] = React.useRef(null);
 
         useEffect(() => {
-            if (field.select2 && selectRef.current) {
-                const $select = $(selectRef.current);
+            if (field.select2 && selectRef[field.index].current) {
+                console.log('Initializing Select2 for field:', field.index);
+                const $select = $(selectRef[field.index].current);
                 $select.select2({
                     theme: 'bootstrap-5', // Optional: you can customize the theme
                     placeholder: 'Select',
                     allowClear: true,
                 });
-
                 // When the selection changes, update the item state
                 $select.on('change', function () {
                     const selectedValues = $select.val();
@@ -202,7 +203,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     $select.select2('destroy');
                 };
             }
-        }, [field, item, selectRef.current]);
+        }, [field, item, selectRef[field.index].current]);
 
         if (field.options) {
             return (
@@ -210,7 +211,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     multiple={field.multiple}
                     htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
                     value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
-                    ref={selectRef}
+                    ref={selectRef[field.index]}
                     onChange={(event) => {
 
                         if (field.multiple) {
@@ -239,7 +240,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     multiple={field.multiple}
                     htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
                     value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
-                    ref={selectRef}
+                    ref={selectRef[field.index]}
                     onChange={(event) => {
                         if (field.multiple) {
                             const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);

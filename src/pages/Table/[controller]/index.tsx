@@ -1,9 +1,11 @@
 import { AdminMenuSettings } from "@/api/settings/AdminMenuSettings";
 import { AdminCategoriesSettings } from "@/api/settings/CategoriesSettings";
+import { AdminDocumentSettings } from "@/api/settings/DocumentSettings";
 import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
 import { AdminQuestionSettings } from "@/api/settings/QuestionSettings";
 import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
+import { AdminTestSettings } from "@/api/settings/TestSettings";
 import { UserSettings } from "@/api/settings/UserSettings";
 import { TableGrid } from "@/components/grid/TableGrid";
 import { useRouter } from "next/router";
@@ -39,6 +41,14 @@ export default function TableIndex(): React.ReactElement {
     } else if (controller === "admin_question2") {
         return <>
             <TableGrid controller={controller} settings={AdminQuestionSettings} />
+        </>
+    } else if (controller === "admin_document") {
+        return <>
+            <TableGrid controller={controller} settings={AdminDocumentSettings} />
+        </>
+    } else if (controller === "admin_test") {
+        return <>
+            <TableGrid controller={controller} settings={AdminTestSettings} />
         </>
     }
     return <div>Not found</div>;

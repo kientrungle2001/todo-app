@@ -2,26 +2,18 @@ import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridF
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
-const gridTitle: string = "Quản lý Danh mục";
-const gridTable: string = "categories";
+const gridTitle: string = "Quản lý Tài liệu";
+const gridTable: string = "document";
 const gridJoins: DataGridTableJoin[] = [];
-const gridSearchFields: string[] = ["id", "name", "name_en", "name_vn", "alias", "router"];
-const gridFields: string[] = ["id", "name", "name_en", "name_vn", "alias", "router", "ordering", "status", "display", "document", "trial", "parent"];
+const gridSearchFields: string[] = ["id", "title", "en_title", "tdn_title", "alias", "brief", "content"];
+const gridFields: string[] = ["id", "title", "en_title", "tdn_title", "alias", "brief", "content", "ordering", "status", "trial", "categoryId"];
 
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
-    { index: "name", label: "Tên Danh mục", linkFormat: (value: any, item: any) => `/Table/admin_category/${item.id}/edit`, treeMode: true },
-    { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true, treeMode: true },
+    { index: "title", label: "Tên Tài liệu", linkFormat: (value: any, item: any) => `/Table/admin_document/${item.id}/edit` },
+    { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
     {
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    {
-        index: "display", type: DataGridColumnType.STATUS, label: "Hiển thị", map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'
         },
@@ -62,19 +54,7 @@ const gridFilters: DataGridFilterColumn[] = [
         }
     },
     {
-        index: "display", label: "Hiển thị", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        }
-    },
-    {
         index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        }
-    },
-    {
-        index: "document", label: "Tài liệu", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'
         }
@@ -84,17 +64,17 @@ const gridFilters: DataGridFilterColumn[] = [
 const gridSortOptions: DataGridSortOption[] = [
     {
         index: "nameAsc",
-        label: "Tên Menu tăng",
+        label: "Tên Tài liệu tăng",
         sorts: [
-            { index: "name", direction: DataGridSortDirection.ASCENDING },
+            { index: "title", direction: DataGridSortDirection.ASCENDING },
             { index: "id", direction: DataGridSortDirection.DESCENDING },
         ]
     },
     {
         index: "nameDesc",
-        label: "Tên Menu giảm",
+        label: "Tên Tài liệu giảm",
         sorts: [
-            { index: "name", direction: DataGridSortDirection.DESCENDING },
+            { index: "title", direction: DataGridSortDirection.DESCENDING },
             { index: "id", direction: DataGridSortDirection.ASCENDING },
         ]
     }
@@ -105,11 +85,13 @@ const gridDefaultSorts: DataGridSort[] = [
 ];
 
 const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Tên Danh mục", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "img", label: "Ảnh Danh mục", type: DataGridEditFieldType.IMAGE, size: 6 },
+    { index: "title", label: "Tên Tài liệu", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "title_en", label: "Tên Tài liệu tiếng Anh", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "title_tdn", label: "Tên Tài liệu Trần Đại Nghĩa", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
     {
-        index: "parent", label: "Danh mục cha", type: DataGridEditFieldType.SELECT, size: 6,
-        table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc"
+        index: "categoryId", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
+        table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc", select2: true
     },
     {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
@@ -120,7 +102,7 @@ const gridAddFields: DataGridEditField[] = [
 ];
 
 
-export const AdminCategoriesSettings: TableGridSettings = {
+export const AdminDocumentSettings: TableGridSettings = {
     title: gridTitle,
     table: gridTable,
     joins: gridJoins,
@@ -134,7 +116,6 @@ export const AdminCategoriesSettings: TableGridSettings = {
     addFields: gridAddFields,
     editFields: gridAddFields,
     addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Danh mục đã chọn",
-    updateLabel: "Cập nhật Danh mục",
-    treeMode: true,
+    deleteSelectedsLabel: "Xóa Tài liệu đã chọn",
+    updateLabel: "Cập nhật Tài liệu",
 }

@@ -1,9 +1,11 @@
 import { AdminMenuSettings } from "@/api/settings/AdminMenuSettings";
 import { AdminCategoriesSettings } from "@/api/settings/CategoriesSettings";
+import { AdminDocumentSettings } from "@/api/settings/DocumentSettings";
 import { HistoryPaymentSettings } from "@/api/settings/HistoryPaymentSettings";
 import { AdminQuestionSettings } from "@/api/settings/QuestionSettings";
 import { ServicePackagesSettings } from "@/api/settings/ServicePackagesSettings";
 import { StudentSettings } from "@/api/settings/StudentSettings";
+import { AdminTestSettings } from "@/api/settings/TestSettings";
 import { UserSettings } from "@/api/settings/UserSettings";
 import { TableGridEdit } from "@/components/grid/TableGridEdit";
 import { useRouter } from "next/router";
@@ -44,6 +46,14 @@ export default function TableEdit(): React.ReactElement {
     } else if (controller === "admin_question2") {
         return <>
             <TableGridEdit controller={controller} itemId={itemId} settings={AdminQuestionSettings} />
+        </>
+    } else if (controller === "admin_document") {
+        return <>
+            <TableGridEdit controller={controller} itemId={itemId} settings={AdminDocumentSettings} />
+        </>
+    } else if (controller === "admin_test") {
+        return <>
+            <TableGridEdit controller={controller} itemId={itemId} settings={AdminTestSettings} />
         </>
     }
     return <div>Not found</div>;
