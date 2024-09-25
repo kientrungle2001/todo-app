@@ -229,7 +229,7 @@ class Tables extends CI_Controller
         $filterConditions = [];
         foreach ($settings->filters as $filter) {
             if (isset($filterData[$filter->index]) && $filterData[$filter->index] !== '') {
-                if ($filter->type === 'SELECT') {
+                if ($filter->comparisonOperator === 'equal') {
                     $filterConditions[] = "t.{$filter->index} = ?";
                     $params[] = $filterData[$filter->index];
                 } else {

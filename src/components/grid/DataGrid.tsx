@@ -78,7 +78,7 @@ export interface DataGridFilterColumn {
     index: string;
     label: string;
     sqlIndex?: string;
-    comparisonOperator?: "like" | "equal";
+    comparisonOperator?: "like" | "equal" | "inset";
     type?: DataGridFilterColumnType;
     table?: string;
     valueField?: string;

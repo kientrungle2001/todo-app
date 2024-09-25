@@ -39,7 +39,8 @@ const gridFilters: DataGridFilterColumn[] = [
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Dừng học',
             1: 'Đang học'
-        }
+        },
+        comparisonOperator: "equal"
     },
 ];
 

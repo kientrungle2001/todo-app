@@ -42,7 +42,8 @@ const gridFilters: DataGridFilterColumn[] = [
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'
-        }
+        },
+        comparisonOperator: "equal"
     },
 ];
 

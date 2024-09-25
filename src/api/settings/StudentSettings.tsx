@@ -28,12 +28,13 @@ const gridColumns: DataGridColumn[] = [
 
 const gridFilters: DataGridFilterColumn[] = [
     { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    { index: "assignId", label: "Người phụ trách", type: DataGridFilterColumnType.SELECT, table: "teacher", valueField: "id", labelField: "name" },
+    { index: "assignId", label: "Người phụ trách", type: DataGridFilterColumnType.SELECT, table: "teacher", valueField: "id", labelField: "name", comparisonOperator: "equal" },
     {
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Dừng học',
             1: 'Đang học'
-        }
+        },
+        comparisonOperator: "equal"
     },
 ];
 
