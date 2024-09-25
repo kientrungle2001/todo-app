@@ -174,16 +174,18 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
         const selectRef: any = {};
         selectRef[field.index] = React.useRef(null);
-
+    
         useEffect(() => {
-            if (field.select2 && selectRef[field.index].current) {
+            if (field.select2 && selectRef[field.index].current && (field.options || maps[field.index])) {
                 console.log('Initializing Select2 for field:', field.index);
                 const $select = $(selectRef[field.index].current);
+                
                 $select.select2({
                     theme: 'bootstrap-5', // Optional: you can customize the theme
                     placeholder: 'Select',
                     allowClear: true,
                 });
+    
                 // When the selection changes, update the item state
                 $select.on('change', function () {
                     const selectedValues = $select.val();
@@ -197,14 +199,14 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                         setItem(updatedItem);
                     }
                 });
-
+    
                 // Clean up Select2 on unmount
                 return () => {
                     $select.select2('destroy');
                 };
             }
-        }, [field, item, selectRef[field.index].current]);
-
+        }, [field, item, maps[field.index], field.options]); // Re-run when options or maps change
+    
         if (field.options) {
             return (
                 <Form.Select
@@ -213,7 +215,6 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
                     ref={selectRef[field.index]}
                     onChange={(event) => {
-
                         if (field.multiple) {
                             const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
                             let updatedItem = { ...item };
