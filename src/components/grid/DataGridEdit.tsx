@@ -7,6 +7,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import $ from "jquery";
 import 'select2';
 import { ImageSelector } from "../media/ImageSelector";
+import { format } from "date-fns";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -163,7 +164,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
 
     const FieldDateRenderer = (field: DataGridEditField, item: any) => {
         return (
-            <Form.Control type="date" value={item[field.index]} onChange={(event) => {
+            <Form.Control type="date" value={format(new Date(item[field.index]), 'yyyy-MM-dd') } onChange={(event) => {
                 let updatedItem = { ...item };
                 updatedItem[field.index] = event.target.value;
                 setItem(updatedItem);
