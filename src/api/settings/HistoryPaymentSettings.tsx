@@ -128,7 +128,7 @@ const gridAddFields: DataGridEditField[] = [
 ];
 
 
-export const HistoryPaymentSettings: TableGridSettings = {
+export const AdminHistoryPaymentSettings: TableGridSettings = {
     title: gridTitle,
     table: gridTable,
     joins: gridJoins,

@@ -93,7 +93,7 @@ const gridAddFields: DataGridEditField[] = [
     }
 ];
 
-export const UserSettings: TableGridSettings = {
+export const AdminUserSettings: TableGridSettings = {
     title: "Quản lý học sinh",
     table: "user",
     joins: gridJoins,

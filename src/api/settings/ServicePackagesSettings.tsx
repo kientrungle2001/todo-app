@@ -155,7 +155,7 @@ const gridAddFields: DataGridEditField[] = [
 ];
 
 
-export const ServicePackagesSettings: TableGridSettings = {
+export const AdminServicePackagesSettings: TableGridSettings = {
     title: gridTitle,
     table: gridTable,
     joins: gridJoins,
