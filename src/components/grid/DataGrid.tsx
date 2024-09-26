@@ -13,6 +13,7 @@ import { TopMenuGrid } from "./TopMenuGrid";
 export enum DataGridColumnType {
     TEXT = "text",
     NUMBER = "number",
+    IMAGE = "image",
     DATE = "date",
     CURRENCY = "currency",
     STATUS = "status",
@@ -233,6 +234,10 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         </>;
     };
 
+    const ColumnImageRenderer = (column: DataGridColumn, item: any) => {
+        return <img src={'http://nextnobels.com' + item[column.index]} alt={item.id} style={{ maxWidth: "100px" }} />;
+    }
+
     function formatCurrency(amount: number) {
         return amount.toLocaleString('vi-VN') + 'đ';
     }
@@ -300,6 +305,8 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 return ColumnTextRenderer;
             case DataGridColumnType.NUMBER:
                 return ColumnNumberRenderer;
+            case DataGridColumnType.IMAGE:
+                return ColumnImageRenderer;
             case DataGridColumnType.CURRENCY:
                 return ColumnCurrencyRenderer;
             case DataGridColumnType.DATE:

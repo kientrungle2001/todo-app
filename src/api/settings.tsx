@@ -12,6 +12,7 @@ import { AdminBookSettings } from "./settings/BookSettings";
 import { AdminContestSettings } from "./settings/ContestSettings";
 import { AdminQuestionErrorSettings } from "./settings/QuestionErrorSettings";
 import { AdminVoteSettings } from "./settings/VoteSettings";
+import { AdminBannerSettings } from "./settings/BannerSettings";
 
 export const getSettingsByController = (controller: string): TableGridSettings | null => {
     if (controller === "student") {
@@ -40,6 +41,8 @@ export const getSettingsByController = (controller: string): TableGridSettings |
         return AdminQuestionErrorSettings
     } else if (controller === "admin_vote") {
         return AdminVoteSettings
+    } else if (controller === "admin_banner") {
+        return AdminBannerSettings
     }
     return null;
 }
