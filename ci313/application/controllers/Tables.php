@@ -258,6 +258,9 @@ class Tables extends CI_Controller
                 if ($filter->comparisonOperator === 'equal') {
                     $filterConditions[] = "t.{$filter->index} = ?";
                     $params[] = $filterData[$filter->index];
+                } else if ($filter->comparisonOperator === 'inset') {
+                    $filterConditions[] = 'find_in_set(?, ' . "t.{$filter->index} )";
+                    $params[] = $filterData[$filter->index];
                 } else {
                     $filterConditions[] = "t.{$filter->index} LIKE ?";
                     $params[] = '%' . $filterData[$filter->index] . '%';
@@ -351,8 +354,11 @@ class Tables extends CI_Controller
         $filterConditions = [];
         foreach ($settings->filters as $filter) {
             if (isset($filterData[$filter->index]) && $filterData[$filter->index] !== '') {
-                if ($filter->type === 'SELECT') {
+                if ($filter->comparisonOperator === 'equal') {
                     $filterConditions[] = "t.{$filter->index} = ?";
+                    $params[] = $filterData[$filter->index];
+                } else if ($filter->comparisonOperator === 'inset') {
+                    $filterConditions[] = 'find_in_set(?, ' . "t.{$filter->index} )";
                     $params[] = $filterData[$filter->index];
                 } else {
                     $filterConditions[] = "t.{$filter->index} LIKE ?";

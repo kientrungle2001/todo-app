@@ -40,6 +40,24 @@ const gridPagination: DataGridPagination = {
 const gridFilters: DataGridFilterColumn[] = [
     { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
     {
+        index: "categoryIds", label: "Danh mục", type: DataGridFilterColumnType.SELECT,
+        table: "categories",
+        valueField: "id",
+        labelField: "name",
+        select2: true,
+        comparisonOperator: "inset",
+        treeMode: true,
+    },
+    {
+        index: "testId", label: "Đề thi", type: DataGridFilterColumnType.SELECT,
+        table: "tests",
+        valueField: "id",
+        labelField: "name",
+        select2: true,
+        comparisonOperator: "inset",
+        treeMode: true,
+    },
+    {
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'

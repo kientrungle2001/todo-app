@@ -56,6 +56,15 @@ const gridPagination: DataGridPagination = {
 const gridFilters: DataGridFilterColumn[] = [
     { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
     {
+        index: "parents", label: "Danh mục cha", type: DataGridFilterColumnType.SELECT,
+        table: "categories",
+        valueField: "id",
+        labelField: "name",
+        treeMode: true,
+        select2: true,
+        comparisonOperator: "inset"
+    },
+    {
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'

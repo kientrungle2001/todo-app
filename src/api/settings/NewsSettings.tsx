@@ -43,6 +43,7 @@ const gridFields: string[] = ["id", "title", "categoryId", "brief", "content", "
 
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
+    { index: "img", label: "Image", type: DataGridColumnType.IMAGE, width: "100px", linkFormat: (value: any, item: any) => `/Table/admin_news/${item.id}/` },
     { index: "title", label: "Tên Tin tức", linkFormat: (value: any, item: any) => `/Table/admin_news/${item.id}/edit` },
     { index: "views", label: "Lượt xem", type: DataGridColumnType.NUMBER },
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },

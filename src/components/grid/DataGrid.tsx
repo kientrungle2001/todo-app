@@ -85,10 +85,14 @@ export interface DataGridFilterColumn {
     table?: string;
     valueField?: string;
     labelField?: string;
+    treeMode?: boolean;
+    treeParentField?: string;
+    orderBy?: string;
     format?: string;
     customFormat?: (value: any, item: any) => string | React.ReactNode;
     options?: any[];
     map?: any;
+    select2?: boolean;
 }
 
 export interface DataGridSort {

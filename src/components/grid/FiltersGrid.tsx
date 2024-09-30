@@ -1,9 +1,12 @@
 import { Form } from "react-bootstrap";
 import { DataGridFilterColumn, DataGridFilterColumnType, DataGridSort, DataGridSortOption } from "./DataGrid"
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "@/api/axiosInstance";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
+import { buildTree, flatTree } from "@/api/tree";
+import $ from "jquery";
+import 'select2';
 
 interface FiltersGridProps {
     filters: DataGridFilterColumn[];
@@ -85,10 +88,45 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
     }
 
     const FilterSelectRenderer = (filter: DataGridFilterColumn) => {
+        const selectRef: any = {};
+        selectRef[filter.index] = React.useRef(null);
+
+        useEffect(() => {
+            if (filter.select2 && selectRef[filter.index].current && (filter.options || maps[filter.index])) {
+                console.log('Initializing Select2 for field:', filter.index);
+                const $select = $(selectRef[filter.index].current);
+                
+                $select.select2({
+                    theme: 'bootstrap-5', // Optional: you can customize the theme
+                    placeholder: 'Select',
+                    allowClear: true,
+                });
+    
+                // When the selection changes, update the item state
+                $select.on('change', function () {
+                    const selectedValues = $select.val();
+                    if (typeof selectedValues === 'string') {
+                        let updatedItem = { ...filterData };
+                        updatedItem[filter.index] = selectedValues;
+                        setFilterData(updatedItem);
+                    } else if (typeof selectedValues !== 'undefined') {
+                        let updatedItem = { ...filterData };
+                        updatedItem[filter.index] = (selectedValues as string[])?.[0] ?? '';
+                        setFilterData(updatedItem);
+                    }
+                });
+    
+                // Clean up Select2 on unmount
+                return () => {
+                    $select.select2('destroy');
+                };
+            }
+        }, [filter, filterData, maps[filter.index], filter.options]); // Re-run when options or maps change
+
         if (filter.options) {
             return (
-                <Form.Select size="sm" value={filterData?.[filter.index] || ''} onChange={(event) => {
-                    let updatedFilterData = {...filterData };
+                <Form.Select ref={selectRef[filter.index]} size="sm" value={filterData?.[filter.index] || ''} onChange={(event) => {
+                    let updatedFilterData = { ...filterData };
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
                 }}>
@@ -99,14 +137,16 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
             );
         } else if (filter.table && typeof maps[filter.index] === 'object') {
             return (
-                <Form.Select size="sm" value={filterData[filter.index]} onChange={(event) => {
-                    let updatedFilterData = {...filterData };
+                <Form.Select ref={selectRef[filter.index]} size="sm" value={filterData[filter.index]} onChange={(event) => {
+                    let updatedFilterData = { ...filterData };
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
                 }}>
                     <option value={''}>Chọn</option>
                     {maps[filter.index].map((option: any) => (
                         <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}>
+                            {filter.treeMode? '|____'.repeat(option.__level + 1) : ''}
+                            #{option[filter.valueField as string]}&nbsp;-&nbsp;
                             {option[filter.labelField as string]}
                         </option>
                     ))}
@@ -115,7 +155,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
         } else {
             return '-';
         }
-        
+
     }
 
     const FilterCheckboxRenderer = (filter: DataGridFilterColumn) => {
@@ -131,7 +171,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
     const FilterStatusRenderer = (filter: DataGridFilterColumn) => {
         return (
             <Form.Select size="sm" value={filterData?.[filter.index] || ''} onChange={(event) => {
-                let updatedFilterData = {...filterData };
+                let updatedFilterData = { ...filterData };
                 updatedFilterData[filter.index] = event.target.value;
                 setFilterData(updatedFilterData);
             }}>
@@ -179,19 +219,35 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
     const [maps, setMaps] = React.useState<{ [key: string]: any }>(filterData);
     const router = useRouter();
     React.useEffect(() => {
+        const updatedMaps = { ...maps };
         filters.forEach(filter => {
             if (filter.type === DataGridFilterColumnType.SELECT && filter.table) {
-                axios.post(`/tables/${filter.table}/map`, {
-                    fields: [filter.valueField, filter.labelField]
-                }, {
+                const fields = [filter.valueField, filter.labelField];
+                if (filter.treeMode) {
+                    fields.push(filter.treeParentField ?? 'parent');
+                }
+                const data: any = {
+                    fields: fields
+                };
+                if (filter.treeMode) {
+                    data.orderBy = filter.orderBy ?? 'ordering asc';
+                } else {
+                    data.orderBy = filter.orderBy ?? 'id asc';
+                }
+                axios.post(`/tables/${filter.table}/map`, data, {
                     headers: {
                         'Authorization': `Bearer ${storage.get('token') || ''}`
                     }
                 })
                     .then(response => {
-                        let updatedMaps = { ...maps };
-                        updatedMaps[filter.index] = response.data;
-                        setMaps(updatedMaps);
+                        
+                        let items: any[] = response.data;
+                        if (filter.treeMode) {
+                            items = buildTree(items, filter.treeParentField ?? 'parent');
+                            items = flatTree(items);
+                        }
+                        updatedMaps[filter.index] = items;
+                        
                     })
                     .catch((error) => {
                         if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
@@ -204,6 +260,9 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     });
             }
         });
+        setTimeout(() => {
+            setMaps(updatedMaps);
+        }, 200);
     }, []);
 
     return <Form>
