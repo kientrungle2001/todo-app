@@ -1,3 +1,5 @@
+import { storage } from '@/api/storage';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { NavDropdown, Dropdown } from 'react-bootstrap';
 
@@ -39,7 +41,19 @@ const TopMenu: React.FC<MenuProps> = ({ data }) => {
         });
     };
 
-    return <>{renderSubMenu(data)}</>;
+    const router = useRouter();
+
+    return <>
+        <Dropdown.Item href="/">Dashboard</Dropdown.Item>
+        {renderSubMenu(data)}
+        <Dropdown.Divider />
+        <Dropdown.Item onClick={
+            () => {
+                storage.clearTokenInfo();
+                router.push('/login');
+            }
+        }>Logout</Dropdown.Item>
+    </>;
 };
 
 export default TopMenu;

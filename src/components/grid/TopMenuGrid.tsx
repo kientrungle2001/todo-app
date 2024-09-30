@@ -32,7 +32,7 @@ export const TopMenuGrid: React.FC<TopMenuGridProps> = ({ }): React.ReactElement
     }, []);
 
     return <>
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" className="mb-3">
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto"></Nav>

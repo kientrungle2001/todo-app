@@ -6,7 +6,7 @@ const gridTitle: string = "Quản lý Menu";
 const gridTable: string = "admin_menu";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name", "admin_controller"];
-const gridFields: string[] = ["id", "name", "admin_controller", "ordering", "status", "shortcut", "parent"];
+const gridFields: string[] = ["id", "name", "admin_controller", "ordering", "status", "shortcut", "parent", "thumbnail"];
 
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
@@ -40,6 +40,13 @@ const gridFilters: DataGridFilterColumn[] = [
     { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
     {
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        comparisonOperator: "equal"
+    },
+    {
+        index: "shortcut", label: "Dashboard", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'
         },
