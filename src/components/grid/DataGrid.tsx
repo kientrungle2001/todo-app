@@ -247,7 +247,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     };
 
     const ColumnDateRenderer = (column: DataGridColumn, item: any) => {
-        return column.customFormat ? column.customFormat(new Date(item[column.index]), item, table) : format(new Date(item[column.index]), column.format ?? 'dd/MM/yyyy');
+        let dateValue = new Date(item[column.index]);
+        if (dateValue.toString() === 'Invalid Date' || isNaN(dateValue.getTime())) {
+            return '-';
+        }
+        return column.customFormat ? column.customFormat(dateValue, item, table) : format(dateValue, column.format ?? 'dd/MM/yyyy');
     };
 
     const ColumnStatusRenderer = (column: DataGridColumn, item: any) => {
