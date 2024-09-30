@@ -33,9 +33,9 @@ const TopMenu: React.FC<MenuProps> = ({ data }) => {
                 );
             } else {
                 return (
-                    <Dropdown.Item key={item.id} href={`/Table/${item.admin_controller}`}>
+                    <NavDropdown.Item className="mt-2 me-2" key={item.id} href={`/Table/${item.admin_controller}`}>
                         {item.name}
-                    </Dropdown.Item>
+                    </NavDropdown.Item>
                 );
             }
         });
@@ -44,15 +44,15 @@ const TopMenu: React.FC<MenuProps> = ({ data }) => {
     const router = useRouter();
 
     return <>
-        <Dropdown.Item href="/">Dashboard</Dropdown.Item>
+        <NavDropdown.Item className="mt-2 me-2" href="/">Dashboard</NavDropdown.Item>
         {renderSubMenu(data)}
-        <Dropdown.Divider />
-        <Dropdown.Item onClick={
+        <NavDropdown.Divider />
+        <NavDropdown.Item className="mt-2 me-2" onClick={
             () => {
                 storage.clearTokenInfo();
                 router.push('/login');
             }
-        }>Logout</Dropdown.Item>
+        }>Logout</NavDropdown.Item>
     </>;
 };
 
