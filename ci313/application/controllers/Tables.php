@@ -29,7 +29,11 @@ class Tables extends CI_Controller
             die;
         }
         $token = explode(' ', $token);
-        $token = $token[1];
+        if (!isset($token[1]) || !trim($token[1])) {
+            $token = '';
+        } else {
+            $token = $token[1];
+        }
         try {
             $tokenInfo = JWT::decode($token, 'your-secret-key', array('HS256'));
         } catch(Exception $e) {

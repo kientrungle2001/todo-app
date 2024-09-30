@@ -20,6 +20,7 @@ const Index = () => {
         currentPage: 1,
         pageSize: 100
     };
+    const router = useRouter();
     useEffect(() => {
         axios.post('/tables/search/admin_menu', {
             settings: JSON.parse(JSON.stringify(settings)),
@@ -33,6 +34,11 @@ const Index = () => {
             pageSize: pagination.pageSize,
         }).then(response => {
             setItems(response.data.items);
+        }).catch((error) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                router.push('/login');
+            }
         });
     }, []);
 
