@@ -58,7 +58,7 @@ export default function Table(): React.ReactElement {
     ];
 
     return <>
-        <TableGrid settings={
+        <TableGrid controller="admin_users" settings={
             {
                 title: "User List",
                 table: "users",

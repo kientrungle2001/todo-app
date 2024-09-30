@@ -4,6 +4,6 @@ import React from "react";
 
 export default function TableUsers(): React.ReactElement {
     return <>
-        <TableGrid settings={StudentSettings} />
+        <TableGrid controller="admin_student" settings={StudentSettings} />
     </>
 }

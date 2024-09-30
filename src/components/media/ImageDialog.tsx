@@ -31,11 +31,13 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                     router.push('/login');
                 }
             });
-            const { files, folders } = response.data;
-            setFiles([...folders, ...files]); // Assuming the response gives separate `files` and `folders`
-            setCurrentFolder(path);
-            // Update breadcrumbs based on current folder
-            setBreadcrumbs(path.split('/').filter(Boolean)); // Filter to remove empty strings
+            if (response && response.data) {
+                const { files, folders } = response.data;
+                setFiles([...folders, ...files]); // Assuming the response gives separate `files` and `folders`
+                setCurrentFolder(path);
+                // Update breadcrumbs based on current folder
+                setBreadcrumbs(path.split('/').filter(Boolean)); // Filter to remove empty strings
+            }
         } catch (error) {
             console.error('Error fetching directory contents:', error);
         }
@@ -79,7 +81,6 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                         router.push('/login');
                     }
                 });
-                console.log('Upload response:', response.data);
                 fetchDirectoryContents(currentFolder); // Refresh the folder contents after upload
             } catch (error) {
                 console.error('Error uploading image:', error);
@@ -99,7 +100,6 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                     router.push('/login');
                 }
             });
-            console.log('Directory created:', response.data);
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after creation
         } catch (error) {
             console.error('Error creating directory:', error);
@@ -117,7 +117,6 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                     router.push('/login');
                 }
             });
-            console.log('File/Directory deleted:', response.data);
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after deletion
         } catch (error) {
             console.error('Error deleting file/directory:', error);
@@ -139,7 +138,6 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                     router.push('/login');
                 }
             });
-            console.log('File/Directory renamed:', response.data);
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after renaming
         } catch (error) {
             console.error('Error renaming file/directory:', error);
