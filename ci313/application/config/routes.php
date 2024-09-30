@@ -64,3 +64,4 @@ $route['api/tables/(:any)/map'] = 'tables/map/$1';
 $route['api/media/list'] = 'media/list_images';
 $route['api/media/upload'] = 'media/upload';
 $route['api/media/create_directory'] = 'media/create_directory';
+$route['api/login'] = 'auth/login';

@@ -1,12 +1,14 @@
 // src/api/axiosInstance.ts
 import axios from 'axios';
+import { storage } from './storage';
 
 const instance = axios.create({
   baseURL: 'http://localhost:3002/api', // Change to your backend API URL
   headers: {
     common: {
       'x-api-software': 1,
-      'x-api-site': 1
+      'x-api-site': 1,
+      'Authorization': `Bearer ${storage.get('token') || ''}` // Add your token here if you have one'
     }
   }
 });

@@ -3,6 +3,8 @@ import TopMenu from "./TopMenu";
 import axios from '@/api/axiosInstance';
 import { buildTree } from "@/api/tree";
 import { Nav, Navbar } from "react-bootstrap";
+import { storage } from "@/api/storage";
+import { useRouter } from "next/router";
 
 interface TopMenuGridProps {
 
@@ -11,6 +13,7 @@ interface TopMenuGridProps {
 export const TopMenuGrid: React.FC<TopMenuGridProps> = ({ }): React.ReactElement => {
     const [data, setData] = React.useState<any[]>([]);
 
+    const router = useRouter();
     useEffect(() => {
         axios.post('/tables/admin_menu/map', {
             fields: ["id", "name", "parent", "admin_controller", "ordering", "status", "shortcut"],
@@ -20,6 +23,11 @@ export const TopMenuGrid: React.FC<TopMenuGridProps> = ({ }): React.ReactElement
             let items = resp.data;
             items = buildTree(items, 'parent');
             setData(items);
+        }).catch((error) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                router.push('/login');
+            }
         });
     }, []);
 

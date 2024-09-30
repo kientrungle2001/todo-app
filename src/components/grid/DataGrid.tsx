@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 
 import { format } from "date-fns";
 import { TopMenuGrid } from "./TopMenuGrid";
+import { storage } from "@/api/storage";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -170,6 +171,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             console.log(`Deleting item with ID: ${item.id}`);
             axios.delete(`/tables/${table}/delete/${item.id}`).then(() => {
                 onAfterDelete(item);
+            }).catch((error) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
             });
         }
     };
@@ -259,7 +265,12 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             axios.put(`/tables/${table}/update/${item.id}`, { item: { [column.index]: status }, fields: [column] }).then(() => {
                 item[column.index] = status;
                 onAfterChangeStatus(column, item);
-            });
+            }).catch((error) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
+            });;
         }
 
         const getStatusLabel = (status: number) => {
@@ -374,7 +385,12 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         }
         axios.put(`/tables/${table}/update-column`, { column: column, values }).then(() => {
             onAfterSaveInputableColumn(column);
-        });
+        }).catch((error) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                router.push('/login');
+            }
+        });;
     }
 
     return (

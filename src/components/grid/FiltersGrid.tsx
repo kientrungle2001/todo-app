@@ -2,6 +2,8 @@ import { Form } from "react-bootstrap";
 import { DataGridFilterColumn, DataGridFilterColumnType, DataGridSort, DataGridSortOption } from "./DataGrid"
 import React from "react";
 import axios from "@/api/axiosInstance";
+import { storage } from "@/api/storage";
+import { useRouter } from "next/router";
 
 interface FiltersGridProps {
     filters: DataGridFilterColumn[];
@@ -175,6 +177,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
     }
 
     const [maps, setMaps] = React.useState<{ [key: string]: any }>(filterData);
+    const router = useRouter();
     React.useEffect(() => {
         filters.forEach(filter => {
             if (filter.type === DataGridFilterColumnType.SELECT && filter.table) {
@@ -185,6 +188,12 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                         let updatedMaps = { ...maps };
                         updatedMaps[filter.index] = response.data;
                         setMaps(updatedMaps);
+                    })
+                    .catch((error) => {
+                        if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                            storage.clearTokenInfo();
+                            router.push('/login');
+                        }
                     })
                     .catch(error => {
                         console.error('Error fetching map data:', error);

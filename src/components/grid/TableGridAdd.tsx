@@ -3,6 +3,7 @@ import { TableGridSettings } from "./TableGrid";
 import axios from "@/api/axiosInstance";
 import DataGridEdit, { DataGridEditField, DataGridEditMode } from "./DataGridEdit";
 import { useRouter } from "next/router";
+import { storage } from "@/api/storage";
 
 interface TableGridProps {
     controller: string;
@@ -30,6 +31,11 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
         }).then(() => {
             setItem(updatedItem);
             router.push(`/Table/${controller}`);
+        }).catch((error) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                router.push('/login');
+            }
         }).catch((error: any) => {
             console.error("Error adding item:", error);
             alert("Error adding item. Please try again later.");

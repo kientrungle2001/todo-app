@@ -8,6 +8,8 @@ import $ from "jquery";
 import 'select2';
 import { ImageSelector } from "../media/ImageSelector";
 import { format } from "date-fns";
+import { storage } from "@/api/storage";
+import { useRouter } from "next/router";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -64,6 +66,7 @@ interface DataGridEditProps {
 const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
     const [selectedImage, setSelectedImage] = useState<string>("");
 
+    const router = useRouter();
     useEffect(() => {
         const setMapsForFields = () => {
             let updatedMaps = { ...maps };
@@ -94,6 +97,12 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                 items = flatTree(items, 1);
                             }
                             updatedMaps[field.index] = items;
+                        })
+                        .catch((error) => {
+                            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                                storage.clearTokenInfo();
+                                router.push('/login');
+                            }
                         })
                         .catch(error => {
                             console.error('Error fetching map data:', error);

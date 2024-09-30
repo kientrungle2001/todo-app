@@ -17,9 +17,31 @@ class Tables extends CI_Controller
      */
     public $db;
 
+    public $tokenInfo;
+
     public function __construct()
     {
         parent::__construct();
+        $this->load->library('JWT');
+        $token = $this->input->get_request_header('Authorization', TRUE);
+        if (!$token) {
+            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Missing Authorization header')));
+            die;
+        }
+        $token = explode(' ', $token);
+        $token = $token[1];
+        try {
+            $tokenInfo = JWT::decode($token, 'your-secret-key', array('HS256'));
+        } catch(Exception $e) {
+            $tokenInfo = null;
+            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')))->_display();
+            die;
+        }
+        
+        if (!$tokenInfo) {
+            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')))->_display();
+            die;
+        }
         $this->load->database();
         $this->load->helper('datagrid');
     }
@@ -76,15 +98,15 @@ class Tables extends CI_Controller
             $query .= ' AND ' . $softwareAndSiteFilters['softwareFilter'];
         }
         if ($softwareAndSiteFilters['siteFilter']) {
-            $query.= ' AND '. $softwareAndSiteFilters['siteFilter'];
+            $query .= ' AND ' . $softwareAndSiteFilters['siteFilter'];
         }
         $condition = $this->input->post('condition');
         if ($condition) {
-            $query.= " AND $condition";
+            $query .= " AND $condition";
         }
         $orderBy = $this->input->post('orderBy');
         if ($orderBy) {
-            $query.= " ORDER BY $orderBy";
+            $query .= " ORDER BY $orderBy";
         }
         $items = $this->db->query($query)->result_array();
         $response = $this->casting_numeric_fields($items);
@@ -119,7 +141,7 @@ class Tables extends CI_Controller
         if ($this->isFieldExisted($table, 'software')) {
             $data['software'] = $software;
         }
-        if ($this->isFieldExisted($table,'site') && !isset($data['site'])) {
+        if ($this->isFieldExisted($table, 'site') && !isset($data['site'])) {
             $data['site'] = $site;
         }
         $this->db->where('id', $id);
@@ -157,7 +179,7 @@ class Tables extends CI_Controller
         if ($this->isFieldExisted($table, 'software')) {
             $data['software'] = $software;
         }
-        if ($this->isFieldExisted($table,'site') && !isset($data['site'])) {
+        if ($this->isFieldExisted($table, 'site') && !isset($data['site'])) {
             $data['site'] = $site;
         }
         $this->db->insert($table, $data);
@@ -249,7 +271,7 @@ class Tables extends CI_Controller
                 $query .= ' AND ' . $softwareAndSiteFilters['softwareFilter'];
             }
             if ($softwareAndSiteFilters['siteFilter']) {
-                $query.= ' AND '. $softwareAndSiteFilters['siteFilter'];
+                $query .= ' AND ' . $softwareAndSiteFilters['siteFilter'];
             }
         }
 
@@ -342,10 +364,10 @@ class Tables extends CI_Controller
         $softwareAndSiteFilters = $this->getSoftwareAndSiteFilters($settings->table);
         if ($softwareAndSiteFilters['softwareFilter'] || $softwareAndSiteFilters['siteFilter']) {
             if ($softwareAndSiteFilters['softwareFilter']) {
-                $totalCountQuery.= ' AND '. $softwareAndSiteFilters['softwareFilter'];
+                $totalCountQuery .= ' AND ' . $softwareAndSiteFilters['softwareFilter'];
             }
             if ($softwareAndSiteFilters['siteFilter']) {
-                $totalCountQuery.= ' AND '. $softwareAndSiteFilters['siteFilter'];
+                $totalCountQuery .= ' AND ' . $softwareAndSiteFilters['siteFilter'];
             }
         }
 

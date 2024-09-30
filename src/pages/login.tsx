@@ -1,9 +1,10 @@
 // pages/login.tsx
 import { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import axios from '@/api/axiosInstance';
 import { useRouter } from 'next/router';
 import { FaSignInAlt } from 'react-icons/fa';
+import { storage } from '@/api/storage';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -14,9 +15,11 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post('/api/login', { username, password });
-            localStorage.setItem('token', data.token);
-            router.push('/TodoList');
+            const { data } = await axios.post('/login', { username, password });
+            storage.set('token', data.token);
+            storage.set('user', data.user);
+            storage.set('isAuthenticated', true);
+            router.push('/dashboard');
         } catch (error) {
             setError('Invalid username or password');
         }

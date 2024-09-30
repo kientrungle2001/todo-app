@@ -4,6 +4,7 @@ import axios from '@/api/axiosInstance';
 import { DataGridEditField } from "./DataGridEdit";
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
+import { useRouter } from "next/router";
 
 export interface TableGridSettings {
     title: string,
@@ -94,6 +95,7 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
         handleListItems();
     }
 
+    const router = useRouter();
 
     const handleListItems = () => {
         axios.post('/tables/search/' + settings.table, {
@@ -115,6 +117,11 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
             setTotalItems(resp.data.totalItems);
             setIsCheckedAll(false);
             setCheckedItemIds([]);
+        }).catch((error) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                router.push('/login');
+            }
         });
     };
 
