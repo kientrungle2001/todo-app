@@ -25,7 +25,7 @@ class Tables extends CI_Controller
         $this->load->library('JWT');
         $token = $this->input->get_request_header('Authorization', TRUE);
         if (!$token) {
-            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Missing Authorization header')));
+            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')));
             die;
         }
         $token = explode(' ', $token);

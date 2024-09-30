@@ -1,6 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Button, Modal, ListGroup, Form, InputGroup, Breadcrumb, Row, Col, Card } from 'react-bootstrap';
 import axios from '@/api/axiosInstance';
+import { storage } from '@/api/storage';
+import { useRouter } from 'next/router';
 
 interface ImageDialogProps {
     show: boolean;
@@ -16,12 +18,18 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     const [newImage, setNewImage] = useState<File | null>(null);
     const [newDirName, setNewDirName] = useState<string>('');
     const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
+    const router = useRouter();
 
     // Function to fetch directory contents from the backend
     const fetchDirectoryContents = async (path: string) => {
         try {
             const response = await axios.get(`/media/list`, {
                 params: { path },
+            }).catch((error) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
             });
             const { files, folders } = response.data;
             setFiles([...folders, ...files]); // Assuming the response gives separate `files` and `folders`
@@ -65,6 +73,11 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
+                }).catch((error) => {
+                    if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                        storage.clearTokenInfo();
+                        router.push('/login');
+                    }
                 });
                 console.log('Upload response:', response.data);
                 fetchDirectoryContents(currentFolder); // Refresh the folder contents after upload
@@ -80,6 +93,11 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             const response = await axios.post('/media/create_directory', {
                 folder: currentFolder,
                 name: directoryName,
+            }).catch((error) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
             });
             console.log('Directory created:', response.data);
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after creation
@@ -93,6 +111,11 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
         try {
             const response = await axios.delete('/media/delete', {
                 data: { path: `${currentFolder}/${fileName}` },
+            }).catch((error) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
             });
             console.log('File/Directory deleted:', response.data);
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after deletion
@@ -101,6 +124,8 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
         }
     };
 
+    
+
     // Handle renaming a file or directory
     const handleRename = async (oldName: string, newName: string) => {
         try {
@@ -108,6 +133,11 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 folder: currentFolder,
                 oldName,
                 newName,
+            }).catch((error) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
             });
             console.log('File/Directory renamed:', response.data);
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after renaming
