@@ -105,6 +105,10 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
             sorts: JSON.parse(JSON.stringify(sorts)),
             page: pagination.currentPage,
             pageSize: pagination.pageSize,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
         }).then((resp) => {
             if (settings.treeMode) {
                 let items: any[] = resp.data.items;

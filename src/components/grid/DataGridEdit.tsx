@@ -89,6 +89,10 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                         fields: fields,
                         condition: condition,
                         orderBy: field.orderBy ?? 'id asc'
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${storage.get('token') || ''}`
+                        }
                     })
                         .then(response => {
                             let items = response.data;

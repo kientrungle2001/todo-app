@@ -183,6 +183,10 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
             if (filter.type === DataGridFilterColumnType.SELECT && filter.table) {
                 axios.post(`/tables/${filter.table}/map`, {
                     fields: [filter.valueField, filter.labelField]
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${storage.get('token') || ''}`
+                    }
                 })
                     .then(response => {
                         let updatedMaps = { ...maps };

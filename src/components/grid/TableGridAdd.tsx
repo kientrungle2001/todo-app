@@ -28,6 +28,10 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
             item: updatedItem,
             settings: JSON.parse(JSON.stringify(settings)),
             fields: JSON.parse(JSON.stringify(fields))
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
         }).then(() => {
             setItem(updatedItem);
             router.push(`/Table/${controller}`);

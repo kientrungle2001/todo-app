@@ -1,9 +1,8 @@
 // pages/login.tsx
 import { useEffect, useState } from 'react';
-import { Form, Button, Container, Alert, Row, Col, Card } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card } from 'react-bootstrap';
 import axios from '@/api/axiosInstance';
 import { useRouter } from 'next/router';
-import { FaSignInAlt } from 'react-icons/fa';
 import { storage } from '@/api/storage';
 import { AdminMenuSettings } from '@/api/settings/MenuSettings';
 import { DataGridPagination, DataGridSort, DataGridSortDirection } from '@/components/grid/DataGrid';
@@ -32,6 +31,10 @@ const Index = () => {
             sorts: JSON.parse(JSON.stringify(sorts)),
             page: pagination.currentPage,
             pageSize: pagination.pageSize,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
         }).then(response => {
             setItems(response.data.items);
         }).catch((error) => {

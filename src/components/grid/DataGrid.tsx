@@ -169,7 +169,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         // Implement your delete logic here
         if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
             console.log(`Deleting item with ID: ${item.id}`);
-            axios.delete(`/tables/${table}/delete/${item.id}`).then(() => {
+            axios.delete(`/tables/${table}/delete/${item.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${storage.get('token') || ''}`
+                }
+            }).then(() => {
                 onAfterDelete(item);
             }).catch((error) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
@@ -262,7 +266,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
 
     const ColumnStatusRenderer = (column: DataGridColumn, item: any) => {
         const handleChangeStatusField = (status: number) => {
-            axios.put(`/tables/${table}/update/${item.id}`, { item: { [column.index]: status }, fields: [column] }).then(() => {
+            axios.put(`/tables/${table}/update/${item.id}`, { item: { [column.index]: status }, fields: [column] }, {
+                headers: {
+                    'Authorization': `Bearer ${storage.get('token') || ''}`
+                }
+            }).then(() => {
                 item[column.index] = status;
                 onAfterChangeStatus(column, item);
             }).catch((error) => {
@@ -383,7 +391,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 value: inputableItem[column.index]
             });
         }
-        axios.put(`/tables/${table}/update-column`, { column: column, values }).then(() => {
+        axios.put(`/tables/${table}/update-column`, { column: column, values }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
+        }).then(() => {
             onAfterSaveInputableColumn(column);
         }).catch((error) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {

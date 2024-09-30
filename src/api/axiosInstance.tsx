@@ -7,8 +7,7 @@ const instance = axios.create({
   headers: {
     common: {
       'x-api-software': 1,
-      'x-api-site': 1,
-      'Authorization': `Bearer ${storage.get('token') || ''}` // Add your token here if you have one'
+      'x-api-site': 1
     }
   }
 });

@@ -19,6 +19,10 @@ export const TopMenuGrid: React.FC<TopMenuGridProps> = ({ }): React.ReactElement
             fields: ["id", "name", "parent", "admin_controller", "ordering", "status", "shortcut"],
             condition: "status = 1",
             orderBy: "ordering asc"
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
         }).then((resp) => {
             let items = resp.data;
             items = buildTree(items, 'parent');

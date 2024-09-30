@@ -18,6 +18,10 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
     useEffect(() => {
         axios.post(`/tables/${settings.table}/detail/${itemId}`, {
             settings
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
         }).then((resp: any) => {
             setItem(resp.data);
             console.log("Fetched item:", resp.data);
@@ -43,6 +47,10 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
             item: updatedItem,
             settings: JSON.parse(JSON.stringify(settings)),
             fields: JSON.parse(JSON.stringify(fields))
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
         }).then(() => {
             setItem(updatedItem);
             router.push(`/Table/${controller}`);

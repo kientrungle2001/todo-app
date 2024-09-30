@@ -25,6 +25,9 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
         try {
             const response = await axios.get(`/media/list`, {
                 params: { path },
+                headers: {
+                    'Authorization': `Bearer ${storage.get('token') || ''}`
+                }
             }).catch((error) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
@@ -74,6 +77,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 const response = await axios.post('/media/upload', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${storage.get('token') || ''}`
                     },
                 }).catch((error) => {
                     if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
@@ -94,6 +98,10 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             const response = await axios.post('/media/create_directory', {
                 folder: currentFolder,
                 name: directoryName,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${storage.get('token') || ''}`
+                }
             }).catch((error) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
@@ -132,6 +140,10 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 folder: currentFolder,
                 oldName,
                 newName,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${storage.get('token') || ''}`
+                }
             }).catch((error) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();

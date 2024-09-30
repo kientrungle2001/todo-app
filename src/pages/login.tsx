@@ -19,7 +19,9 @@ const Login = () => {
             storage.set('token', data.token);
             storage.set('user', data.user);
             storage.set('isAuthenticated', true);
-            router.push('/');
+            setTimeout(() => {
+                router.push('/');
+            }, 100);
         } catch (error) {
             setError('Invalid username or password');
         }
