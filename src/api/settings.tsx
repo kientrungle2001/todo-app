@@ -15,6 +15,13 @@ import { AdminVoteSettings } from "./settings/VoteSettings";
 import { AdminBannerSettings } from "./settings/BannerSettings";
 import { AdminMediaSettings } from "./settings/MediaSettings";
 import { AdminNewsSettings } from "./settings/NewsSettings";
+import { AdminAQSQuestionSettings } from "./settings/AQSQuestionSettings";
+import { AdminAQSAnswerSettings } from "./settings/AQSAnswerSettings";
+import { AdminWalletSettings } from "./settings/WalletSettings";
+import { AdminCouponSettings } from "./settings/CouponSettings";
+import { AdminCouponUserSettings } from "./settings/CouponUserSettings";
+import { AdminOrderCardSettings } from "./settings/OrderCardSettings";
+import { AdminNextNobelsCardSettings } from "./settings/NextNobelsCardSettings";
 
 export const getSettingsByController = (controller: string): TableGridSettings | null => {
     if (controller === "student") {
@@ -49,6 +56,20 @@ export const getSettingsByController = (controller: string): TableGridSettings |
         return AdminMediaSettings
     } else if (controller === "admin_news") {
         return AdminNewsSettings
+    } else if (controller === "admin_aqsquestion") {
+        return AdminAQSQuestionSettings
+    } else if (controller === "admin_aqsanswer") {
+        return AdminAQSAnswerSettings
+    } else if (controller === "admin_wallets") {
+        return AdminWalletSettings
+    } else if (controller === "admin_coupon") {
+        return AdminCouponSettings
+    } else if (controller === "admin_coupon_user") {
+        return AdminCouponUserSettings
+    } else if (controller === "admin_ordercard") {
+        return AdminOrderCardSettings
+    } else if (controller === "admin_service_cardnexnobels") {
+        return AdminNextNobelsCardSettings
     }
     return null;
 }
