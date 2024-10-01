@@ -11,6 +11,7 @@ const gridFields: string[] = ["id", "title", "en_title", "tdn_title", "alias", "
 const gridColumns: DataGridColumn[] = [
     { index: "id", label: "ID", width: "1%" },
     { index: "title", label: "Tên Tài liệu", linkFormat: (value: any, item: any) => `/Table/admin_document/${item.id}/edit` },
+    { index: "content", label: "Nội dung Tài liệu", isHtml: true },
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
     {
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
@@ -42,7 +43,7 @@ const gridColumns: DataGridColumn[] = [
 
 const gridPagination: DataGridPagination = {
     currentPage: 1,
-    pageSize: 5000
+    pageSize: 50
 };
 
 const gridFilters: DataGridFilterColumn[] = [

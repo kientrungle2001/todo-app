@@ -205,8 +205,10 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             </>;
         }
         if (column.isHtml) {
+            let content = column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '';
+            content = content.replace('s1.nextnobels.com', 'media.nextnobels.com').replace('fulllooksongngu.com', 'media.nextnobels.com');
             return <>
-                <div dangerouslySetInnerHTML={{ __html: column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '' }} />
+                <div dangerouslySetInnerHTML={{ __html: content }} />
             </>;
         }
         if (column.map) {
@@ -249,7 +251,13 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     };
 
     const ColumnImageRenderer = (column: DataGridColumn, item: any) => {
-        return <img src={'http://nextnobels.com' + item[column.index]} alt={item.id} style={{ maxWidth: "100px" }} />;
+        if (!item[column.index]) {
+            return '-';
+        }
+        return <img src={'http://media.nextnobels.com' + item[column.index]} alt={item.id} style={{ maxWidth: "100px" }} onError={(e) => {
+            const target = e.target as HTMLImageElement; // Type assertion for TypeScript
+            target.src = 'http://media.nextnobels.com/default/skin/nobel/themes/story/media/logo.png';
+        }} />;
     }
 
     function formatCurrency(amount: number) {

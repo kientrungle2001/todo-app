@@ -53,7 +53,7 @@ class Media extends CI_Controller
         $path = $this->input->get('path', TRUE); // Get path from query params
         $this->load->helper('directory');
 
-        $fullPath = FCPATH . 'uploads/' . $path; // Assuming you store media in 'uploads' folder
+        $fullPath = FCPATH . '3rdparty/Filemanager/source/' . $path; // Assuming you store media in 'uploads' folder
         $map = directory_map($fullPath);
 
         $files = [];
@@ -73,7 +73,7 @@ class Media extends CI_Controller
 
     public function upload()
     {
-        $config['upload_path'] = './uploads/' . $this->input->post('folder');
+        $config['upload_path'] = './3rdparty/Filemanager/source/' . $this->input->post('folder');
         $config['allowed_types'] = 'jpg|png|gif|jpeg|webp';
         $config['max_size'] = 2048; // 2MB max
 
@@ -95,7 +95,7 @@ class Media extends CI_Controller
         $folder = $this->input->post('folder', TRUE);
         $name = $this->input->post('name', TRUE);
 
-        $fullPath = FCPATH . 'uploads/' . $folder . '/' . $name;
+        $fullPath = FCPATH . '3rdparty/Filemanager/source/' . $folder . '/' . $name;
 
         if (!file_exists($fullPath)) {
             mkdir($fullPath, 0755, TRUE); // Create directory with 755 permissions
@@ -110,7 +110,7 @@ class Media extends CI_Controller
     public function delete()
     {
         $path = $this->input->input_stream('path', TRUE);
-        $fullPath = FCPATH . 'uploads/' . $path;
+        $fullPath = FCPATH . '3rdparty/Filemanager/source/' . $path;
 
         if (is_dir($fullPath)) {
             if (count(scandir($fullPath)) == 2) { // Empty directory
@@ -137,8 +137,8 @@ class Media extends CI_Controller
         $oldName = $this->input->post('oldName', TRUE);
         $newName = $this->input->post('newName', TRUE);
 
-        $fullOldPath = FCPATH . 'uploads/' . $folder . '/' . $oldName;
-        $fullNewPath = FCPATH . 'uploads/' . $folder . '/' . $newName;
+        $fullOldPath = FCPATH . '3rdparty/Filemanager/source/' . $folder . '/' . $oldName;
+        $fullNewPath = FCPATH . '3rdparty/Filemanager/source/' . $folder . '/' . $newName;
 
         if (file_exists($fullOldPath)) {
             rename($fullOldPath, $fullNewPath);
