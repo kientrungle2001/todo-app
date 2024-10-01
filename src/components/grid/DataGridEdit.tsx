@@ -305,7 +305,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         const editorRef = useRef<any>(null); // Initialize the editorRef
         const handleImageInsert = (imagePath: string) => {
             if (editorRef.current) {
-                editorRef.current.insertContent(`<img src="http://localhost:3002/3rdparty/Filemanager/source${imagePath}" alt="Selected Image"/>`);
+                editorRef.current.insertContent(`<img src="http://localhost:3002/${imagePath}" alt="Selected Image"/>`);
             }
             setSelectedImage(imagePath); // Save selected image path
         };

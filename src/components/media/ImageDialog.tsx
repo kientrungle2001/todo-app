@@ -14,7 +14,7 @@ interface ImageDialogProps {
 export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, onClose, onImageSelect }) => {
     const [currentFolder, setCurrentFolder] = useState<string>('/');
     const [files, setFiles] = useState<string[]>([]);
-    const [selectedFile, setSelectedFile] = useState<string | null>(selectedImage);
+    const [selectedFile, setSelectedFile] = useState<string | null>(selectedImage ? selectedImage.substring(9) : '');
     const [newImage, setNewImage] = useState<File | null>(null);
     const [newDirName, setNewDirName] = useState<string>('');
     const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
@@ -39,7 +39,13 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 setFiles([...folders, ...files]); // Assuming the response gives separate `files` and `folders`
                 setCurrentFolder(path);
                 // Update breadcrumbs based on current folder
-                setBreadcrumbs(path.split('/').filter(Boolean)); // Filter to remove empty strings
+                const updatedBreadcrumbs: string[] = [];
+                let breadcrumbPath = '';
+                path.split('/').filter(Boolean).forEach((folder) => {
+                    breadcrumbPath += `/${folder}`;
+                    updatedBreadcrumbs.push(breadcrumbPath);
+                });
+                setBreadcrumbs(updatedBreadcrumbs.filter(Boolean)); // Filter to remove empty strings
             }
         } catch (error) {
             console.error('Error fetching directory contents:', error);
@@ -157,8 +163,20 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     };
 
     useEffect(() => {
-        if (show) fetchDirectoryContents('/');
-    }, [show]);
+        if (show) {
+            if (selectedImage && selectedImage.startsWith('/3rdparty')) {
+                // get folder name from selected image path (remove file name)
+                let folderName = selectedImage.substring(0, selectedImage.lastIndexOf('/') + 1);
+                // remove /3rdparty prefix
+                folderName = folderName.substring(9);
+                // fetch the directory contents of the selected folder
+                fetchDirectoryContents(folderName);
+            } else {
+                fetchDirectoryContents('/');
+            }
+            
+        }
+    }, [show, selectedImage]);
 
     return (
         <Modal show={show} onHide={onClose} size="xl">
@@ -184,24 +202,23 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                                 onClick={() => !isLast && handleBreadcrumbClick(folder)}
                                 style={{ cursor: !isLast ? 'pointer' : 'default' }}
                             >
-                                {folder}
+                                {folder.substring(folder.lastIndexOf('/') + 1)}
                             </Breadcrumb.Item>
                         );
                     })}
                 </Breadcrumb>
                 <Row>
                     {files.map((file, index) => (
-                        <Col md={3}
+                        <Col md={2}
                             key={index}
-                            action
                             onClick={() => handleItemClick(file)}
-
+                            className="mt-2"
                         >
                             {/** create card */}
-                            <Card style={{ cursor: 'pointer', width: '100%', height: "400px", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
-                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`http://localhost:3002/3rdparty/Filemanager/source${currentFolder}${file}`} />}
+                            <Card style={{ cursor: 'pointer', width: '100%', height: "250px", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
+                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`http://localhost:3002/3rdparty${currentFolder}${file}`} />}
                                 <Card.Body>
-                                    <Card.Title>{file.replace('/', '')}</Card.Title>
+                                    <span>{file.replace('/', '')}</span>
                                 </Card.Body>
                             </Card>
                         </Col>

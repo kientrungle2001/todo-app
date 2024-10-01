@@ -48,7 +48,7 @@ class Auth extends CI_Controller
                 $this->load->library('JWT');
                 $token = array(
                     'iat' => time(),
-                    'exp' => time() + 60 * 60, // 10 secs
+                    'exp' => time() + 3 * 60 * 60, // 10 secs
                     'data' => $user
                 );
                 $jwt = JWT::encode($token, 'your-secret-key');
