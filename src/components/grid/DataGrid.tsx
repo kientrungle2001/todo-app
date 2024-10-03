@@ -206,7 +206,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         }
         if (column.isHtml) {
             let content = column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '';
-            content = content.replace('s1.nextnobels.com', 'media.nextnobels.com').replace('fulllooksongngu.com', 'media.nextnobels.com');
+            content = content.replaceAll('s1.nextnobels.com', 'media.nextnobels.com').replaceAll('fulllooksongngu.com', 'media.nextnobels.com');
             return <>
                 <div dangerouslySetInnerHTML={{ __html: content }} />
             </>;

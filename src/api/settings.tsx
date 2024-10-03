@@ -24,6 +24,7 @@ import { AdminOrderCardSettings } from "./settings/OrderCardSettings";
 import { AdminNextNobelsCardSettings } from "./settings/NextNobelsCardSettings";
 import { AdminGameSettings } from "./settings/GameSettings";
 import { AdminGameTopicSettings } from "./settings/GameTopicSettings";
+import { AdminGameTypeSettings } from "./settings/GameTypeSettings";
 
 export const getSettingsByController = (controller: string): TableGridSettings | null => {
     if (controller === "student") {
@@ -76,6 +77,8 @@ export const getSettingsByController = (controller: string): TableGridSettings |
         return AdminGameSettings
     } else if (controller === "admin_gametopic") {
         return AdminGameTopicSettings
+    } else if (controller === "admin_gametype") {
+        return AdminGameTypeSettings
     }
     return null;
 }
