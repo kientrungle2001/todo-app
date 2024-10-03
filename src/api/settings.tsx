@@ -25,6 +25,8 @@ import { AdminNextNobelsCardSettings } from "./settings/NextNobelsCardSettings";
 import { AdminGameSettings } from "./settings/GameSettings";
 import { AdminGameTopicSettings } from "./settings/GameTopicSettings";
 import { AdminGameTypeSettings } from "./settings/GameTypeSettings";
+import { AdminServicePolicySettings } from "./settings/ServicePolicySettings";
+import { AdminMobileCardSettings } from "./settings/MobileCardSettings";
 
 export const getSettingsByController = (controller: string): TableGridSettings | null => {
     if (controller === "student") {
@@ -79,6 +81,10 @@ export const getSettingsByController = (controller: string): TableGridSettings |
         return AdminGameTopicSettings
     } else if (controller === "admin_gametype") {
         return AdminGameTypeSettings
+    } else if (controller === "admin_service_policy") {
+        return AdminServicePolicySettings
+    } else if (controller === "admin_cardmobile") {
+        return AdminMobileCardSettings
     }
     return null;
 }
