@@ -27,6 +27,11 @@ import { AdminGameTopicSettings } from "./settings/GameTopicSettings";
 import { AdminGameTypeSettings } from "./settings/GameTypeSettings";
 import { AdminServicePolicySettings } from "./settings/ServicePolicySettings";
 import { AdminMobileCardSettings } from "./settings/MobileCardSettings";
+import { AdminOrderTransactionSettings } from "./settings/OrderTransactionSettings";
+import { AdminThemeSettings } from "./settings/ThemeSettings";
+import { AdminLogSettings } from "./settings/LogSettings";
+import { AdminLevelSettings } from "./settings/AdminLevelSettings";
+import { AdminLevelActionSettings } from "./settings/AdminLevelActionSettings";
 
 export const getSettingsByController = (controller: string): TableGridSettings | null => {
     if (controller === "student") {
@@ -85,6 +90,16 @@ export const getSettingsByController = (controller: string): TableGridSettings |
         return AdminServicePolicySettings
     } else if (controller === "admin_cardmobile") {
         return AdminMobileCardSettings
+    } else if (controller === "admin_order_transaction") {
+        return AdminOrderTransactionSettings;
+    } else if (controller === "admin_themes") {
+        return AdminThemeSettings;
+    } else if (controller === "admin_log") {
+        return AdminLogSettings;
+    } else if (controller === "admin_adminlevel") {
+        return AdminLevelSettings;
+    } else if (controller === "admin_levelaction") {
+        return AdminLevelActionSettings
     }
     return null;
 }
