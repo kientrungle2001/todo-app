@@ -14,11 +14,14 @@ CREATE TABLE `aqs_answer` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=820 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
  */
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Trả lời Hỏi đáp";
+const gridAddNewLabel: string = "Thêm Trả lời Hỏi đáp";
+const gridUpdateLabel: string = "Cập nhật Trả lời Hỏi đáp";
+const gridDeleteSelectedsLabel: string = "Xóa các Trả lời Hỏi đáp đã chọn";
 const gridTable: string = "aqs_answer";
 const gridJoins: DataGridTableJoin[] = [
     {
@@ -32,22 +35,15 @@ const gridSearchFields: string[] = ["id", "answer", "username"];
 const gridFields: string[] = ["id", "q.question as question", "answer", "userId", "software", "username", "status"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
-    { index: "question", label: "Nội dung câu hỏi"},
+    DataGridColumns.id,
+    { index: "question", label: "Nội dung câu hỏi" },
     {
-        index: "answer", label: "câu trả lời", type: DataGridColumnType.TEXT, linkFormat: (value: any, item: any) => `/Table/admin_aqsanswer/${item.id}/edit` 
+        index: "answer", label: "câu trả lời", type: DataGridColumnType.TEXT, linkFormat: (value: any, item: any) => `/Table/admin_aqsanswer/${item.id}/edit`
     },
     { index: "username", label: "Tên người dùng" },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.status,
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction
 ];
 
 const gridPagination: DataGridPagination = {
@@ -56,30 +52,20 @@ const gridPagination: DataGridPagination = {
 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
     {
         index: "idAsc",
         label: "ID tăng",
-        sorts: [
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
-        ]
+        sorts: [{ index: "id", direction: DataGridSortDirection.DESCENDING },]
     },
     {
         index: "idDesc",
         label: "ID giảm",
-        sorts: [
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
-        ]
+        sorts: [{ index: "id", direction: DataGridSortDirection.ASCENDING },]
     }
 ];
 
@@ -111,7 +97,7 @@ export const AdminAQSAnswerSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Trả lời Hỏi đáp đã chọn",
-    updateLabel: "Cập nhật Trả lời Hỏi đáp",
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel,
 }

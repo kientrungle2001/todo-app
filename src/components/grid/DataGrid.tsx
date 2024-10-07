@@ -76,6 +76,20 @@ export interface DataGridColumn {
     isHtml?: boolean;
 }
 
+export const DataGridColumns: Record<string, DataGridColumn> = {
+    id: { index: "id", label: "ID", width: "1%" },
+    status: {
+        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        statusToggable: true,
+        width: "10%"
+    },
+    editAction: { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
+    deleteAction: { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+};
+
 export interface DataGridFilterColumn {
     index: string;
     label: string;
@@ -94,6 +108,19 @@ export interface DataGridFilterColumn {
     map?: any;
     select2?: boolean;
 }
+
+// declare map 
+
+export const DataGridFilterColumns: Record<string, DataGridFilterColumn>  = {
+    status: {
+        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        comparisonOperator: "equal"
+    },
+    id: { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT }
+};
 
 export interface DataGridSort {
     index: string;
