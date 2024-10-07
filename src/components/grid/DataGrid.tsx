@@ -76,7 +76,7 @@ export interface DataGridColumn {
     isHtml?: boolean;
 }
 
-export const DataGridColumns: Record<string, DataGridColumn> = {
+export const DataGridColumns: { [key: string]: DataGridColumn } = {
     id: { index: "id", label: "ID", width: "1%" },
     status: {
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
@@ -111,7 +111,7 @@ export interface DataGridFilterColumn {
 
 // declare map 
 
-export const DataGridFilterColumns: Record<string, DataGridFilterColumn>  = {
+export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
     status: {
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',

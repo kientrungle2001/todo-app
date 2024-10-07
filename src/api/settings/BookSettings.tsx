@@ -1,65 +1,47 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Vở bài tập";
+const gridAddNewLabel: string = "Thêm Vở bài tập";
+const gridUpdateLabel: string = "Cập nhật Vở bài tập";
+const gridDeleteSelectedsLabel: string = "Xóa các Vở bài tập đã chọn";
 const gridTable: string = "user_book";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "userId", "categoryId"];
 const gridFields: string[] = ["id", "userId", "categoryId", "quantity_question", "status"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "userId", label: "User ID", linkFormat: (value: any, item: any) => `/Table/admin_book/${item.id}/edit` },
     { index: "categoryId", label: "Danh mục" },
     { index: "quantity_question", label: "Số lượng câu hỏi", type: DataGridColumnType.NUMBER },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        statusToggable: true
-    },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.status,
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 200
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 200 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
     {
         index: "idAsc",
         label: "ID Vở bài tập tăng",
-        sorts: [
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
-        ]
+        sorts: [{ index: "id", direction: DataGridSortDirection.DESCENDING },]
     },
     {
         index: "idDesc",
         label: "ID Vở bài tập giảm",
-        sorts: [
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
-        ]
+        sorts: [{ index: "id", direction: DataGridSortDirection.ASCENDING },]
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "id", direction: DataGridSortDirection.DESCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     { index: "userId", label: "User ID", type: DataGridEditFieldType.TEXT, size: 6 },
@@ -80,8 +62,7 @@ export const AdminBookSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Vở bài tập đã chọn",
-    updateLabel: "Cập nhật Vở bài tập",
-    treeMode: true,
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel,
 }
