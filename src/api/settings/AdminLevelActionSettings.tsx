@@ -1,5 +1,5 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
+import { DataGridColumn, DataGridColumns, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridEditField } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Quyền";
@@ -29,16 +29,8 @@ const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.status,
 ];
 const gridSortOptions: DataGridSortOption[] = [
-    {
-        index: "idAsc",
-        label: "ID Quyền tăng",
-        sorts: [{ index: "id", direction: DataGridSortDirection.DESCENDING },]
-    },
-    {
-        index: "idDesc",
-        label: "ID Quyền giảm",
-        sorts: [{ index: "id", direction: DataGridSortDirection.ASCENDING },]
-    }
+    DataGridSortOptions.idAsc,
+    DataGridSortOptions.idDesc,
 ];
 
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];

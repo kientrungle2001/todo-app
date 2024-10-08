@@ -1,28 +1,3 @@
-/**
- * -- nextnobels.coupon definition
-
-CREATE TABLE `coupon` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `resellerId` int(11) NOT NULL,
-  `serviceId` int(11) NOT NULL,
-  `code` varchar(255) NOT NULL,
-  `discount` double NOT NULL,
-  `resellerDiscount` double NOT NULL,
-  `software` int(11) NOT NULL,
-  `site` int(11) NOT NULL,
-  `global` int(11) NOT NULL,
-  `sharedSoftwares` varchar(255) NOT NULL,
-  `startDate` datetime NOT NULL,
-  `endDate` datetime NOT NULL,
-  `status` int(11) NOT NULL,
-  `creatorId` int(11) NOT NULL,
-  `modifiedId` int(11) NOT NULL,
-  `created` datetime NOT NULL,
-  `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
- * 
- */
 import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";

@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -45,7 +45,9 @@ const gridSortOptions: DataGridSortOption[] = [
             { index: "title", direction: DataGridSortDirection.DESCENDING },
             { index: "id", direction: DataGridSortDirection.ASCENDING },
         ]
-    }
+    },
+    DataGridSortOptions.idAsc,
+    DataGridSortOptions.idDesc,
 ];
 
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.ASCENDING }];

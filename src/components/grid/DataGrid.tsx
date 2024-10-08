@@ -138,6 +138,19 @@ export interface DataGridSortOption {
     sorts: DataGridSort[];
 }
 
+export const DataGridSortOptions: { [key: string]: DataGridSortOption } = {
+    idAsc: {
+        index: "idAsc",
+        label: "ID tăng",
+        sorts: [{ index: "id", direction: DataGridSortDirection.ASCENDING },]
+    },
+    idDesc: {
+        index: "idDesc",
+        label: "ID giảm",
+        sorts: [{ index: "id", direction: DataGridSortDirection.DESCENDING },]
+    }
+};
+
 export interface DataGridPagination {
     currentPage: number;
     pageSize: number;
