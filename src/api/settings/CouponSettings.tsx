@@ -1,68 +1,41 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridEditField } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Coupon";
+const gridAddNewLabel: string = "Thêm Coupon";
+const gridUpdateLabel: string = "Cập nhật Coupon";
+const gridDeleteSelectedsLabel: string = "Xóa các Coupon đã chọn";
 const gridTable: string = "coupon";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "code"];
 const gridFields: string[] = ["id", "code", "discount", "resellerDiscount", "startDate", "endDate", "status"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "code", label: "Coupon Code" },
     { index: "discount", label: "Giảm giá", type: DataGridColumnType.NUMBER },
     { index: "resellerDiscount", label: "Giảm giá cho Reseller", type: DataGridColumnType.NUMBER },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        statusToggable: true
-    },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.status,
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 200
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 200 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
-    {
-        index: "idAsc",
-        label: "ID Coupon tăng",
-        sorts: [
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
-        ]
-    },
-    {
-        index: "idDesc",
-        label: "ID Coupon giảm",
-        sorts: [
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
-        ]
-    }
+    DataGridSortOptions.idAsc,
+    DataGridSortOptions.idDesc,
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "id", direction: DataGridSortDirection.DESCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
-const gridAddFields: DataGridEditField[] = [
-];
+const gridAddFields: DataGridEditField[] = [];
 
 
 export const AdminCouponSettings: TableGridSettings = {
@@ -78,8 +51,7 @@ export const AdminCouponSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Coupon đã chọn",
-    updateLabel: "Cập nhật Coupon",
-    treeMode: true,
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel
 }
