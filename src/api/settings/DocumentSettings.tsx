@@ -1,26 +1,22 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Tài liệu";
+const gridAddNewLabel: string = "Thêm mới";
+const gridUpdateLabel: string = "Cập nhật Tài liệu";
+const gridDeleteSelectedsLabel: string = "Xóa các Tài liệu đã chọn";
 const gridTable: string = "document";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "title", "en_title", "tdn_title", "alias", "brief", "content"];
 const gridFields: string[] = ["id", "title", "en_title", "tdn_title", "alias", "brief", "content", "ordering", "status", "trial", "categoryId"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "title", label: "Tên Tài liệu", linkFormat: (value: any, item: any) => `/Table/admin_document/${item.id}/edit` },
     { index: "content", label: "Nội dung Tài liệu", isHtml: true },
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
+    DataGridColumns.status,
     {
         index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
             0: 'Chưa kích hoạt',
@@ -37,24 +33,15 @@ const gridColumns: DataGridColumn[] = [
         hideLabel: true,
         statusToggable: true
     },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 50
-};
+const gridPagination: DataGridPagination = {currentPage: 1, pageSize: 50};
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status,
     {
         index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
@@ -80,12 +67,12 @@ const gridSortOptions: DataGridSortOption[] = [
             { index: "title", direction: DataGridSortDirection.DESCENDING },
             { index: "id", direction: DataGridSortDirection.ASCENDING },
         ]
-    }
+    },
+    DataGridSortOptions.idAsc,
+    DataGridSortOptions.idDesc,
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "ordering", direction: DataGridSortDirection.ASCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     { index: "title", label: "Tên Tài liệu", type: DataGridEditFieldType.TEXT, size: 6 },
@@ -118,7 +105,7 @@ export const AdminDocumentSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Tài liệu đã chọn",
-    updateLabel: "Cập nhật Tài liệu",
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel,
 }

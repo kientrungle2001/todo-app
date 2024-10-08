@@ -1,19 +1,3 @@
-/**
- * -- nextnobels.game_topic definition
-
-CREATE TABLE `game_topic` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `game_topic` varchar(255) DEFAULT NULL,
-  `status` tinyint(4) NOT NULL,
-  `userId` int(11) DEFAULT NULL,
-  `createdId` int(11) DEFAULT NULL,
-  `modifiedId` int(11) DEFAULT NULL,
-  `software` int(11) DEFAULT NULL,
-  `parent` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
- * 
- */
 import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
