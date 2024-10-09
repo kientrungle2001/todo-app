@@ -1,8 +1,11 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Lịch sử thanh toán";
+const gridAddNewLabel: string = "Thêm lịch sử thanh toán";
+const gridUpdateLabel: string = "Cập nhật lịch sử thanh toán";
+const gridDeleteSelectedsLabel: string = "Xóa các lịch sử thanh toán đã chọn";
 const gridTable: string = "history_payment";
 const gridJoins: DataGridTableJoin[] = [{
     table: "user", alias: "u", type: "left", condition: "u.username = t.username"
@@ -13,7 +16,7 @@ const gridSearchFields: string[] = ["id", "username", "bank", "u.name", "u.email
 const gridFields: string[] = ["id", "username", "u.name as name", "u.phone as phone", "sp.serviceName as serviceName", "amount", "paymentType", "bank", "paymentDate", "expiredDate", "status", "paymentStatus"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "username", label: "Tên đăng nhập" },
     { index: "name", label: "Họ và tên", linkFormat: (value: any, item: any) => `/Table/history_payment/${item.id}/edit` },
     { index: "phone", label: "Phone" },
@@ -37,13 +40,7 @@ const gridColumns: DataGridColumn[] = [
     {
         index: "expiredDate", type: DataGridColumnType.DATE, label: "Ngày hết hạn", format: "dd/MM/yyyy"
     },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        statusToggable: true
-    },
+    DataGridColumns.status,
     {
         index: "paymentStatus", type: DataGridColumnType.STATUS, label: "Trạng thái thanh toán", map: {
             0: 'Chưa kích hoạt',
@@ -52,24 +49,15 @@ const gridColumns: DataGridColumn[] = [
         statusToggable: true
     },
 
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction,
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 20
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 20 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
@@ -91,9 +79,7 @@ const gridSortOptions: DataGridSortOption[] = [
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "id", direction: DataGridSortDirection.DESCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     { index: "username", label: "Tên đăng nhập", type: DataGridEditFieldType.TEXT, size: 6 },
@@ -141,7 +127,7 @@ export const AdminHistoryPaymentSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Lịch sử thanh toán đã chọn",
-    updateLabel: "Cập nhật Lịch sử thanh toán"
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel
 }
