@@ -1,25 +1,22 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Menu";
+const gridAddNewLabel: string = "Thêm Menu";
+const gridUpdateLabel: string = "Cập nhật Menu";
+const gridDeleteSelectedsLabel: string = "Xóa các Menu đã chọn";
 const gridTable: string = "admin_menu";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name", "admin_controller"];
 const gridFields: string[] = ["id", "name", "admin_controller", "ordering", "status", "shortcut", "parent", "thumbnail"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "name", label: "Tên Menu", linkFormat: (value: any, item: any) => `/Table/admin_menu/${item.id}/edit`, treeMode: true },
     { index: "admin_controller", label: "Đường dẫn URL" },
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true, treeMode: true },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        statusToggable: true
-    },
+    DataGridColumns.status,
     {
         index: "shortcut", type: DataGridColumnType.STATUS, label: "Dashboard", map: {
             0: 'Chưa kích hoạt',
@@ -27,24 +24,15 @@ const gridColumns: DataGridColumn[] = [
         },
         statusToggable: true
     },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction,
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 200
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 200 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status,
     {
         index: "shortcut", label: "Dashboard", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
@@ -73,9 +61,7 @@ const gridSortOptions: DataGridSortOption[] = [
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "ordering", direction: DataGridSortDirection.ASCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Menu", type: DataGridEditFieldType.TEXT, size: 6 },
@@ -106,8 +92,8 @@ export const AdminMenuSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Menu đã chọn",
-    updateLabel: "Cập nhật Menu",
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel,
     treeMode: true,
 }
