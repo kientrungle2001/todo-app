@@ -1,25 +1,21 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Câu hỏi";
+const gridAddNewLabel: string = "Thêm mới Câu hỏi";
+const gridUpdateLabel: string = "Cập nhật Câu hỏi";
+const gridDeleteSelectedsLabel: string = "Xóa Câu hỏi đã chọn";
 const gridTable: string = "questions";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name", "name_vn"];
 const gridFields: string[] = ["id", "name", "name_vn", "ordering", "status", "trial"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "name", label: "Nội dung", linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/edit`, isHtml: true },
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
+    DataGridColumns.status,
     {
         index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
             0: 'Chưa kích hoạt',
@@ -28,17 +24,14 @@ const gridColumns: DataGridColumn[] = [
         hideLabel: true,
         statusToggable: true
     },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 50
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
+    DataGridFilterColumns.id,
     {
         index: "categoryIds", label: "Danh mục", type: DataGridFilterColumnType.SELECT,
         table: "categories",
@@ -57,13 +50,7 @@ const gridFilters: DataGridFilterColumn[] = [
         comparisonOperator: "inset",
         treeMode: true,
     },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.status,
     {
         index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
@@ -92,9 +79,7 @@ const gridSortOptions: DataGridSortOption[] = [
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "id", direction: DataGridSortDirection.DESCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 6 },
@@ -106,16 +91,9 @@ const gridAddFields: DataGridEditField[] = [
         multiple: true,
         multipleSize: 4,
         options: [
-            {
-                value: "3",
-                label: "Lớp 3"
-            }, {
-                value: "4",
-                label: "Lớp 4"
-            }, {
-                value: "5",
-                label: "Lớp 5"
-            }
+            { value: "3", label: "Lớp 3" },
+            { value: "4", label: "Lớp 4" },
+            { value: "5", label: "Lớp 5" }
         ],
         select2: true
     },
@@ -144,13 +122,8 @@ const gridAddFields: DataGridEditField[] = [
     {
         index: "questionType", label: "Dạng câu hỏi", type: DataGridEditFieldType.SELECT, size: 6,
         options: [
-            {
-                value: 1,
-                label: "Trắc nghiệm"
-            }, {
-                value: 4,
-                label: "Tự luận"
-            }
+            { value: 1, label: "Trắc nghiệm" },
+            { value: 4, label: "Tự luận" }
         ],
         select2: true
     },
@@ -161,7 +134,6 @@ const gridAddFields: DataGridEditField[] = [
         }, statusToggable: true
     },
 ];
-
 
 export const AdminQuestionSettings: TableGridSettings = {
     title: gridTitle,
@@ -176,7 +148,7 @@ export const AdminQuestionSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Câu hỏi đã chọn",
-    updateLabel: "Cập nhật Câu hỏi",
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel,
 }
