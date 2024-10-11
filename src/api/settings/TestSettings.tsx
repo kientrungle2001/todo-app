@@ -1,66 +1,40 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumns, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Đề thi";
+const gridAddNewLabel: string = "Thêm Đề thi";
+const gridUpdateLabel: string = "Cập nhật Đề thi";
+const gridDeleteSelectedsLabel: string = "Xóa các Đề thi đã chọn";
 const gridTable: string = "tests";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name", "name_en", "name_sn"];
 const gridFields: string[] = ["id", "name", "name_en", "name_sn", "ordering", "status", "trial", "categoryId", "parent"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "name", label: "Tên Đề thi", linkFormat: (value: any, item: any) => `/Table/admin_test/${item.id}/edit`, treeMode: true },
-    { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
+    DataGridColumns.ordering,
+    DataGridColumns.status,
+    DataGridColumns.trial,
     {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
+        index: "document", type: DataGridColumnType.STATUS, label: "Tài liệu", map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'
         },
         hideLabel: true,
         statusToggable: true
     },
-    {
-        index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    {
-        index: "document", type: DataGridColumnType.STATUS, label: "Đề thi", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 5000
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 5000 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
-    {
-        index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status,
+    DataGridFilterColumns.trial,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
@@ -82,9 +56,7 @@ const gridSortOptions: DataGridSortOption[] = [
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "ordering", direction: DataGridSortDirection.ASCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Đề thi", type: DataGridEditFieldType.TEXT, size: 6 },
@@ -121,8 +93,8 @@ export const AdminTestSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa Đề thi đã chọn",
-    updateLabel: "Cập nhật Đề thi",
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel,
     treeMode: true,
 }

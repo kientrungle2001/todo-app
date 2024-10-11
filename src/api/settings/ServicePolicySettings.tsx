@@ -1,8 +1,11 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumns, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Chính sách Dịch vụ";
+const gridAddNewLabel: string = "Thêm mới";
+const gridUpdateLabel: string = "Cập nhật";
+const gridDeleteSelectedsLabel: string = "Xóa đã chọn";
 const gridTable: string = "service_policy";
 const gridJoins: DataGridTableJoin[] = [
     {
@@ -16,7 +19,7 @@ const gridSearchFields: string[] = ["id", "sp.serviceName", "note"];
 const gridFields: string[] = ["id", "sp.serviceName", "discount", "note", "startDate", "endDate", "status", "sp.serviceType", "sp.languages", "sp.duration", "sp.amount", "sp.friendlyAmount"];
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "serviceName", label: "Tên dịch vụ" },
     {
         index: "serviceType",
@@ -54,32 +57,16 @@ const gridColumns: DataGridColumn[] = [
     {
         index: "endDate", type: DataGridColumnType.DATE, label: "Ngày kết thúc"
     },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        statusToggable: true
-    },
-
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.status,
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction,
 ];
 
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 20
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 20 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
@@ -101,9 +88,7 @@ const gridSortOptions: DataGridSortOption[] = [
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "id", direction: DataGridSortDirection.DESCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     {
@@ -128,7 +113,7 @@ export const AdminServicePolicySettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm mới",
-    deleteSelectedsLabel: "Xóa chính sách dịch vụ đã chọn",
-    updateLabel: "Cập nhật chính sách dịch vụ"
+    addNewLabel: gridAddNewLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
+    updateLabel: gridUpdateLabel
 }
