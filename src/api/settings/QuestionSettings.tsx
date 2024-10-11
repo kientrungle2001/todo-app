@@ -51,32 +51,12 @@ const gridFilters: DataGridFilterColumn[] = [
         treeMode: true,
     },
     DataGridFilterColumns.status,
-    {
-        index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.trial,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
-    {
-        index: "orderingAsc",
-        label: "Thứ tự tăng",
-        sorts: [
-            { index: "ordering", direction: DataGridSortDirection.ASCENDING },
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
-        ]
-    },
-    {
-        index: "orderingDesc",
-        label: "Thứ tự giảm",
-        sorts: [
-            { index: "ordering", direction: DataGridSortDirection.DESCENDING },
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
-        ]
-    }
+    DataGridSortOptions.orderingAsc,
+    DataGridSortOptions.orderingDesc,
 ];
 
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];

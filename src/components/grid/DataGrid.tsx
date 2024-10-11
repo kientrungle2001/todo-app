@@ -119,7 +119,17 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         },
         comparisonOperator: "equal"
     },
-    id: { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT }
+    id: { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
+    trial: {
+        index: "trial",
+        label: "Dùng thử",
+        type: DataGridFilterColumnType.STATUS,
+        map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        comparisonOperator: "equal"
+    }
 };
 
 export interface DataGridSort {
@@ -148,7 +158,23 @@ export const DataGridSortOptions: { [key: string]: DataGridSortOption } = {
         index: "idDesc",
         label: "ID giảm",
         sorts: [{ index: "id", direction: DataGridSortDirection.DESCENDING },]
-    }
+    },
+    orderingAsc: {
+        index: "orderingAsc",
+        label: "Thứ tự tăng",
+        sorts: [
+            { index: "ordering", direction: DataGridSortDirection.ASCENDING },
+            { index: "id", direction: DataGridSortDirection.DESCENDING },
+        ],
+    },
+    orderingDesc: {
+        index: "orderingDesc",
+        label: "Thứ tự giảm",
+        sorts: [
+            { index: "ordering", direction: DataGridSortDirection.DESCENDING },
+            { index: "id", direction: DataGridSortDirection.ASCENDING },
+        ],
+    },
 };
 
 export interface DataGridPagination {
