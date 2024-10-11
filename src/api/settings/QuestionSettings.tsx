@@ -14,16 +14,9 @@ const gridFields: string[] = ["id", "name", "name_vn", "ordering", "status", "tr
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "name", label: "Nội dung", linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/edit`, isHtml: true },
-    { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
+    DataGridColumns.ordering,
     DataGridColumns.status,
-    {
-        index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
+    DataGridColumns.trial,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
@@ -32,15 +25,7 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
-    {
-        index: "categoryIds", label: "Danh mục", type: DataGridFilterColumnType.SELECT,
-        table: "categories",
-        valueField: "id",
-        labelField: "name",
-        select2: true,
-        comparisonOperator: "inset",
-        treeMode: true,
-    },
+    DataGridFilterColumns.categoryIds,
     {
         index: "testId", label: "Đề thi", type: DataGridFilterColumnType.SELECT,
         table: "tests",

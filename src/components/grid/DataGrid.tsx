@@ -86,6 +86,15 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         statusToggable: true,
         width: "10%"
     },
+    trial: {
+        index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        hideLabel: true,
+        statusToggable: true
+    },
+    ordering: { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
     editAction: { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
     deleteAction: { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
 };
@@ -129,7 +138,16 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
             1: 'Đã kích hoạt'
         },
         comparisonOperator: "equal"
-    }
+    },
+    categoryIds: {
+        index: "categoryIds", label: "Danh mục", type: DataGridFilterColumnType.SELECT,
+        table: "categories",
+        valueField: "id",
+        labelField: "name",
+        select2: true,
+        comparisonOperator: "inset",
+        treeMode: true,
+    },
 };
 
 export interface DataGridSort {

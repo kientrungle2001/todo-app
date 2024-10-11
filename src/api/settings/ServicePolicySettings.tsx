@@ -1,26 +1,3 @@
-/**
- * -- nextnobels.service_policy definition
-
-CREATE TABLE `service_policy` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `serviceId` int(11) NOT NULL,
-  `discount` double NOT NULL,
-  `note` varchar(255) NOT NULL,
-  `startDate` datetime NOT NULL,
-  `endDate` datetime NOT NULL,
-  `creatorId` int(11) NOT NULL,
-  `created` datetime NOT NULL,
-  `modifiedId` int(11) NOT NULL,
-  `modified` datetime NOT NULL,
-  `status` tinyint(4) NOT NULL,
-  `campaignId` int(11) NOT NULL,
-  `software` int(11) NOT NULL,
-  `global` int(11) NOT NULL,
-  `site` int(11) NOT NULL,
-  `sharedSoftwares` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
- */
 import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
