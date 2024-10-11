@@ -1,6 +1,12 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumns, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
 import { TableGridSettings } from "@/components/grid/TableGrid";
+
+const gridTitle: string = "Quản lý người dùng";
+const gridTable: string = "user";
+const gridAddNewLabel: string = "Thêm người dùng";
+const gridUpdateLabel: string = "Cập nhật người dùng";
+const gridDeleteSelectedsLabel: string = "Xóa người dùng đã chọn";
 
 const gridJoins: DataGridTableJoin[] = [
     {
@@ -9,39 +15,24 @@ const gridJoins: DataGridTableJoin[] = [
 ];
 const gridFields: string[] = ["id", "username", "name", "email", "phone", "address", "p.name as provinceName", "status"];
 const gridSearchFields: string[] = ["id", "username", "name", "email", "phone", "address"];
-const gridPagination: DataGridPagination = {
-    currentPage: 1,
-    pageSize: 20
-};
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 20 };
 
 const gridColumns: DataGridColumn[] = [
-    { index: "id", label: "ID", width: "1%" },
+    DataGridColumns.id,
     { index: "username", label: "Tên đăng nhập" },
     { index: "name", label: "Họ và tên", linkFormat: (value: any, item: any) => `/Table/user/${item.id}/edit` },
     { index: "email", label: "Email" },
     { index: "phone", label: "Phone", inputable: false },
     { index: "provinceName", label: "Thành phố" },
     { index: "address", label: "Địa chỉ" },
-    {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Dừng học',
-            1: 'Đang học'
-        },
-        statusToggable: true
-    },
-    { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
+    DataGridColumns.status,
+    DataGridColumns.editAction,
+    DataGridColumns.deleteAction,
 ];
 
 const gridFilters: DataGridFilterColumn[] = [
-    { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
-    {
-        index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Dừng học',
-            1: 'Đang học'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.id,
+    DataGridFilterColumns.status,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
@@ -63,9 +54,7 @@ const gridSortOptions: DataGridSortOption[] = [
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [
-    { index: "id", direction: DataGridSortDirection.DESCENDING }
-];
+const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
     { index: "username", label: "Tên đăng nhập", type: DataGridEditFieldType.TEXT, size: 6 },
@@ -94,8 +83,11 @@ const gridAddFields: DataGridEditField[] = [
 ];
 
 export const AdminUserSettings: TableGridSettings = {
-    title: "Quản lý học sinh",
-    table: "user",
+    title: gridTitle,
+    table: gridTable,
+    addNewLabel: gridAddNewLabel,
+    updateLabel: gridUpdateLabel,
+    deleteSelectedsLabel: gridDeleteSelectedsLabel,
     joins: gridJoins,
     fields: gridFields,
     searchFields: gridSearchFields,
@@ -106,7 +98,4 @@ export const AdminUserSettings: TableGridSettings = {
     defaultSorts: gridDefaultSorts,
     addFields: gridAddFields,
     editFields: gridAddFields,
-    addNewLabel: "Thêm học sinh",
-    deleteSelectedsLabel: "Xóa học sinh đã chọn",
-    updateLabel: "Cập nhật học sinh"
 }
