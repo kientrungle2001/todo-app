@@ -27,6 +27,11 @@ class Table_model extends CI_Model
 
     public function search($table, $page = 1, $pageSize = 10, $search = '%', $sorts = [], $filterData = [])
     {
+        $sorts = array_map(function ($sort) {
+            $sortObj = new DataGridSort();
+            populateFromRequest($sortObj, $sort);
+            return $sortObj;
+        }, $sorts);
         $offset = ($page - 1) * $pageSize;
 
         $settings = new DataGridSettings();
