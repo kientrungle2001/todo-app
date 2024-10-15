@@ -38,8 +38,8 @@ class Table_model extends CI_Model
         // Populate settings from the input (or pass as argument)
         populateFromRequest($settingsObj, $settings);
 
-        $query = $this->build_query($settings, $search, $filterData, $sorts, $pageSize, $offset);
-        $totalCountQuery = $this->build_total_count_query($settings, $search, $filterData);
+        $query = $this->build_query($settingsObj, $search, $filterData, $sorts, $pageSize, $offset);
+        $totalCountQuery = $this->build_total_count_query($settingsObj, $search, $filterData);
         
         $total = $this->db->query($totalCountQuery['sql'], $totalCountQuery['params'])->row()->total;
         $items = $this->db->query($query['sql'], $query['params'])->result_array();

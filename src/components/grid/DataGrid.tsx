@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { format } from "date-fns";
-import { TopMenuGrid } from "./TopMenuGrid";
 import { storage } from "@/api/storage";
 
 export enum DataGridColumnType {
@@ -505,7 +504,6 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         <>
 
             <Container fluid className="mb-3 mt-3">
-                <TopMenuGrid />
                 <Row>
                     <Col sm={12} md={3} lg={2}>
                         <Card>

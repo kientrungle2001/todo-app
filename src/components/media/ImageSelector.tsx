@@ -3,11 +3,13 @@ import { Button } from 'react-bootstrap';
 import { ImageDialog } from './ImageDialog';
 
 interface ImageSelectorProps {
-    selectedImage: string;
-    setSelectedImage: (selectedImage: string) => void;
+  selectedImage: string;
+  setSelectedImage: (selectedImage: string) => void;
+  hideInput?: boolean;
+  selectImageLabel?: string;
 }
 
-export const ImageSelector: React.FC<ImageSelectorProps> = ({selectedImage, setSelectedImage}) => {
+export const ImageSelector: React.FC<ImageSelectorProps> = ({ selectedImage, setSelectedImage, hideInput, selectImageLabel }) => {
   const [show, setShow] = useState(false);
 
   const handleOpenDialog = () => setShow(true);
@@ -21,15 +23,16 @@ export const ImageSelector: React.FC<ImageSelectorProps> = ({selectedImage, setS
   return (
     <div>
       <div className="input-group mb-3">
-        <input
+        {hideInput ? null : (<input
           type="text"
           className="form-control"
           placeholder="Select Image"
           value={selectedImage}
           onChange={(e) => setSelectedImage(e.target.value)}
-        />
-        <Button variant="primary" onClick={handleOpenDialog}>
-          Select Image
+        />)}
+
+        <Button variant="info" onClick={handleOpenDialog}>
+          {selectImageLabel ? selectImageLabel : 'Select Image'}
         </Button>
       </div>
       <ImageDialog

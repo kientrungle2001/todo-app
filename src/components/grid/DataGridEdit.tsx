@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
 import { buildTree, flatTree } from "@/api/tree";
-import { TopMenuGrid } from "./TopMenuGrid";
 import { Editor } from "@tinymce/tinymce-react";
 import $ from "jquery";
 import 'select2';
@@ -177,7 +176,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
 
     const FieldDateRenderer = (field: DataGridEditField, item: any) => {
         return (
-            <Form.Control type="date" value={format(new Date(item[field.index]), 'yyyy-MM-dd') } onChange={(event) => {
+            <Form.Control type="date" value={format(new Date(item[field.index]), 'yyyy-MM-dd')} onChange={(event) => {
                 let updatedItem = { ...item };
                 updatedItem[field.index] = event.target.value;
                 setItem(updatedItem);
@@ -188,18 +187,18 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
         const selectRef: any = {};
         selectRef[field.index] = React.useRef(null);
-    
+
         useEffect(() => {
             if (field.select2 && selectRef[field.index].current && (field.options || maps[field.index])) {
                 console.log('Initializing Select2 for field:', field.index);
                 const $select = $(selectRef[field.index].current);
-                
+
                 $select.select2({
                     theme: 'bootstrap-5', // Optional: you can customize the theme
                     placeholder: 'Select',
                     allowClear: true,
                 });
-    
+
                 // When the selection changes, update the item state
                 $select.on('change', function () {
                     const selectedValues = $select.val();
@@ -213,14 +212,14 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                         setItem(updatedItem);
                     }
                 });
-    
+
                 // Clean up Select2 on unmount
                 return () => {
                     $select.select2('destroy');
                 };
             }
         }, [field, item, maps[field.index], field.options]); // Re-run when options or maps change
-    
+
         if (field.options) {
             return (
                 <Form.Select
@@ -305,7 +304,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         const editorRef = useRef<any>(null); // Initialize the editorRef
         const handleImageInsert = (imagePath: string) => {
             if (editorRef.current) {
-                editorRef.current.insertContent(`<img src="http://localhost:3002/${imagePath}" alt="Selected Image"/>`);
+                editorRef.current.insertContent(`<img src="http://localhost:3002${imagePath}" alt="Selected Image"/>`);
             }
             setSelectedImage(imagePath); // Save selected image path
         };
@@ -345,6 +344,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                             preview: '/tinymce/plugins/preview/plugin.min.js',
                             anchor: '/tinymce/plugins/anchor/plugin.min.js',
                         },
+                        promotion: false,
                     }}
                     onEditorChange={(content) => {
                         let updatedItem = { ...item };
@@ -352,10 +352,15 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                         setItem(updatedItem);
                     }}
                 />
-                <ImageSelector
-                    selectedImage={selectedImage}
-                    setSelectedImage={handleImageInsert}
-                />
+                <div className="mt-2 mb-3">
+                    <ImageSelector
+                        selectedImage={selectedImage}
+                        setSelectedImage={handleImageInsert}
+                        hideInput={true}
+                        selectImageLabel="Insert Image"
+                    />
+                </div>
+
             </>
         );
     };
@@ -408,7 +413,6 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
 
     return (
         <>
-            <TopMenuGrid />
             <Container fluid>
                 {
                     mode === DataGridEditMode.EDIT ? (
@@ -430,6 +434,18 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                             }
                         }}>
                             <Row>
+                                <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
+                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
+                                    <Button variant="outline-secondary" onClick={() => {
+                                        if (mode === DataGridEditMode.ADD && handleCancelAdd) {
+                                            handleCancelAdd();
+                                        }
+
+                                        if (mode === DataGridEditMode.EDIT && handleCancelEdit) {
+                                            handleCancelEdit();
+                                        }
+                                    }}>Hủy bỏ</Button>
+                                </Col>
                                 {fields.map(field => (
                                     <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
                                         <Form.Group controlId={field.index}>
@@ -438,9 +454,9 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                         </Form.Group>
                                     </Col>
                                 ))}
-                                <Col md={12} sm={12}>
-                                    <Button variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
-                                    <Button variant="secondary" onClick={() => {
+                                <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
+                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
+                                    <Button variant="outline-secondary" onClick={() => {
                                         if (mode === DataGridEditMode.ADD && handleCancelAdd) {
                                             handleCancelAdd();
                                         }
