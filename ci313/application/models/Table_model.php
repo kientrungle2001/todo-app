@@ -25,7 +25,7 @@ class Table_model extends CI_Model
         }
     }
 
-    public function search($table, $page = 1, $pageSize = 10, $search = '%', $sorts = [], $filterData = [])
+    public function search($settings, $page = 1, $pageSize = 10, $search = '%', $sorts = [], $filterData = [])
     {
         $sorts = array_map(function ($sort) {
             $sortObj = new DataGridSort();
@@ -34,9 +34,9 @@ class Table_model extends CI_Model
         }, $sorts);
         $offset = ($page - 1) * $pageSize;
 
-        $settings = new DataGridSettings();
+        $settingsObj = new DataGridSettings();
         // Populate settings from the input (or pass as argument)
-        populateFromRequest($settings, $this->input->post('settings'));
+        populateFromRequest($settingsObj, $settings);
 
         $query = $this->build_query($settings, $search, $filterData, $sorts, $pageSize, $offset);
         $totalCountQuery = $this->build_total_count_query($settings, $search, $filterData);

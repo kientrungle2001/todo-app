@@ -51,8 +51,9 @@ class Tables extends CI_Controller
         $search = '%' . $this->input->post('search') . '%';
         $sorts = $this->input->post('sorts');
         $filterData = $this->input->post('filterData');
+        $settings = $this->input->post('settings');
 
-        $response = $this->Table_model->search($table, $page, $pageSize, $search, $sorts, $filterData);
+        $response = $this->Table_model->search($settings, $page, $pageSize, $search, $sorts, $filterData);
         $this->output
             ->set_status_header(200)
             ->set_content_type('application/json')
