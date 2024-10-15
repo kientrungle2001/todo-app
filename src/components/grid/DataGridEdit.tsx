@@ -1,14 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
 import { buildTree, flatTree } from "@/api/tree";
-import { Editor } from "@tinymce/tinymce-react";
-import $ from "jquery";
 import 'select2';
-import { ImageSelector } from "../media/ImageSelector";
-import { format } from "date-fns";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
+import { FieldTextRenderer } from "./DataGridEditFieldRenderer/FieldTextRenderer";
+import { FieldNumberRenderer } from "./DataGridEditFieldRenderer/FieldNumberRenderer";
+import { FieldStatusRenderer } from "./DataGridEditFieldRenderer/FieldStatusRenderer";
+import { FieldDateRenderer } from "./DataGridEditFieldRenderer/FieldDateRenderer";
+import { FieldSelectRenderer } from "./DataGridEditFieldRenderer/FieldSelectRenderer";
+import { FieldCheckboxRenderer } from "./DataGridEditFieldRenderer/FieldCheckboxRenderer";
+import { FieldEditorRenderer } from "./DataGridEditFieldRenderer/FieldEditorRenderer";
+import { FieldImageRenderer } from "./DataGridEditFieldRenderer/FieldImageRenderer";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
@@ -63,7 +67,6 @@ interface DataGridEditProps {
 }
 
 const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
-    const [selectedImage, setSelectedImage] = useState<string>("");
 
     const router = useRouter();
     useEffect(() => {
@@ -122,261 +125,6 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     }, [item]);
     const [maps, setMaps] = React.useState<any>({});
 
-    const FieldTextRenderer = (field: DataGridEditField, item: any) => {
-        return (
-            <Form.Control type="text" value={item[field.index]} onChange={(event) => {
-                let updatedItem = { ...item };
-                updatedItem[field.index] = event.target.value;
-                setItem(updatedItem);
-            }} />
-        );
-    }
-
-    const FieldNumberRenderer = (field: DataGridEditField, item: any) => {
-        return (
-            <Form.Control type="number" value={item[field.index]} onChange={(event) => {
-                let updatedItem = { ...item };
-                updatedItem[field.index] = Number(event.target.value);
-                setItem(updatedItem);
-            }} />
-        );
-    }
-
-    const FieldStatusRenderer = (field: DataGridEditField, item: any) => {
-        const getStatusLabel = (status: number) => {
-            if (field.map && typeof field.map === 'object') {
-                return field.map[status] ?? 'Unknown';
-            }
-            return status === 1 ? 'Active' : 'Inactive';
-        }
-        if (field.statusToggable) {
-            return (
-                <Form.Check type="switch" checked={item[field.index] === 1} onChange={(event) => {
-                    let updatedItem = { ...item };
-                    updatedItem[field.index] = updatedItem[field.index] === 1 ? 0 : 1;
-                    setItem(updatedItem);
-                }} label={getStatusLabel(item[field.index] ?? 0)} />
-            );
-        }
-        return (
-            <Form.Select value={item[field.index]} onChange={(event) => {
-                let updatedItem = { ...item };
-                updatedItem[field.index] = event.target.value;
-                setItem(updatedItem);
-            }}>
-                <option value={1}>
-                    {field.map[1] ?? 'Active'}
-                </option>
-                <option value={0}>
-                    {field.map[0] ?? 'Inactive'}
-                </option>
-            </Form.Select>
-        );
-    }
-
-    const FieldDateRenderer = (field: DataGridEditField, item: any) => {
-        return (
-            <Form.Control type="date" value={format(new Date(item[field.index]), 'yyyy-MM-dd')} onChange={(event) => {
-                let updatedItem = { ...item };
-                updatedItem[field.index] = event.target.value;
-                setItem(updatedItem);
-            }} />
-        );
-    }
-
-    const FieldSelectRenderer = (field: DataGridEditField, item: any) => {
-        const selectRef: any = {};
-        selectRef[field.index] = React.useRef(null);
-
-        useEffect(() => {
-            if (field.select2 && selectRef[field.index].current && (field.options || maps[field.index])) {
-                console.log('Initializing Select2 for field:', field.index);
-                const $select = $(selectRef[field.index].current);
-
-                $select.select2({
-                    theme: 'bootstrap-5', // Optional: you can customize the theme
-                    placeholder: 'Select',
-                    allowClear: true,
-                });
-
-                // When the selection changes, update the item state
-                $select.on('change', function () {
-                    const selectedValues = $select.val();
-                    if (typeof selectedValues !== 'undefined') {
-                        let updatedItem = { ...item };
-                        if (field.multiple) {
-                            updatedItem[field.index] = (selectedValues as string[])?.join(',');
-                        } else {
-                            updatedItem[field.index] = (selectedValues as string[])?.[0] ?? '';
-                        }
-                        setItem(updatedItem);
-                    }
-                });
-
-                // Clean up Select2 on unmount
-                return () => {
-                    $select.select2('destroy');
-                };
-            }
-        }, [field, item, maps[field.index], field.options]); // Re-run when options or maps change
-
-        if (field.options) {
-            return (
-                <Form.Select
-                    multiple={field.multiple}
-                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
-                    value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
-                    ref={selectRef[field.index]}
-                    onChange={(event) => {
-                        if (field.multiple) {
-                            const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                            let updatedItem = { ...item };
-                            updatedItem[field.index] = selectedOptions.join(',');
-                            setItem(updatedItem);
-                        } else {
-                            let updatedItem = { ...item };
-                            updatedItem[field.index] = event.target.value;
-                            setItem(updatedItem);
-                        }
-                    }}
-                >
-                    <option value={0}>Select</option>
-                    {field.options.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </Form.Select>
-            );
-        } else if (typeof maps[field.index] === 'object') {
-            return (
-                <Form.Select
-                    multiple={field.multiple}
-                    htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
-                    value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
-                    ref={selectRef[field.index]}
-                    onChange={(event) => {
-                        if (field.multiple) {
-                            const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                            let updatedItem = { ...item };
-                            updatedItem[field.index] = selectedOptions.join(',');
-                            setItem(updatedItem);
-                        } else {
-                            let updatedItem = { ...item };
-                            updatedItem[field.index] = event.target.value;
-                            setItem(updatedItem);
-                        }
-                    }}
-                >
-                    <option value={0}>Select</option>
-                    {maps[field.index].map((option: any) => (
-                        <option key={option[field.valueField as string]} value={option[field.valueField as string]}>
-                            {field.treeMode ? '|____'.repeat(option.__level) : ''}
-                            {field.map ? field.map[option[field.valueField as string]] : option[field.labelField as string]}
-                        </option>
-                    ))}
-                </Form.Select>
-            );
-        } else {
-            return (
-                <Form.Select value={item[field.index]} onChange={(event) => {
-                    let updatedItem = { ...item };
-                    updatedItem[field.index] = event.target.value;
-                    setItem(updatedItem);
-                }}>
-                    <option value={0}>Select</option>
-                </Form.Select>
-            );
-        }
-    };
-
-    const FieldCheckboxRenderer = (field: DataGridEditField, item: any) => {
-        return (
-            <Form.Check type="checkbox" checked={item[field.index]} onChange={(event) => {
-                let updatedItem = { ...item };
-                updatedItem[field.index] = event.target.checked;
-                setItem(updatedItem);
-            }} />
-        );
-    }
-
-    const FieldEditorRenderer = (field: DataGridEditField, item: any) => {
-        const editorRef = useRef<any>(null); // Initialize the editorRef
-        const handleImageInsert = (imagePath: string) => {
-            if (editorRef.current) {
-                editorRef.current.insertContent(`<img src="http://localhost:3002${imagePath}" alt="Selected Image"/>`);
-            }
-            setSelectedImage(imagePath); // Save selected image path
-        };
-        return (
-            <>
-                <Editor
-                    tinymceScriptSrc="/tinymce/tinymce.min.js"
-                    initialValue={item[field.index]}
-                    onInit={(evt, editor) => (editorRef.current = editor)} // Store the editor instance in the ref
-                    init={{
-                        height: 400,
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
-                            'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                        ],
-                        toolbar:
-                            'undo redo | formatselect | ' +
-                            'bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | ' +
-                            'bullist numlist outdent indent | ' +
-                            'link image media charmap anchor | insertdatetime table | ' +
-                            'visualblocks code preview fullscreen | ' +
-                            'searchreplace | help | wordcount',
-
-                        toolbar_sticky: true, // Sticky toolbar
-                        menubar: 'file edit view insert format tools table help', // Menubar options
-
-                        // Provide the path to your local TinyMCE installation
-                        script_url: '/tinymce/tinymce.min.js',
-                        external_plugins: {
-                            advlist: '/tinymce/plugins/advlist/plugin.min.js',
-                            autolink: '/tinymce/plugins/autolink/plugin.min.js',
-                            lists: '/tinymce/plugins/lists/plugin.min.js',
-                            link: '/tinymce/plugins/link/plugin.min.js',
-                            image: '/tinymce/plugins/image/plugin.min.js',
-                            charmap: '/tinymce/plugins/charmap/plugin.min.js',
-                            preview: '/tinymce/plugins/preview/plugin.min.js',
-                            anchor: '/tinymce/plugins/anchor/plugin.min.js',
-                        },
-                        promotion: false,
-                    }}
-                    onEditorChange={(content) => {
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = content;
-                        setItem(updatedItem);
-                    }}
-                />
-                <div className="mt-2 mb-3">
-                    <ImageSelector
-                        selectedImage={selectedImage}
-                        setSelectedImage={handleImageInsert}
-                        hideInput={true}
-                        selectImageLabel="Insert Image"
-                    />
-                </div>
-
-            </>
-        );
-    };
-
-    const FieldImageRenderer = (field: DataGridEditField, item: any) => {
-        return (
-            <ImageSelector
-                selectedImage={item[field.index]}
-                setSelectedImage={(imageUrl: string) => {
-                    let updatedItem = { ...item };
-                    updatedItem[field.index] = imageUrl;
-                    setItem(updatedItem);
-                }}
-            />
-        );
-    };
 
     const FieldUndefinedRenderer = (field: DataGridEditField, item: any) => {
         return '-';
@@ -408,7 +156,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
 
     const renderField = (field: DataGridEditField, item: any) => {
         const renderer = getFieldRenderer(field.type);
-        return renderer(field, item);
+        return renderer(field, item, setItem, maps);
     }
 
     return (
