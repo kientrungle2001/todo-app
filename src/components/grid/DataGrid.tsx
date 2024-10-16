@@ -9,6 +9,12 @@ import { useEffect, useState } from "react";
 
 import { format } from "date-fns";
 import { storage } from "@/api/storage";
+import { ColumnTextRenderer } from "./DataGridColumnRenderer/ColumnTextRenderer";
+import { ColumnNumberRenderer } from "./DataGridColumnRenderer/ColumnNumberRenderer";
+import { ColumnImageRenderer } from "./DataGridColumnRenderer/ColumnImageRenderer";
+import { ColumnCurrencyRenderer } from "./DataGridColumnRenderer/ColumnCurrencyRenderer";
+import { ColumnDateRenderer } from "./DataGridColumnRenderer/ColumnDateRenderer";
+import { ColumnStatusRenderer } from "./DataGridColumnRenderer/ColumnStatusRenderer";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -273,33 +279,6 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
 
     const [inputableMap, setInputableMap] = useState<any>({});
 
-    const ColumnTextRenderer = (column: DataGridColumn, item: any) => {
-        if (column.inputable) {
-            return <>
-                {(column.treeMode ? '|__'.repeat(item.__level) + ' ' : '')}
-                <Form.Control style={{ width: "100%" }} type="text" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : ''} onChange={(e) => {
-                    let updatedInputableMap = { ...inputableMap };
-                    if (typeof updatedInputableMap[item.id] === "undefined") {
-                        updatedInputableMap[item.id] = {};
-                    }
-                    updatedInputableMap[item.id][column.index] = e.target.value;
-                    setInputableMap(updatedInputableMap);
-                }} />
-            </>;
-        }
-        if (column.isHtml) {
-            let content = column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '';
-            content = content.replaceAll('s1.nextnobels.com', 'media.nextnobels.com').replaceAll('fulllooksongngu.com', 'media.nextnobels.com');
-            return <>
-                <div dangerouslySetInnerHTML={{ __html: content }} />
-            </>;
-        }
-        if (column.map) {
-            return (column.treeMode ? '|__'.repeat(item.__level) + ' ' : '') + (column.map[item[column.index]] ?? '-');
-        }
-        return (column.treeMode ? '|__'.repeat(item.__level) + ' ' : '') + (column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '');
-    };
-
     useEffect(() => {
         let updatedInputableMap: any = {};
         items.forEach((item) => {
@@ -312,90 +291,6 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         });
         setInputableMap(updatedInputableMap);
     }, [items]);
-
-    const ColumnNumberRenderer = (column: DataGridColumn, item: any) => {
-        if (column.inputable) {
-            return <>
-                {(column.treeMode ? '|__'.repeat(item.__level) + ' ' : '')}
-                <Form.Control size="sm" style={{ width: "60px", display: "inline-block" }} type="number" value={typeof inputableMap[item.id] !== 'undefined' && typeof inputableMap[item.id][column.index] !== 'undefined' ? inputableMap[item.id][column.index] : 0} onChange={(e) => {
-                    let updatedInputableMap = { ...inputableMap };
-                    if (typeof updatedInputableMap[item.id] === "undefined") {
-                        updatedInputableMap[item.id] = {};
-                    }
-                    updatedInputableMap[item.id][column.index] = Number(e.target.value);
-                    setInputableMap(updatedInputableMap);
-                }} />
-            </>;
-        }
-        return <>
-            {(column.treeMode ? '|__'.repeat(item.__level) + ' ' : '')}
-            {column.customFormat ? column.customFormat(item[column.index], item, table) : String(item[column.index])}
-        </>;
-    };
-
-    const ColumnImageRenderer = (column: DataGridColumn, item: any) => {
-        if (!item[column.index]) {
-            return '-';
-        }
-        return <img src={'http://media.nextnobels.com' + item[column.index]} alt={item.id} style={{ maxWidth: "100px" }} onError={(e) => {
-            const target = e.target as HTMLImageElement; // Type assertion for TypeScript
-            target.src = 'http://media.nextnobels.com/default/skin/nobel/themes/story/media/logo.png';
-        }} />;
-    }
-
-    function formatCurrency(amount: number) {
-        return amount.toLocaleString('vi-VN') + 'đ';
-    }
-
-    const ColumnCurrencyRenderer = (column: DataGridColumn, item: any) => {
-        return column.customFormat ? column.customFormat(item[column.index], item, table) : formatCurrency(item[column.index]);
-    };
-
-    const ColumnDateRenderer = (column: DataGridColumn, item: any) => {
-        let dateValue = new Date(item[column.index]);
-        if (dateValue.toString() === 'Invalid Date' || isNaN(dateValue.getTime())) {
-            return '-';
-        }
-        return column.customFormat ? column.customFormat(dateValue, item, table) : format(dateValue, column.format ?? 'dd/MM/yyyy');
-    };
-
-    const ColumnStatusRenderer = (column: DataGridColumn, item: any) => {
-        const handleChangeStatusField = (status: number) => {
-            axios.put(`/tables/${table}/update/${item.id}`, { item: { [column.index]: status }, fields: [column] }, {
-                headers: {
-                    'Authorization': `Bearer ${storage.get('token') || ''}`
-                }
-            }).then(() => {
-                item[column.index] = status;
-                onAfterChangeStatus(column, item);
-            }).catch((error) => {
-                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                    storage.clearTokenInfo();
-                    router.push('/login');
-                }
-            });;
-        }
-
-        const getStatusLabel = (status: number) => {
-            if (column.map) {
-                return column.map[status] ?? '-';
-            }
-            return (status === 1) ? 'Active' : 'Inactive';
-        }
-
-        if (column.statusToggable) {
-            return <Form.Check
-                type="switch"
-                label={column.hideLabel ? '' : getStatusLabel(item[column.index])}
-                checked={item[column.index] === 1}
-                onChange={() => handleChangeStatusField(item[column.index] === 1 ? 0 : 1)}
-            />
-
-        } else {
-            return getStatusLabel(item[column.index]);
-        }
-
-    };
 
     const ColumnActionsRenderer = (column: DataGridColumn, item: any) => {
         if (column.customFormat) {
@@ -413,7 +308,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         }
     };
 
-    const ColumnUndefinedRenderer = (column: DataGridColumn, item: any) => {
+    const ColumnUndefinedRenderer = () => {
         return '-';
     }
 
@@ -441,9 +336,9 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     const renderColumn = (column: DataGridColumn, item: any) => {
         const columnRenderer = getColumnRenderer(column.type ?? DataGridColumnType.TEXT);
         if (column.linkFormat) {
-            return <Link style={{ textDecoration: "none" }} href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item)}</Link>;
+            return <Link style={{ textDecoration: "none" }} href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus)}</Link>;
         }
-        return columnRenderer(column, item);
+        return columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus);
     };
 
     const handleResetFilter = () => {

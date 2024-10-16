@@ -90,7 +90,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     const [maps, setMaps] = React.useState<any>({});
 
 
-    const FieldUndefinedRenderer = (field: DataGridEditField, item: any) => {
+    const FieldUndefinedRenderer = () => {
         return '-';
     }
 
