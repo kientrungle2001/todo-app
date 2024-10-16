@@ -26,12 +26,11 @@ export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem
                         'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
                     ],
                     toolbar:
-                        'undo redo | formatselect | ' +
-                        'bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | ' +
+                        'undo redo | ' +
+                        'bold italic underline | alignleft aligncenter alignright alignjustify | ' +
                         'bullist numlist outdent indent | ' +
-                        'link image media charmap anchor | insertdatetime table | ' +
-                        'visualblocks code preview fullscreen | ' +
-                        'searchreplace | help | wordcount',
+                        'link image table | ' +
+                        'code preview fullscreen',
 
                     toolbar_sticky: true, // Sticky toolbar
                     menubar: 'file edit view insert format tools table help', // Menubar options
@@ -49,6 +48,7 @@ export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem
                         anchor: '/tinymce/plugins/anchor/plugin.min.js',
                     },
                     promotion: false,
+                    statusbar: false
                 }}
                 onEditorChange={(content) => {
                     let updatedItem = { ...item };
