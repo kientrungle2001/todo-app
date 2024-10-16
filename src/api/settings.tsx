@@ -1,105 +1,105 @@
 import { TableGridSettings } from "@/components/grid/TableGrid";
-import { StudentSettings } from "./settings/StudentSettings";
-import { AdminUserSettings } from "./settings/UserSettings";
-import { AdminCategoriesSettings } from "./settings/CategoriesSettings";
-import { AdminQuestionSettings } from "./settings/QuestionSettings";
-import { AdminServicePackagesSettings } from "./settings/ServicePackagesSettings";
-import { AdminTestSettings } from "./settings/TestSettings";
-import { AdminHistoryPaymentSettings } from "./settings/HistoryPaymentSettings";
-import { AdminMenuSettings } from "./settings/MenuSettings";
-import { AdminDocumentSettings } from "./settings/DocumentSettings";
-import { AdminBookSettings } from "./settings/BookSettings";
-import { AdminContestSettings } from "./settings/ContestSettings";
-import { AdminQuestionErrorSettings } from "./settings/QuestionErrorSettings";
-import { AdminVoteSettings } from "./settings/VoteSettings";
-import { AdminBannerSettings } from "./settings/BannerSettings";
-import { AdminMediaSettings } from "./settings/MediaSettings";
-import { AdminNewsSettings } from "./settings/NewsSettings";
-import { AdminAQSQuestionSettings } from "./settings/AQSQuestionSettings";
-import { AdminAQSAnswerSettings } from "./settings/AQSAnswerSettings";
-import { AdminWalletSettings } from "./settings/WalletSettings";
-import { AdminCouponSettings } from "./settings/CouponSettings";
-import { AdminCouponUserSettings } from "./settings/CouponUserSettings";
-import { AdminOrderCardSettings } from "./settings/OrderCardSettings";
-import { AdminNextNobelsCardSettings } from "./settings/NextNobelsCardSettings";
-import { AdminGameSettings } from "./settings/GameSettings";
-import { AdminGameTopicSettings } from "./settings/GameTopicSettings";
-import { AdminGameTypeSettings } from "./settings/GameTypeSettings";
-import { AdminServicePolicySettings } from "./settings/ServicePolicySettings";
-import { AdminMobileCardSettings } from "./settings/MobileCardSettings";
-import { AdminOrderTransactionSettings } from "./settings/OrderTransactionSettings";
-import { AdminThemeSettings } from "./settings/ThemeSettings";
-import { AdminLogSettings } from "./settings/LogSettings";
-import { AdminLevelSettings } from "./settings/AdminLevelSettings";
-import { AdminLevelActionSettings } from "./settings/AdminLevelActionSettings";
+import { FullLookStudentSettings } from "./settings/FullLookStudentSettings";
+import { FullLookAdminUserSettings } from "./settings/FullLookUserSettings";
+import { FullLookAdminCategoriesSettings } from "./settings/FullLookCategoriesSettings";
+import { FullLookAdminQuestionSettings } from "./settings/FullLookQuestionSettings";
+import { FullLookAdminServicePackagesSettings } from "./settings/FullLookServicePackagesSettings";
+import { FullLookAdminTestSettings } from "./settings/FullLookTestSettings";
+import { FullLookAdminHistoryPaymentSettings } from "./settings/FullLookHistoryPaymentSettings";
+import { FullLookAdminMenuSettings } from "./settings/FullLookMenuSettings";
+import { FullLookAdminDocumentSettings } from "./settings/FullLookDocumentSettings";
+import { FullLookAdminBookSettings } from "./settings/FullLookBookSettings";
+import { FullLookAdminContestSettings } from "./settings/FullLookContestSettings";
+import { FullLookAdminQuestionErrorSettings } from "./settings/FullLookQuestionErrorSettings";
+import { FullLookAdminVoteSettings } from "./settings/FullLookVoteSettings";
+import { FullLookAdminBannerSettings } from "./settings/FullLookBannerSettings";
+import { FullLookAdminMediaSettings } from "./settings/FullLookMediaSettings";
+import { FullLookAdminNewsSettings } from "./settings/FullLookNewsSettings";
+import { FullLookAdminAQSQuestionSettings } from "./settings/FullLookAQSQuestionSettings";
+import { FullLookAdminAQSAnswerSettings } from "./settings/FullLookAQSAnswerSettings";
+import { FullLookAdminWalletSettings } from "./settings/FullLookWalletSettings";
+import { FullLookAdminCouponSettings } from "./settings/FullLookCouponSettings";
+import { FullLookAdminCouponUserSettings } from "./settings/FullLookCouponUserSettings";
+import { FullLookAdminOrderCardSettings } from "./settings/FullLookOrderCardSettings";
+import { FullLookAdminNextNobelsCardSettings } from "./settings/FullLookNextNobelsCardSettings";
+import { FullLookAdminGameSettings } from "./settings/FullLookGameSettings";
+import { FullLookAdminGameTopicSettings } from "./settings/FullLookGameTopicSettings";
+import { FullLookAdminGameTypeSettings } from "./settings/FullLookGameTypeSettings";
+import { FullLookAdminServicePolicySettings } from "./settings/FullLookServicePolicySettings";
+import { FullLookAdminMobileCardSettings } from "./settings/FullLookMobileCardSettings";
+import { FullLookAdminOrderTransactionSettings } from "./settings/FullLookOrderTransactionSettings";
+import { FullLookAdminThemeSettings } from "./settings/FullLookThemeSettings";
+import { FullLookAdminLogSettings } from "./settings/FullLookLogSettings";
+import { FullLookAdminLevelSettings } from "./settings/FullLookAdminLevelSettings";
+import { FullLookAdminLevelActionSettings } from "./settings/FullLookAdminLevelActionSettings";
 
 export const getSettingsByController = (controller: string): TableGridSettings | null => {
     if (controller === "student") {
-        return StudentSettings
+        return FullLookStudentSettings
     } else if (controller === "user" || controller === "admin_user") {
-        return AdminUserSettings
+        return FullLookAdminUserSettings
     } else if (controller === "history_payment" || controller === "admin_payment_historypayment") {
-        return AdminHistoryPaymentSettings
+        return FullLookAdminHistoryPaymentSettings
     } else if (controller === "service_packages" || controller === "admin_service_servicepackages") {
-        return AdminServicePackagesSettings
+        return FullLookAdminServicePackagesSettings
     } else if (controller === "admin_menu") {
-        return AdminMenuSettings
+        return FullLookAdminMenuSettings
     } else if (controller === "admin_category") {
-        return AdminCategoriesSettings
+        return FullLookAdminCategoriesSettings
     } else if (controller === "admin_question2") {
-        return AdminQuestionSettings
+        return FullLookAdminQuestionSettings
     } else if (controller === "admin_document") {
-        return AdminDocumentSettings
+        return FullLookAdminDocumentSettings
     } else if (controller === "admin_test") {
-        return AdminTestSettings
+        return FullLookAdminTestSettings
     } else if (controller === "admin_book") {
-        return AdminBookSettings
+        return FullLookAdminBookSettings
     } else if (controller === "admin_contest") {
-        return AdminContestSettings
+        return FullLookAdminContestSettings
     } else if (controller === "admin_questionerror") {
-        return AdminQuestionErrorSettings
+        return FullLookAdminQuestionErrorSettings
     } else if (controller === "admin_vote") {
-        return AdminVoteSettings
+        return FullLookAdminVoteSettings
     } else if (controller === "admin_banner") {
-        return AdminBannerSettings
+        return FullLookAdminBannerSettings
     } else if (controller === "admin_media") {
-        return AdminMediaSettings
+        return FullLookAdminMediaSettings
     } else if (controller === "admin_news") {
-        return AdminNewsSettings
+        return FullLookAdminNewsSettings
     } else if (controller === "admin_aqsquestion") {
-        return AdminAQSQuestionSettings
+        return FullLookAdminAQSQuestionSettings
     } else if (controller === "admin_aqsanswer") {
-        return AdminAQSAnswerSettings
+        return FullLookAdminAQSAnswerSettings
     } else if (controller === "admin_wallets") {
-        return AdminWalletSettings
+        return FullLookAdminWalletSettings
     } else if (controller === "admin_coupon") {
-        return AdminCouponSettings
+        return FullLookAdminCouponSettings
     } else if (controller === "admin_coupon_user") {
-        return AdminCouponUserSettings
+        return FullLookAdminCouponUserSettings
     } else if (controller === "admin_ordercard") {
-        return AdminOrderCardSettings
+        return FullLookAdminOrderCardSettings
     } else if (controller === "admin_service_cardnexnobels") {
-        return AdminNextNobelsCardSettings
+        return FullLookAdminNextNobelsCardSettings
     } else if (controller === "admin_game") {
-        return AdminGameSettings
+        return FullLookAdminGameSettings
     } else if (controller === "admin_gametopic") {
-        return AdminGameTopicSettings
+        return FullLookAdminGameTopicSettings
     } else if (controller === "admin_gametype") {
-        return AdminGameTypeSettings
+        return FullLookAdminGameTypeSettings
     } else if (controller === "admin_service_policy") {
-        return AdminServicePolicySettings
+        return FullLookAdminServicePolicySettings
     } else if (controller === "admin_cardmobile") {
-        return AdminMobileCardSettings
+        return FullLookAdminMobileCardSettings
     } else if (controller === "admin_order_transaction") {
-        return AdminOrderTransactionSettings;
+        return FullLookAdminOrderTransactionSettings;
     } else if (controller === "admin_themes") {
-        return AdminThemeSettings;
+        return FullLookAdminThemeSettings;
     } else if (controller === "admin_log") {
-        return AdminLogSettings;
+        return FullLookAdminLogSettings;
     } else if (controller === "admin_adminlevel") {
-        return AdminLevelSettings;
+        return FullLookAdminLevelSettings;
     } else if (controller === "admin_levelaction") {
-        return AdminLevelActionSettings
+        return FullLookAdminLevelActionSettings
     }
     return null;
 }
