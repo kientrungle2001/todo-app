@@ -30,7 +30,7 @@ CREATE TABLE `coupon_user` (
  * 
  */
 import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
+import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Người nạp Coupon";

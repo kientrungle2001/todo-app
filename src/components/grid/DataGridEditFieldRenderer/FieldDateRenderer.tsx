@@ -1,6 +1,6 @@
 import { format } from "date-fns";
-import { DataGridEditField } from "../DataGridEdit";
 import { Form } from "react-bootstrap";
+import { DataGridEditField } from "../DataGridEditTypes";
 
 export const FieldDateRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     return (

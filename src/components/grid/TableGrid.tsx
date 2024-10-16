@@ -1,10 +1,10 @@
 import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
 import axios from '@/api/axiosInstance';
-import { DataGridEditField } from "./DataGridEdit";
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
+import { DataGridEditField } from "./DataGridEditTypes";
 
 export interface TableGridSettings {
     title: string,

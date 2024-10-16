@@ -15,7 +15,7 @@ CREATE TABLE `aqs_answer` (
 ) ENGINE=InnoDB AUTO_INCREMENT=820 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
  */
 import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
+import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Trả lời Hỏi đáp";

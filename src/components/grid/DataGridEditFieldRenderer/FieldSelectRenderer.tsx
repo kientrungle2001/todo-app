@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { DataGridEditField } from "../DataGridEdit";
 import { Form } from "react-bootstrap";
 import $ from 'jquery';
+import { DataGridEditField } from "../DataGridEditTypes";
 
 export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any) => {
     const selectRef: any = {};

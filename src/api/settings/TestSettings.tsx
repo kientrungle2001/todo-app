@@ -1,5 +1,5 @@
 import { DataGridColumn, DataGridColumns, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEdit";
+import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Đề thi";

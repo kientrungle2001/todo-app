@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { DataGridEditField } from "../DataGridEdit";
 import { Editor } from "@tinymce/tinymce-react";
 import { ImageSelector } from "@/components/media/ImageSelector";
+import { DataGridEditField } from "../DataGridEditTypes";
 
 export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     const [selectedImage, setSelectedImage] = useState<string>("");

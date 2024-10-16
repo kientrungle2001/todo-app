@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { DataGridEditField } from "../DataGridEdit";
+import { DataGridEditField } from "../DataGridEditTypes";
 
 export const FieldStatusRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     const getStatusLabel = (status: number) => {

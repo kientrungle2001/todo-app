@@ -1,5 +1,5 @@
 import { DataGridColumn, DataGridColumns, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
-import { DataGridEditField } from "@/components/grid/DataGridEdit";
+import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Vai trò";

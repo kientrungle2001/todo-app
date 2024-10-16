@@ -1,9 +1,10 @@
 import React from "react";
 import { TableGridSettings } from "./TableGrid";
 import axios from "@/api/axiosInstance";
-import DataGridEdit, { DataGridEditField, DataGridEditMode } from "./DataGridEdit";
+import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
+import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
 
 interface TableGridProps {
     controller: string;
