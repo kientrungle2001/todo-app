@@ -4,13 +4,13 @@ import { Button, Container, Row, Col, Card } from 'react-bootstrap';
 import axios from '@/api/axiosInstance';
 import { useRouter } from 'next/router';
 import { storage } from '@/api/storage';
-import { AdminMenuSettings } from '@/api/settings/MenuSettings';
+import { FullLookAdminMenuSettings } from '@/api/settings/FullLookMenuSettings';
 import { DataGridPagination, DataGridSort, DataGridSortDirection } from '@/components/grid/DataGrid';
 import Link from 'next/link';
 import { TopMenuGrid } from '@/components/grid/TopMenuGrid';
 
 const Index = () => {
-    const settings = AdminMenuSettings;
+    const settings = FullLookAdminMenuSettings;
     const [items, setItems] = useState<any[]>([]);
     const sorts: DataGridSort[] = [
         { index: 'ordering', direction: DataGridSortDirection.ASCENDING },

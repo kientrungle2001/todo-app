@@ -1,6 +1,5 @@
 // src/api/axiosInstance.ts
 import axios from 'axios';
-import { storage } from './storage';
 
 const instance = axios.create({
   baseURL: 'http://localhost:3002/api', // Change to your backend API URL

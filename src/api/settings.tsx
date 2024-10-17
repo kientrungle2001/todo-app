@@ -103,3 +103,13 @@ export const getSettingsByController = (controller: string): TableGridSettings |
     }
     return null;
 }
+
+export const appEnv: string = process.env.NEXT_PUBLIC_APP_ENV || 'development';
+
+export const defaultConfigs: any = {
+    mediaUploadEndpoint: '',
+    mediaUrlEndpoint: '',
+    apiEndpoint: '',
+    software: 1,
+    site: 1,
+}
