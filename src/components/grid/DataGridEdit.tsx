@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Tab, Tabs } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
 import { buildTree, flatTree } from "@/api/tree";
 import 'select2';
@@ -123,6 +123,21 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         return renderer(field, item, setItem, maps);
     }
 
+    const tabGroups: { [key: string]: DataGridEditField[] } = {};
+    fields.forEach(field => {
+        let tabGroup = field.tabGroup ?? '__default';
+        if (!tabGroups[tabGroup]) {
+            tabGroups[tabGroup] = [];
+        }
+        tabGroups[tabGroup].push(field);
+    });
+    console.log('tabGroups:', tabGroups);
+    const tabs = Object.keys(tabGroups).map(tabGroup => ({
+        tabGroup: tabGroup,
+        fields: tabGroups[tabGroup]
+    }));
+    tabs.sort((a, b) => a.tabGroup.localeCompare(b.tabGroup));
+
     return (
         <>
             <Container fluid>
@@ -158,14 +173,34 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                         }
                                     }}>Hủy bỏ</Button>
                                 </Col>
-                                {fields.map(field => (
-                                    <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
-                                        <Form.Group controlId={field.index}>
-                                            <Form.Label>{field.label}</Form.Label>
-                                            {renderField(field, item)}
-                                        </Form.Group>
-                                    </Col>
+                                {tabs.map(tab => (
+                                    tab.tabGroup === '__default' ? (
+                                        <React.Fragment key={tab.tabGroup}>
+                                            {tab.fields.map(field => (
+                                                <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
+                                                    <Form.Group controlId={field.index}>
+                                                        <Form.Label>{field.label}</Form.Label>
+                                                        {renderField(field, item)}
+                                                    </Form.Group>
+                                                </Col>
+                                            ))}
+                                        </React.Fragment>
+                                    ) : (
+                                        <Col className="mb-3" md={tab.fields[0].size ?? 12} sm={12} key={tab.tabGroup}>
+                                            <Tabs id={"controlled-tab-" + tab.tabGroup}>
+                                            {tab.fields.map(field => (
+                                                <Tab eventKey={field.index} title={field.label} key={field.index}>
+                                                    <Form.Group controlId={field.index}>
+                                                        {renderField(field, item)}
+                                                    </Form.Group>
+                                                </Tab>
+                                            ))}
+                                            </Tabs>
+                                        </Col>
+                                    )
+
                                 ))}
+
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
                                     <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                                     <Button variant="outline-secondary" onClick={() => {

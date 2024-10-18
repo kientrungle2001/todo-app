@@ -33,4 +33,5 @@ export interface DataGridEditField {
     orderBy?: string;
     multipleSize?: number;
     select2?: boolean;
+    tabGroup?: string;
 }

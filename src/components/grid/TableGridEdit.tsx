@@ -43,7 +43,9 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
 
 
     const handleUpdateItem = (updatedItem: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>): void => {
+        console.log("Updating item:", updatedItem);
         event.preventDefault();
+        console.log("Fields:", fields);
         axios.put(`/tables/${settings.table}/update/${itemId}`, {
             item: updatedItem,
             settings: JSON.parse(JSON.stringify(settings)),

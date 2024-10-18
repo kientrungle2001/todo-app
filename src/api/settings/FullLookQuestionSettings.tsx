@@ -47,10 +47,10 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 6 },
-    { index: "name_vn", label: "Nội dung tiếng Việt", type: DataGridEditFieldType.EDITOR, size: 6 },
-    { index: "explaination", label: "Lý giải", type: DataGridEditFieldType.EDITOR, size: 6 },
-    { index: "answerTranslation", label: "Câu trả lời (Dịch)", type: DataGridEditFieldType.EDITOR, size: 6 },
+    { index: "name", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "name" },
+    { index: "name_vn", label: "Nội dung tiếng Việt", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "name" },
+    { index: "explaination", label: "Lý giải", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "explaination" },
+    { index: "answerTranslation", label: "Câu trả lời (Dịch)", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "explaination" },
     {
         index: "classes", label: "Khối, Lớp", type: DataGridEditFieldType.SELECT, size: 6,
         multiple: true,
@@ -71,7 +71,8 @@ const gridAddFields: DataGridEditField[] = [
         treeMode: true,
         parentField: "parent",
         multipleSize: 10,
-        select2: true
+        select2: true,
+        tabGroup: "category"
     },
     {
         index: "testId", label: "Đề thi", type: DataGridEditFieldType.SELECT, size: 6,
@@ -82,7 +83,8 @@ const gridAddFields: DataGridEditField[] = [
         treeMode: true,
         parentField: "parent",
         multipleSize: 10,
-        select2: true
+        select2: true,
+        tabGroup: "category"
     },
     {
         index: "questionType", label: "Dạng câu hỏi", type: DataGridEditFieldType.SELECT, size: 6,

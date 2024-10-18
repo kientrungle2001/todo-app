@@ -50,9 +50,9 @@ export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem
                     promotion: false,
                     statusbar: false
                 }}
-                onEditorChange={(content) => {
+                onBlur={(event) => {
                     let updatedItem = { ...item };
-                    updatedItem[field.index] = content;
+                    updatedItem[field.index] = event.target.getContent() as string;
                     setItem(updatedItem);
                 }}
             />

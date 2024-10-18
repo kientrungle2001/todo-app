@@ -34,7 +34,12 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
 
             // Clean up Select2 on unmount
             return () => {
-                $select.select2('destroy');
+                if ($select) {
+                    try {
+                        $select.select2('destroy');
+                    } catch (error) {
+                    }
+                }
             };
         }
     }, [field, item, maps[field.index], field.options]); // Re-run when options or maps change
