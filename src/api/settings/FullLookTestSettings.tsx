@@ -18,14 +18,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.trial,
-    {
-        index: "document", type: DataGridColumnType.STATUS, label: "Tài liệu", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
+    DataGridColumns.document,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
