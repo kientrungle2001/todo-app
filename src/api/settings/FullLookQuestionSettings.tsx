@@ -47,10 +47,10 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "name" },
-    { index: "name_vn", label: "Nội dung tiếng Việt", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "name" },
-    { index: "explaination", label: "Lý giải", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "explaination" },
-    { index: "answerTranslation", label: "Câu trả lời (Dịch)", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "explaination" },
+    { index: "name", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "2name" },
+    { index: "name_vn", label: "Nội dung tiếng Việt", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "2name" },
+    { index: "explaination", label: "Lý giải", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "3explaination" },
+    { index: "answerTranslation", label: "Câu trả lời (Dịch)", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "3explaination" },
     {
         index: "classes", label: "Khối, Lớp", type: DataGridEditFieldType.SELECT, size: 6,
         multiple: true,
@@ -60,7 +60,8 @@ const gridAddFields: DataGridEditField[] = [
             { value: "4", label: "Lớp 4" },
             { value: "5", label: "Lớp 5" }
         ],
-        select2: true
+        select2: true,
+        tabGroup: "0classification"
     },
     {
         index: "categoryIds", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
@@ -72,7 +73,7 @@ const gridAddFields: DataGridEditField[] = [
         parentField: "parent",
         multipleSize: 10,
         select2: true,
-        tabGroup: "category"
+        tabGroup: "0classification"
     },
     {
         index: "testId", label: "Đề thi", type: DataGridEditFieldType.SELECT, size: 6,
@@ -84,7 +85,7 @@ const gridAddFields: DataGridEditField[] = [
         parentField: "parent",
         multipleSize: 10,
         select2: true,
-        tabGroup: "category"
+        tabGroup: "0classification"
     },
     {
         index: "questionType", label: "Dạng câu hỏi", type: DataGridEditFieldType.SELECT, size: 6,
@@ -92,7 +93,8 @@ const gridAddFields: DataGridEditField[] = [
             { value: 1, label: "Trắc nghiệm" },
             { value: 4, label: "Tự luận" }
         ],
-        select2: true
+        select2: true,
+        tabGroup: "0classification"
     },
     {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
