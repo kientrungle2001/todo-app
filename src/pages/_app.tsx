@@ -2,8 +2,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  // Import Bootstrap CSS
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
-import { store } from '../store/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'select2/dist/css/select2.min.css';
 import 'select2/dist/js/select2.min.js';
@@ -18,8 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, []);
   return (
-    <Provider store={store}>
       <Component {...pageProps} />
-    </Provider>
   );
 }
