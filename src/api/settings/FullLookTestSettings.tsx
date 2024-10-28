@@ -1,4 +1,5 @@
-import { DataGridColumn, DataGridColumns, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 

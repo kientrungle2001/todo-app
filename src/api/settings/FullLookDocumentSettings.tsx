@@ -1,4 +1,5 @@
-import { DataGridColumn, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -15,24 +16,10 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "title", label: "Tên Tài liệu", linkFormat: (value: any, item: any) => `/Table/admin_document/${item.id}/edit` },
     { index: "content", label: "Nội dung Tài liệu", isHtml: true },
-    { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
+    DataGridColumns.ordering,
     DataGridColumns.status,
-    {
-        index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    {
-        index: "document", type: DataGridColumnType.STATUS, label: "Tài liệu", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
+    DataGridColumns.trial,
+    DataGridColumns.document,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
@@ -42,13 +29,7 @@ const gridPagination: DataGridPagination = {currentPage: 1, pageSize: 50};
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
     DataGridFilterColumns.status,
-    {
-        index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.trial,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [

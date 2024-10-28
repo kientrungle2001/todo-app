@@ -1,4 +1,5 @@
-import { DataGridColumn, DataGridColumnType, DataGridColumns, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -26,15 +27,7 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
     DataGridFilterColumns.categoryIds,
-    {
-        index: "testId", label: "Đề thi", type: DataGridFilterColumnType.SELECT,
-        table: "tests",
-        valueField: "id",
-        labelField: "name",
-        select2: true,
-        comparisonOperator: "inset",
-        treeMode: true,
-    },
+    DataGridFilterColumns.testId,
     DataGridFilterColumns.status,
     DataGridFilterColumns.trial,
 ];

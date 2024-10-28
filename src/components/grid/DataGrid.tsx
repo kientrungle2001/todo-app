@@ -81,29 +81,6 @@ export interface DataGridColumn {
     isHtml?: boolean;
 }
 
-export const DataGridColumns: { [key: string]: DataGridColumn } = {
-    id: { index: "id", label: "ID", width: "1%" },
-    status: {
-        index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        statusToggable: true,
-        width: "10%"
-    },
-    trial: {
-        index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    ordering: { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
-    editAction: { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%" },
-    deleteAction: { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%" }
-};
-
 export interface DataGridFilterColumn {
     index: string;
     label: string;
@@ -153,6 +130,15 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         comparisonOperator: "inset",
         treeMode: true,
     },
+    testId: {
+        index: "testId", label: "Đề thi", type: DataGridFilterColumnType.SELECT,
+        table: "tests",
+        valueField: "id",
+        labelField: "name",
+        select2: true,
+        comparisonOperator: "inset",
+        treeMode: true,
+    }
 };
 
 export interface DataGridSort {
