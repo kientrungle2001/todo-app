@@ -59,7 +59,7 @@ const Index = () => {
                                 <Card>
                                     <Card.Body>
                                         <Link href={"/Table/" + item.admin_controller}>
-                                            <Card.Img variant="top" src={'http://s1.nextnobels.com' + item.thumbnail} />
+                                            <Card.Img variant="top" src={'https://stg.media.nextnobels.com' + item.thumbnail} />
                                         </Link>
                                     </Card.Body>
                                     <Card.Footer>

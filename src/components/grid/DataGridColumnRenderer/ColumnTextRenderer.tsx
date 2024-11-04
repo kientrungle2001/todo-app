@@ -17,7 +17,7 @@ export const ColumnTextRenderer = (column: DataGridColumn, item: any, table: str
     }
     if (column.isHtml) {
         let content = column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '';
-        content = content.replaceAll('s1.nextnobels.com', 'media.nextnobels.com').replaceAll('fulllooksongngu.com', 'media.nextnobels.com');
+        content = content.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com').replaceAll('http://fulllooksongngu.com', 'https://stg.media.nextnobels.com');
         return <>
             <div dangerouslySetInnerHTML={{ __html: content }} />
         </>;
