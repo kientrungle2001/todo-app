@@ -23,7 +23,7 @@ export const QuestionAnswerEditor: React.FC<QuestionAnswerEditorProps> = ({value
                 'link image table | ' +
                 'code preview fullscreen',
 
-            toolbar_sticky: true, // Sticky toolbar
+            toolbar_sticky: false, // Sticky toolbar
             menubar: false, // Menubar options
 
             // Provide the path to your local TinyMCE installation

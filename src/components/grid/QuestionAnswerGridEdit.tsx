@@ -55,6 +55,7 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                 }
 
                 <Row>
+
                     <Col md={12} sm={12}>
                         <Form onSubmit={(event) => {
                             if (mode === DataGridEditMode.EDIT && handleUpdateItem) {
@@ -93,12 +94,15 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                         </Col>
                                     </Row>
                                 </Col>
-
+                                <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
+                                    <h2>Đáp án: </h2>
+                                    <Button variant="primary">Thêm</Button>
+                                </Col>
                                 {answers.map((answer) => {
                                     return (
                                         <Col md={6} sm={12} key={answer.id} className="mt-3 mb-3">
                                             <InputGroup>
-                                                <InputGroup.Radio 
+                                                <InputGroup.Radio
                                                     checked={answer.status === '1'}
                                                     onClick={() => {
                                                         let updatedAnswers: any[] = [...answers];
@@ -108,7 +112,7 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                                         answer.status = '1';
                                                         setAnswers(updatedAnswers);
                                                     }}
-                                                    />
+                                                />
                                                 <Row>
                                                     <Col md={6} sm={12}>
                                                         <QuestionAnswerEditor value={answer.content as string} updateValue={(value: string) => {
