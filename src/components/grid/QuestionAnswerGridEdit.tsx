@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
-import { Editor } from "@tinymce/tinymce-react";
+import { QuestionAnswerEditor } from "./QuestionAnswerEditor";
 
 interface QuestionAnswerGridEditProps {
     mode: DataGridEditMode,
@@ -58,6 +58,7 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                     <Col md={12} sm={12}>
                         <Form onSubmit={(event) => {
                             if (mode === DataGridEditMode.EDIT && handleUpdateItem) {
+                                item.answers = answers;
                                 handleUpdateItem(item, fields, event);
                             }
 
@@ -95,93 +96,33 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
 
                                 {answers.map((answer) => {
                                     return (
-                                        <Col md={6} sm={12} key={answer.id}>
-                                            <Row>
-                                                <Col md={6} sm={12}>
-                                                    <Editor
-                                                        tinymceScriptSrc="/tinymce/tinymce.min.js"
-                                                        initialValue={answer.content}
-                                                        init={{
-                                                            height: 200,
-                                                            plugins: [
-                                                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
-                                                                'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                                                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                                                            ],
-                                                            toolbar:
-                                                                'undo redo | ' +
-                                                                'bold italic underline | alignleft aligncenter alignright alignjustify | ' +
-                                                                'bullist numlist outdent indent | ' +
-                                                                'link image table | ' +
-                                                                'code preview fullscreen',
-
-                                                            toolbar_sticky: true, // Sticky toolbar
-                                                            menubar: false, // Menubar options
-
-                                                            // Provide the path to your local TinyMCE installation
-                                                            script_url: '/tinymce/tinymce.min.js',
-                                                            external_plugins: {
-                                                                advlist: '/tinymce/plugins/advlist/plugin.min.js',
-                                                                autolink: '/tinymce/plugins/autolink/plugin.min.js',
-                                                                lists: '/tinymce/plugins/lists/plugin.min.js',
-                                                                link: '/tinymce/plugins/link/plugin.min.js',
-                                                                image: '/tinymce/plugins/image/plugin.min.js',
-                                                                charmap: '/tinymce/plugins/charmap/plugin.min.js',
-                                                                preview: '/tinymce/plugins/preview/plugin.min.js',
-                                                                anchor: '/tinymce/plugins/anchor/plugin.min.js',
-                                                            },
-                                                            promotion: false,
-                                                            statusbar: false
-                                                        }}
-                                                        onBlur={(event) => {
-                                                            let updatedAnswer = { ...answer };
-                                                            updatedAnswer.content = event.target.getContent() as string;
-                                                        }}
+                                        <Col md={6} sm={12} key={answer.id} className="mt-3 mb-3">
+                                            <InputGroup>
+                                                <InputGroup.Radio 
+                                                    checked={answer.status === '1'}
+                                                    onClick={() => {
+                                                        let updatedAnswers: any[] = [...answers];
+                                                        updatedAnswers.forEach((ans) => {
+                                                            ans.status = '0';
+                                                        })
+                                                        answer.status = '1';
+                                                        setAnswers(updatedAnswers);
+                                                    }}
                                                     />
-                                                </Col>
-                                                <Col md={6} sm={12}>
-                                                    <Editor
-                                                        tinymceScriptSrc="/tinymce/tinymce.min.js"
-                                                        initialValue={answer.content_vn}
-                                                        init={{
-                                                            height: 200,
-                                                            plugins: [
-                                                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
-                                                                'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                                                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                                                            ],
-                                                            toolbar:
-                                                                'undo redo | ' +
-                                                                'bold italic underline | alignleft aligncenter alignright alignjustify | ' +
-                                                                'bullist numlist outdent indent | ' +
-                                                                'link image table | ' +
-                                                                'code preview fullscreen',
+                                                <Row>
+                                                    <Col md={6} sm={12}>
+                                                        <QuestionAnswerEditor value={answer.content as string} updateValue={(value: string) => {
+                                                            answer.content = value;
+                                                        }} />
+                                                    </Col>
+                                                    <Col md={6} sm={12}>
+                                                        <QuestionAnswerEditor value={answer.content_vn as string} updateValue={(value: string) => {
+                                                            answer.content_vn = value;
+                                                        }} />
+                                                    </Col>
+                                                </Row>
+                                            </InputGroup>
 
-                                                            toolbar_sticky: true, // Sticky toolbar
-                                                            menubar: false, // Menubar options
-
-                                                            // Provide the path to your local TinyMCE installation
-                                                            script_url: '/tinymce/tinymce.min.js',
-                                                            external_plugins: {
-                                                                advlist: '/tinymce/plugins/advlist/plugin.min.js',
-                                                                autolink: '/tinymce/plugins/autolink/plugin.min.js',
-                                                                lists: '/tinymce/plugins/lists/plugin.min.js',
-                                                                link: '/tinymce/plugins/link/plugin.min.js',
-                                                                image: '/tinymce/plugins/image/plugin.min.js',
-                                                                charmap: '/tinymce/plugins/charmap/plugin.min.js',
-                                                                preview: '/tinymce/plugins/preview/plugin.min.js',
-                                                                anchor: '/tinymce/plugins/anchor/plugin.min.js',
-                                                            },
-                                                            promotion: false,
-                                                            statusbar: false
-                                                        }}
-                                                        onBlur={(event) => {
-                                                            let updatedAnswer = { ...answer };
-                                                            updatedAnswer.content_vn = event.target.getContent() as string;
-                                                        }}
-                                                    />
-                                                </Col>
-                                            </Row>
                                         </Col>
                                     )
                                 })}

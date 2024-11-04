@@ -1,9 +1,14 @@
 import { Editor } from "@tinymce/tinymce-react";
 
-export const QuestionAnswerEditor = (answer: any) => {
-    <Editor
+interface QuestionAnswerEditorProps {
+    value: string;
+    updateValue: (value: string) => void;
+}
+
+export const QuestionAnswerEditor: React.FC<QuestionAnswerEditorProps> = ({value, updateValue}) => {
+    return <Editor
         tinymceScriptSrc="/tinymce/tinymce.min.js"
-        initialValue={answer.content_vn}
+        initialValue={value}
         init={{
             height: 200,
             plugins: [
@@ -37,8 +42,7 @@ export const QuestionAnswerEditor = (answer: any) => {
             statusbar: false
         }}
         onBlur={(event) => {
-            let updatedAnswer = { ...answer };
-            updatedAnswer.content_vn = event.target.getContent() as string;
+            updateValue(event.target.getContent() as string)
         }}
     />
 }
