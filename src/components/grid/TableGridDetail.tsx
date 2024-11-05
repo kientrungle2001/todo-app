@@ -42,10 +42,38 @@ export const TableGridDetail: React.FC<TableGridProps> = ({ controller, settings
     }
 
 
+    const validateQuestionAnswers = (question: any): boolean => {
+        if (question.answers.length <= 0) {
+            return false;
+        }
+        let hasRightAnswer = false;
+        let hasEmptyAnswer = false;
+        question.answers.forEach((answer: any) => {
+            if (!answer.content || !answer.content_vn) {
+                hasEmptyAnswer = true;
+                return false;
+            }
+            if (answer.status === '1') {
+                hasRightAnswer = true;
+            }
+        });
+        if (!hasRightAnswer) {
+            return false;
+        }
+        if (hasEmptyAnswer) {
+            return false;
+        }
+        return true;
+    }
 
     const handleUpdateItem = (updatedItem: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>): void => {
-        console.log("Updating item answers:", updatedItem);
         event.preventDefault();
+        console.log("Updating item answers:", updatedItem);
+        if (!validateQuestionAnswers(updatedItem)) {
+            window.alert('Kiểm trả lại các câu trả lời, câu trả lời có thể trống hoặc chưa chọn đáp án đúng');
+            return;
+        }
+        
         axios.put(`/questions/updateAnswers/${itemId}`, {
             item: updatedItem,
             settings: JSON.parse(JSON.stringify(settings)),

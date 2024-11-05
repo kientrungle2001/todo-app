@@ -37,8 +37,9 @@ class Tables extends CI_Controller
             $this->output
                 ->set_status_header($authResponse['status'])
                 ->set_content_type('application/json')
-                ->set_output(json_encode(['error' => $authResponse['error']]));
-            return;
+                ->set_output(json_encode(['error' => $authResponse['error']]))
+                ->_display();
+            die;
         }
     }
 
