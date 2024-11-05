@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { TableGridSettings } from "./TableGrid";
 import axios from "@/api/axiosInstance";
-import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
 import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
-import QuestionAnswerGridEdit from "./QuestionAnswerGridEdit";
+import TestGridEdit from "./TestGridEdit";
 
 interface TableGridProps {
     itemId: number;
@@ -13,7 +12,7 @@ interface TableGridProps {
     settings: TableGridSettings
 }
 
-export const TableGridDetail: React.FC<TableGridProps> = ({ controller, settings, itemId }): React.ReactElement => {
+export const TestGridDetail: React.FC<TableGridProps> = ({ controller, settings, itemId }): React.ReactElement => {
     const router = useRouter();
     const [item, setItem] = React.useState<any>(null);
 
@@ -73,7 +72,7 @@ export const TableGridDetail: React.FC<TableGridProps> = ({ controller, settings
             window.alert('Kiểm trả lại các câu trả lời, câu trả lời có thể trống hoặc chưa chọn đáp án đúng');
             return;
         }
-        
+
         axios.put(`/questions/updateAnswers/${itemId}`, {
             item: updatedItem,
             settings: JSON.parse(JSON.stringify(settings)),
@@ -100,15 +99,8 @@ export const TableGridDetail: React.FC<TableGridProps> = ({ controller, settings
         router.push(`/Table/${controller}`);
     }
 
-    // make bootstrap edit form here
-    if (controller === 'admin_question2') {
-        return <>
-            <QuestionAnswerGridEdit updateLabel={settings.updateLabel} mode={DataGridEditMode.EDIT} itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
-            handleUpdateItem={handleUpdateItem} handleCancelEdit={handleCancelEdit} />
-        </>
-    }
     return <>
-        <DataGridEdit updateLabel={settings.updateLabel} mode={DataGridEditMode.EDIT} itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
+        <TestGridEdit updateLabel={settings.updateLabel} mode={DataGridEditMode.EDIT} itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
             handleUpdateItem={handleUpdateItem} handleCancelEdit={handleCancelEdit} />
     </>
 };

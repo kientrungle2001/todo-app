@@ -14,7 +14,7 @@ const gridFields: string[] = ["id", "name", "name_en", "name_sn", "ordering", "s
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "name", label: "Tên Đề thi", linkFormat: (value: any, item: any) => `/Table/admin_test/${item.id}/edit`, treeMode: true },
+    { index: "name", label: "Tên Đề thi", linkFormat: (value: any, item: any) => `/Table/admin_test/${item.id}/detail`, treeMode: true },
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.trial,
