@@ -45,7 +45,7 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
     const handleAddAnswer = () => {
         let updatedAnswers = [...answers];
         updatedAnswers.push({
-            id: 'uid'+ (1000000 + Math.floor(Math.random() * 1000000)),
+            id: 'uid' + (1000000 + Math.floor(Math.random() * 1000000)),
             content: '',
             content_vn: '',
             status: '0'
@@ -151,6 +151,13 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                         </Col>
                                     )
                                 })}
+
+                                <Col md={12} xs={12}>
+                                    <h2>Lý giải</h2>
+                                    <QuestionAnswerEditor value={item.explaination} updateValue={(value) => {
+                                        item.explaination = value;
+                                    }} />
+                                </Col>
 
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
                                     <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>

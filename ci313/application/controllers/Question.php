@@ -56,4 +56,13 @@ class Question extends CI_Controller
             ->set_content_type('application/json', 'utf-8')
             ->set_output(json_encode($answers));
     }
+
+    public function updateAnswers($questionId) {
+        $this->load->model('question_model');
+        $item = $this->input->post('item');
+        $result = $this->question_model->update_answers($questionId, $item);
+        $this->output->set_status_header(200)
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($result));
+    }
 }
