@@ -24,16 +24,16 @@ interface TestGridEditProps {
 
 const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
 
-    const [answers, setAnswers] = useState<any[]>([]);
+    const [questions, setQuestions] = useState<any[]>([]);
     const router = useRouter();
     useEffect(() => {
-        // load answers of question
-        axios.post(`/questions/answers/${itemId}`, {}, {
+        // load questions of test
+        axios.post(`/tests/questions/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
         }).then((resp: any) => {
-            setAnswers(resp.data);
+            setQuestions(resp.data);
             console.log("Fetched item:", resp.data);
         }).catch((error) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
@@ -42,15 +42,15 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
             }
         });
     }, [item]);
-    const handleAddAnswer = () => {
-        let updatedAnswers = [...answers];
-        updatedAnswers.push({
+    const handleAddQuestion = () => {
+        let updatedQuestions = [...questions];
+        updatedQuestions.push({
             id: 'uid' + (1000000 + Math.floor(Math.random() * 1000000)),
             content: '',
             content_vn: '',
             status: '0'
         });
-        setAnswers(updatedAnswers);
+        setQuestions(updatedQuestions);
     }
 
     return (
@@ -58,7 +58,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
             <Container fluid>
                 {
                     mode === DataGridEditMode.EDIT ? (
-                        <h2 className="text-center">Sửa câp trả lời - ID: {itemId}</h2>
+                        <h2 className="text-center">Sửa câu hỏi cho đề thi - ID: {itemId}</h2>
                     ) : (
                         <h2 className="text-center">{addNewLabel}</h2>
                     )
@@ -69,7 +69,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                     <Col md={12} sm={12}>
                         <Form onSubmit={(event) => {
                             if (mode === DataGridEditMode.EDIT && handleUpdateItem) {
-                                item.answers = answers;
+                                item.questions = questions;
                                 handleUpdateItem(item, fields, event);
                             }
 
@@ -99,65 +99,40 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
 
                                         </Col>
                                         <Col md={6} sm={12}>
-                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_vn.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
                                             </div>
                                         </Col>
                                     </Row>
                                 </Col>
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
-                                    <h2>Đáp án: </h2>
+                                    <h2>Câu hỏi: </h2>
                                     <Button variant="primary" onClick={() => {
-                                        handleAddAnswer();
+                                        handleAddQuestion();
                                     }}>Thêm</Button>
                                 </Col>
-                                {answers.map((answer, index) => {
+                                <Col md={12} xs={12}>
+                                    <h2>Đề bài</h2>
+                                    <QuestionAnswerEditor value={item.content} updateValue={(value) => {
+                                        item.content = value;
+                                    }} />
+                                </Col>
+                                {questions.map((answer, index) => {
                                     return (
-                                        <Col md={6} sm={12} key={answer.id} className="mt-3 mb-3">
-                                            <InputGroup>
-
-                                                <InputGroup.Radio
-                                                    checked={answer.status === '1'}
-                                                    onChange={() => { }}
-                                                    onClick={() => {
-                                                        let updatedAnswers: any[] = [...answers];
-                                                        updatedAnswers.forEach((ans) => {
-                                                            ans.status = '0';
-                                                        })
-                                                        answer.status = '1';
-                                                        setAnswers(updatedAnswers);
-                                                    }}
-                                                />
-                                                <Row className="g-0">
-                                                    <Col md={6} sm={12}>
-                                                        <QuestionAnswerEditor value={answer.content as string} updateValue={(value: string) => {
-                                                            answer.content = value;
-                                                        }} />
-                                                    </Col>
-                                                    <Col md={6} sm={12}>
-                                                        <QuestionAnswerEditor value={answer.content_vn as string} updateValue={(value: string) => {
-                                                            answer.content_vn = value;
-                                                        }} />
-                                                    </Col>
-                                                </Row>
-                                                <Button variant="danger" onClick={() => {
-                                                    let updatedAnswers: any[] = [...answers];
-                                                    updatedAnswers.splice(index, 1);
-                                                    setAnswers(updatedAnswers);
-                                                }}>
-                                                    X
-                                                </Button>
-                                            </InputGroup>
-
+                                        <Col md={12} sm={12} key={answer.id} className="mt-3 mb-3">
+                                            <h5>{index + 1}. Mã câu hỏi #{answer.id} - Số thứ tự: {answer.ordering} - {answer.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'}</h5>
+                                            <Row>
+                                                <Col md={6} sm={12}>
+                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.name }}></div>
+                                                </Col>
+                                                <Col md={6} sm={12}>
+                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.name_vn }}></div>
+                                                </Col>
+                                            </Row>
                                         </Col>
                                     )
                                 })}
 
-                                <Col md={12} xs={12}>
-                                    <h2>Lý giải</h2>
-                                    <QuestionAnswerEditor value={item.explaination} updateValue={(value) => {
-                                        item.explaination = value;
-                                    }} />
-                                </Col>
+                                
 
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
                                     <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>

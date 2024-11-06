@@ -58,7 +58,7 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
             <Container fluid>
                 {
                     mode === DataGridEditMode.EDIT ? (
-                        <h2 className="text-center">Sửa câp trả lời - ID: {itemId}</h2>
+                        <h2 className="text-center">Sửa câu trả lời - ID: {itemId}</h2>
                     ) : (
                         <h2 className="text-center">{addNewLabel}</h2>
                     )
