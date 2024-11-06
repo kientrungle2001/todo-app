@@ -93,14 +93,12 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
 
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
                                     <Row>
-                                        <Col md={6} sm={12}>
-                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
-                                            </div>
-
-                                        </Col>
-                                        <Col md={6} sm={12}>
-                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
-                                            </div>
+                                        <Col sm={12}>
+                                            Tên đề thi:{' '}
+                                            <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            </span>{' '}/{' '}
+                                            <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            </span>
                                         </Col>
                                     </Row>
                                 </Col>
