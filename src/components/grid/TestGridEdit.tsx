@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
@@ -43,14 +43,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
         });
     }, [item]);
     const handleAddQuestion = () => {
-        let updatedQuestions = [...questions];
-        updatedQuestions.push({
-            id: 'uid' + (1000000 + Math.floor(Math.random() * 1000000)),
-            content: '',
-            content_vn: '',
-            status: '0'
-        });
-        setQuestions(updatedQuestions);
+        router.push('/Table/admin_question2/add?backHref=/Table/admin_test/' + item.id + '/detail');
     }
 
     return (
@@ -97,8 +90,8 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                             Tên đề thi:{' '}
                                             <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
                                             </span>{' '}/{' '}
-                                            <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
-                                            </span>
+                                            <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            </em>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -114,23 +107,39 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                         item.content = value;
                                     }} />
                                 </Col>
-                                {questions.map((answer, index) => {
+                                {questions.map((question, index) => {
                                     return (
-                                        <Col md={12} sm={12} key={answer.id} className="mt-3 mb-3">
-                                            <h5>{index + 1}. Mã câu hỏi #{answer.id} - Số thứ tự: {answer.ordering} - {answer.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'}</h5>
+                                        <Col md={12} sm={12} key={question.id} className="mt-3 mb-3">
+                                            <h5>{index + 1}. Mã câu hỏi #{question.id} - Số thứ tự: {question.ordering} - {question.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'} <Button variant="primary"
+                                                href={"/Table/admin_question2/" + question.id + '/edit?backHref='
+                                                    + "/Table/admin_test/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
                                             <Row>
                                                 <Col md={6} sm={12}>
-                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.name }}></div>
+                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name }}></div>
                                                 </Col>
                                                 <Col md={6} sm={12}>
-                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.name_vn }}></div>
+                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name_vn }}></div>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col md={12} sm={12}>
+                                                    <h6>Đáp án</h6>
+                                                    <blockquote className="ps-3">
+                                                        <Row>
+                                                            {question.answers.map((answer: any) => {
+                                                                return (
+                                                                    <Col md={3} sm={12} key={answer.id}>
+                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
+                                                                    </Col>
+                                                                )
+                                                            })}
+                                                        </Row>
+                                                    </blockquote>
                                                 </Col>
                                             </Row>
                                         </Col>
                                     )
                                 })}
-
-                                
 
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
                                     <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>

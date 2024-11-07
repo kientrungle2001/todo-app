@@ -56,7 +56,11 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
             }
         }).then(() => {
             setItem(updatedItem);
-            router.push(`/Table/${controller}`);
+            if (router.query.backHref) {
+                router.push(router.query.backHref as string);
+            } else {
+                router.push(`/Table/${controller}`);
+            }
         }).catch((error) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
@@ -69,7 +73,11 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
     }
 
     const handleCancelEdit = (): void => {
-        router.push(`/Table/${controller}`);
+        if (router.query.backHref) {
+            router.push(router.query.backHref as string);
+        } else {
+            router.push(`/Table/${controller}`);
+        }
     }
 
     // make bootstrap edit form here
