@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Button, Modal, ListGroup, Form, InputGroup, Breadcrumb, Row, Col, Card } from 'react-bootstrap';
-import axios from '@/api/axiosInstance';
+import { Button, Modal, Form, InputGroup, Breadcrumb, Row, Col, Card } from 'react-bootstrap';
+import axios from '@/api/mediaAxiosInstance';
 import { storage } from '@/api/storage';
 import { useRouter } from 'next/router';
 
@@ -216,7 +216,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                         >
                             {/** create card */}
                             <Card style={{ cursor: 'pointer', width: '100%', height: "250px", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
-                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`http://localhost:3002/3rdparty${currentFolder}${file}`} />}
+                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`/3rdparty${currentFolder}${file}`} />}
                                 <Card.Body>
                                     <span>{file.replace('/', '')}</span>
                                 </Card.Body>

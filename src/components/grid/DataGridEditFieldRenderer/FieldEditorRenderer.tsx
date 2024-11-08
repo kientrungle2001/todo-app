@@ -8,7 +8,7 @@ export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem
     const editorRef = useRef<any>(null); // Initialize the editorRef
     const handleImageInsert = (imagePath: string) => {
         if (editorRef.current) {
-            editorRef.current.insertContent(`<img src="http://localhost:3002${imagePath}" alt="Selected Image"/>`);
+            editorRef.current.insertContent(`<img src="${imagePath}" alt="Selected Image"/>`);
         }
         setSelectedImage(imagePath); // Save selected image path
     };
@@ -48,7 +48,9 @@ export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem
                         anchor: '/tinymce/plugins/anchor/plugin.min.js',
                     },
                     promotion: false,
-                    statusbar: false
+                    statusbar: false,
+                    convert_urls: true,
+                    relative_urls: false, // Ensures URLs are absolute
                 }}
                 onBlur={(event) => {
                     let updatedItem = { ...item };
