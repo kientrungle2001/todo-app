@@ -14,7 +14,6 @@
     "@tinymce/tinymce-react": "^5.1.1",
     "axios": "^1.7.5",
     "bootstrap": "^5.3.3",
-    "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "jose": "^5.8.0",
     "jquery": "^3.7.1",
