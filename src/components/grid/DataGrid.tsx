@@ -24,6 +24,8 @@ export enum DataGridColumnType {
     CURRENCY = "currency",
     STATUS = "status",
     WORKFLOW = "workflow",
+    REFERENCE = "reference",
+    GROUP = "group",
     ACTIONS = "actions"
 }
 
@@ -35,7 +37,6 @@ export enum DataGridFilterColumnType {
     SELECT = "select",
     CHECKBOX = "checkbox",
     STATUS = "status",
-    GROUP = "group",
 }
 
 export enum DataGridColumnActionType {
@@ -58,7 +59,7 @@ export interface DataGridWorkflowState {
 
 export interface DataGridWorkflowAction {
     label: string;
-    state: string | number; // new state to transition to
+    newState: string | number; // new state to transition to
 }
 
 export interface DataGridColumn {
