@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { EventHandler, SyntheticEvent, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { ImageSelector } from "@/components/media/ImageSelector";
 import { DataGridEditField } from "../DataGridEditTypes";
+import { event } from "jquery";
 
 export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     const [selectedImage, setSelectedImage] = useState<string>("");
@@ -52,10 +53,13 @@ export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem
                     convert_urls: true,
                     relative_urls: false, // Ensures URLs are absolute
                 }}
-                onBlur={(event) => {
-                    let updatedItem = { ...item };
-                    updatedItem[field.index] = event.target.getContent() as string;
-                    setItem(updatedItem);
+                // onBlur={(event) => {
+                //     let updatedItem = { ...item };
+                //     updatedItem[field.index] = event.target.getContent() as string;
+                //     setItem(updatedItem);
+                // }}
+                onEditorChange={(value: string) => {
+                    item[field.index] = value;
                 }}
             />
             <div className="mt-2 mb-3">

@@ -6,9 +6,7 @@ export const FieldImageRenderer = (field: DataGridEditField, item: any, setItem:
         <ImageSelector
             selectedImage={item[field.index]}
             setSelectedImage={(imageUrl: string) => {
-                let updatedItem = { ...item };
-                updatedItem[field.index] = imageUrl;
-                setItem(updatedItem);
+                item[field.index] = imageUrl;
             }}
         />
     );
