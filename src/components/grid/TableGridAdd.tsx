@@ -13,7 +13,14 @@ interface TableGridProps {
 
 export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings }): React.ReactElement => {
     const router = useRouter();
-    const [item, setItem] = React.useState<any>({});
+    const queryItem: any = {};
+    settings.addFields.forEach((field: DataGridEditField) => {
+        if (typeof router.query['field_' + field.index] !== 'undefined') {
+            queryItem[field.index] = router.query['field_' + field.index];
+        }
+    });
+
+    const [item, setItem] = React.useState<any>(queryItem);
 
     if (!item) {
         return <>

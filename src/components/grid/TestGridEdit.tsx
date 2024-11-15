@@ -43,7 +43,11 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
         });
     }, [item]);
     const handleAddQuestion = () => {
-        router.push('/Table/admin_question2/add?backHref=/Table/admin_test/' + item.id + '/detail');
+        router.push('/Table/admin_question2/add?backHref=/Table/admin_test/' + item.id + '/detail'
+            + '&field_testId=' + item.id 
+            + '&field_questionType=1'
+            + '&field_categoryIds=' + item.categoryIds
+        );
     }
 
     return (
@@ -130,6 +134,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                                                 return (
                                                                     <Col md={3} sm={12} key={answer.id}>
                                                                         <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
+                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content_vn }}></div>
                                                                     </Col>
                                                                 )
                                                             })}
