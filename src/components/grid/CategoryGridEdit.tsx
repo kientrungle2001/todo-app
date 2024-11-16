@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Tab, Tabs } from "react-bootstrap";
 import axios from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
@@ -43,9 +43,16 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
     }, [item]);
     const handleAddQuestion = () => {
         router.push('/Table/admin_question2/add?backHref=/Table/admin_category/' + item.id + '/detail'
-            + '&field_categoryIds=' + item.parents 
+            + '&field_categoryIds=' + item.parents
             + '&field_status=1'
             + '&field_questionType=1'
+        );
+    }
+
+    const handleAddTest = () => {
+        router.push('/Table/admin_test/add?backHref=/Table/admin_category/' + item.id + '/detail'
+            + '&field_categoryIds=' + item.parents
+            + '&field_status=1'
         );
     }
 
@@ -75,7 +82,6 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
                         }}>
                             <Row>
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
-                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                                     <Button variant="outline-secondary" onClick={() => {
                                         if (mode === DataGridEditMode.ADD && handleCancelAdd) {
                                             handleCancelAdd();
@@ -84,7 +90,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
                                         if (mode === DataGridEditMode.EDIT && handleCancelEdit) {
                                             handleCancelEdit();
                                         }
-                                    }}>Hủy bỏ</Button>
+                                    }}>Quay lại</Button>
                                 </Col>
 
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
@@ -99,48 +105,100 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
                                     </Row>
                                 </Col>
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
-                                    <h2>Câu hỏi: </h2>
-                                    <Button variant="primary" onClick={() => {
-                                        handleAddQuestion();
-                                    }}>Thêm</Button>
+                                    <Tabs>
+                                        <Tab title="Câu hỏi" eventKey="questions">
+                                            <Row>
+                                                <Col sm={12} className="p-3">
+                                                    <Button variant="primary" onClick={() => {
+                                                        handleAddQuestion();
+                                                    }}>+ Thêm Câu hỏi</Button>
+                                                </Col>
+                                                {questions.map((question, index) => {
+                                                    return (
+                                                        <Col md={12} sm={12} key={question.id} className="mt-3 mb-3">
+                                                            <h5>{index + 1}. Mã câu hỏi #{question.id} - Số thứ tự: {question.ordering} - {question.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'} <Button variant="primary"
+                                                                href={"/Table/admin_question2/" + question.id + '/edit?backHref='
+                                                                    + "/Table/admin_category/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
+                                                            <Row>
+                                                                <Col md={6} sm={12}>
+                                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name }}></div>
+                                                                </Col>
+                                                                <Col md={6} sm={12}>
+                                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name_vn }}></div>
+                                                                </Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col md={12} sm={12}>
+                                                                    <h6>Đáp án</h6>
+                                                                    <blockquote className="ps-3">
+                                                                        <Row>
+                                                                            {question.answers.map((answer: any) => {
+                                                                                return (
+                                                                                    <Col md={3} sm={12} key={answer.id}>
+                                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
+                                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content_vn }}></div>
+                                                                                    </Col>
+                                                                                )
+                                                                            })}
+                                                                        </Row>
+                                                                    </blockquote>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>
+                                                    )
+                                                })}
+                                                {!questions.length && <Col sm={12} className="p-3">Không có câu hỏi</Col>}
+                                            </Row>
+                                        </Tab>
+                                        <Tab title="Đề thi" eventKey="tests">
+                                            <Row>
+                                                <Col sm={12} className="p-3">
+                                                    <Button variant="primary" onClick={() => {
+                                                        handleAddTest();
+                                                    }}>+ Thêm Đề Thi</Button>
+                                                </Col>
+                                                {questions.map((question, index) => {
+                                                    return (
+                                                        <Col md={12} sm={12} key={question.id} className="mt-3 mb-3">
+                                                            <h5>{index + 1}. Mã câu hỏi #{question.id} - Số thứ tự: {question.ordering} - {question.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'} <Button variant="primary"
+                                                                href={"/Table/admin_question2/" + question.id + '/edit?backHref='
+                                                                    + "/Table/admin_category/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
+                                                            <Row>
+                                                                <Col md={6} sm={12}>
+                                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name }}></div>
+                                                                </Col>
+                                                                <Col md={6} sm={12}>
+                                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name_vn }}></div>
+                                                                </Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col md={12} sm={12}>
+                                                                    <h6>Đáp án</h6>
+                                                                    <blockquote className="ps-3">
+                                                                        <Row>
+                                                                            {question.answers.map((answer: any) => {
+                                                                                return (
+                                                                                    <Col md={3} sm={12} key={answer.id}>
+                                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
+                                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content_vn }}></div>
+                                                                                    </Col>
+                                                                                )
+                                                                            })}
+                                                                        </Row>
+                                                                    </blockquote>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>
+                                                    )
+                                                })}
+                                                {!questions.length && <Col sm={12} className="p-3">Không có câu hỏi</Col>}
+                                            </Row>
+                                        </Tab>
+                                    </Tabs>
                                 </Col>
-                                {questions.map((question, index) => {
-                                    return (
-                                        <Col md={12} sm={12} key={question.id} className="mt-3 mb-3">
-                                            <h5>{index + 1}. Mã câu hỏi #{question.id} - Số thứ tự: {question.ordering} - {question.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'} <Button variant="primary"
-                                                href={"/Table/admin_question2/" + question.id + '/edit?backHref='
-                                                    + "/Table/admin_category/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
-                                            <Row>
-                                                <Col md={6} sm={12}>
-                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name }}></div>
-                                                </Col>
-                                                <Col md={6} sm={12}>
-                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name_vn }}></div>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col md={12} sm={12}>
-                                                    <h6>Đáp án</h6>
-                                                    <blockquote className="ps-3">
-                                                        <Row>
-                                                            {question.answers.map((answer: any) => {
-                                                                return (
-                                                                    <Col md={3} sm={12} key={answer.id}>
-                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
-                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content_vn }}></div>
-                                                                    </Col>
-                                                                )
-                                                            })}
-                                                        </Row>
-                                                    </blockquote>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    )
-                                })}
+
 
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
-                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                                     <Button variant="outline-secondary" onClick={() => {
                                         if (mode === DataGridEditMode.ADD && handleCancelAdd) {
                                             handleCancelAdd();
@@ -149,7 +207,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
                                         if (mode === DataGridEditMode.EDIT && handleCancelEdit) {
                                             handleCancelEdit();
                                         }
-                                    }}>Hủy bỏ</Button>
+                                    }}>Quay lại</Button>
                                 </Col>
                             </Row>
                         </Form>
