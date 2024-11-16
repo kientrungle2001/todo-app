@@ -14,25 +14,33 @@ const gridFields: string[] = ["id", "name", "name_vn", "ordering", "status", "tr
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
+    
     {
-        index: "name", label: "Nội dung",
-        linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
-        isHtml: true
+        index: "cattest", label: "Câu hỏi",
+        type: DataGridColumnType.GROUP,
+        groupChildren: [
+            {
+                index: "categoryIds",
+                label: "Danh mục",
+                type: DataGridColumnType.REFERENCE,
+                referenceTable: "categories",
+                referenceField: "name"
+            },
+            {
+                index: "testId",
+                label: "Đề thi",
+                type: DataGridColumnType.REFERENCE,
+                referenceTable: "tests",
+                referenceField: "name"
+            },
+            {
+                index: "name", label: "Nội dung",
+                linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
+                isHtml: true
+            },
+        ]
     },
-    {
-        index: "categoryIds",
-        label: "Danh mục",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "categories",
-        referenceField: "name"
-    },
-    {
-        index: "testId",
-        label: "Đề thi",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "tests",
-        referenceField: "name"
-    },
+
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.trial,

@@ -5,7 +5,7 @@ export const ColumnReferenceRenderer = (column: DataGridColumn, item: any, table
     return <>
         {items.map((refItem: any, index: number) => {
             return <em key={index}>
-                {index !== 0 && ' / '}
+                {index !== 0 && <br />}
                 #{refItem.id} {refItem.label}
             </em>
         })}

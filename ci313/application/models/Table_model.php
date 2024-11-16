@@ -40,14 +40,22 @@ class Table_model extends CI_Model
 
         $query = $this->build_query($settingsObj, $search, $filterData, $sorts, $pageSize, $offset);
         $totalCountQuery = $this->build_total_count_query($settingsObj, $search, $filterData);
-        
+
         $total = $this->db->query($totalCountQuery['sql'], $totalCountQuery['params'])->row()->total;
         $items = $this->db->query($query['sql'], $query['params'])->result_array();
-        foreach($settingsObj->columns as $column) {
+        foreach ($settingsObj->columns as $column) {
             if ($column->type === 'reference') {
-                foreach($items as &$item)
-                {
+                foreach ($items as &$item) {
                     $item[$column->index] = $this->getItemReferenceValues($column, $item[$column->index]);
+                }
+            } elseif ($column->type === 'group') {
+                foreach($column->groupChildren as $childColumn)
+                {
+                    if ($childColumn->type === 'reference') {
+                        foreach ($items as &$item) {
+                            $item[$childColumn->index] = $this->getItemReferenceValues($childColumn, $item[$childColumn->index]);
+                        }
+                    }
                 }
             }
         }
@@ -58,7 +66,8 @@ class Table_model extends CI_Model
         ];
     }
 
-    protected function getItemReferenceValues(DataGridColumn $column, $value) {
+    protected function getItemReferenceValues(DataGridColumn $column, $value)
+    {
         $query = "SELECT id, {$column->referenceField} as label FROM {$column->referenceTable} WHERE FIND_IN_SET(id, ?)";
         return $this->db->query($query, [$value])->result_array();
     }

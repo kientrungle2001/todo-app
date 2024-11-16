@@ -8,6 +8,7 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
             1: 'Đã kích hoạt'
         },
         statusToggable: true,
+        hideLabel: true,
         width: "10%"
     },
     trial: {

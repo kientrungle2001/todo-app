@@ -19,6 +19,10 @@ class DataGridColumn {
     public $map;
     public $referenceTable;
     public $referenceField;
+    /**
+     * @var DataGridColumn[]
+     */
+    public $groupChildren;
 }
 
 class DataGridFilterColumn {

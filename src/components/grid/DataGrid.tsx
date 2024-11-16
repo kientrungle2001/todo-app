@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import axios from "@/api/axiosInstance";
 import { ButtonVariant } from "react-bootstrap/esm/types";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { format } from "date-fns";
 import { storage } from "@/api/storage";
@@ -305,6 +305,16 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         return '-';
     }
 
+    const ColumnGroupRenderer = (column: DataGridColumn, item: any, table: string,
+        inputableMap: any, setInputableMap: (inputableMap: any) => void,
+        onAfterChangeStatus: (column: DataGridColumn, item: any) => void) => {
+        return column.groupChildren?.map((childColumn: DataGridColumn, index) => {
+            return <React.Fragment key={index}>
+                {index > 0 && <br />} <strong>{childColumn.label}: </strong> {renderColumn(childColumn, item)}
+            </React.Fragment>
+        });
+    };
+
     const getColumnRenderer = (columnType: DataGridColumnType) => {
         switch (columnType) {
             case DataGridColumnType.TEXT:
@@ -319,6 +329,8 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 return ColumnDateRenderer;
             case DataGridColumnType.REFERENCE:
                 return ColumnReferenceRenderer;
+            case DataGridColumnType.GROUP:
+                return ColumnGroupRenderer;
             case DataGridColumnType.STATUS:
                 return ColumnStatusRenderer;
             case DataGridColumnType.ACTIONS:
