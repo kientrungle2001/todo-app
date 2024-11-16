@@ -11,7 +11,9 @@ export const FieldStatusRenderer = (field: DataGridEditField, item: any, setItem
     if (field.statusToggable) {
         return (
             <Form.Check type="switch" checked={item[field.index] === 1} onChange={(event) => {
-                item[field.index] = item[field.index] === 1 ? 0 : 1;
+                let updatedItem: any = { ...item };
+                updatedItem[field.index] = updatedItem[field.index] === 1 ? 0 : 1;
+                setItem(updatedItem);
             }} label={getStatusLabel(item[field.index] ?? 0)} />
         );
     }

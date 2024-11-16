@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TableGridSettings } from "./TableGrid";
 import axios from "@/api/axiosInstance";
 import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
-import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
+import { DataGridEditField, DataGridEditFieldType, DataGridEditMode } from "./DataGridEditTypes";
 
 interface TableGridProps {
     controller: string;
@@ -13,14 +13,25 @@ interface TableGridProps {
 
 export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings }): React.ReactElement => {
     const router = useRouter();
-    const queryItem: any = {};
-    settings.addFields.forEach((field: DataGridEditField) => {
-        if (typeof router.query['field_' + field.index] !== 'undefined') {
-            queryItem[field.index] = router.query['field_' + field.index];
-        }
-    });
 
-    const [item, setItem] = React.useState<any>(queryItem);
+
+    const [item, setItem] = React.useState<any>({});
+
+    useEffect(() => {
+        const queryItem: any = {};
+        settings.addFields.forEach((field: DataGridEditField) => {
+            if (typeof router.query['field_' + field.index] !== 'undefined') {
+                if (field.type === DataGridEditFieldType.STATUS) {
+                    queryItem[field.index] = parseInt(router.query['field_' + field.index] as string);
+                } else {
+                    queryItem[field.index] = router.query['field_' + field.index];
+                }
+                
+            }
+        });
+        setItem({...queryItem});
+        console.log('queryItem', queryItem);
+    }, []);
 
     if (!item) {
         return <>

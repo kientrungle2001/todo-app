@@ -46,6 +46,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
         router.push('/Table/admin_question2/add?backHref=/Table/admin_test/' + item.id + '/detail'
             + '&field_testId=' + item.id 
             + '&field_questionType=1'
+            + '&field_status=1'
             + '&field_categoryIds=' + item.categoryIds
         );
     }
