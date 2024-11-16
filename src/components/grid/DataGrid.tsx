@@ -15,6 +15,7 @@ import { ColumnImageRenderer } from "./DataGridColumnRenderer/ColumnImageRendere
 import { ColumnCurrencyRenderer } from "./DataGridColumnRenderer/ColumnCurrencyRenderer";
 import { ColumnDateRenderer } from "./DataGridColumnRenderer/ColumnDateRenderer";
 import { ColumnStatusRenderer } from "./DataGridColumnRenderer/ColumnStatusRenderer";
+import { ColumnReferenceRenderer } from "./DataGridColumnRenderer/ColumnReferenceRenderer";
 
 export enum DataGridColumnType {
     TEXT = "text",
@@ -83,6 +84,8 @@ export interface DataGridColumn {
     isHtml?: boolean;
     groupSeparator?: string;
     groupChildren?: DataGridColumn[];
+    referenceTable?: string;
+    referenceField?: string;
 }
 
 export interface DataGridFilterColumn {
@@ -314,6 +317,8 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 return ColumnCurrencyRenderer;
             case DataGridColumnType.DATE:
                 return ColumnDateRenderer;
+            case DataGridColumnType.REFERENCE:
+                return ColumnReferenceRenderer;
             case DataGridColumnType.STATUS:
                 return ColumnStatusRenderer;
             case DataGridColumnType.ACTIONS:

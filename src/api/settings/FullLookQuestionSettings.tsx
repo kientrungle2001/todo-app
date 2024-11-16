@@ -10,11 +10,29 @@ const gridDeleteSelectedsLabel: string = "Xóa Câu hỏi đã chọn";
 const gridTable: string = "questions";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name", "name_vn"];
-const gridFields: string[] = ["id", "name", "name_vn", "ordering", "status", "trial"];
+const gridFields: string[] = ["id", "name", "name_vn", "ordering", "status", "trial", "categoryIds", "testId"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "name", label: "Nội dung", linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`, isHtml: true },
+    {
+        index: "name", label: "Nội dung",
+        linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
+        isHtml: true
+    },
+    {
+        index: "categoryIds",
+        label: "Danh mục",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "categories",
+        referenceField: "name"
+    },
+    {
+        index: "testId",
+        label: "Đề thi",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "tests",
+        referenceField: "name"
+    },
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.trial,

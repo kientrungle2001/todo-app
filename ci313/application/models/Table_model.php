@@ -43,11 +43,24 @@ class Table_model extends CI_Model
         
         $total = $this->db->query($totalCountQuery['sql'], $totalCountQuery['params'])->row()->total;
         $items = $this->db->query($query['sql'], $query['params'])->result_array();
+        foreach($settingsObj->columns as $column) {
+            if ($column->type === 'reference') {
+                foreach($items as &$item)
+                {
+                    $item[$column->index] = $this->getItemReferenceValues($column, $item[$column->index]);
+                }
+            }
+        }
 
         return [
             'items' => $this->casting_numeric_fields($items),
             'totalItems' => intval($total)
         ];
+    }
+
+    protected function getItemReferenceValues(DataGridColumn $column, $value) {
+        $query = "SELECT id, {$column->referenceField} as label FROM {$column->referenceTable} WHERE FIND_IN_SET(id, ?)";
+        return $this->db->query($query, [$value])->result_array();
     }
 
     public function map($table, $fields, $condition = '', $orderBy = '')
@@ -146,7 +159,7 @@ class Table_model extends CI_Model
     {
         foreach ($items as &$item) {
             foreach ($item as $key => $value) {
-                if (strlen($value) < 8 && is_numeric($value)) {
+                if (is_string($value) && strlen($value) < 8 && is_numeric($value)) {
                     $item[$key] = floatval($value);
                 }
             }

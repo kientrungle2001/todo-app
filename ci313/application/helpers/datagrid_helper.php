@@ -17,6 +17,8 @@ class DataGridColumn {
     public $actionType;
     public $width;
     public $map;
+    public $referenceTable;
+    public $referenceField;
 }
 
 class DataGridFilterColumn {
