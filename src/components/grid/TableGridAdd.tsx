@@ -30,7 +30,6 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
             }
         });
         setItem({...queryItem});
-        console.log('queryItem', queryItem);
     }, []);
 
     if (!item) {
