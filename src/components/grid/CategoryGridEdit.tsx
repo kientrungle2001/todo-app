@@ -5,9 +5,8 @@ import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
-import { QuestionAnswerEditor } from "./QuestionAnswerEditor";
 
-interface TestGridEditProps {
+interface CategoryGridEditProps {
     mode: DataGridEditMode,
     table: string;
     itemId?: number;
@@ -22,13 +21,13 @@ interface TestGridEditProps {
     handleCancelAdd?: () => void;
 }
 
-const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
+const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
 
     const [questions, setQuestions] = useState<any[]>([]);
     const router = useRouter();
     useEffect(() => {
         // load questions of test
-        axios.post(`/tests/questions/${itemId}`, {}, {
+        axios.post(`/categories/questions/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
@@ -43,10 +42,9 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
         });
     }, [item]);
     const handleAddQuestion = () => {
-        router.push('/Table/admin_question2/add?backHref=/Table/admin_test/' + item.id + '/detail'
-            + '&field_testId=' + item.id 
+        router.push('/Table/admin_question2/add?backHref=/Table/admin_category/' + item.id + '/detail'
+            + '&field_categoryIds=' + item.parents 
             + '&field_questionType=1'
-            + '&field_categoryIds=' + item.categoryIds
         );
     }
 
@@ -55,7 +53,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
             <Container fluid>
                 {
                     mode === DataGridEditMode.EDIT ? (
-                        <h2 className="text-center">Danh sách câu hỏi của đề thi - ID: {itemId}</h2>
+                        <h2 className="text-center">Danh sách câu hỏi của danh mục - ID: {itemId}</h2>
                     ) : (
                         <h2 className="text-center">{addNewLabel}</h2>
                     )
@@ -91,7 +89,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
                                     <Row>
                                         <Col sm={12}>
-                                            Tên đề thi:{' '}
+                                            Tên danh mục:{' '}
                                             <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
                                             </span>{' '}/{' '}
                                             <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
@@ -105,18 +103,12 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                         handleAddQuestion();
                                     }}>Thêm</Button>
                                 </Col>
-                                <Col md={12} xs={12}>
-                                    <h2>Đề bài</h2>
-                                    <QuestionAnswerEditor value={item.content} updateValue={(value) => {
-                                        item.content = value;
-                                    }} />
-                                </Col>
                                 {questions.map((question, index) => {
                                     return (
                                         <Col md={12} sm={12} key={question.id} className="mt-3 mb-3">
                                             <h5>{index + 1}. Mã câu hỏi #{question.id} - Số thứ tự: {question.ordering} - {question.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'} <Button variant="primary"
                                                 href={"/Table/admin_question2/" + question.id + '/edit?backHref='
-                                                    + "/Table/admin_test/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
+                                                    + "/Table/admin_category/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
                                             <Row>
                                                 <Col md={6} sm={12}>
                                                     <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name }}></div>
@@ -167,4 +159,4 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
         </>
     );
 };
-export default TestGridEdit;
+export default CategoryGridEdit;

@@ -11,7 +11,7 @@ const gridFields: string[] = ["id", "name", "name_en", "name_vn", "alias", "rout
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "name", label: "Tên Danh mục", linkFormat: (value: any, item: any) => `/Table/admin_category/${item.id}/edit`, treeMode: true },
+    { index: "name", label: "Tên Danh mục", linkFormat: (value: any, item: any) => `/Table/admin_category/${item.id}/detail`, treeMode: true },
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true, treeMode: true },
     DataGridColumns.status,
     {
