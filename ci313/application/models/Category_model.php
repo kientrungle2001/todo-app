@@ -8,8 +8,13 @@ class category_model extends CI_Model {
         $questionIds = array_map(function($question) {
             return $question['id'];
         }, $questions);
-        $answers = $this->db->where_in('question_id', $questionIds)
+        if (count($questionIds)) {
+            $answers = $this->db->where_in('question_id', $questionIds)
             ->get('answers_question_tn')->result_array();
+        } else {
+            $answers = [];
+        }
+        
         foreach($questions as &$question) {
             $question['answers'] = array();
             foreach($answers as $answer) {
@@ -19,5 +24,12 @@ class category_model extends CI_Model {
             }
         }
         return $questions;
+    }
+
+    public function get_tests($categoryId) {
+        $this->load->database();
+        $tests = $this->db->query("SELECT * FROM tests WHERE FIND_IN_SET(?, categoryIds) ORDER BY ordering asc", [$categoryId])
+        ->result_array();
+        return $tests;
     }
 }

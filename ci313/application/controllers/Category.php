@@ -57,4 +57,14 @@ class Category extends CI_Controller
             ->set_output(json_encode($questions));
 
     }
+
+    public function tests($categoryId)
+    {
+        $this->load->model('category_model');
+        $questions = $this->category_model->get_tests($categoryId);
+        $this->output->set_status_header(200)
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($questions));
+
+    }
 }

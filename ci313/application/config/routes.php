@@ -70,3 +70,4 @@ $route['api/questions/answers/(:num)'] = 'question/answers/$1';
 $route['api/questions/updateAnswers/(:num)'] = 'question/updateAnswers/$1';
 $route['api/tests/questions/(:num)'] = 'test/questions/$1';
 $route['api/categories/questions/(:num)'] = 'category/questions/$1';
+$route['api/categories/tests/(:num)'] = 'category/tests/$1';
