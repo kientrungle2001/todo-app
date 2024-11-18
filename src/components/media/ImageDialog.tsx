@@ -137,7 +137,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
         }
     };
 
-    
+
 
     // Handle renaming a file or directory
     const handleRename = async (oldName: string, newName: string) => {
@@ -174,7 +174,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             } else {
                 fetchDirectoryContents('/');
             }
-            
+
         }
     }, [show, selectedImage]);
 
@@ -212,10 +212,10 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                         <Col md={2}
                             key={index}
                             onClick={() => handleItemClick(file)}
-                            className="mt-2"
+                            className="mt-2 equal-height-col"
                         >
                             {/** create card */}
-                            <Card style={{ cursor: 'pointer', width: '100%', height: "250px", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
+                            <Card style={{ cursor: 'pointer', width: '100%', height: "100%", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
                                 {file.endsWith('/') ? '' : <Card.Img variant="top" src={`/3rdparty${currentFolder}${file}`} />}
                                 <Card.Body>
                                     <span>{file.replace('/', '')}</span>
