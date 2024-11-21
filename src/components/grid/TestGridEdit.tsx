@@ -121,10 +121,10 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                                     + "/Table/admin_test/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
                                             <Row>
                                                 <Col md={6} sm={12}>
-                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name }}></div>
+                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name) }}></div>
                                                 </Col>
                                                 <Col md={6} sm={12}>
-                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: question.name_vn }}></div>
+                                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name_vn) }}></div>
                                                 </Col>
                                             </Row>
                                             <Row>
@@ -135,8 +135,8 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                                             {question.answers.map((answer: any) => {
                                                                 return (
                                                                     <Col md={3} sm={12} key={answer.id}>
-                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
-                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: answer.content_vn }}></div>
+                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content) }}></div>
+                                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content_vn) }}></div>
                                                                     </Col>
                                                                 )
                                                             })}
