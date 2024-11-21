@@ -3,6 +3,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { ImageSelector } from "@/components/media/ImageSelector";
 import { DataGridEditField } from "../DataGridEditTypes";
 import { event } from "jquery";
+import { replaceMediaUrl } from "@/api/defaultSettings";
 
 export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     const [selectedImage, setSelectedImage] = useState<string>("");
@@ -17,7 +18,7 @@ export const FieldEditorRenderer = (field: DataGridEditField, item: any, setItem
         <>
             <Editor
                 tinymceScriptSrc="/tinymce/tinymce.min.js"
-                initialValue={item[field.index]}
+                initialValue={replaceMediaUrl(item[field.index])}
                 onInit={(evt, editor) => (editorRef.current = editor)} // Store the editor instance in the ref
                 init={{
                     height: 400,
