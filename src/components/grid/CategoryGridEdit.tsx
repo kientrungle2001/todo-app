@@ -5,6 +5,7 @@ import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
+import { replaceMediaUrl } from "@/api/defaultSettings";
 
 interface CategoryGridEditProps {
     mode: DataGridEditMode,
@@ -111,9 +112,9 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
                                     <Row>
                                         <Col sm={12}>
                                             Tên danh mục:{' '}
-                                            <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name) }}>
                                             </span>{' '}/{' '}
-                                            <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_en) }}>
                                             </em>
                                         </Col>
                                     </Row>

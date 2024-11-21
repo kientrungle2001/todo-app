@@ -6,6 +6,7 @@ import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
 import { QuestionAnswerEditor } from "./QuestionAnswerEditor";
+import { replaceMediaUrl } from "@/api/defaultSettings";
 
 interface QuestionAnswerGridEditProps {
     mode: DataGridEditMode,
@@ -94,12 +95,12 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
                                     <Row>
                                         <Col md={6} sm={12}>
-                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name) }}>
                                             </div>
 
                                         </Col>
                                         <Col md={6} sm={12}>
-                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_vn.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_vn) }}>
                                             </div>
                                         </Col>
                                     </Row>

@@ -8,6 +8,7 @@ import { FullLookAdminMenuSettings } from '@/api/settings/FullLookMenuSettings';
 import { DataGridPagination, DataGridSort, DataGridSortDirection } from '@/components/grid/DataGrid';
 import Link from 'next/link';
 import { TopMenuGrid } from '@/components/grid/TopMenuGrid';
+import { replaceMediaUrl } from '@/api/defaultSettings';
 
 const Index = () => {
     const settings = FullLookAdminMenuSettings;
@@ -59,7 +60,7 @@ const Index = () => {
                                 <Card>
                                     <Card.Body>
                                         <Link href={"/Table/" + item.admin_controller}>
-                                            <Card.Img variant="top" src={'https://stg.media.nextnobels.com' + item.thumbnail} />
+                                            <Card.Img variant="top" src={replaceMediaUrl(item.thumbnail)} />
                                         </Link>
                                     </Card.Body>
                                     <Card.Footer>

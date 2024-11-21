@@ -1,12 +1,14 @@
 // src/api/axiosInstance.ts
 import axios from 'axios';
+import { getDefaultConfigs } from './defaultSettings';
 
+let configs = getDefaultConfigs();
 const instance = axios.create({
-  baseURL: 'http://localhost:3002/api', // Change to your backend API URL
+  baseURL: configs.apiEndpoint, // Change to your backend API URL
   headers: {
     common: {
-      'x-api-software': 1,
-      'x-api-site': 1
+      'x-api-software': configs.software,
+      'x-api-site': configs.site
     }
   }
 });

@@ -6,6 +6,7 @@ import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
 import { QuestionAnswerEditor } from "./QuestionAnswerEditor";
+import { replaceMediaUrl } from "@/api/defaultSettings";
 
 interface TestGridEditProps {
     mode: DataGridEditMode,
@@ -93,9 +94,9 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
                                     <Row>
                                         <Col sm={12}>
                                             Tên đề thi:{' '}
-                                            <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name) }}>
                                             </span>{' '}/{' '}
-                                            <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: item.name_en.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com') }}>
+                                            <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_en) }}>
                                             </em>
                                         </Col>
                                     </Row>

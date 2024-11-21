@@ -1,5 +1,6 @@
 import { Form } from "react-bootstrap";
 import { DataGridColumn } from "../DataGrid";
+import { replaceMediaUrl } from "@/api/defaultSettings";
 
 export const ColumnTextRenderer = (column: DataGridColumn, item: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void) => {
     if (column.inputable) {
@@ -17,7 +18,8 @@ export const ColumnTextRenderer = (column: DataGridColumn, item: any, table: str
     }
     if (column.isHtml) {
         let content = column.customFormat ? column.customFormat(item[column.index], item, table) : item[column.index] ?? '';
-        content = content.replaceAll('http://s1.nextnobels.com', 'https://stg.media.nextnobels.com').replaceAll('http://fulllooksongngu.com', 'https://stg.media.nextnobels.com');
+        content = replaceMediaUrl(content);
+        
         return <>
             <div dangerouslySetInnerHTML={{ __html: content }} />
         </>;
