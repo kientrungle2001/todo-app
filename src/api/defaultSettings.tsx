@@ -10,6 +10,7 @@ export const defaultConfigs: any = configs;
 export const getDefaultConfigs = () => defaultConfigs;
 
 export const replaceMediaUrl = (content: string) => {
+    if (!content) return '';
     return content.replaceAll('http://s1.nextnobels.com', '')
         .replaceAll('http://nextnobels.com', '')
         .replaceAll('http://www.fulllooksongngu.com', '');
