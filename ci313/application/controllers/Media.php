@@ -36,12 +36,12 @@ class Media extends CI_Controller
         }
         try {
             $tokenInfo = JWT::decode($token, 'your-secret-key', array('HS256'));
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $tokenInfo = null;
             $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')))->_display();
             die;
         }
-        
+
         if (!$tokenInfo) {
             $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')))->_display();
             die;
@@ -85,8 +85,27 @@ class Media extends CI_Controller
                 ->set_output(json_encode($error));
         } else {
             $data = array('upload_data' => $this->upload->data());
+            $this->create_thumbs($data);
             $this->output->set_content_type('application/json')
                 ->set_output(json_encode($data));
+        }
+    }
+
+    public function create_thumbs($data)
+    {
+        $width = 122;
+        $height = 91;
+        $this->load->library('image_lib');
+        $config['image_library']  = 'gd2';
+        $config['source_image']   = $data['upload_data']['full_path'];
+        $config['create_thumb']   = false;
+        $config['maintain_ratio'] = TRUE;
+        $config['width']          = $width;
+        $config['height']         = $height;
+        $config['new_image']      = str_replace('/source/', '/thumbs/', $data['upload_data']['full_path']);
+        $this->image_lib->initialize($config);
+        if (! $this->image_lib->resize()) {
+            echo $this->image_lib->display_errors();
         }
     }
 
