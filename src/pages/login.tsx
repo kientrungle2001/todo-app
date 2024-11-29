@@ -1,7 +1,7 @@
 // pages/login.tsx
 import { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import axios from '@/api/axiosInstance';
+import axios, { getAxios } from '@/api/axiosInstance';
 import { useRouter } from 'next/router';
 import { FaSignInAlt } from 'react-icons/fa';
 import { storage } from '@/api/storage';
@@ -15,7 +15,7 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post('/login', { username, password });
+            const { data } = await getAxios(window.location.hostname).post('/login', { username, password });
             storage.set('token', data.token);
             storage.set('user', data.user);
             storage.set('isAuthenticated', true);

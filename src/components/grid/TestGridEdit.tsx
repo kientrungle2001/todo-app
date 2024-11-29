@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({ mode, table, itemId, addNew
     const router = useRouter();
     useEffect(() => {
         // load questions of test
-        axios.post(`/tests/questions/${itemId}`, {}, {
+        getAxios(window.location.hostname).post(`/tests/questions/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }

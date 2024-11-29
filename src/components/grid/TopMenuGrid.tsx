@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import TopMenu from "./TopMenu";
-import axios from '@/api/axiosInstance';
+import axios, { getAxios } from '@/api/axiosInstance';
 import { buildTree } from "@/api/tree";
 import { Nav, Navbar } from "react-bootstrap";
 import { storage } from "@/api/storage";
@@ -15,7 +15,7 @@ export const TopMenuGrid: React.FC<TopMenuGridProps> = ({ }): React.ReactElement
 
     const router = useRouter();
     useEffect(() => {
-        axios.post('/tables/admin_menu/map', {
+        getAxios(window.location.hostname).post('/tables/admin_menu/map', {
             fields: ["id", "name", "parent", "admin_controller", "ordering", "status", "shortcut"],
             condition: "status = 1",
             orderBy: "ordering asc"

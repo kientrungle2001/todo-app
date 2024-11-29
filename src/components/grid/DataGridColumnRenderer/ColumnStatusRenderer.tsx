@@ -1,13 +1,13 @@
 import { Form } from "react-bootstrap";
 import { DataGridColumn } from "../DataGrid";
 import { useRouter } from "next/router";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import { storage } from "@/api/storage";
 
 export const ColumnStatusRenderer = (column: DataGridColumn, item: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: DataGridColumn, item: any) => void) => {
     const router = useRouter();
     const handleChangeStatusField = (status: number) => {
-        axios.put(`/tables/${table}/update/${item.id}`, { item: { [column.index]: status }, fields: [column] }, {
+        getAxios(window.location.hostname).put(`/tables/${table}/update/${item.id}`, { item: { [column.index]: status }, fields: [column] }, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }

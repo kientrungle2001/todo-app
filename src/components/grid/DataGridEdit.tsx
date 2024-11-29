@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row, Tab, Tabs } from "react-bootstrap";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import { buildTree, flatTree } from "@/api/tree";
 import 'select2';
 import { storage } from "@/api/storage";
@@ -51,7 +51,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     if (field.treeMode) {
                         fields.push(field.parentField ?? 'parent');
                     }
-                    axios.post(`/tables/${field.table}/map`, {
+                    getAxios(window.location.hostname).post(`/tables/${field.table}/map`, {
                         fields: fields,
                         condition: condition,
                         orderBy: field.orderBy ?? 'id asc'

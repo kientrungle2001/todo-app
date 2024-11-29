@@ -1,6 +1,6 @@
 import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
-import axios from '@/api/axiosInstance';
+import axios, { getAxios } from '@/api/axiosInstance';
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
@@ -98,7 +98,7 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
     const router = useRouter();
 
     const handleListItems = () => {
-        axios.post('/tables/search/' + settings.table, {
+        getAxios(window.location.hostname).post('/tables/search/' + settings.table, {
             settings: JSON.parse(JSON.stringify(settings)),
             search: searchText,
             filterData: JSON.parse(JSON.stringify(filterData)),

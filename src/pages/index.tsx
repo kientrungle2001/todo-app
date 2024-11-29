@@ -1,7 +1,7 @@
 // pages/login.tsx
 import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col, Card } from 'react-bootstrap';
-import axios from '@/api/axiosInstance';
+import axios, { getAxios } from '@/api/axiosInstance';
 import { useRouter } from 'next/router';
 import { storage } from '@/api/storage';
 import { FullLookAdminMenuSettings } from '@/api/settings/FullLookMenuSettings';
@@ -22,7 +22,7 @@ const Index = () => {
     };
     const router = useRouter();
     useEffect(() => {
-        axios.post('/tables/search/admin_menu', {
+        getAxios(window.location.hostname).post('/tables/search/admin_menu', {
             settings: JSON.parse(JSON.stringify(settings)),
             search: '',
             filterData: {

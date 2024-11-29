@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
 import { DataGridFilterColumn, DataGridFilterColumnType, DataGridSort, DataGridSortOption } from "./DataGrid"
 import React, { useEffect } from "react";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { buildTree, flatTree } from "@/api/tree";
@@ -234,7 +234,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                 } else {
                     data.orderBy = filter.orderBy ?? 'id asc';
                 }
-                axios.post(`/tables/${filter.table}/map`, data, {
+                getAxios(window.location.hostname).post(`/tables/${filter.table}/map`, data, {
                     headers: {
                         'Authorization': `Bearer ${storage.get('token') || ''}`
                     }

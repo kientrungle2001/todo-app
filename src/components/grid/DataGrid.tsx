@@ -2,7 +2,7 @@ import { Alert, Button, Card, Col, Container, Form, Row, Table } from "react-boo
 import { PaginationGrid } from "./PaginationGrid";
 import { FiltersGrid } from "./FiltersGrid";
 import { useRouter } from "next/router";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import { ButtonVariant } from "react-bootstrap/esm/types";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -255,7 +255,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         // Implement your delete logic here
         if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
             console.log(`Deleting item with ID: ${item.id}`);
-            axios.delete(`/tables/${table}/delete/${item.id}`, {
+            getAxios(window.location.hostname).delete(`/tables/${table}/delete/${item.id}`, {
                 headers: {
                     'Authorization': `Bearer ${storage.get('token') || ''}`
                 }
@@ -388,7 +388,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 value: inputableItem[column.index]
             });
         }
-        axios.put(`/tables/${table}/update-column`, { column: column, values }, {
+        getAxios(window.location.hostname).put(`/tables/${table}/update-column`, { column: column, values }, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }

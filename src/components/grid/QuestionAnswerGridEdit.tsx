@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
     const router = useRouter();
     useEffect(() => {
         // load answers of question
-        axios.post(`/questions/answers/${itemId}`, {}, {
+        getAxios(window.location.hostname).post(`/questions/answers/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }

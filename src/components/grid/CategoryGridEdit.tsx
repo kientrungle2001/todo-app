@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Tab, Tabs } from "react-bootstrap";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
     const router = useRouter();
     useEffect(() => {
         // load questions of test
-        axios.post(`/categories/questions/${itemId}`, {}, {
+        getAxios(window.location.hostname).post(`/categories/questions/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
@@ -42,7 +42,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
                 router.push('/login');
             }
         });
-        axios.post(`/categories/tests/${itemId}`, {}, {
+        getAxios(window.location.hostname).post(`/categories/tests/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }

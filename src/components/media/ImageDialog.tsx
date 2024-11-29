@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Button, Modal, Form, InputGroup, Breadcrumb, Row, Col, Card } from 'react-bootstrap';
-import axios from '@/api/mediaAxiosInstance';
+import axios, { getAxios } from '@/api/mediaAxiosInstance';
 import { storage } from '@/api/storage';
 import { useRouter } from 'next/router';
 
@@ -23,7 +23,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     // Function to fetch directory contents from the backend
     const fetchDirectoryContents = async (path: string) => {
         try {
-            const response = await axios.get(`/media/list`, {
+            const response = await getAxios(window.location.hostname).get(`/media/list`, {
                 params: { path },
                 headers: {
                     'Authorization': `Bearer ${storage.get('token') || ''}`
@@ -80,7 +80,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             formData.append('folder', currentFolder); // Send the current folder to save the image in
 
             try {
-                const response = await axios.post('/media/upload', formData, {
+                const response = await getAxios(window.location.hostname).post('/media/upload', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${storage.get('token') || ''}`
@@ -101,7 +101,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     // Handle creating a new directory
     const handleCreateDirectory = async (directoryName: string) => {
         try {
-            const response = await axios.post('/media/create_directory', {
+            const response = await getAxios(window.location.hostname).post('/media/create_directory', {
                 folder: currentFolder,
                 name: directoryName,
             }, {
@@ -123,7 +123,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     // Handle deleting an image or directory
     const handleDelete = async (fileName: string) => {
         try {
-            const response = await axios.delete('/media/delete', {
+            const response = await getAxios(window.location.hostname).delete('/media/delete', {
                 data: { path: `${currentFolder}/${fileName}` },
             }).catch((error) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
@@ -142,7 +142,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     // Handle renaming a file or directory
     const handleRename = async (oldName: string, newName: string) => {
         try {
-            const response = await axios.post('/media/rename', {
+            const response = await getAxios(window.location.hostname).post('/media/rename', {
                 folder: currentFolder,
                 oldName,
                 newName,

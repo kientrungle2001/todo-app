@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { TableGridSettings } from "./TableGrid";
-import axios from "@/api/axiosInstance";
+import axios, { getAxios } from "@/api/axiosInstance";
 import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
@@ -17,7 +17,7 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
     const [item, setItem] = React.useState<any>(null);
 
     useEffect(() => {
-        axios.post(`/tables/${settings.table}/detail/${itemId}`, {
+        getAxios(window.location.hostname).post(`/tables/${settings.table}/detail/${itemId}`, {
             settings
         }, {
             headers: {
@@ -46,7 +46,7 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
         console.log("Updating item:", updatedItem);
         event.preventDefault();
         console.log("Fields:", fields);
-        axios.put(`/tables/${settings.table}/update/${itemId}`, {
+        getAxios(window.location.hostname).put(`/tables/${settings.table}/update/${itemId}`, {
             item: updatedItem,
             settings: JSON.parse(JSON.stringify(settings)),
             fields: JSON.parse(JSON.stringify(fields))
