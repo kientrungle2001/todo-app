@@ -8,7 +8,8 @@ const instance = axios.create({
   headers: {
     common: {
       'x-api-software': configs.software,
-      'x-api-site': configs.site
+      'x-api-site': configs.site,
+      'x-api-app': configs.appName
     }
   }
 });
@@ -27,7 +28,8 @@ export const getAxios = (hostname: string) => {
     headers: {
       common: {
         'x-api-software': hostnameConfigs.software,
-        'x-api-site': hostnameConfigs.site
+        'x-api-site': hostnameConfigs.site,
+        'x-api-app': hostnameConfigs.appName
       }
     }
   });

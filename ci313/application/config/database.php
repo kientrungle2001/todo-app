@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => '127.0.0.1',
 	'username' => 'kien',
 	'password' => 'kien102105',
-	'database' => 'pmtv',
+	'database' => isset($_SERVER['HTTP_X_API_APP']) && $_SERVER['HTTP_X_API_APP'] === 'pmtv' ? 'pmtv' : 'nextnobels',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

@@ -1,14 +1,14 @@
 <?php
 header("Access-Control-Allow-Origin: *"); // Allows any origin
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE"); // Allow specific methods
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-Api-Software, X-Api-Site"); // Allow specific headers
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-Api-Software, X-Api-Site, X-Api-App"); // Allow specific headers
 
 // Check if the request method is OPTIONS (pre-flight request)
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 	// Send appropriate headers for the OPTIONS request and exit
 	header('Access-Control-Allow-Origin: *');
 	header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
-	header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-Api-Software, X-Api-Site');
+	header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-Api-Software, X-Api-Site, X-Api-App');
 	exit();
 }
 
