@@ -32,8 +32,13 @@ import { FullLookAdminThemeSettings } from "./settings/FullLookThemeSettings";
 import { FullLookAdminLogSettings } from "./settings/FullLookLogSettings";
 import { FullLookAdminLevelSettings } from "./settings/FullLookAdminLevelSettings";
 import { FullLookAdminLevelActionSettings } from "./settings/FullLookAdminLevelActionSettings";
+import { getConfigsByHostName } from "./defaultSettings";
+import { PmtvAdminCategoriesSettings } from "./settings/PmtvCategoriesSettings";
 
-export const getSettingsByController = (controller: string): TableGridSettings | null => {
+export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
+    const hostnameConfigs = getConfigsByHostName(hostname);
+    console.log(hostnameConfigs.appName);
+
     if (controller === "student") {
         return FullLookStudentSettings
     } else if (controller === "user" || controller === "admin_user") {
@@ -45,6 +50,9 @@ export const getSettingsByController = (controller: string): TableGridSettings |
     } else if (controller === "admin_menu") {
         return FullLookAdminMenuSettings
     } else if (controller === "admin_category") {
+        if (hostnameConfigs.appName == 'pmtv') {
+            return PmtvAdminCategoriesSettings
+        }
         return FullLookAdminCategoriesSettings
     } else if (controller === "admin_question2") {
         return FullLookAdminQuestionSettings

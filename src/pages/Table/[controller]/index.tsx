@@ -1,6 +1,7 @@
 import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/grid/NextNobelsFooter";
 import { TableGrid, TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridWrapper } from "@/components/grid/TableGridWrapper";
 import { TopMenuGrid } from "@/components/grid/TopMenuGrid";
 import { useRouter } from "next/router";
 import React from "react";
@@ -15,7 +16,7 @@ export default function TableIndex(): React.ReactElement {
             <Container fluid className="mt-3 mb-3">
                 <TopMenuGrid />
             </Container>
-            <TableGrid controller={controller as string} settings={settings} />;
+            <TableGridWrapper controller={controller as string} />;
             <Container fluid className="mt-3 mb-3 bg-light pt-3 pb-3">
                 <NextNobelsFooter />
             </Container>

@@ -35,7 +35,6 @@ interface TableGridProps {
 }
 
 export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): React.ReactElement => {
-
     const setCurrentPage = (page: number) => {
         setPagination({ ...pagination, currentPage: page });
     };
