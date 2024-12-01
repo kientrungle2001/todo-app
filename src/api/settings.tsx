@@ -35,6 +35,8 @@ import { FullLookAdminLevelActionSettings } from "./settings/FullLookAdminLevelA
 import { getConfigsByHostName } from "./defaultSettings";
 import { PmtvAdminCategoriesSettings } from "./settings/PmtvCategoriesSettings";
 import { PmtvAdminTestSettings } from "./settings/PmtvTestSettings";
+import { PmtvAdminCourseSettings } from "./settings/PmtvCourseSettings";
+import { PmtvAdminServicePackagesSettings } from "./settings/PmtvServicePackagesSettings";
 
 export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     const hostnameConfigs = getConfigsByHostName(hostname);
@@ -47,6 +49,9 @@ export const getSettingsByController = (controller: string, hostname: string = '
     } else if (controller === "history_payment" || controller === "admin_payment_historypayment") {
         return FullLookAdminHistoryPaymentSettings
     } else if (controller === "service_packages" || controller === "admin_service_servicepackages") {
+        if (hostnameConfigs.appName == 'pmtv') {
+            return PmtvAdminServicePackagesSettings
+        }
         return FullLookAdminServicePackagesSettings
     } else if (controller === "admin_menu") {
         return FullLookAdminMenuSettings
@@ -112,6 +117,11 @@ export const getSettingsByController = (controller: string, hostname: string = '
         return FullLookAdminLevelSettings;
     } else if (controller === "admin_levelaction") {
         return FullLookAdminLevelActionSettings
+    } else if (controller === "admin_course") {
+        if (hostnameConfigs.appName == 'pmtv') {
+            return PmtvAdminCourseSettings
+        }
+        return PmtvAdminCourseSettings
     }
     return null;
 }

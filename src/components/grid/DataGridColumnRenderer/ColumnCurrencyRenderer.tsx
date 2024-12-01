@@ -1,6 +1,9 @@
 import { DataGridColumn } from "../DataGrid";
 
 function formatCurrency(amount: number) {
+    if (typeof amount == 'undefined') {
+        return '-';
+    }
     return amount.toLocaleString('vi-VN') + 'đ';
 }
 
