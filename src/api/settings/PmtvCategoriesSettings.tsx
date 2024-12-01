@@ -12,6 +12,8 @@ const gridFields: string[] = ["id", "name", "alias", "router", "ordering", "stat
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "name", label: "Tên Danh mục", linkFormat: (value: any, item: any) => `/Table/admin_category/${item.id}/detail`, treeMode: true },
+    { index: "alias", label: "Đường dẫn" },
+    { index: "router", label: "Điểm chạy"},
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true, treeMode: true },
     DataGridColumns.status,
     {
@@ -89,6 +91,8 @@ const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGr
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Danh mục", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "router", label: "Điểm chạy", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "img", label: "Ảnh Danh mục", type: DataGridEditFieldType.IMAGE, size: 6 },
     {
         index: "parent", label: "Danh mục cha", type: DataGridEditFieldType.SELECT, size: 6,

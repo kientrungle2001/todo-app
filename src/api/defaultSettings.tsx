@@ -12,10 +12,8 @@ let hostnameConfigs: any = {
         mediaUploadEndpoint: 'http://localhost:3002/api',
         mediaUrlEndpoint: 'http://localhost:3002',
         apiEndpoint: 'http://localhost:3002/api',
-        //software: 1,
-        //site: 1,
-        software: 101,
-        site: 0,
+        software: 105,
+        site: 1,
         appName: 'pmtv'
     }
 }

@@ -34,6 +34,7 @@ import { FullLookAdminLevelSettings } from "./settings/FullLookAdminLevelSetting
 import { FullLookAdminLevelActionSettings } from "./settings/FullLookAdminLevelActionSettings";
 import { getConfigsByHostName } from "./defaultSettings";
 import { PmtvAdminCategoriesSettings } from "./settings/PmtvCategoriesSettings";
+import { PmtvAdminTestSettings } from "./settings/PmtvTestSettings";
 
 export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     const hostnameConfigs = getConfigsByHostName(hostname);
@@ -59,6 +60,9 @@ export const getSettingsByController = (controller: string, hostname: string = '
     } else if (controller === "admin_document") {
         return FullLookAdminDocumentSettings
     } else if (controller === "admin_test") {
+        if (hostnameConfigs.appName == 'pmtv') {
+            return PmtvAdminTestSettings
+        }
         return FullLookAdminTestSettings
     } else if (controller === "admin_book") {
         return FullLookAdminBookSettings
