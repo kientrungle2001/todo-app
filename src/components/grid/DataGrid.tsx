@@ -128,6 +128,15 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         },
         comparisonOperator: "equal"
     },
+    categoryId: {
+        index: "categoryId", label: "Danh mục", type: DataGridFilterColumnType.SELECT,
+        table: "categories",
+        valueField: "id",
+        labelField: "name",
+        select2: true,
+        comparisonOperator: "equal",
+        treeMode: true,
+    },
     categoryIds: {
         index: "categoryIds", label: "Danh mục", type: DataGridFilterColumnType.SELECT,
         table: "categories",
@@ -145,7 +154,16 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         select2: true,
         comparisonOperator: "inset",
         treeMode: true,
-    }
+    },
+    courseId: {
+        index: "courseId", label: "Khóa học", type: DataGridFilterColumnType.SELECT,
+        table: "courses",
+        valueField: "id",
+        labelField: "name",
+        select2: true,
+        comparisonOperator: "equal",
+        treeMode: false,
+    },
 };
 
 export interface DataGridSort {

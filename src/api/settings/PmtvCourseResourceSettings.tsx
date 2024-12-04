@@ -3,28 +3,26 @@ import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
-const gridTitle: string = "Quản lý Khóa học";
-const gridAddNewLabel: string = "Thêm Khóa học";
-const gridUpdateLabel: string = "Cập nhật Khóa học";
-const gridDeleteSelectedsLabel: string = "Xóa các Khóa học đã chọn";
-const gridTable: string = "courses";
+const gridTitle: string = "Quản lý Tài nguyên Khóa học";
+const gridAddNewLabel: string = "Thêm Tài nguyên Khóa học";
+const gridUpdateLabel: string = "Cập nhật Tài nguyên Khóa học";
+const gridDeleteSelectedsLabel: string = "Xóa các Tài nguyên Khóa học đã chọn";
+const gridTable: string = "courses_resources";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "categoryId", "ordering", "status", "image", "amount", "oldAmount"];
+const gridFields: string[] = ["id", "name", "courseId", "ordering", "status", "image", "type"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "image", label: "Hình ảnh", type: DataGridColumnType.IMAGE },
-    { index: "name", label: "Tên Khóa học", linkFormat: (value: any, item: any) => `/Table/admin_course/${item.id}/detail`, treeMode: true },
+    { index: "name", label: "Tên Tài nguyên Khóa học", linkFormat: (value: any, item: any) => `/Table/admin_course/${item.id}/detail`, treeMode: true },
     {
-        index: "categoryId",
+        index: "courseId",
         label: "Danh mục",
         type: DataGridColumnType.REFERENCE,
-        referenceTable: "categories",
+        referenceTable: "courses",
         referenceField: "name"
     },
-    { index: "amount", label: "Học phí", type: DataGridColumnType.CURRENCY },
-    { index: "oldAmount", label: "Học phí cũ", type: DataGridColumnType.CURRENCY },
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.editAction,
@@ -35,14 +33,14 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 5000 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
-    DataGridFilterColumns.categoryId,
+    DataGridFilterColumns.courseId,
     DataGridFilterColumns.status
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
     {
         index: "nameAsc",
-        label: "Tên Khóa học tăng",
+        label: "Tên Tài nguyên Khóa học tăng",
         sorts: [
             { index: "name", direction: DataGridSortDirection.ASCENDING },
             { index: "id", direction: DataGridSortDirection.DESCENDING },
@@ -50,7 +48,7 @@ const gridSortOptions: DataGridSortOption[] = [
     },
     {
         index: "nameDesc",
-        label: "Tên Khóa học giảm",
+        label: "Tên Tài nguyên Khóa học giảm",
         sorts: [
             { index: "name", direction: DataGridSortDirection.DESCENDING },
             { index: "id", direction: DataGridSortDirection.ASCENDING },
@@ -61,15 +59,13 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Tên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
-    { index: "amount", label: "Học phí", type: DataGridEditFieldType.TEXT, size: 2 },
-    { index: "oldAmount", label: "Học phí cũ", type: DataGridEditFieldType.TEXT, size: 2 },
+    { index: "name", label: "Tên Tài nguyên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
     {
-        index: "categoryId", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
-        table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc", multiple: false, select2: true
+        index: "courseId", label: "Khóa học", type: DataGridEditFieldType.SELECT, size: 6,
+        table: "courses", valueField: "id", labelField: "name", orderBy: "name asc", multiple: false, select2: true
     },
     {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
@@ -80,7 +76,7 @@ const gridAddFields: DataGridEditField[] = [
 ];
 
 
-export const PmtvAdminCourseSettings: TableGridSettings = {
+export const PmtvAdminCourseResourceSettings: TableGridSettings = {
     title: gridTitle,
     table: gridTable,
     joins: gridJoins,

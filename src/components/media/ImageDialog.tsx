@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Button, Modal, Form, InputGroup, Breadcrumb, Row, Col, Card } from 'react-bootstrap';
-import axios, { getAxios } from '@/api/mediaAxiosInstance';
+import { getAxios } from '@/api/mediaAxiosInstance';
 import { storage } from '@/api/storage';
 import { useRouter } from 'next/router';
 
@@ -28,7 +28,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 headers: {
                     'Authorization': `Bearer ${storage.get('token') || ''}`
                 }
-            }).catch((error) => {
+            }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
                     router.push('/login');

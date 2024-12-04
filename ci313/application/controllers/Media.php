@@ -118,6 +118,7 @@ class Media extends CI_Controller
 
         if (!file_exists($fullPath)) {
             mkdir($fullPath, 0755, TRUE); // Create directory with 755 permissions
+            mkdir(str_replace('/source/', '/thumbs/', $fullPath), 0755, TRUE); // Create directory with 755 permissions
             $this->output->set_content_type('application/json')
                 ->set_output(json_encode(['status' => 'success', 'message' => 'Directory created']));
         } else {
