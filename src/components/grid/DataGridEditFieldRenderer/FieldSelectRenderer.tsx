@@ -9,7 +9,6 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
 
     useEffect(() => {
         if (field.select2 && selectRef[field.index].current && (field.options || maps[field.index])) {
-            console.log('Initializing Select2 for field:', field.index);
             const $select = $(selectRef[field.index].current);
 
             $select.select2({
@@ -26,7 +25,7 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
                     if (field.multiple) {
                         updatedItem[field.index] = (selectedValues as string[])?.join(',');
                     } else {
-                        updatedItem[field.index] = (selectedValues as string[])?.[0] ?? '';
+                        updatedItem[field.index] = '' + selectedValues;
                     }
                     setItem(updatedItem);
                 }
@@ -49,7 +48,10 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
             <Form.Select
                 multiple={field.multiple}
                 htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
-                value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
+                value={field.multiple ?
+                    (item[field.index] ? '' + item[field.index] : '').split(',')
+                    :
+                    '' + [item[field.index]]}
                 ref={selectRef[field.index]}
                 onChange={(event) => {
                     if (field.multiple) {
@@ -77,7 +79,10 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
             <Form.Select
                 multiple={field.multiple}
                 htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
-                value={field.multiple ? (item[field.index] ? '' + item[field.index] : '').split(',') : '' + [item[field.index]]}
+                value={field.multiple ?
+                    (item[field.index] ? '' + item[field.index] : '').split(',')
+                    :
+                    '' + [item[field.index]]}
                 ref={selectRef[field.index]}
                 onChange={(event) => {
                     if (field.multiple) {

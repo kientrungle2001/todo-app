@@ -10,12 +10,19 @@ const gridDeleteSelectedsLabel: string = "Xóa các Khóa học đã chọn";
 const gridTable: string = "courses";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "ordering", "status", "image", "amount", "oldAmount"];
+const gridFields: string[] = ["id", "name", "categoryId", "ordering", "status", "image", "amount", "oldAmount"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "name", label: "Tên Khóa học", linkFormat: (value: any, item: any) => `/Table/admin_course/${item.id}/detail`, treeMode: true },
     { index: "image", label: "Hình ảnh", type: DataGridColumnType.IMAGE },
+    { index: "name", label: "Tên Khóa học", linkFormat: (value: any, item: any) => `/Table/admin_course/${item.id}/detail`, treeMode: true },
+    {
+        index: "categoryId",
+        label: "Danh mục",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "categories",
+        referenceField: "name"
+    },
     { index: "amount", label: "Học phí", type: DataGridColumnType.CURRENCY },
     { index: "oldAmount", label: "Học phí cũ", type: DataGridColumnType.CURRENCY },
     DataGridColumns.ordering,
