@@ -63,21 +63,12 @@ const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSort
 const gridAddFields: DataGridEditField[] = [
     { index: "serviceName", label: "Tên dịch vụ", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "amount", label: "Giá", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "friendlyAmount", label: "Giá ưu đãi", type: DataGridEditFieldType.TEXT, size: 6 },
     {
         index: "serviceType", label: "Loại dịch vụ", type: DataGridEditFieldType.SELECT, size: 6,
         options: [
             { value: "full", label: 'Toàn bộ' },
             { value: "contest", label: "Cuộc thi" },
             { value: "view", label: "Xem đề thi" }
-        ]
-    },
-    {
-        index: "languages", label: "Ngôn ngữ", type: DataGridEditFieldType.SELECT, size: 6,
-        options: [
-            { value: "vn", label: 'Tiếng Việt' },
-            { value: "en", label: "Tiếng Anh" },
-            { value: "ev", label: "Song ngữ" }
         ]
     },
     { index: "duration", label: "Số ngày", type: DataGridEditFieldType.TEXT, size: 6 },

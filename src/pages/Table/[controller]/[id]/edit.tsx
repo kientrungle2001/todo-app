@@ -1,7 +1,7 @@
 import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/grid/NextNobelsFooter";
 import { TableGridSettings } from "@/components/grid/TableGrid";
-import { TableGridEdit } from "@/components/grid/TableGridEdit";
+import { TableGridEditWrapper } from "@/components/grid/TableGridEditWrapper";
 import { TopMenuGrid } from "@/components/grid/TopMenuGrid";
 import { useRouter } from "next/router";
 import React from "react";
@@ -21,7 +21,7 @@ export default function TableEdit(): React.ReactElement {
             <Container fluid className="mt-3 mb-3">
                 <TopMenuGrid />
             </Container>
-            <TableGridEdit controller={controller as string} itemId={itemId} settings={settings} />
+            <TableGridEditWrapper controller={controller as string} itemId={itemId} />
             <Container fluid className="mt-3 mb-3 bg-light pt-3 pb-3">
                 <NextNobelsFooter />
             </Container>
