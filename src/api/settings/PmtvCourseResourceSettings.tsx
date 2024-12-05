@@ -16,7 +16,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     {
         index: "name", label: "Tên Tài nguyên Khóa học",
-        linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/detail`, 
+        linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/edit`, 
         treeMode: true
     },
     {

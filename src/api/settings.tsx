@@ -38,6 +38,7 @@ import { PmtvAdminTestSettings } from "./settings/PmtvTestSettings";
 import { PmtvAdminCourseSettings } from "./settings/PmtvCourseSettings";
 import { PmtvAdminServicePackagesSettings } from "./settings/PmtvServicePackagesSettings";
 import { PmtvAdminCourseResourceSettings } from "./settings/PmtvCourseResourceSettings";
+import { PmtvAdminQuestionSettings } from "./settings/PmtvQuestionSettings";
 
 export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     const hostnameConfigs = getConfigsByHostName(hostname);
@@ -62,6 +63,9 @@ export const getSettingsByController = (controller: string, hostname: string = '
         }
         return FullLookAdminCategoriesSettings
     } else if (controller === "admin_question2") {
+        if (hostnameConfigs.appName == 'pmtv') {
+            return PmtvAdminQuestionSettings
+        }
         return FullLookAdminQuestionSettings
     } else if (controller === "admin_document") {
         return FullLookAdminDocumentSettings
