@@ -424,7 +424,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         <>
 
             <Container fluid className="mb-3 mt-3">
-                <Row>
+                <Row className="g-2">
                     <Col sm={12} md={3} lg={2}>
                         <Card>
                             <Card.Header className="d-flex justify-content-between align-items-center">
@@ -453,7 +453,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                     <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
                                 </div>
                             </Card.Header>
-                            <Card.Body>
+                            <Card.Body className="p-0">
                                 {
                                     messages.map((message: DataGridMessage, index: number) => {
                                         return (
@@ -461,7 +461,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                         )
                                     })
                                 }
-                                <Table size="sm" striped bordered hover>
+                                <Table size="sm" striped hover>
                                     <thead>
                                         <tr>
                                             <th style={{ width: "1%" }}>

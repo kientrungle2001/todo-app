@@ -1,9 +1,10 @@
 // src/pages/_app.tsx
-import '../styles/globals.css';
+
 import type { AppProps } from 'next/app';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'select2/dist/css/select2.min.css';
 import 'select2/dist/js/select2.min.js';
+import '@/styles/globals.css';
 import $ from 'jquery';
 import { useEffect } from 'react';
 

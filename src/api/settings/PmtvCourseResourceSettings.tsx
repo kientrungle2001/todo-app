@@ -10,12 +10,15 @@ const gridDeleteSelectedsLabel: string = "Xóa các Tài nguyên Khóa học đ�
 const gridTable: string = "courses_resources";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "courseId", "ordering", "status", "image", "type"];
+const gridFields: string[] = ["id", "parent", "name", "courseId", "ordering", "status", "image", "type"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "image", label: "Hình ảnh", type: DataGridColumnType.IMAGE },
-    { index: "name", label: "Tên Tài nguyên Khóa học", linkFormat: (value: any, item: any) => `/Table/admin_course/${item.id}/detail`, treeMode: true },
+    {
+        index: "name", label: "Tên Tài nguyên Khóa học",
+        linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/detail`, treeMode: true
+    },
     {
         index: "courseId",
         label: "Danh mục",
@@ -59,14 +62,20 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
+    {
+        index: "courseId", label: "Khóa học", type: DataGridEditFieldType.SELECT, size: 4,
+        table: "courses", valueField: "id", labelField: "name", orderBy: "name asc", multiple: false, select2: true
+    },
+    {
+        index: "parent", label: "Mục cha", type: DataGridEditFieldType.SELECT, size: 8,
+        table: "courses_resources", valueField: "id", labelField: "name", treeMode: true,
+        tableCondition: (item) => "courseId = '" + item.courseId + "' and id <> '" + (item.id ?? 0) + "'",
+    },
     { index: "name", label: "Tên Tài nguyên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
-    {
-        index: "courseId", label: "Khóa học", type: DataGridEditFieldType.SELECT, size: 6,
-        table: "courses", valueField: "id", labelField: "name", orderBy: "name asc", multiple: false, select2: true
-    },
+
     {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
             0: 'Chưa kích hoạt',
