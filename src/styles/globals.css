@@ -2,3 +2,7 @@
     height: auto;
     display: flex;
 }
+
+body {
+    --bs-body-font-size: 0.9rem;
+}

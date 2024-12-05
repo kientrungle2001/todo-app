@@ -42,7 +42,8 @@ export enum DataGridFilterColumnType {
 
 export enum DataGridColumnActionType {
     EDIT = "edit",
-    DELETE = "delete"
+    DELETE = "delete",
+    ADD_CHILD = "add_child"
 }
 
 export interface DataGridTableJoin {
@@ -77,6 +78,8 @@ export interface DataGridColumn {
     linkFormat?: (value: any, item: any) => string;
     sortable?: boolean;
     actionType?: DataGridColumnActionType;
+    actionLinkFormat?: (item: any, column: DataGridColumn, controller: string) => string | React.ReactNode,
+    actionAddChildParentFields?: string[],
     width?: string;
     map?: any;
     workflow?: DataGridWorkflowState[];
@@ -279,7 +282,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 }
             }).then(() => {
                 onAfterDelete(item);
-            }).catch((error) => {
+            }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
                     router.push('/login');
@@ -287,6 +290,21 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             });
         }
     };
+
+    const handleAddChildItem = (item: any, column: DataGridColumn) => {
+        let addChildLink = `/Table/${controller}/add?field_parent=` + item.id;
+        if (column.actionAddChildParentFields) {
+            column.actionAddChildParentFields.forEach(field => {
+                console.log('item[field]', item[field]);
+                if (typeof item[field] === 'object' && typeof item[field][0] === 'object') {
+                    addChildLink += '&field_' + field + '=' + item[field][0].id;
+                } else {
+                    addChildLink += '&field_' + field + '=' + item[field];
+                }
+            });
+        }
+        handleNavigation(addChildLink);
+    }
 
     const [inputableMap, setInputableMap] = useState<any>({});
 
@@ -313,6 +331,10 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 </Button>
             } else if (column.actionType === DataGridColumnActionType.DELETE) {
                 return <Button variant="danger" size="sm" onClick={() => handleDeleteItem(item)}>
+                    {column.label}
+                </Button>
+            } else if (column.actionType === DataGridColumnActionType.ADD_CHILD) {
+                return <Button variant="secondary" size="sm" onClick={() => handleAddChildItem(item, column)}>
                     {column.label}
                 </Button>
             }
@@ -412,7 +434,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             }
         }).then(() => {
             onAfterSaveInputableColumn(column);
-        }).catch((error) => {
+        }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
                 router.push('/login');

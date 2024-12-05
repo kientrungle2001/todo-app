@@ -14,10 +14,10 @@ const gridFields: string[] = ["id", "parent", "name", "courseId", "ordering", "s
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "image", label: "Hình ảnh", type: DataGridColumnType.IMAGE },
     {
         index: "name", label: "Tên Tài nguyên Khóa học",
-        linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/detail`, treeMode: true
+        linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/detail`, 
+        treeMode: true
     },
     {
         index: "courseId",
@@ -28,6 +28,7 @@ const gridColumns: DataGridColumn[] = [
     },
     DataGridColumns.ordering,
     DataGridColumns.status,
+    {...DataGridColumns.addChildAction, actionAddChildParentFields: ['courseId', 'status']},
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
