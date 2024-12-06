@@ -26,7 +26,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
 
     const FilterTextRenderer = (filter: DataGridFilterColumn) => {
         return (
-            <Form.Control size="sm" type="text" value={filterData?.[filter.index] || ''} onChange={(e) => setFilterData({ ...filterData, [filter.index]: e.target.value })} />
+            <Form.Control size="sm" type="text" value={filterData?.[filter.index] || ''} onChange={(e) => setFilterData({ ...filterData, [filter.index]: e.target.value })} placeholder={filter.label} />
         );
     }
 
@@ -38,13 +38,13 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     if (typeof filterData[filter.index] === 'undefined') updatedFilterData[filter.index] = {};
                     updatedFilterData[filter.index]['start'] = Number(e.target.value);
                     setFilterData(updatedFilterData);
-                }} placeholder="start" />
+                }} placeholder={"start " + filter.label} />
                 <Form.Control type="number" value={filterData?.[filter.index] && filterData?.[filter.index]['end'] || ''} onChange={(e) => {
                     let updatedFilterData = { ...filterData };
                     if (typeof filterData[filter.index] === 'undefined') updatedFilterData[filter.index] = {};
                     updatedFilterData[filter.index]['end'] = Number(e.target.value);
                     setFilterData(updatedFilterData);
-                }} placeholder="end" />
+                }} placeholder={"end " + filter.label} />
             </>
         );
     }
@@ -57,13 +57,13 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     if (typeof filterData[filter.index] === 'undefined') updatedFilterData[filter.index] = {};
                     updatedFilterData[filter.index]['start'] = Number(e.target.value);
                     setFilterData(updatedFilterData);
-                }} placeholder="start" />
+                }} placeholder={"start " + filter.label} />
                 <Form.Control type="date" value={filterData?.[filter.index] && filterData?.[filter.index]['end'] || ''} onChange={(e) => {
                     let updatedFilterData = { ...filterData };
                     if (typeof filterData[filter.index] === 'undefined') updatedFilterData[filter.index] = {};
                     updatedFilterData[filter.index]['end'] = Number(e.target.value);
                     setFilterData(updatedFilterData);
-                }} placeholder="end" />
+                }} placeholder={"end " + filter.label} />
             </>
         );
     }
@@ -76,13 +76,13 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     if (typeof filterData[filter.index] === 'undefined') updatedFilterData[filter.index] = {};
                     updatedFilterData[filter.index]['start'] = Number(e.target.value);
                     setFilterData(updatedFilterData);
-                }} placeholder="start" />
+                }} placeholder={"start " + filter.label} />
                 <Form.Control type="number" value={filterData?.[filter.index] && filterData?.[filter.index]['end'] || ''} onChange={(e) => {
                     let updatedFilterData = { ...filterData };
                     if (typeof filterData[filter.index] === 'undefined') updatedFilterData[filter.index] = {};
                     updatedFilterData[filter.index]['end'] = Number(e.target.value);
                     setFilterData(updatedFilterData);
-                }} placeholder="end" />
+                }} placeholder={"end " + filter.label} />
             </>
         );
     }
@@ -98,7 +98,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                 
                 $select.select2({
                     theme: 'bootstrap-5', // Optional: you can customize the theme
-                    placeholder: 'Select',
+                    placeholder: 'Chọn ' + filter.label,
                     allowClear: true,
                 });
     
@@ -129,7 +129,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     let updatedFilterData = { ...filterData };
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
-                }}>
+                }} aria-placeholder={filter.label}>
                     {filter.options.map((option, index) => (
                         <option key={index} value={option.value}>{option.label}</option>
                     ))}
@@ -141,8 +141,8 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     let updatedFilterData = { ...filterData };
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
-                }}>
-                    <option value={''}>Chọn</option>
+                }} aria-placeholder={filter.label}>
+                    <option value={''}>Chọn {filter.label}</option>
                     {maps[filter.index].map((option: any) => (
                         <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}>
                             {filter.treeMode? '|____'.repeat(option.__level + 1) : ''}
@@ -175,7 +175,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                 updatedFilterData[filter.index] = event.target.value;
                 setFilterData(updatedFilterData);
             }}>
-                <option value={''}>Chọn</option>
+                <option value={''}>Chọn {filter.label}</option>
                 <option value={1}>
                     {filter?.map ? filter?.map[1] : 'Active'}
                 </option>
@@ -265,19 +265,19 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
         }, 200);
     }, []);
 
-    return <Form>
-        <Form.Group controlId={"formGroupSearch"} className="mb-3">
-            <Form.Label>Tìm kiếm</Form.Label>
+    return <Form className="row">
+        <Form.Group controlId={"formGroupSearch"} className="mb-3 col-md-3">
+            {/*<Form.Label>Tìm kiếm</Form.Label>*/}
             <Form.Control value={searchText} onChange={(event) => setSearchText(event.target.value)} size="sm" type="text" placeholder={`Từ khóa`} />
         </Form.Group>
         {filters.map(filter => (
-            <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className="mb-3">
-                <Form.Label>{filter.label}</Form.Label>
+            <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className="mb-3 col-md-3">
+                {/*<Form.Label>{filter.label}</Form.Label>*/}
                 {renderFilter(filter)}
             </Form.Group>
         ))}
-        {sortOptions && <Form.Group controlId="formGroupSort" key="formGroupSort" className="mb-3">
-            <Form.Label>Sắp xếp theo</Form.Label>
+        {sortOptions && <Form.Group controlId="formGroupSort" key="formGroupSort" className="mb-3 col-md-3">
+            {/*<Form.Label>Sắp xếp theo</Form.Label>*/}
             <Form.Select value={sortOptionSelected} size="sm" onChange={(event) => {
                 setSortOptionSelected(event.target.value);
                 let selectedOption = sortOptions.find(option => option.index === event.target.value);

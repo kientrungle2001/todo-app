@@ -26,26 +26,28 @@ const gridColumns: DataGridColumn[] = [
                 referenceTable: "categories",
                 referenceField: "name"
             },
-            {
-                index: "courseId",
-                label: "Khóa học",
-                type: DataGridColumnType.REFERENCE,
-                referenceTable: "courses",
-                referenceField: "name"
-            },
-            {
-                index: "courseResourceId",
-                label: "Tài nguyên Khóa học",
-                type: DataGridColumnType.REFERENCE,
-                referenceTable: "courses_resources",
-                referenceField: "name"
-            },
+            
             {
                 index: "name", label: "Nội dung",
                 linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
                 isHtml: true
             },
         ]
+    },
+
+    {
+        index: "courseId",
+        label: "Khóa học",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "courses",
+        referenceField: "name"
+    },
+    {
+        index: "courseResourceId",
+        label: "Tài nguyên Khóa học",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "courses_resources",
+        referenceField: "name"
     },
 
     DataGridColumns.ordering,
@@ -60,6 +62,8 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
     DataGridFilterColumns.categoryIds,
+    DataGridFilterColumns.courseId,
+    DataGridFilterColumns.courseResourceId,
     DataGridFilterColumns.status,
     DataGridFilterColumns.trial,
 ];
@@ -87,12 +91,12 @@ const gridAddFields: DataGridEditField[] = [
         tabGroup: "0classification"
     },
     {
-        index: "courseId", label: "Khóa học", type: DataGridEditFieldType.SELECT, size: 4,
+        index: "courseId", label: "Khóa học", type: DataGridEditFieldType.SELECT, size: 6,
         table: "courses", valueField: "id", labelField: "name", orderBy: "name asc", multiple: false, select2: true,
         tabGroup: "0classification"
     },
     {
-        index: "courseResourceId", label: "Tài nguyên Khóa học", type: DataGridEditFieldType.SELECT, size: 8,
+        index: "courseResourceId", label: "Tài nguyên Khóa học", type: DataGridEditFieldType.SELECT, size: 6,
         table: "courses_resources", valueField: "id", labelField: "name", treeMode: true,
         tableCondition: (item) => "courseId = '" + item.courseId + "'",
         tabGroup: "0classification"

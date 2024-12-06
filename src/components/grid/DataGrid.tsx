@@ -167,6 +167,15 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         comparisonOperator: "equal",
         treeMode: false,
     },
+    courseResourceId: {
+        index: "courseResourceId", label: "Tài nguyên Khóa học", type: DataGridFilterColumnType.SELECT,
+        table: "courses_resources",
+        valueField: "id",
+        labelField: "name",
+        select2: true,
+        comparisonOperator: "equal",
+        treeMode: true,
+    },
 };
 
 export interface DataGridSort {
@@ -447,35 +456,36 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
 
             <Container fluid className="mb-3 mt-3">
                 <Row className="g-2">
-                    <Col sm={12} md={3} lg={2}>
-                        <Card>
-                            <Card.Header className="d-flex justify-content-between align-items-center">
-                                <span>Bộ lọc</span>
-                                <div>
-                                    <Button size="sm" variant="danger" onClick={handleResetFilter}>Reset</Button>
-                                </div>
-                            </Card.Header>
-                            <Card.Body>
+                    <Col sm={12} md={3} lg={12}>
+                        <Card className="border-0">
+                            <Card.Body className="border-0">
+                                <Card.Title className="d-flex justify-content-between align-items-center">
+                                    <span>Bộ lọc</span>
+                                    <div>
+                                        <Button size="sm" variant="danger" onClick={handleResetFilter}>Reset</Button>
+                                    </div>
+                                </Card.Title>
                                 <FiltersGrid filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
                             </Card.Body>
                         </Card>
 
                     </Col>
-                    <Col sm={12} md={9} lg={10}>
-                        <Card>
-                            <Card.Header className="d-flex justify-content-between align-items-center">
-                                {/* Title on the left */}
-                                <span>{title}</span>
+                    <Col sm={12} md={9} lg={12}>
+                        <Card className="border-0">
 
-                                {/* Buttons on the right */}
-                                <div>
-                                    {/* Button as a link */}
-                                    <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
-                                    {/* Regular Button */}
-                                    <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
-                                </div>
-                            </Card.Header>
-                            <Card.Body className="p-0">
+                            <Card.Body className="border-0">
+                                <Card.Title className="d-flex justify-content-between align-items-center">
+                                    {/* Title on the left */}
+                                    <span>{title}</span>
+
+                                    {/* Buttons on the right */}
+                                    <div>
+                                        {/* Button as a link */}
+                                        <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
+                                        {/* Regular Button */}
+                                        <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
+                                    </div>
+                                </Card.Title>
                                 {
                                     messages.map((message: DataGridMessage, index: number) => {
                                         return (
@@ -530,13 +540,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                         </tr>
                                     </tfoot>
                                 </Table>
-                            </Card.Body>
-                            <Card.Footer>
                                 <div className="d-flex justify-content-end">
                                     <Button variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
                                     <Button variant="danger" className="me-2">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
                                 </div>
-                            </Card.Footer>
+                            </Card.Body>
                         </Card>
                     </Col>
                 </Row>
