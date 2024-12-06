@@ -98,7 +98,7 @@ const gridAddFields: DataGridEditField[] = [
     {
         index: "courseResourceId", label: "Tài nguyên Khóa học", type: DataGridEditFieldType.SELECT, size: 6,
         table: "courses_resources", valueField: "id", labelField: "name", treeMode: true,
-        tableCondition: (item) => "courseId = '" + item.courseId + "'",
+        tableCondition: (item) => "courseId = '" + item.courseId + "'", select2: true,
         tabGroup: "0classification"
     },
     {

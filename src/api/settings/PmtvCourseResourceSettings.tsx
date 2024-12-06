@@ -29,6 +29,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.ordering,
     DataGridColumns.status,
     {...DataGridColumns.addChildAction, actionAddChildParentFields: ['courseId', 'status']},
+    {...DataGridColumns.addChildAction, index: 'addQuestion', label: 'Thêm câu hỏi', actionAddChildController: 'admin_question2', actionAddChildParentField: 'courseResourceId', actionAddChildParentFields: ['courseId', 'status']},
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];

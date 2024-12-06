@@ -2,12 +2,11 @@ import { Alert, Button, Card, Col, Container, Form, Row, Table } from "react-boo
 import { PaginationGrid } from "./PaginationGrid";
 import { FiltersGrid } from "./FiltersGrid";
 import { useRouter } from "next/router";
-import axios, { getAxios } from "@/api/axiosInstance";
+import { getAxios } from "@/api/axiosInstance";
 import { ButtonVariant } from "react-bootstrap/esm/types";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import { format } from "date-fns";
 import { storage } from "@/api/storage";
 import { ColumnTextRenderer } from "./DataGridColumnRenderer/ColumnTextRenderer";
 import { ColumnNumberRenderer } from "./DataGridColumnRenderer/ColumnNumberRenderer";
@@ -79,7 +78,9 @@ export interface DataGridColumn {
     sortable?: boolean;
     actionType?: DataGridColumnActionType;
     actionLinkFormat?: (item: any, column: DataGridColumn, controller: string) => string | React.ReactNode,
+    actionAddChildParentField?: string,
     actionAddChildParentFields?: string[],
+    actionAddChildController?: string,
     width?: string;
     map?: any;
     workflow?: DataGridWorkflowState[];
@@ -301,7 +302,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     };
 
     const handleAddChildItem = (item: any, column: DataGridColumn) => {
-        let addChildLink = `/Table/${controller}/add?field_parent=` + item.id;
+        let addChildLink = `/Table/${column.actionAddChildController ?? controller}/add?field_`+(column.actionAddChildParentField ?? 'parent')+`=` + item.id;
         if (column.actionAddChildParentFields) {
             column.actionAddChildParentFields.forEach(field => {
                 console.log('item[field]', item[field]);
