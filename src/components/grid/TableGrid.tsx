@@ -1,6 +1,6 @@
 import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
 import React, { useEffect } from "react";
-import axios, { getAxios } from '@/api/axiosInstance';
+import { getAxios } from '@/api/axiosInstance';
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
