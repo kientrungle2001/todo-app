@@ -53,7 +53,7 @@ class Media extends CI_Controller
         $path = $this->input->get('path', TRUE); // Get path from query params
         $this->load->helper('directory');
 
-        $fullPath = FCPATH . '3rdparty/' . $path; // Assuming you store media in 'uploads' folder
+        $fullPath = FCPATH . '3rdparty/source/' . $path; // Assuming you store media in 'uploads' folder
         $map = directory_map($fullPath);
 
         $files = [];
@@ -73,7 +73,7 @@ class Media extends CI_Controller
 
     public function upload()
     {
-        $config['upload_path'] = './3rdparty/' . $this->input->post('folder');
+        $config['upload_path'] = './3rdparty/source/' . $this->input->post('folder');
         $config['allowed_types'] = 'jpg|png|gif|jpeg|webp';
         $config['max_size'] = 2048; // 2MB max
 
@@ -114,11 +114,12 @@ class Media extends CI_Controller
         $folder = $this->input->post('folder', TRUE);
         $name = $this->input->post('name', TRUE);
 
-        $fullPath = FCPATH . '3rdparty/' . $folder . '/' . $name;
+        $fullPath = FCPATH . '3rdparty/source/' . $folder . '/' . $name;
 
         if (!file_exists($fullPath)) {
             mkdir($fullPath, 0755, TRUE); // Create directory with 755 permissions
-            mkdir(str_replace('/source/', '/thumbs/', $fullPath), 0755, TRUE); // Create directory with 755 permissions
+            $fullThumbsPath = FCPATH . '3rdparty/thumbs/' . $folder . '/' . $name;
+            mkdir($fullThumbsPath, 0755, TRUE); // Create directory with 755 permissions
             $this->output->set_content_type('application/json')
                 ->set_output(json_encode(['status' => 'success', 'message' => 'Directory created']));
         } else {
@@ -130,11 +131,13 @@ class Media extends CI_Controller
     public function delete()
     {
         $path = $this->input->input_stream('path', TRUE);
-        $fullPath = FCPATH . '3rdparty/' . $path;
+        $fullPath = FCPATH . '3rdparty/source/' . $path;
 
         if (is_dir($fullPath)) {
             if (count(scandir($fullPath)) == 2) { // Empty directory
                 rmdir($fullPath);
+                $fullThumbsPath = FCPATH . '3rdparty/thumbs/' . $path;
+                rmdir($fullThumbsPath);
                 $this->output->set_content_type('application/json')
                     ->set_output(json_encode(['status' => 'success', 'message' => 'Directory deleted']));
             } else {
@@ -143,6 +146,8 @@ class Media extends CI_Controller
             }
         } elseif (is_file($fullPath)) {
             unlink($fullPath);
+            $fullThumbsPath = FCPATH . '3rdparty/thumbs/' . $path;
+            unlink($fullThumbsPath);
             $this->output->set_content_type('application/json')
                 ->set_output(json_encode(['status' => 'success', 'message' => 'File deleted']));
         } else {
@@ -157,11 +162,14 @@ class Media extends CI_Controller
         $oldName = $this->input->post('oldName', TRUE);
         $newName = $this->input->post('newName', TRUE);
 
-        $fullOldPath = FCPATH . '3rdparty/' . $folder . '/' . $oldName;
-        $fullNewPath = FCPATH . '3rdparty/' . $folder . '/' . $newName;
+        $fullOldPath = FCPATH . '3rdparty/source/' . $folder . '/' . $oldName;
+        $fullNewPath = FCPATH . '3rdparty/source/' . $folder . '/' . $newName;
 
         if (file_exists($fullOldPath)) {
             rename($fullOldPath, $fullNewPath);
+            $fullOldThumbsPath = FCPATH . '3rdparty/thumbs/' . $folder . '/' . $oldName;
+            $fullNewThumbsPath = FCPATH . '3rdparty/thumbs/' . $folder . '/' . $newName;
+            rename($fullOldThumbsPath, $fullNewThumbsPath);    
             $this->output->set_content_type('application/json')
                 ->set_output(json_encode(['status' => 'success', 'message' => 'Renamed successfully']));
         } else {

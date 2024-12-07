@@ -16,7 +16,7 @@ export const ImageSelector: React.FC<ImageSelectorProps> = ({ selectedImage, set
   const handleCloseDialog = () => setShow(false);
 
   const handleImageSelect = (imagePath: string) => {
-    setSelectedImage('/3rdparty' + imagePath);
+    setSelectedImage('/3rdparty/source' + imagePath);
     handleCloseDialog();
   };
 
