@@ -15,24 +15,27 @@ const gridFields: string[] = ["id", "name", "ordering", "status", "trial", "cate
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     
+    /*
     {
         index: "cattest", label: "Câu hỏi",
         type: DataGridColumnType.GROUP,
         groupChildren: [
-            {
-                index: "categoryIds",
-                label: "Danh mục",
-                type: DataGridColumnType.REFERENCE,
-                referenceTable: "categories",
-                referenceField: "name"
-            },
             
-            {
-                index: "name", label: "Nội dung",
-                linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
-                isHtml: true
-            },
         ]
+    },
+    */
+
+    {
+        index: "name", label: "Nội dung",
+        linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
+        isHtml: true
+    },
+    {
+        index: "categoryIds",
+        label: "Danh mục",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "categories",
+        referenceField: "name"
     },
 
     {
@@ -60,12 +63,10 @@ const gridColumns: DataGridColumn[] = [
 const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    DataGridFilterColumns.id,
     DataGridFilterColumns.categoryIds,
     DataGridFilterColumns.courseId,
     DataGridFilterColumns.courseResourceId,
     DataGridFilterColumns.status,
-    DataGridFilterColumns.trial,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [

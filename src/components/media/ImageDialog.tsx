@@ -216,7 +216,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                         >
                             {/** create card */}
                             <Card style={{ cursor: 'pointer', width: '100%', height: "100%", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
-                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`/3rdparty${currentFolder.replace('/source/', '/thumbs/')}${file}`} />}
+                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`/3rdparty/Filemanager/thumbs${currentFolder}${file}`} />}
                                 <Card.Body>
                                     <span>{file.replace('/', '')}</span>
                                 </Card.Body>

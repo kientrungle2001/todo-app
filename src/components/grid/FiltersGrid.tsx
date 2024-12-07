@@ -93,7 +93,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
 
         useEffect(() => {
             if (filter.select2 && selectRef[filter.index].current && (filter.options || maps[filter.index])) {
-                console.log('Initializing Select2 for field:', filter.index);
+                console.log('Initializing Select2 for filter field:', filter.index);
                 const $select = $(selectRef[filter.index].current);
                 
                 $select.select2({
@@ -137,14 +137,16 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
             );
         } else if (filter.table && typeof maps[filter.index] === 'object') {
             return (
-                <Form.Select ref={selectRef[filter.index]} size="sm" value={filterData[filter.index]} onChange={(event) => {
+                <Form.Select ref={selectRef[filter.index]} size="sm" value={filterData[filter.index] ?? ''} onChange={(event) => {
                     let updatedFilterData = { ...filterData };
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
                 }} aria-placeholder={filter.label}>
                     <option value={''}>Chọn {filter.label}</option>
                     {maps[filter.index].map((option: any) => (
-                        <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}>
+                        <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}
+                            selected={(filterData[filter.index] ?? '') == option[filter.valueField as string]}
+                        >
                             {filter.treeMode? '|____'.repeat(option.__level + 1) : ''}
                             #{option[filter.valueField as string]}&nbsp;-&nbsp;
                             {option[filter.labelField as string]}
@@ -266,17 +268,17 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
     }, []);
 
     return <Form className="row">
-        <Form.Group controlId={"formGroupSearch"} className="mb-3 col-md-3">
+        <Form.Group controlId={"formGroupSearch"} className="mb-3 col-md-2">
             {/*<Form.Label>Tìm kiếm</Form.Label>*/}
             <Form.Control value={searchText} onChange={(event) => setSearchText(event.target.value)} size="sm" type="text" placeholder={`Từ khóa`} />
         </Form.Group>
         {filters.map(filter => (
-            <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className="mb-3 col-md-3">
+            <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className="mb-3 col-md-2">
                 {/*<Form.Label>{filter.label}</Form.Label>*/}
                 {renderFilter(filter)}
             </Form.Group>
         ))}
-        {sortOptions && <Form.Group controlId="formGroupSort" key="formGroupSort" className="mb-3 col-md-3">
+        {sortOptions && <Form.Group controlId="formGroupSort" key="formGroupSort" className="mb-3 col-md-2">
             {/*<Form.Label>Sắp xếp theo</Form.Label>*/}
             <Form.Select value={sortOptionSelected} size="sm" onChange={(event) => {
                 setSortOptionSelected(event.target.value);
