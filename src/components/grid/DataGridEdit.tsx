@@ -60,7 +60,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                             'Authorization': `Bearer ${storage.get('token') || ''}`
                         }
                     })
-                        .then(response => {
+                        .then((response: any) => {
                             let items = response.data;
                             if (field.treeMode) {
                                 items = buildTree(items, field.parentField ?? 'parent');
@@ -74,7 +74,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                 router.push('/login');
                             }
                         })
-                        .catch(error => {
+                        .catch((error: any) => {
                             console.error('Error fetching map data:', error);
                         });
 

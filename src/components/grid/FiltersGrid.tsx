@@ -241,7 +241,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                         'Authorization': `Bearer ${storage.get('token') || ''}`
                     }
                 })
-                    .then(response => {
+                    .then((response: any) => {
                         
                         let items: any[] = response.data;
                         if (filter.treeMode) {
@@ -257,7 +257,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                             router.push('/login');
                         }
                     })
-                    .catch(error => {
+                    .catch((error: any) => {
                         console.error('Error fetching map data:', error);
                     });
             }

@@ -36,7 +36,7 @@ const Index = () => {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
-        }).then(response => {
+        }).then((response: any) => {
             setItems(response.data.items);
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
