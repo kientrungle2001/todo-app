@@ -108,7 +108,7 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
-        }).then((resp) => {
+        }).then((resp: any) => {
             if (settings.treeMode) {
                 let items: any[] = resp.data.items;
                 items = buildTree(items, settings.treeParentField ?? 'parent');

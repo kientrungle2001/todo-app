@@ -23,7 +23,7 @@ export const TopMenuGrid: React.FC<TopMenuGridProps> = ({ }): React.ReactElement
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
-        }).then((resp) => {
+        }).then((resp: any) => {
             let items = resp.data;
             items = buildTree(items, 'parent');
             setData(items);
