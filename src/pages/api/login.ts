@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   axios.post('/auth/login', { username, password }).then(async (response) => {
     const token = await createToken(response.data);
     res.status(200).json({ token });
-  }).catch((error) => {
+  }).catch((error: any) => {
     res.status(401).json({ message: error.response.data.message });
   });
 };

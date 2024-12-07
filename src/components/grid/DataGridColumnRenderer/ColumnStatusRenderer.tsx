@@ -14,7 +14,7 @@ export const ColumnStatusRenderer = (column: DataGridColumn, item: any, table: s
         }).then(() => {
             item[column.index] = status;
             onAfterChangeStatus(column, item);
-        }).catch((error) => {
+        }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
                 router.push('/login');

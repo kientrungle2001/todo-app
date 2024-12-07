@@ -57,7 +57,7 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
             } else {
                 router.push(`/Table/${controller}`);
             }
-        }).catch((error) => {
+        }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
                 router.push('/login');

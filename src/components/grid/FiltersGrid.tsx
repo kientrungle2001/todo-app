@@ -251,7 +251,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                         updatedMaps[filter.index] = items;
                         
                     })
-                    .catch((error) => {
+                    .catch((error: any) => {
                         if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                             storage.clearTokenInfo();
                             router.push('/login');

@@ -120,7 +120,7 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
             setTotalItems(resp.data.totalItems);
             setIsCheckedAll(false);
             setCheckedItemIds([]);
-        }).catch((error) => {
+        }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
                 router.push('/login');

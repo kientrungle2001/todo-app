@@ -85,7 +85,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${storage.get('token') || ''}`
                     },
-                }).catch((error) => {
+                }).catch((error: any) => {
                     if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                         storage.clearTokenInfo();
                         router.push('/login');
@@ -108,7 +108,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 headers: {
                     'Authorization': `Bearer ${storage.get('token') || ''}`
                 }
-            }).catch((error) => {
+            }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
                     router.push('/login');
@@ -125,7 +125,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
         try {
             const response = await getAxios(window.location.hostname).delete('/media/delete', {
                 data: { path: `${currentFolder}/${fileName}` },
-            }).catch((error) => {
+            }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
                     router.push('/login');
@@ -150,7 +150,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 headers: {
                     'Authorization': `Bearer ${storage.get('token') || ''}`
                 }
-            }).catch((error) => {
+            }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
                     router.push('/login');

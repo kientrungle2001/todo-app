@@ -36,7 +36,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
         }).then((resp: any) => {
             setQuestions(resp.data);
             console.log("Fetched item:", resp.data);
-        }).catch((error) => {
+        }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
                 router.push('/login');
@@ -49,7 +49,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ mode, table, itemId
         }).then((resp: any) => {
             setTests(resp.data);
             console.log("Fetched item:", resp.data);
-        }).catch((error) => {
+        }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
                 router.push('/login');
