@@ -26,7 +26,7 @@ export const CategoryGridDetail: React.FC<TableGridProps> = ({ controller, setti
         }).then((resp: any) => {
             setItem(resp.data);
             console.log("Fetched item:", resp.data);
-        }).catch((error) => {
+        }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
                 router.push('/login');
