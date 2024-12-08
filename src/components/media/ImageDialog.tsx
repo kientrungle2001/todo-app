@@ -168,7 +168,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 // get folder name from selected image path (remove file name)
                 let folderName = selectedImage.substring(0, selectedImage.lastIndexOf('/') + 1);
                 // remove /3rdparty prefix
-                folderName = folderName.substring(9);
+                folderName = folderName.replace('/3rdparty/Filemanager/source', '');
                 // fetch the directory contents of the selected folder
                 fetchDirectoryContents(folderName);
             } else {
