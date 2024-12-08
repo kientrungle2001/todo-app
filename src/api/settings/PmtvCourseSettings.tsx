@@ -62,6 +62,7 @@ const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGr
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
+    { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "amount", label: "Học phí", type: DataGridEditFieldType.TEXT, size: 2 },
     { index: "oldAmount", label: "Học phí cũ", type: DataGridEditFieldType.TEXT, size: 2 },
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
