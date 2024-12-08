@@ -27,6 +27,7 @@ const gridColumns: DataGridColumn[] = [
     { index: "oldAmount", label: "Học phí cũ", type: DataGridColumnType.CURRENCY },
     DataGridColumns.ordering,
     DataGridColumns.status,
+    {...DataGridColumns.addChildAction, index: 'addCourseResource', label: 'Thêm Tài nguyên', actionAddChildController: 'admin_course_resource', actionAddChildParentField: 'courseId', actionAddChildParentFields: ['status']},
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];

@@ -32,6 +32,7 @@ const gridColumns: DataGridColumn[] = [
         statusToggable: true
     },
     {...DataGridColumns.addChildAction, actionAddChildParentFields: ['alias', 'router', 'status', 'display', 'trial']},
+    {...DataGridColumns.addChildAction, index: 'addCourse', label: 'Thêm khóa học', actionAddChildController: 'admin_course', actionAddChildParentField: 'categoryId', actionAddChildParentFields: ['status']},
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
