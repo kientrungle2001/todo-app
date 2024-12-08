@@ -14,7 +14,7 @@ interface ImageDialogProps {
 export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, onClose, onImageSelect }) => {
     const [currentFolder, setCurrentFolder] = useState<string>('/');
     const [files, setFiles] = useState<string[]>([]);
-    const [selectedFile, setSelectedFile] = useState<string | null>(selectedImage ? selectedImage.substring(9) : '');
+    const [selectedFile, setSelectedFile] = useState<string | null>(selectedImage ? selectedImage.replace('/3rdparty/Filemanager/source', '') : '');
     const [newImage, setNewImage] = useState<File | null>(null);
     const [newDirName, setNewDirName] = useState<string>('');
     const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
