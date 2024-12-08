@@ -2,6 +2,11 @@
 # codeigniter 3 Category model
 class Category_model extends CI_Model
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('array');
+    }
     public function get_questions($categoryId)
     {
         $this->load->database();
@@ -25,7 +30,7 @@ class Category_model extends CI_Model
                 }
             }
         }
-        return $questions;
+        return casting_numeric_fields($questions);
     }
 
     public function get_tests($categoryId)
@@ -33,7 +38,7 @@ class Category_model extends CI_Model
         $this->load->database();
         $tests = $this->db->query("SELECT * FROM tests WHERE FIND_IN_SET(?, categoryIds) ORDER BY ordering asc", [$categoryId])
             ->result_array();
-        return $tests;
+        return casting_numeric_fields($tests);
     }
 
     public function get_courses($categoryId)
@@ -41,6 +46,6 @@ class Category_model extends CI_Model
         $this->load->database();
         $courses = $this->db->query("SELECT * FROM courses WHERE categoryId = ? ORDER BY ordering asc", [$categoryId])
             ->result_array();
-        return $courses;
+        return casting_numeric_fields($courses);
     }
 }
