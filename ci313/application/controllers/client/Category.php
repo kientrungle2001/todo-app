@@ -47,4 +47,14 @@ class Category extends CI_Controller
             ->set_content_type('application/json', 'utf-8')
             ->set_output(json_encode($courses));
     }
+
+    public function courses_by_alias()
+    {
+        $categoryAlias = $this->input->post('category_alias');
+        $this->load->model('category_model');
+        $courses = $this->category_model->get_courses_by_alias($categoryAlias);
+        $this->output->set_status_header(200)
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($courses));
+    }
 }

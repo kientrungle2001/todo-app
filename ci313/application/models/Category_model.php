@@ -48,4 +48,19 @@ class Category_model extends CI_Model
             ->result_array();
         return casting_numeric_fields($courses);
     }
+
+    public function get_courses_by_alias($categoryAlias)
+    {
+        $this->load->database();
+        /**
+         * @var CI_DB
+         */
+        $db = $this->db;
+        $category = $db->query("SELECT * FROM categories WHERE alias = ? ORDER BY ordering asc", [$categoryAlias])
+            ->row_array();
+        if (!$category) return [];
+        $courses = $db->query("SELECT * FROM courses WHERE categoryId = ? ORDER BY ordering asc", [$category['id']])
+            ->result_array();
+        return casting_numeric_fields($courses);
+    }
 }
