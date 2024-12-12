@@ -68,9 +68,14 @@ class route_model extends CI_Model {
 				}
 			}
             $resourses = $this->db->where('status', 1)->where('courseId', $course->id)->get('courses_resources')->result_array();
+            $others = $this->db->where('status', 1)
+            ->where('categoryId', $course->categoryId)
+            ->where('id != ', $course->id)
+            ->get('courses')->result_array();
             return array(
                 'type' => 'course',
                 'course' => $course,
+                'others' => $others,
                 'resourses' => $resourses
             );
         }
