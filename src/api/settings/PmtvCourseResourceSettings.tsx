@@ -74,6 +74,7 @@ const gridAddFields: DataGridEditField[] = [
         tableCondition: (item) => "courseId = '" + item.courseId + "' and id <> '" + (item.id ?? 0) + "'",
     },
     { index: "name", label: "Tên Tài nguyên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
+    { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },

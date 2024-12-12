@@ -44,6 +44,48 @@ class route_model extends CI_Model {
         return null;
     }
 
+    public function course_get_by_alias($alias) {
+        $this->load->database();
+        $this->db->where('alias', $alias)->where('status', 1);
+		$filters = $this->getSoftwareAndSiteFilters('courses');
+		foreach ($filters as $field => $value) {
+			if ($field === 'software') {
+				$this->db->where('software', $value);
+			}
+			if ($field === 'site') {
+				$this->db->where_in('site', $value);
+			}
+		}
+        $course = $this->db->get('courses')->row();
+        if ($course) {
+			$filters = $this->getSoftwareAndSiteFilters('courses_resources');
+			foreach ($filters as $field => $value) {
+				if ($field === 'software') {
+					$this->db->where('software', $value);
+				}
+				if ($field === 'site') {
+					$this->db->where_in('site', $value);
+				}
+			}
+            $resourses = $this->db->where('status', 1)->where('courseId', $course->id)->get('courses_resources')->result_array();
+            return array(
+                'type' => 'course',
+                'course' => $course,
+                'resourses' => $resourses
+            );
+        }
+        $this->db->where('status', 1)->where('alias', $alias);
+        $resourse = $this->db->get('courses_resources')->row();
+        if ($resourse) {
+            $course = $this->db->where('id', $resourse->courseId)->where('status', 1)->get('courses')->row();
+            return array(
+                'type' => 'news',
+                'resourse' => $resourse,
+                'course' => $course
+            );
+        }
+        return null;
+    }
 
     private function getSoftwareAndSiteFilters($table)
     {

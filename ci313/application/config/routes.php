@@ -66,6 +66,7 @@ $route['api/media/upload'] = 'media/upload';
 $route['api/media/create_directory'] = 'media/create_directory';
 $route['api/login'] = 'auth/login';
 $route['api/route'] = 'police/route';
+$route['api/course_route'] = 'police/course_route';
 $route['api/questions/answers/(:num)'] = 'question/answers/$1';
 $route['api/questions/updateAnswers/(:num)'] = 'question/updateAnswers/$1';
 $route['api/tests/questions/(:num)'] = 'test/questions/$1';
