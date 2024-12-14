@@ -67,7 +67,7 @@ class route_model extends CI_Model {
 					$this->db->where_in('site', $value);
 				}
 			}
-            $resourses = $this->db->where('status', 1)->where('courseId', $course->id)->get('courses_resources')->result_array();
+            $resources = $this->db->where('status', 1)->where('courseId', $course->id)->get('courses_resources')->result_array();
             $others = $this->db->where('status', 1)
             ->where('categoryId', $course->categoryId)
             ->where('id != ', $course->id)
@@ -76,16 +76,18 @@ class route_model extends CI_Model {
                 'type' => 'course',
                 'course' => $course,
                 'others' => $others,
-                'resourses' => $resourses
+                'resources' => $resources
             );
         }
         $this->db->where('status', 1)->where('alias', $alias);
-        $resourse = $this->db->get('courses_resources')->row();
-        if ($resourse) {
-            $course = $this->db->where('id', $resourse->courseId)->where('status', 1)->get('courses')->row();
+        $resource = $this->db->get('courses_resources')->row();
+        if ($resource) {
+            $course = $this->db->where('id', $resource->courseId)->where('status', 1)->get('courses')->row();
+            $resources = $this->db->where('status', 1)->where('courseId', $course->id)->get('courses_resources')->result_array();
             return array(
-                'type' => 'news',
-                'resourse' => $resourse,
+                'type' => 'resource',
+                'resource' => $resource,
+                'resources' => $resources,
                 'course' => $course
             );
         }
