@@ -75,3 +75,4 @@ $route['api/categories/tests/(:num)'] = 'category/tests/$1';
 $route['api/categories/courses/(:num)'] = 'category/courses/$1';
 $route['api/client/categories/courses/(:num)'] = 'client/category/courses/$1';
 $route['api/client/categories/courses_by_alias'] = 'client/category/courses_by_alias';
+$route['api/client/login'] = 'client/auth/login';
