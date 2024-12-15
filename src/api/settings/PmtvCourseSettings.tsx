@@ -66,6 +66,8 @@ const gridAddFields: DataGridEditField[] = [
     { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "amount", label: "Học phí", type: DataGridEditFieldType.TEXT, size: 2 },
     { index: "oldAmount", label: "Học phí cũ", type: DataGridEditFieldType.TEXT, size: 2 },
+    { index: "total_minutes", label: "Tổng số phút", type: DataGridEditFieldType.TEXT, size: 2 },
+    { index: "total_lessons", label: "Tổng số bài học", type: DataGridEditFieldType.TEXT, size: 2 },
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
     { index: "includes", label: "Khóa học bao gồm", type: DataGridEditFieldType.EDITOR, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
