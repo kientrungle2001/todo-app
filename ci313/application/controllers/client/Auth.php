@@ -62,4 +62,36 @@ class Auth extends CI_Controller
             }
         }
     }
+
+    public function register()
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('username', 'Username', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+		$this->form_validation->set_rules('confirmPassword', 'Confirm Password', 'required');
+		$this->form_validation->set_rules('name', 'Name', 'required');
+		$this->form_validation->set_rules('phone', 'Phone', 'required');
+
+        if ($this->form_validation->run()) {
+			$this->load->model('user_model');
+			$user = $this->user_model->get_by_username($this->input->post('username'));
+			if ($user) {
+				$this->output->set_status_header(400)
+                    ->set_content_type('application/json', 'utf-8')
+                    ->set_output(json_encode(array('error' => 'Invalid credentials')));
+			} else {
+				$this->user_model->create([
+					'username' => $this->input->post('username'),
+					'password' => md5($this->input->post('password')),
+					'name' => $this->input->post('name'),
+					'phone' => $this->input->post('phone'),
+					'email' => $this->input->post('email') ? $this->input->post('email') : '',
+					'areacode' => $this->input->post('provinceId') ? $this->input->post('provinceId') : '',
+					'class' => $this->input->post('class') ? $this->input->post('class') : '',
+				]);
+				$this->login();
+			}
+        }
+    }
 }

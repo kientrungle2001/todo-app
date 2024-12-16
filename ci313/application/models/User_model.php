@@ -6,4 +6,11 @@ class user_model extends CI_Model {
         $this->db->where('username', $username);
         return $this->db->get('user')->row();
     }
+
+    public function create($user) {
+		$user['status'] = 1;
+		$user['registered'] = date('Y-m-d H:i:s');
+		$user['created'] = date('Y-m-d H:i:s');
+		$this->db->insert('user', $user);
+	}
 }
