@@ -61,6 +61,10 @@ class Table_model extends CI_Model
         }
 
         return [
+            'query' => $query['sql'],
+            'params' => $query['params'],
+            'totalQuery' => $totalCountQuery['sql'],
+            'totalParams' => $totalCountQuery['params'],
             'items' => $this->casting_numeric_fields($items),
             'totalItems' => intval($total)
         ];

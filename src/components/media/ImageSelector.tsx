@@ -26,7 +26,7 @@ export const ImageSelector: React.FC<ImageSelectorProps> = ({ selectedImage, set
         {hideInput ? null : (<input
           type="text"
           className="form-control"
-          placeholder="Select Image"
+          placeholder={selectImageLabel ? selectImageLabel : 'Select Image'}
           value={selectedImage}
           onChange={(e) => setSelectedImage(e.target.value)}
         />)}

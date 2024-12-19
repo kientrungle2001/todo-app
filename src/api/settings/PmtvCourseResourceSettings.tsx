@@ -78,7 +78,12 @@ const gridAddFields: DataGridEditField[] = [
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
-
+    {
+        index: "trial", label: "Dùng thử", type: DataGridEditFieldType.STATUS, size: 6, map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        }, statusToggable: true
+    },
     {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
             0: 'Chưa kích hoạt',

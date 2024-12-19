@@ -26,6 +26,11 @@ class Police extends CI_Controller
      */
     public $route_model;
 
+    /**
+     * @var payment_model
+     */
+    public $payment_model;
+
     public function route()
     {
         $this->load->library('form_validation');
@@ -52,6 +57,25 @@ class Police extends CI_Controller
 
     public function course_route()
     {
+        $this->load->library('JWT');
+        $token = $this->input->get_request_header('Authorization', TRUE);
+        $user = false;
+		$error = false;
+		if ($token){
+			$token = explode(' ', $token);
+			if (!isset($token[1]) || !trim($token[1])) {
+				$user = false;
+			} else {
+				$token = $token[1];
+				try {
+					$user = JWT::decode($token, 'your-secret-key', array('HS256'));
+				} catch (Exception $e) {
+					$user = false;
+					$error = $e->getMessage();
+				}
+			}
+		}
+
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('alias', 'Alias', 'required');
@@ -62,14 +86,22 @@ class Police extends CI_Controller
             $this->load->model('route_model');
             $route = $this->route_model->course_get_by_alias($alias);
             if ($route) {
-                
+                $payment = false;
+                if ($user) {
+                    // get user payment
+                    $this->load->model('payment_model');
+                    $payment = $this->payment_model->get_payment_info($user->data, $route);
+                    if (!$payment) {
+                        $payment = false;
+                    }
+                }
                 $this->output->set_status_header(200)
                     ->set_content_type('application/json', 'utf-8')
-                    ->set_output(json_encode(array('route' => $route)));
+                    ->set_output(json_encode(array('route' => $route, 'user' => $user, 'payment' => $payment, 'error' => $error)));
             } else {
                 $this->output->set_status_header(400)
                     ->set_content_type('application/json', 'utf-8')
-                    ->set_output(json_encode(array('error' => 'No route')));
+                    ->set_output(json_encode(array('error' => 'No route', 'user' => $user)));
             }
         }
     }

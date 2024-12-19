@@ -39,6 +39,7 @@ import { PmtvAdminCourseSettings } from "./settings/PmtvCourseSettings";
 import { PmtvAdminServicePackagesSettings } from "./settings/PmtvServicePackagesSettings";
 import { PmtvAdminCourseResourceSettings } from "./settings/PmtvCourseResourceSettings";
 import { PmtvAdminQuestionSettings } from "./settings/PmtvQuestionSettings";
+import { PmtvAdminHistoryPaymentSettings } from "./settings/PmtvHistoryPaymentSettings";
 
 export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     const hostnameConfigs = getConfigsByHostName(hostname);
@@ -49,7 +50,10 @@ export const getSettingsByController = (controller: string, hostname: string = '
     } else if (controller === "user" || controller === "admin_user") {
         return FullLookAdminUserSettings
     } else if (controller === "history_payment" || controller === "admin_payment_historypayment") {
-        return FullLookAdminHistoryPaymentSettings
+        if (hostnameConfigs.appName == 'pmtv') {
+            return PmtvAdminHistoryPaymentSettings;
+        }
+        return FullLookAdminHistoryPaymentSettings;
     } else if (controller === "service_packages" || controller === "admin_service_servicepackages") {
         if (hostnameConfigs.appName == 'pmtv') {
             return PmtvAdminServicePackagesSettings

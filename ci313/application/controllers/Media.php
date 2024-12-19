@@ -77,8 +77,8 @@ class Media extends CI_Controller
     public function upload()
     {
         $config['upload_path'] = './' . $this->source_dir . '/' . $this->input->post('folder');
-        $config['allowed_types'] = 'jpg|png|gif|jpeg|webp';
-        $config['max_size'] = 2048; // 2MB max
+        $config['allowed_types'] = 'jpg|png|gif|jpeg|webp|mp4|doc|docx|pdf';
+        $config['max_size'] = 204800; // 2MB max
 
         $this->load->library('upload', $config);
 
@@ -88,7 +88,10 @@ class Media extends CI_Controller
                 ->set_output(json_encode($error));
         } else {
             $data = array('upload_data' => $this->upload->data());
-            $this->create_thumbs($data);
+            $ext = explode('.', $data['upload_data']['full_path']);
+            $ext = array_pop($ext);
+            if (in_array(strtolower($ext), array('jpg', 'png', 'gif', 'jpeg', 'webp')))
+                $this->create_thumbs($data);
             $this->output->set_content_type('application/json')
                 ->set_output(json_encode($data));
         }
