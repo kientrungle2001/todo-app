@@ -95,6 +95,16 @@ class Police extends CI_Controller
                         $payment = false;
                     }
                 }
+                $questions = false;
+				if ($payment) {
+					if ($route['type'] === 'resource') {
+						// get questions of resource
+						$this->load->model('question_model');
+						$questions = $this->question_model->get_resource_questions($route['resource']->id);
+					}
+
+				}
+				$route['questions'] = $questions;
                 $this->output->set_status_header(200)
                     ->set_content_type('application/json', 'utf-8')
                     ->set_output(json_encode(array('route' => $route, 'user' => $user, 'payment' => $payment, 'error' => $error)));

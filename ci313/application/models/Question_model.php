@@ -33,4 +33,31 @@ class question_model extends CI_Model {
         }
         return array('success' => true);
     }
+
+    public function get_resource_questions($resourceId)
+	{
+		$this->load->database();
+		$this->load->helper('array');
+		$questions = $this->db->query("SELECT * FROM questions WHERE courseResourceId = ? and status = 1 ORDER BY ordering asc", [$resourceId])
+            ->result_array();
+		$questionIds = array_map(function ($question) {
+            return $question['id'];
+        }, $questions);
+        if (count($questionIds)) {
+            $answers = $this->db->where_in('question_id', $questionIds)
+                ->get('answers_question_tn')->result_array();
+        } else {
+            $answers = [];
+        }
+
+        foreach ($questions as &$question) {
+            $question['answers'] = array();
+            foreach ($answers as $answer) {
+                if ($answer['question_id'] == $question['id']) {
+                    $question['answers'][] = $answer;
+                }
+            }
+        }
+        return casting_numeric_fields($questions);
+	}
 }
