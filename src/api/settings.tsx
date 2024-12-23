@@ -40,6 +40,7 @@ import { PmtvAdminServicePackagesSettings } from "./settings/PmtvServicePackages
 import { PmtvAdminCourseResourceSettings } from "./settings/PmtvCourseResourceSettings";
 import { PmtvAdminQuestionSettings } from "./settings/PmtvQuestionSettings";
 import { PmtvAdminHistoryPaymentSettings } from "./settings/PmtvHistoryPaymentSettings";
+import { PmtvAdminNewsSettings } from "./settings/PmtvNewsSettings";
 
 export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     const hostnameConfigs = getConfigsByHostName(hostname);
@@ -91,6 +92,9 @@ export const getSettingsByController = (controller: string, hostname: string = '
     } else if (controller === "admin_media") {
         return FullLookAdminMediaSettings
     } else if (controller === "admin_news") {
+        if (hostnameConfigs.appName == 'pmtv') {
+            return PmtvAdminNewsSettings
+        }
         return FullLookAdminNewsSettings
     } else if (controller === "admin_aqsquestion") {
         return FullLookAdminAQSQuestionSettings
