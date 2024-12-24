@@ -1,12 +1,7 @@
 <?php
 # codeigniter 3 Payment model
-class Payment_model extends CI_Model
+class Payment_model extends MY_Model
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->helper('array');
-    }
     public function get_payment_info($user, $route)
     {
         $this->load->database();

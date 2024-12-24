@@ -455,11 +455,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     return (
         <>
 
-            <Container fluid className="mb-3 mt-3">
-                <Row className="g-2">
+            <Container fluid className="mb-0 mt-0">
+                <Row className="g-0">
                     <Col sm={12} md={3} lg={12}>
                         <Card className="border-0">
-                            <Card.Body className="border-0">
+                            <Card.Body className="border-0 pt-0">
                                 <Card.Title className="d-flex justify-content-between align-items-center">
                                     <span>Bộ lọc</span>
                                     <div>
@@ -473,8 +473,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                     </Col>
                     <Col sm={12} md={9} lg={12}>
                         <Card className="border-0">
-
-                            <Card.Body className="border-0">
+                            <Card.Body className="border-0 pt-0">
                                 <Card.Title className="d-flex justify-content-between align-items-center">
                                     {/* Title on the left */}
                                     <span>{title}</span>
