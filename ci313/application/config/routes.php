@@ -78,3 +78,5 @@ $route['api/client/categories/courses_by_alias'] = 'client/category/courses_by_a
 $route['api/client/login'] = 'client/auth/login';
 $route['api/client/register'] = 'client/auth/register';
 $route['api/courses'] = 'client/course/courses';
+// $route['3rdparty\/(.*)-(:num)x(:num)\.(jpg|png|gif|jpeg)'] = 'client/media/thumbnail/$1/$2/$3/$4';
+$route['3rdparty/Filemanager/thumbnails/(.+)-(\d+)x(\d+)\.(png|jpe?g|gif)'] = 'client/media/thumbnail/$1/$2/$3/$4';
