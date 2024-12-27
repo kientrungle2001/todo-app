@@ -16,6 +16,13 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "img", label: "Image", type: DataGridColumnType.IMAGE, width: "100px", linkFormat: (value: any, item: any) => `/Table/admin_news/${item.id}/` },
     { index: "title", label: "Tên Tin tức", linkFormat: (value: any, item: any) => `/Table/admin_news/${item.id}/edit` },
+    {
+        index: "categoryId",
+        label: "Danh mục",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "categories",
+        referenceField: "name"
+    },
     { index: "views", label: "Lượt xem", type: DataGridColumnType.NUMBER },
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
     DataGridColumns.status,
