@@ -28,6 +28,33 @@ class route_model extends MY_Model {
         return null;
     }
 
+    public function document_get_by_alias($alias) {
+        $this->db->where('alias', $alias)->where('status', 1);
+        $this->applySoftwareAndSiteFilters('categories');
+        $category = $this->db->get('categories')->row();
+        if ($category) {
+			$this->applySoftwareAndSiteFilters('document');
+            $documentList = $this->db->where('categoryId', $category->id)->get('document')->result_array();
+            return array(
+                'type' => 'category',
+                'category' => $category,
+                'documentList' => $documentList
+            );
+        }
+        $this->db->where('alias', $alias);
+        $this->applySoftwareAndSiteFilters('document');
+        $document = $this->db->get('document')->row();
+        if ($document) {
+            $category = $this->db->where('id', $document->categoryId)->where('status', 1)->get('categories')->row();
+            return array(
+                'type' => 'document',
+                'document' => $document,
+                'category' => $category
+            );
+        }
+        return null;
+    }
+
     public function course_get_by_alias($alias) {
         $this->db->where('alias', $alias)->where('status', 1);
 		$this->applySoftwareAndSiteFilters('courses');
