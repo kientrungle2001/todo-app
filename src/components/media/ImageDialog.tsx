@@ -162,6 +162,16 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
         }
     };
 
+    const getImageForFile = (currentFolder: string, file: string) => {
+        let fileExt: string = file.split('.').pop() ?? 'notfound';
+        fileExt = fileExt.toLowerCase();
+        if (['mp4', 'mpeg4', 'wmv'].includes(fileExt)) return '/images/video.png';
+        if (['doc', 'docx'].includes(fileExt)) return '/images/doc.png';
+        if (['mp3', 'm4a', 'fla', 'wma'].includes(fileExt)) return '/images/mp3.png';
+        if (['pdf'].includes(fileExt)) return '/images/pdf.png';
+        return `/3rdparty/Filemanager/thumbs${currentFolder}${file}`;
+    }
+
     useEffect(() => {
         if (show) {
             if (selectedImage && selectedImage.startsWith('/3rdparty')) {
@@ -216,7 +226,21 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                         >
                             {/** create card */}
                             <Card style={{ cursor: 'pointer', width: '100%', height: "100%", border: selectedFile === `${currentFolder}${file}` ? '2px solid blue' : '1px solid #ccc' }}>
-                                {file.endsWith('/') ? '' : <Card.Img variant="top" src={`/3rdparty/Filemanager/thumbs${currentFolder}${file}`} />}
+                                <div className="div-4x3">
+                                    {file.endsWith('/') ? <Card.Img variant="top" src="/images/file_folder.png" /> : <Card.Img variant="top" src={
+                                        getImageForFile(currentFolder, file)
+                                    } onError={(evt: React.SyntheticEvent<HTMLImageElement>) => {
+                                        return false;
+                                        let fileExt = file.split('.').pop();
+                                        if (['png', 'jpg', 'jpeg', 'gif'].includes(fileExt?.toLowerCase() ?? 'notfound')) {
+                                            if (evt.currentTarget.src != `/3rdparty/Filemanager/source${currentFolder}${file}`) {
+                                                evt.currentTarget.src = `/3rdparty/Filemanager/source${currentFolder}${file}`;
+                                            }
+                                            
+                                        }
+
+                                    }} />}
+                                </div>
                                 <Card.Body>
                                     <span>{file.replace('/', '')}</span>
                                 </Card.Body>
