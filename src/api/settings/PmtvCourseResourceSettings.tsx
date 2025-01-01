@@ -16,7 +16,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     {
         index: "name", label: "Tên Tài nguyên Khóa học",
-        linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/edit`, 
+        linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/edit`,
         treeMode: true
     },
     {
@@ -28,8 +28,8 @@ const gridColumns: DataGridColumn[] = [
     },
     DataGridColumns.ordering,
     DataGridColumns.status,
-    {...DataGridColumns.addChildAction, actionAddChildParentFields: ['courseId', 'status']},
-    {...DataGridColumns.addChildAction, index: 'addQuestion', label: 'Thêm câu hỏi', actionAddChildController: 'admin_question2', actionAddChildParentField: 'courseResourceId', actionAddChildParentFields: ['courseId', 'status']},
+    { ...DataGridColumns.addChildAction, actionAddChildParentFields: ['courseId', 'status'] },
+    { ...DataGridColumns.addChildAction, index: 'addQuestion', label: 'Thêm câu hỏi', actionAddChildController: 'admin_question2', actionAddChildParentField: 'courseResourceId', actionAddChildParentFields: ['courseId', 'status'] },
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
@@ -78,6 +78,15 @@ const gridAddFields: DataGridEditField[] = [
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
+    {
+        index: "hardiness", label: "Độ khó", type: DataGridEditFieldType.SELECT, size: 12, options: [{
+            value: 'basic',
+            label: 'Cơ bản',
+        }, {
+            value: 'advanced',
+            label: 'Nâng cao'
+        }]
+    },
     {
         index: "trial", label: "Dùng thử", type: DataGridEditFieldType.STATUS, size: 6, map: {
             0: 'Chưa kích hoạt',
