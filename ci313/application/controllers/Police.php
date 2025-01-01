@@ -92,7 +92,7 @@ class Police extends CI_Controller
 			} else {
 				$token = $token[1];
 				try {
-					$user = JWT::decode($token, 'your-secret-key', array('HS256'));
+					$user = JWT::decode($token, 'SC2lcAAA23!!@C!!^', array('HS256'));
 				} catch (Exception $e) {
 					$user = false;
 					$error = $e->getMessage();

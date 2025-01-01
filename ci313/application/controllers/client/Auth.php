@@ -51,7 +51,7 @@ class Auth extends CI_Controller
                     'exp' => time() + 3 * 60 * 60, // 10 secs
                     'data' => $user
                 );
-                $jwt = JWT::encode($token, 'your-secret-key');
+                $jwt = JWT::encode($token, 'SC2lcAAA23!!@C!!^');
                 $this->output->set_status_header(200)
                     ->set_content_type('application/json', 'utf-8')
                     ->set_output(json_encode(array('token' => $jwt, 'user' => $user)));

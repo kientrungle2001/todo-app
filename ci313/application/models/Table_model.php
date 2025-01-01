@@ -18,7 +18,7 @@ class Table_model extends CI_Model
         }
 
         try {
-            $this->tokenInfo = JWT::decode($token, 'your-secret-key', ['HS256']);
+            $this->tokenInfo = JWT::decode($token, 'SC2lcAAA23!!@C!!^', ['HS256']);
             return ['status' => 200];
         } catch (Exception $e) {
             return ['status' => 401, 'error' => 'Invalid token'];
@@ -115,6 +115,7 @@ class Table_model extends CI_Model
             }
         }
         $this->applySoftwareAndSiteFields($data, $table);
+        $this->applyModifiedFields($data, $table);
 
         $this->db->where('id', $id);
         $this->db->update($table, $data);
@@ -137,6 +138,7 @@ class Table_model extends CI_Model
             }
         }
         $this->applySoftwareAndSiteFields($data, $table);
+        $this->applyCreatedFields($data, $table);
 
         $this->db->insert($table, $data);
         return ['id' => $this->db->insert_id()];
@@ -164,6 +166,31 @@ class Table_model extends CI_Model
         if ($this->isFieldExisted($table, 'site') && !isset($data['site'])) {
             $data['site'] = $site;
         }
+        return $this;
+    }
+
+    private function applyCreatedFields(&$data, $table)
+    {
+        if ($this->isFieldExisted($table, 'creatorId')) {
+            $data['creatorId'] = $this->tokenInfo->data->id;
+        }
+
+        if ($this->isFieldExisted($table, 'created')) {
+            $data['created'] = date('Y-m-d H:i:s');
+        }
+        return $this;
+    }
+
+    private function applyModifiedFields(&$data, $table)
+    {
+        if ($this->isFieldExisted($table, 'modifiedId')) {
+            $data['modifiedId'] = $this->tokenInfo->data->id;
+        }
+
+        if ($this->isFieldExisted($table, 'modified')) {
+            $data['modified'] = date('Y-m-d H:i:s');
+        }
+        return $this;
     }
 
     // ... (Other private methods remain unchanged)

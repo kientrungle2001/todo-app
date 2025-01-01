@@ -35,7 +35,7 @@ class Test extends CI_Controller
             $token = $token[1];
         }
         try {
-            $tokenInfo = JWT::decode($token, 'your-secret-key', array('HS256'));
+            $tokenInfo = JWT::decode($token, 'SC2lcAAA23!!@C!!^', array('HS256'));
         } catch (Exception $e) {
             $tokenInfo = null;
             $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')))->_display();
