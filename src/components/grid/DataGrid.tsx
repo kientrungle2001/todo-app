@@ -305,7 +305,6 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         let addChildLink = `/Table/${column.actionAddChildController ?? controller}/add?field_`+(column.actionAddChildParentField ?? 'parent')+`=` + item.id;
         if (column.actionAddChildParentFields) {
             column.actionAddChildParentFields.forEach(field => {
-                console.log('item[field]', item[field]);
                 if (typeof item[field] === 'object' && typeof item[field][0] === 'object') {
                     addChildLink += '&field_' + field + '=' + item[field][0].id;
                 } else {

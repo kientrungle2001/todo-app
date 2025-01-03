@@ -8,9 +8,16 @@ const gridAddNewLabel: string = "Thêm Tài nguyên Khóa học";
 const gridUpdateLabel: string = "Cập nhật Tài nguyên Khóa học";
 const gridDeleteSelectedsLabel: string = "Xóa các Tài nguyên Khóa học đã chọn";
 const gridTable: string = "courses_resources";
-const gridJoins: DataGridTableJoin[] = [];
+const gridJoins: DataGridTableJoin[] = [
+    {
+        table: 'courses',
+        alias: 'c',
+        type: 'left',
+        condition: 't.courseId=c.id'
+    }
+];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "parent", "name", "courseId", "ordering", "status", "image", "type"];
+const gridFields: string[] = ["id", "parent", "name", "courseId", "ordering", "status", "image", "type", "c.categoryId as categoryIds", '1.0 as questionType'];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
@@ -29,7 +36,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.ordering,
     DataGridColumns.status,
     { ...DataGridColumns.addChildAction, actionAddChildParentFields: ['courseId', 'status'] },
-    { ...DataGridColumns.addChildAction, index: 'addQuestion', label: 'Thêm câu hỏi', actionAddChildController: 'admin_question2', actionAddChildParentField: 'courseResourceId', actionAddChildParentFields: ['courseId', 'status'] },
+    { ...DataGridColumns.addChildAction, index: 'addQuestion', label: 'Thêm câu hỏi', actionAddChildController: 'admin_question2', actionAddChildParentField: 'courseResourceId', actionAddChildParentFields: ['courseId', 'status', 'categoryIds', 'questionType'] },
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
