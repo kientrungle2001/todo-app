@@ -82,6 +82,18 @@ const gridAddFields: DataGridEditField[] = [
     },
     { index: "name", label: "Tên Tài nguyên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 12 },
+    {
+        index: "type", label: "Loại tài nguyên", type: DataGridEditFieldType.SELECT, size: 12, options: [{
+            value: 'section',
+            label: 'Chương/Mục/Tuần',
+        }, {
+            value: 'lesson',
+            label: 'Bài học/Bài giảng'
+        }, {
+            value: 'test',
+            label: 'Đề thi'
+        }]
+    },
     { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
