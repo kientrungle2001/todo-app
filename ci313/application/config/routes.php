@@ -79,6 +79,7 @@ $route['api/client/categories/courses_by_alias'] = 'client/category/courses_by_a
 $route['api/client/login'] = 'client/auth/login';
 $route['api/client/register'] = 'client/auth/register';
 $route['api/client/update'] = 'client/auth/update';
+$route['api/client/courses'] = 'client/auth/courses';
 $route['api/courses'] = 'client/course/courses';
 $route['api/areacode/getProvinces'] = 'client/areacode/getProvinces';
 // $route['3rdparty\/(.*)-(:num)x(:num)\.(jpg|png|gif|jpeg)'] = 'client/media/thumbnail/$1/$2/$3/$4';

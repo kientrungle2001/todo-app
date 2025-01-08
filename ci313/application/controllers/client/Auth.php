@@ -149,6 +149,19 @@ class Auth extends CI_Controller
         }
     }
 
+    public function courses()
+    {
+        $this->load->database();
+        $this->load->library('JWT');
+        $tokenInfo = $this->authenticate();
+        $username = $tokenInfo->data->username;
+        $sql = 'select history_payment.*, courses.name, courses.image, courses.alias from history_payment inner join courses on history_payment.courseId = courses.id where username = ?';
+        $courses = $this->db->query($sql, [$username])->result_array();
+        $this->output->set_status_header(200)
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($courses));
+    }
+
     public function authenticate()
     {
         $this->load->model('Table_model');
