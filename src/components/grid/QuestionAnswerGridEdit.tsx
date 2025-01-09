@@ -6,7 +6,7 @@ import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
 import { QuestionAnswerEditor } from "./QuestionAnswerEditor";
-import { replaceMediaUrl } from "@/api/defaultSettings";
+import { getConfigsByHostName, replaceMediaUrl } from "@/api/defaultSettings";
 
 interface QuestionAnswerGridEditProps {
     mode: DataGridEditMode,
@@ -27,6 +27,12 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
 
     const [answers, setAnswers] = useState<any[]>([]);
     const router = useRouter();
+    const [appName, setAppName] = React.useState<string | null>(null);
+    
+    useEffect(() => {
+        const hostnameConfigs = getConfigsByHostName(window.location.hostname);
+        setAppName(hostnameConfigs.appName);
+    }, []);
     useEffect(() => {
         // load answers of question
         getAxios(window.location.hostname).post(`/questions/answers/${itemId}`, {}, {
@@ -52,6 +58,12 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
             status: '0'
         });
         setAnswers(updatedAnswers);
+    }
+
+    if (null === appName) {
+        return (<>
+            <h1>Not Found</h1>
+        </>)
     }
 
     return (
@@ -99,10 +111,11 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                             </div>
 
                                         </Col>
-                                        <Col md={6} sm={12}>
+                                        {appName !== 'pmtv' && <Col md={6} sm={12}>
                                             <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_vn) }}>
                                             </div>
-                                        </Col>
+                                        </Col>}
+                                        
                                     </Row>
                                 </Col>
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
@@ -129,16 +142,16 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                                     }}
                                                 />
                                                 <Row className="g-0">
-                                                    <Col md={6} sm={12}>
+                                                    <Col md={appName !== 'pmtv' ? 6 : 12} sm={12}>
                                                         <QuestionAnswerEditor value={answer.content as string} updateValue={(value: string) => {
                                                             answer.content = value;
                                                         }} />
                                                     </Col>
-                                                    <Col md={6} sm={12}>
+                                                    {appName !== 'pmtv' && <Col md={6} sm={12}>
                                                         <QuestionAnswerEditor value={answer.content_vn as string} updateValue={(value: string) => {
                                                             answer.content_vn = value;
                                                         }} />
-                                                    </Col>
+                                                    </Col>}
                                                 </Row>
                                                 <Button variant="danger" onClick={() => {
                                                     let updatedAnswers: any[] = [...answers];
