@@ -1,5 +1,5 @@
 import { Form, Pagination } from "react-bootstrap";
-import { DataGridPagination } from "./DataGrid";
+import { DataGridPagination } from "./DataGridColumnTypes";
 
 interface PaginationGridProps {
     pagination?: DataGridPagination;
