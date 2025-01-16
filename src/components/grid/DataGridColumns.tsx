@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType } from "./DataGrid";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType } from "./DataGridColumnTypes";
 
 export const DataGridColumns: { [key: string]: DataGridColumn } = {
     id: { index: "id", label: "ID", width: "1%" },

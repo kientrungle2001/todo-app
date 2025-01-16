@@ -1,11 +1,11 @@
 // pages/login.tsx
 import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col, Card } from 'react-bootstrap';
-import axios, { getAxios } from '@/api/axiosInstance';
+import { getAxios } from '@/api/axiosInstance';
 import { useRouter } from 'next/router';
 import { storage } from '@/api/storage';
 import { FullLookAdminMenuSettings } from '@/api/settings/FullLookMenuSettings';
-import { DataGridPagination, DataGridSort, DataGridSortDirection } from '@/components/grid/DataGrid';
+import { DataGridPagination, DataGridSort, DataGridSortDirection } from '@/components/grid/DataGridColumnTypes';
 import Link from 'next/link';
 import { TopMenuGrid } from '@/components/grid/TopMenuGrid';
 import { replaceMediaUrl } from '@/api/defaultSettings';
