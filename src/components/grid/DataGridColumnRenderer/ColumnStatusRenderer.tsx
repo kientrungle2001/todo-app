@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { DataGridColumn } from "../DataGrid";
+import { DataGridColumn } from "../DataGridColumnTypes";
 import { useRouter } from "next/router";
 import axios, { getAxios } from "@/api/axiosInstance";
 import { storage } from "@/api/storage";

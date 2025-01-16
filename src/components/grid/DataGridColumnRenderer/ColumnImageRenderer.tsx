@@ -1,5 +1,5 @@
 import { replaceMediaUrl } from "@/api/defaultSettings";
-import { DataGridColumn } from "../DataGrid";
+import { DataGridColumn } from "../DataGridColumnTypes";
 
 export const ColumnImageRenderer = (column: DataGridColumn, item: any) => {
     if (!item[column.index]) {

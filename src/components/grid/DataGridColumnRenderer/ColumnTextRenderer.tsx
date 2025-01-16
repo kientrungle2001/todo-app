@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { DataGridColumn } from "../DataGrid";
+import { DataGridColumn } from "../DataGridColumnTypes";
 import { replaceMediaUrl } from "@/api/defaultSettings";
 
 export const ColumnTextRenderer = (column: DataGridColumn, item: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void) => {
