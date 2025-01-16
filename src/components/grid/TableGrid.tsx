@@ -1,10 +1,11 @@
-import DataGrid, { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGrid";
+import { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import React, { useEffect } from "react";
 import { getAxios } from '@/api/axiosInstance';
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { DataGridEditField } from "./DataGridEditTypes";
+import DataGrid from "./DataGrid";
 
 export interface TableGridSettings {
     title: string,
@@ -34,14 +35,7 @@ interface TableGridProps {
     settings: TableGridSettings
 }
 
-export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): React.ReactElement => {
-    const setCurrentPage = (page: number) => {
-        setPagination({ ...pagination, currentPage: page });
-    };
-
-    const setPageSize = (pageSize: number) => {
-        setPagination({ ...pagination, pageSize: pageSize, currentPage: 1 });
-    };
+export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): React.ReactElement => {
 
     const [pagination, setPagination] = React.useState<DataGridPagination>(settings.pagination);
     const [items, setItems] = React.useState<any[]>([]);
@@ -53,6 +47,13 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
     const [isCheckedAll, setIsCheckedAll] = React.useState<boolean>(false);
     const [checkedItemIds, setCheckedItemIds] = React.useState<number[]>([]);
 
+    const setCurrentPage = (page: number) => {
+        setPagination({ ...pagination, currentPage: page });
+    };
+
+    const setPageSize = (pageSize: number) => {
+        setPagination({ ...pagination, pageSize: pageSize, currentPage: 1 });
+    };
 
     const setSavedFilterData = (data: any) => {
         storage.set(controller + '.filterData', data);
@@ -62,13 +63,13 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
         const savedFilterData = storage.get(controller + '.filterData');
         if (savedFilterData) {
             setFilterData(savedFilterData.filterData);
-            setPagination({pageSize: savedFilterData.pageSize, currentPage: savedFilterData.currentPage });
+            setPagination({ pageSize: savedFilterData.pageSize, currentPage: savedFilterData.currentPage });
             setSearchText(savedFilterData.searchText);
         }
     }, []);
 
     useEffect(() => {
-        setSavedFilterData({filterData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts});
+        setSavedFilterData({ filterData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts });
     }, [filterData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
 
     const handleAfterDelete = (item: any) => {
@@ -132,6 +133,7 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
     useEffect(() => {
         setPagination({ ...pagination, currentPage: 1 });
     }, [searchText, filterData]);
+
     useEffect(() => {
         const handler = setTimeout(() => {
             handleListItems();
@@ -141,7 +143,22 @@ export const TableGrid: React.FC<TableGridProps> = ({controller, settings }): Re
         };
 
     }, [pagination, searchText, sorts, filterData]);
+
     return <>
-        <DataGrid controller={controller} software={settings.software} site={settings.site} totalItems={totalItems} table={settings.table} defaultSorts={settings.defaultSorts} setCurrentPage={setCurrentPage} setPageSize={setPageSize} title={settings.title} columns={settings.columns} filters={settings.filters} sortOptions={settings.sortOptions} items={items} pagination={pagination} filterData={filterData} setFilterData={setFilterData} sorts={sorts} setSorts={setSorts} searchText={searchText} setSearchText={setSearchText} onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus} onAfterSaveInputableColumn={handleAfterSaveInputableColumn} messages={messages} setMessages={setMessages} isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll} checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds} addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
+        <DataGrid title={settings.title}
+            controller={controller} table={settings.table} defaultSorts={settings.defaultSorts}
+            software={settings.software} site={settings.site}
+            messages={messages} setMessages={setMessages}
+            pagination={pagination} totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize}
+            columns={settings.columns} filters={settings.filters}
+            sortOptions={settings.sortOptions} sorts={sorts} setSorts={setSorts}
+            items={items}
+            filterData={filterData} setFilterData={setFilterData}
+            searchText={searchText} setSearchText={setSearchText}
+            onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus}
+            onAfterSaveInputableColumn={handleAfterSaveInputableColumn}
+            isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll}
+            checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds}
+            addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
     </>
 }
