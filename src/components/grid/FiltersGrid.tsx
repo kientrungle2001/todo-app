@@ -95,13 +95,13 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
             if (filter.select2 && selectRef[filter.index].current && (filter.options || maps[filter.index])) {
                 console.log('Initializing Select2 for filter field:', filter.index);
                 const $select = $(selectRef[filter.index].current);
-                
+
                 $select.select2({
                     theme: 'bootstrap-5', // Optional: you can customize the theme
                     placeholder: 'Chọn ' + filter.label,
                     allowClear: true,
                 });
-    
+
                 // When the selection changes, update the item state
                 $select.on('change', function () {
                     const selectedValues = $select.val();
@@ -115,7 +115,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                         setFilterData(updatedItem);
                     }
                 });
-    
+
                 // Clean up Select2 on unmount
                 return () => {
                     $select.select2('destroy');
@@ -147,7 +147,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                         <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}
                             selected={(filterData[filter.index] ?? '') == option[filter.valueField as string]}
                         >
-                            {filter.treeMode? '|____'.repeat(option.__level + 1) : ''}
+                            {filter.treeMode ? '|____'.repeat(option.__level + 1) : ''}
                             #{option[filter.valueField as string]}&nbsp;-&nbsp;
                             {option[filter.labelField as string]}
                         </option>
@@ -224,12 +224,21 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
         const updatedMaps = { ...maps };
         filters.forEach(filter => {
             if (filter.type === DataGridFilterColumnType.SELECT && filter.table) {
+                let condition = null;
+                if (filter.tableCondition) {
+                    if (typeof filter.tableCondition === 'function') {
+                        condition = filter.tableCondition(filterData);
+                    } else {
+                        condition = filter.tableCondition;
+                    }
+                }
                 const fields = [filter.valueField, filter.labelField];
                 if (filter.treeMode) {
                     fields.push(filter.treeParentField ?? 'parent');
                 }
                 const data: any = {
-                    fields: fields
+                    fields: fields,
+                    condition: condition
                 };
                 if (filter.treeMode) {
                     data.orderBy = filter.orderBy ?? 'ordering asc';
@@ -242,14 +251,14 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     }
                 })
                     .then((response: any) => {
-                        
+
                         let items: any[] = response.data;
                         if (filter.treeMode) {
                             items = buildTree(items, filter.treeParentField ?? 'parent');
                             items = flatTree(items);
                         }
                         updatedMaps[filter.index] = items;
-                        
+
                     })
                     .catch((error: any) => {
                         if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
@@ -265,7 +274,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
         setTimeout(() => {
             setMaps(updatedMaps);
         }, 200);
-    }, []);
+    }, [filterData]);
 
     return <Form className="row g-1">
         <Form.Group controlId={"formGroupSearch"} className="mb-1 col-md-3">

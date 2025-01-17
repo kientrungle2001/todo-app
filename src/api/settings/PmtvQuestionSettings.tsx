@@ -14,7 +14,7 @@ const gridFields: string[] = ["id", "name", "ordering", "status", "trial", "cate
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    
+
     /*
     {
         index: "cattest", label: "Câu hỏi",
@@ -64,8 +64,8 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.categoryIds,
-    DataGridFilterColumns.courseId,
-    DataGridFilterColumns.courseResourceId,
+    { ...DataGridFilterColumns.courseId, tableCondition: (item) => "categoryId = '" + item.categoryIds + "'"},
+    { ...DataGridFilterColumns.courseResourceId, tableCondition: (item) => "courseId = '" + item.courseId + "'" },
     DataGridFilterColumns.status,
 ];
 

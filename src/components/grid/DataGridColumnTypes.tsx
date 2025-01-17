@@ -93,6 +93,7 @@ export interface DataGridFilterColumn {
     options?: any[];
     map?: any;
     select2?: boolean;
+    tableCondition?: string | ((item: any) => string);
 }
 
 // declare map 
