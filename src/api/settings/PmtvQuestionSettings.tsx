@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
@@ -14,45 +14,13 @@ const gridFields: string[] = ["id", "name", "ordering", "status", "trial", "cate
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-
-    /*
     {
-        index: "cattest", label: "Câu hỏi",
-        type: DataGridColumnType.GROUP,
-        groupChildren: [
-            
-        ]
-    },
-    */
-
-    {
-        index: "name", label: "Nội dung",
+        index: "name", label: "Nội dung", isHtml: true,
         linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
-        isHtml: true
     },
-    {
-        index: "categoryIds",
-        label: "Danh mục",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "categories",
-        referenceField: "name"
-    },
-
-    {
-        index: "courseId",
-        label: "Khóa học",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "courses",
-        referenceField: "name"
-    },
-    {
-        index: "courseResourceId",
-        label: "Tài nguyên Khóa học",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "courses_resources",
-        referenceField: "name"
-    },
-
+    DataGridColumns.categoryIds,
+    DataGridColumns.courseId,
+    DataGridColumns.courseResourceId,
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.trial,
@@ -64,7 +32,7 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.categoryIds,
-    { ...DataGridFilterColumns.courseId, tableCondition: (item) => "categoryId = '" + item.categoryIds + "'"},
+    { ...DataGridFilterColumns.courseId, tableCondition: (item) => "categoryId = '" + item.categoryIds + "'" },
     { ...DataGridFilterColumns.courseResourceId, tableCondition: (item) => "courseId = '" + item.courseId + "'" },
     DataGridFilterColumns.status,
 ];

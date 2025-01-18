@@ -15,7 +15,7 @@ const gridFields: string[] = ["id", "title", "alias", "brief", "content", "order
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "title", label: "Tên Tài liệu", linkFormat: (value: any, item: any) => `/Table/admin_document/${item.id}/edit` },
-    { index: "alias", label: "URL" },
+    DataGridColumns.alias,
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.editAction,

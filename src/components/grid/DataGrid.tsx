@@ -86,7 +86,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     };
 
     const handleAddChildItem = (item: any, column: DataGridColumn) => {
-        let addChildLink = `/Table/${column.actionAddChildController ?? controller}/add?field_`+(column.actionAddChildParentField ?? 'parent')+`=` + item.id;
+        let addChildLink = `/Table/${column.actionAddChildController ?? controller}/add?field_` + (column.actionAddChildParentField ?? 'parent') + `=` + item.id;
         if (column.actionAddChildParentFields) {
             column.actionAddChildParentFields.forEach(field => {
                 if (typeof item[field] === 'object' && typeof item[field][0] === 'object') {
@@ -276,53 +276,55 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                         )
                                     })
                                 }
-                                <Table size="sm" striped hover>
-                                    <thead>
-                                        <tr>
-                                            <th style={{ width: "1%" }}>
-                                                <Form.Check type="checkbox" checked={isCheckedAll} onChange={handleCheckAll} />
-                                            </th>
-                                            {columns.map(column => (
-                                                <th key={column.index} style={{ width: column.width }}>
-                                                    {column.label}
-                                                    {column.inputable && <>
-                                                        <Button className="ms-2" size="sm" variant="primary" onClick={() => handleSaveInputableColumn(column)}>
-                                                            Lưu
-                                                        </Button>
-                                                    </>}
+                                <div className="table-responsive">
+                                    <Table size="sm" striped hover>
+                                        <thead>
+                                            <tr>
+                                                <th style={{ width: "1%" }}>
+                                                    <Form.Check type="checkbox" checked={isCheckedAll} onChange={handleCheckAll} />
                                                 </th>
-                                            ))}
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={columns.length + 1}>
-                                                <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {items.length ? items.map((item, index) =>
-                                            <tr key={index} onClick={() => toggleCheckedItem(item.id)} className={checkedItemIds.indexOf(item.id) !== -1 ? "table-success" : ""} style={{ "cursor": "pointer" }}>
-                                                <td style={{ width: "1%" }}>
-                                                    <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
-                                                </td>
                                                 {columns.map(column => (
-                                                    <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap' : 'normal' }}>
-                                                        {renderColumn(column, item)}
-                                                    </td>
+                                                    <th key={column.index} style={{ width: column.width }}>
+                                                        {column.label}
+                                                        {column.inputable && <>
+                                                            <Button className="ms-2" size="sm" variant="primary" onClick={() => handleSaveInputableColumn(column)}>
+                                                                Lưu
+                                                            </Button>
+                                                        </>}
+                                                    </th>
                                                 ))}
-                                            </tr>)
-                                            : <tr>
-                                                <td colSpan={columns.length + 1} className="text-center">No data available.</td>
-                                            </tr>}
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colSpan={columns.length + 1}>
-                                                <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </Table>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={columns.length + 1}>
+                                                    <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {items.length ? items.map((item, index) =>
+                                                <tr key={index} onClick={() => toggleCheckedItem(item.id)} className={checkedItemIds.indexOf(item.id) !== -1 ? "table-success" : ""} style={{ "cursor": "pointer" }}>
+                                                    <td style={{ width: "1%" }}>
+                                                        <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
+                                                    </td>
+                                                    {columns.map(column => (
+                                                        <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap' : 'normal' }}>
+                                                            {renderColumn(column, item)}
+                                                        </td>
+                                                    ))}
+                                                </tr>)
+                                                : <tr>
+                                                    <td colSpan={columns.length + 1} className="text-center">No data available.</td>
+                                                </tr>}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colSpan={columns.length + 1}>
+                                                    <PaginationGrid totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize} pagination={pagination} />
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </Table>
+                                </div>
                                 <div className="d-flex justify-content-end">
                                     <Button variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
                                     <Button variant="danger" className="me-2">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>

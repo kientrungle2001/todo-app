@@ -17,7 +17,7 @@ const gridJoins: DataGridTableJoin[] = [
     }
 ];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "parent", "name", "courseId", "ordering", "status", "image", "type", "c.categoryId as categoryIds", '1.0 as questionType'];
+const gridFields: string[] = ["id", "parent", "name", "alias", "courseId", "ordering", "status", "image", "type", "c.categoryId as categoryIds", '1.0 as questionType'];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
@@ -26,13 +26,8 @@ const gridColumns: DataGridColumn[] = [
         linkFormat: (value: any, item: any) => `/Table/admin_course_resource/${item.id}/edit`,
         treeMode: true
     },
-    {
-        index: "courseId",
-        label: "Danh mục",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "courses",
-        referenceField: "name"
-    },
+    DataGridColumns.alias,
+    DataGridColumns.courseId,
     DataGridColumns.ordering,
     DataGridColumns.status,
     { ...DataGridColumns.addChildAction, actionAddChildParentFields: ['courseId', 'status'] },

@@ -12,27 +12,11 @@ const gridFields: string[] = ["id", "name", "alias", "router", "ordering", "stat
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "name", label: "Tên Danh mục", linkFormat: (value: any, item: any) => `/Table/admin_category/${item.id}/detail`, treeMode: true },
-    { index: "alias", label: "Đường dẫn" },
-    { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true, treeMode: true },
+    DataGridColumns.alias,
+    { ...DataGridColumns.ordering, treeMode: true },
     DataGridColumns.status,
-    {
-        index: "display", type: DataGridColumnType.STATUS, label: "Hiển thị", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    {
-        index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    {...DataGridColumns.addChildAction, actionAddChildParentFields: ['alias', 'router', 'status', 'display', 'trial']},
-    {...DataGridColumns.addChildAction, index: 'addCourse', label: 'Thêm khóa học', actionAddChildController: 'admin_course', actionAddChildParentField: 'categoryId', actionAddChildParentFields: ['status']},
+    { ...DataGridColumns.addChildAction, actionAddChildParentFields: ['alias', 'router', 'status', 'display', 'trial'] },
+    { ...DataGridColumns.addChildAction, index: 'addCourse', label: 'Thêm khóa học', actionAddChildController: 'admin_course', actionAddChildParentField: 'categoryId', actionAddChildParentFields: ['status'] },
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
