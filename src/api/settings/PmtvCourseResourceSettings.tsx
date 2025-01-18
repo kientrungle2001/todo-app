@@ -1,5 +1,6 @@
 import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -66,17 +67,14 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    {
-        index: "courseId", label: "Khóa học", type: DataGridEditFieldType.SELECT, size: 4,
-        table: "courses", valueField: "id", labelField: "name", orderBy: "name asc", multiple: false, select2: true
-    },
+    DataGridEditFields.courseId,
     {
         index: "parent", label: "Mục cha", type: DataGridEditFieldType.SELECT, size: 8,
         table: "courses_resources", valueField: "id", labelField: "name", treeMode: true,
         tableCondition: (item) => "courseId = '" + item.courseId + "' and id <> '" + (item.id ?? 0) + "'",
     },
     { index: "name", label: "Tên Tài nguyên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
-    { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 12 },
+    { ...DataGridEditFields.alias, size: 12 },
     {
         index: "type", label: "Loại tài nguyên", type: DataGridEditFieldType.SELECT, size: 12, options: [{
             value: 'section',
@@ -101,18 +99,8 @@ const gridAddFields: DataGridEditField[] = [
             label: 'Nâng cao'
         }]
     },
-    {
-        index: "trial", label: "Dùng thử", type: DataGridEditFieldType.STATUS, size: 6, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        }, statusToggable: true
-    },
-    {
-        index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        }, statusToggable: true
-    },
+    DataGridEditFields.trial,
+    DataGridEditFields.status,
 ];
 
 

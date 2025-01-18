@@ -1,5 +1,6 @@
 import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -76,19 +77,14 @@ const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGr
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Danh mục", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 6 },
+    DataGridEditFields.alias,
     { index: "router", label: "Điểm chạy", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "img", label: "Ảnh Danh mục", type: DataGridEditFieldType.IMAGE, size: 6 },
     {
         index: "parent", label: "Danh mục cha", type: DataGridEditFieldType.SELECT, size: 6,
         table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc"
     },
-    {
-        index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        }, statusToggable: true
-    },
+    DataGridEditFields.status,
 ];
 
 

@@ -1,5 +1,6 @@
 import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -58,7 +59,7 @@ const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGr
 
 const gridAddFields: DataGridEditField[] = [
     { index: "name", label: "Tên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
-    { index: "alias", label: "Đường dẫn", type: DataGridEditFieldType.TEXT, size: 12 },
+    { ...DataGridEditFields.alias, size: 12 },
     { index: "amount", label: "Học phí", type: DataGridEditFieldType.TEXT, size: 2 },
     { index: "oldAmount", label: "Học phí cũ", type: DataGridEditFieldType.TEXT, size: 2 },
     { index: "total_minutes", label: "Tổng số phút", type: DataGridEditFieldType.TEXT, size: 2 },
@@ -67,16 +68,8 @@ const gridAddFields: DataGridEditField[] = [
     { index: "includes", label: "Khóa học bao gồm", type: DataGridEditFieldType.EDITOR, size: 12 },
     { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
-    {
-        index: "categoryId", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
-        table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc", multiple: false, select2: true
-    },
-    {
-        index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        }, statusToggable: true
-    },
+    DataGridEditFields.categoryId,
+    DataGridEditFields.status
 ];
 
 
