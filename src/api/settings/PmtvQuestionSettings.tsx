@@ -1,5 +1,6 @@
 import { DataGridColumn, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
@@ -91,12 +92,7 @@ const gridAddFields: DataGridEditField[] = [
         select2: true,
         tabGroup: "0classification"
     },
-    {
-        index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        }, statusToggable: true
-    },
+    DataGridEditFields.status,
 ];
 
 export const PmtvAdminQuestionSettings: TableGridSettings = {

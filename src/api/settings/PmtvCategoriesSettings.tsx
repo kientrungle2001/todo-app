@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
@@ -26,49 +26,13 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 5000 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
-    {
-        index: "parents", label: "Danh mục cha", type: DataGridFilterColumnType.SELECT,
-        table: "categories",
-        valueField: "id",
-        labelField: "name",
-        treeMode: true,
-        select2: true,
-        comparisonOperator: "inset"
-    },
+    DataGridFilterColumns.parents,
     DataGridFilterColumns.status,
-    {
-        index: "display", label: "Hiển thị", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
-    {
-        index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
-    {
-        index: "nameAsc",
-        label: "Tên Danh mục tăng",
-        sorts: [
-            { index: "name", direction: DataGridSortDirection.ASCENDING },
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
-        ]
-    },
-    {
-        index: "nameDesc",
-        label: "Tên Danh mục giảm",
-        sorts: [
-            { index: "name", direction: DataGridSortDirection.DESCENDING },
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
-        ]
-    },
+    DataGridSortOptions.nameAsc,
+    DataGridSortOptions.nameDesc,
     DataGridSortOptions.idAsc,
     DataGridSortOptions.idDesc,
 ];
@@ -76,14 +40,11 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Tên Danh mục", type: DataGridEditFieldType.TEXT, size: 6 },
+    DataGridEditFields.name,
     DataGridEditFields.alias,
-    { index: "router", label: "Điểm chạy", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "img", label: "Ảnh Danh mục", type: DataGridEditFieldType.IMAGE, size: 6 },
-    {
-        index: "parent", label: "Danh mục cha", type: DataGridEditFieldType.SELECT, size: 6,
-        table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc"
-    },
+    DataGridEditFields.router,
+    DataGridEditFields.img,
+    DataGridEditFields.parent,
     DataGridEditFields.status,
 ];
 

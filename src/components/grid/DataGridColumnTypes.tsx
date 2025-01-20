@@ -162,6 +162,15 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         comparisonOperator: "equal",
         treeMode: true,
     },
+    parents: {
+        index: "parents", label: "Danh mục cha", type: DataGridFilterColumnType.SELECT,
+        table: "categories",
+        valueField: "id",
+        labelField: "name",
+        treeMode: true,
+        select2: true,
+        comparisonOperator: "inset"
+    },
 };
 
 export interface DataGridSort {
@@ -206,6 +215,22 @@ export const DataGridSortOptions: { [key: string]: DataGridSortOption } = {
             { index: "ordering", direction: DataGridSortDirection.DESCENDING },
             { index: "id", direction: DataGridSortDirection.ASCENDING },
         ],
+    },
+    nameAsc: {
+        index: "nameAsc",
+        label: "Tên Danh mục tăng",
+        sorts: [
+            { index: "name", direction: DataGridSortDirection.ASCENDING },
+            { index: "id", direction: DataGridSortDirection.DESCENDING },
+        ]
+    },
+    nameDesc: {
+        index: "nameDesc",
+        label: "Tên Danh mục giảm",
+        sorts: [
+            { index: "name", direction: DataGridSortDirection.DESCENDING },
+            { index: "id", direction: DataGridSortDirection.ASCENDING },
+        ]
     },
 };
 

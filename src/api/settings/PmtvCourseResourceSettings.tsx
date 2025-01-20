@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn, DataGridFilterColumn, DataGridFilterColumns, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
@@ -46,22 +46,8 @@ const gridFilters: DataGridFilterColumn[] = [
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
-    {
-        index: "nameAsc",
-        label: "Tên Tài nguyên Khóa học tăng",
-        sorts: [
-            { index: "name", direction: DataGridSortDirection.ASCENDING },
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
-        ]
-    },
-    {
-        index: "nameDesc",
-        label: "Tên Tài nguyên Khóa học giảm",
-        sorts: [
-            { index: "name", direction: DataGridSortDirection.DESCENDING },
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
-        ]
-    }
+    { ...DataGridSortOptions.nameAsc, label: "Tên Tài nguyên Khóa học tăng" },
+    { ...DataGridSortOptions.nameDesc, label: "Tên Tài nguyên Khóa học giảm" },
 ];
 
 const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
@@ -73,32 +59,13 @@ const gridAddFields: DataGridEditField[] = [
         table: "courses_resources", valueField: "id", labelField: "name", treeMode: true,
         tableCondition: (item) => "courseId = '" + item.courseId + "' and id <> '" + (item.id ?? 0) + "'",
     },
-    { index: "name", label: "Tên Tài nguyên Khóa học", type: DataGridEditFieldType.TEXT, size: 12 },
+    { ...DataGridEditFields.name, label: "Tên Tài nguyên Khóa học", size: 12 },
     { ...DataGridEditFields.alias, size: 12 },
-    {
-        index: "type", label: "Loại tài nguyên", type: DataGridEditFieldType.SELECT, size: 12, options: [{
-            value: 'section',
-            label: 'Chương/Mục/Tuần',
-        }, {
-            value: 'lesson',
-            label: 'Bài học/Bài giảng'
-        }, {
-            value: 'test',
-            label: 'Đề thi'
-        }]
-    },
-    { index: "image", label: "Hình ảnh", type: DataGridEditFieldType.IMAGE, size: 12 },
-    { index: "brief", label: "Mô tả", type: DataGridEditFieldType.TEXT, size: 12 },
-    { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
-    {
-        index: "hardiness", label: "Độ khó", type: DataGridEditFieldType.SELECT, size: 12, options: [{
-            value: 'basic',
-            label: 'Cơ bản',
-        }, {
-            value: 'advanced',
-            label: 'Nâng cao'
-        }]
-    },
+    DataGridEditFields.type,
+    DataGridEditFields.image,
+    DataGridEditFields.brief,
+    DataGridEditFields.content,
+    DataGridEditFields.hardiness,
     DataGridEditFields.trial,
     DataGridEditFields.status,
 ];
