@@ -55,25 +55,16 @@ interface DataGridProps {
 const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
     const router = useRouter();
     // Function to handle navigation
-    const handleNavigation = (path: string) => {
-        router.push(path);
-    };
-    const handleEditItem = (item: any) => {
-        handleNavigation(`/Table/${controller}/${item.id}/edit`);
-    }
-
-    const handleAddItem = () => {
-        handleNavigation(`/Table/${controller}/add`);
-    }
+    const handleNavigation = (path: string) => { router.push(path); };
+    const handleEditItem = (item: any) => { handleNavigation(`/Table/${controller}/${item.id}/edit`); }
+    const handleAddItem = () => { handleNavigation(`/Table/${controller}/add`); }
 
     const handleDeleteItem = (item: any) => {
         // Implement your delete logic here
         if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
             console.log(`Deleting item with ID: ${item.id}`);
             getAxios(window.location.hostname).delete(`/tables/${table}/delete/${item.id}`, {
-                headers: {
-                    'Authorization': `Bearer ${storage.get('token') || ''}`
-                }
+                headers: { 'Authorization': `Bearer ${storage.get('token') || ''}` }
             }).then(() => {
                 onAfterDelete(item);
             }).catch((error: any) => {

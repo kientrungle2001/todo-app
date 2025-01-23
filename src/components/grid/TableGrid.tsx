@@ -47,17 +47,9 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
     const [isCheckedAll, setIsCheckedAll] = React.useState<boolean>(false);
     const [checkedItemIds, setCheckedItemIds] = React.useState<number[]>([]);
 
-    const setCurrentPage = (page: number) => {
-        setPagination({ ...pagination, currentPage: page });
-    };
-
-    const setPageSize = (pageSize: number) => {
-        setPagination({ ...pagination, pageSize: pageSize, currentPage: 1 });
-    };
-
-    const setSavedFilterData = (data: any) => {
-        storage.set(controller + '.filterData', data);
-    };
+    const setCurrentPage = (page: number) => { setPagination({ ...pagination, currentPage: page }); };
+    const setPageSize = (pageSize: number) => { setPagination({ ...pagination, pageSize: pageSize, currentPage: 1 }); };
+    const setSavedFilterData = (data: any) => { storage.set(controller + '.filterData', data); };
 
     useEffect(() => {
         const savedFilterData = storage.get(controller + '.filterData');
@@ -92,6 +84,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
             label: `Column #${column.label} has been updated successfully`,
             variant: "success"
         });
+        setMessages(updatedMessages);
         handleListItems();
     }
 
@@ -100,48 +93,33 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
     const handleListItems = () => {
         getAxios(window.location.hostname).post('/tables/search/' + settings.table, {
             settings: JSON.parse(JSON.stringify(settings)),
-            search: searchText,
-            filterData: JSON.parse(JSON.stringify(filterData)),
+            search: searchText, filterData: JSON.parse(JSON.stringify(filterData)),
             sorts: JSON.parse(JSON.stringify(sorts)),
-            page: pagination.currentPage,
-            pageSize: pagination.pageSize,
-        }, {
-            headers: {
-                'Authorization': `Bearer ${storage.get('token') || ''}`
-            }
-        }).then((resp: any) => {
-            if (settings.treeMode) {
-                let items: any[] = resp.data.items;
-                items = buildTree(items, settings.treeParentField ?? 'parent');
-                items = flatTree(items);
-                setItems(items);
-            } else {
-                setItems(resp.data.items);
-            }
-            setTotalItems(resp.data.totalItems);
-            setIsCheckedAll(false);
-            setCheckedItemIds([]);
-        }).catch((error: any) => {
-            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                storage.clearTokenInfo();
-                router.push('/login');
-            }
-        });
+            page: pagination.currentPage, pageSize: pagination.pageSize,
+        }, { headers: { 'Authorization': `Bearer ${storage.get('token') || ''}` } })
+            .then((resp: any) => {
+                if (settings.treeMode)
+                    setItems(flatTree(buildTree(resp.data.items,
+                        settings.treeParentField ?? 'parent')));
+                else
+                    setItems(resp.data.items);
+                setTotalItems(resp.data.totalItems);
+                setIsCheckedAll(false);
+                setCheckedItemIds([]);
+            }).catch((error: any) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
+            });
     };
 
 
-    useEffect(() => {
-        setPagination({ ...pagination, currentPage: 1 });
-    }, [searchText, filterData]);
+    useEffect(() => { setPagination({ ...pagination, currentPage: 1 }); }, [searchText, filterData]);
 
     useEffect(() => {
-        const handler = setTimeout(() => {
-            handleListItems();
-        }, 300);
-        return () => {
-            clearTimeout(handler);
-        };
-
+        const handler = setTimeout(() => { handleListItems(); }, 300);
+        return () => { clearTimeout(handler); };
     }, [pagination, searchText, sorts, filterData]);
 
     return <>
