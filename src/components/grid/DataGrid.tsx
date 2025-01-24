@@ -1,6 +1,5 @@
-import { Alert, Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { PaginationGrid } from "./PaginationGrid";
-import { FiltersGrid } from "./FiltersGrid";
 import { useRouter } from "next/router";
 import { getAxios } from "@/api/axiosInstance";
 import Link from "next/link";
@@ -15,8 +14,9 @@ import { ColumnDateRenderer } from "./DataGridColumnRenderer/ColumnDateRenderer"
 import { ColumnStatusRenderer } from "./DataGridColumnRenderer/ColumnStatusRenderer";
 import { ColumnReferenceRenderer } from "./DataGridColumnRenderer/ColumnReferenceRenderer";
 import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption } from "./DataGridColumnTypes";
-
-
+import { FiltersGridCard } from "./filters/FilterGridCard";
+import { DataGridMessages } from "./messages/DataGridMessages";
+import { DataGridTitle } from "./title/DataGridTitle";
 
 interface DataGridProps {
     title: string;
@@ -172,17 +172,6 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         return columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus);
     };
 
-    const handleResetFilter = () => {
-        setFilterData({});
-        setSearchText('');
-    };
-
-    const handleCloseMessage = (message: DataGridMessage, index: number) => {
-        let updatedMessages: DataGridMessage[] = [...messages];
-        updatedMessages.splice(index, 1);
-        setMessages(updatedMessages);
-    };
-
     const handleCheckAll = (event: React.ChangeEvent<HTMLInputElement>) => {
         let checked = event.target.checked;
         setIsCheckedAll(checked);
@@ -232,41 +221,13 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             <Container fluid className="mb-0 mt-0">
                 <Row className="g-0">
                     <Col sm={12} md={3} lg={12}>
-                        <Card className="border-0">
-                            <Card.Body className="border-0 pt-0">
-                                <Card.Title className="d-flex justify-content-between align-items-center">
-                                    <span>Bộ lọc</span>
-                                    <div>
-                                        <Button size="sm" variant="danger" onClick={handleResetFilter}>Reset</Button>
-                                    </div>
-                                </Card.Title>
-                                <FiltersGrid filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
-                            </Card.Body>
-                        </Card>
-
+                        <FiltersGridCard filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
                     </Col>
                     <Col sm={12} md={9} lg={12}>
                         <Card className="border-0">
                             <Card.Body className="border-0 pt-0">
-                                <Card.Title className="d-flex justify-content-between align-items-center">
-                                    {/* Title on the left */}
-                                    <span>{title}</span>
-
-                                    {/* Buttons on the right */}
-                                    <div>
-                                        {/* Button as a link */}
-                                        <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
-                                        {/* Regular Button */}
-                                        <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
-                                    </div>
-                                </Card.Title>
-                                {
-                                    messages.map((message: DataGridMessage, index: number) => {
-                                        return (
-                                            <Alert key={index} variant={message.variant} dismissible onClose={() => handleCloseMessage(message, index)}>{message.label}</Alert>
-                                        )
-                                    })
-                                }
+                                <DataGridTitle controller={controller} title={title} addNewLabel={addNewLabel} deleteSelectedsLabel={deleteSelectedsLabel} />
+                                <DataGridMessages messages={messages} setMessages={setMessages} />
                                 <div className="table-responsive">
                                     <Table size="sm" striped hover>
                                         <thead>
