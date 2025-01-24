@@ -17,6 +17,7 @@ import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridF
 import { FiltersGridCard } from "./filters/FilterGridCard";
 import { DataGridMessages } from "./messages/DataGridMessages";
 import { DataGridTitle } from "./title/DataGridTitle";
+import { DataGridBottomToolbar } from "./bottom/DataGridBottomToolbar";
 
 interface DataGridProps {
     title: string;
@@ -57,7 +58,6 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     // Function to handle navigation
     const handleNavigation = (path: string) => { router.push(path); };
     const handleEditItem = (item: any) => { handleNavigation(`/Table/${controller}/${item.id}/edit`); }
-    const handleAddItem = () => { handleNavigation(`/Table/${controller}/add`); }
 
     const handleDeleteItem = (item: any) => {
         // Implement your delete logic here
@@ -274,10 +274,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                 </tfoot>
                             </Table>
                         </div>
-                        <div className="d-flex justify-content-end">
-                            <Button variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
-                            <Button variant="danger" className="me-2">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
-                        </div>
+                        <DataGridBottomToolbar addNewLabel={addNewLabel} controller={controller} deleteSelectedsLabel={deleteSelectedsLabel} />
                     </Card.Body>
                 </Card>
             </Col>
