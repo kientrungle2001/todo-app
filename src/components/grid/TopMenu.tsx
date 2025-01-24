@@ -34,7 +34,7 @@ const TopMenu: React.FC<MenuProps> = ({ data }) => {
             } else {
                 return (
                     <NavDropdown.Item className="mt-2 me-2" key={item.id} href={`/Table/${item.admin_controller}`}>
-                        {item.name}
+                        [ {item.name} ]
                     </NavDropdown.Item>
                 );
             }
