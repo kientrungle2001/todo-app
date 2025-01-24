@@ -2,9 +2,10 @@ import { DataGridPagination, DataGridSort, DataGridSortDirection } from "@/compo
 import { FullLookAdminMenuSettings } from "../settings/FullLookMenuSettings";
 import { getAxios } from "../axiosInstance";
 import { storage } from "../storage";
+import { NextRouter } from "next/router";
 
 export const menuRepository = {
-    getMenu: () => {
+    getMenu: (router: NextRouter) => {
         const settings = FullLookAdminMenuSettings;
         const sorts: DataGridSort[] = [
             { index: 'ordering', direction: DataGridSortDirection.ASCENDING },
@@ -26,6 +27,12 @@ export const menuRepository = {
         }, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
+        }).catch((error: any) => {
+            if (error.response && error.response.status === 401
+                && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                router.push('/login');
             }
         });
     }
