@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
-import { DataGridFilterColumn, DataGridFilterColumnType, DataGridSort, DataGridSortOption } from "../DataGridColumnTypes"
+import { DataGridFilterColumn, DataGridFilterColumnType, DataGridSort, DataGridSortOption } from "../DataGridColumnTypes";
 import React, { useEffect } from "react";
-import axios, { getAxios } from "@/api/axiosInstance";
+import { getAxios } from "@/api/axiosInstance";
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { buildTree, flatTree } from "@/api/tree";
