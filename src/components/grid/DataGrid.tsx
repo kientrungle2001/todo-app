@@ -1,11 +1,9 @@
 import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { PaginationGrid } from "./PaginationGrid";
 import { useRouter } from "next/router";
-import { getAxios } from "@/api/axiosInstance";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import { storage } from "@/api/storage";
 import { ColumnTextRenderer } from "./DataGridColumnRenderer/ColumnTextRenderer";
 import { ColumnNumberRenderer } from "./DataGridColumnRenderer/ColumnNumberRenderer";
 import { ColumnImageRenderer } from "./DataGridColumnRenderer/ColumnImageRenderer";
@@ -41,7 +39,7 @@ interface DataGridProps {
     setFilterData: (filterData: any) => void;
     setCurrentPage: (page: number) => void;
     setPageSize: (pageSize: number) => void;
-    onAfterDelete: (item: any) => void;
+    onDeleteItem: (item: any) => void;
     onAfterChangeStatus: (column: DataGridColumn, item: any) => void;
     onAfterSaveInputableColumn: (column: DataGridColumn) => void;
     messages: DataGridMessage[];
@@ -54,28 +52,11 @@ interface DataGridProps {
     deleteSelectedsLabel?: string;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onAfterDelete, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onDeleteItem, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => { router.push(path); };
     const handleEditItem = (item: any) => { handleNavigation(`/Table/${controller}/${item.id}/edit`); }
-
-    const handleDeleteItem = (item: any) => {
-        // Implement your delete logic here
-        if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
-            console.log(`Deleting item with ID: ${item.id}`);
-            getAxios(window.location.hostname).delete(`/tables/${table}/delete/${item.id}`, {
-                headers: { 'Authorization': `Bearer ${storage.get('token') || ''}` }
-            }).then(() => {
-                onAfterDelete(item);
-            }).catch((error: any) => {
-                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                    storage.clearTokenInfo();
-                    router.push('/login');
-                }
-            });
-        }
-    };
 
     const handleAddChildItem = (item: any, column: DataGridColumn) => {
         let addChildLink = `/Table/${column.actionAddChildController ?? controller}/add?field_` + (column.actionAddChildParentField ?? 'parent') + `=` + item.id;
@@ -115,7 +96,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                     {column.label}
                 </Button>
             } else if (column.actionType === DataGridColumnActionType.DELETE) {
-                return <Button variant="danger" size="sm" onClick={() => handleDeleteItem(item)}>
+                return <Button variant="danger" size="sm" onClick={() => onDeleteItem(item)}>
                     {column.label}
                 </Button>
             } else if (column.actionType === DataGridColumnActionType.ADD_CHILD) {
