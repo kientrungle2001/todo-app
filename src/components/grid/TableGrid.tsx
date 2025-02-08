@@ -64,6 +64,23 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
         setSavedFilterData({ filterData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts });
     }, [filterData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
 
+    const handleDeleteItem = (item: any) => {
+        // Implement your delete logic here
+        if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
+            console.log(`Deleting item with ID: ${item.id}`);
+            getAxios(window.location.hostname).delete(`/tables/${settings.table}/delete/${item.id}`, {
+                headers: { 'Authorization': `Bearer ${storage.get('token') || ''}` }
+            }).then(() => {
+                handleAfterDelete(item);
+            }).catch((error: any) => {
+                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                    storage.clearTokenInfo();
+                    router.push('/login');
+                }
+            });
+        }
+    };
+
     const handleAfterDelete = (item: any) => {
         let updatedMessages: DataGridMessage[] = [...messages];
         updatedMessages.push({
@@ -133,7 +150,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
             items={items}
             filterData={filterData} setFilterData={setFilterData}
             searchText={searchText} setSearchText={setSearchText}
-            onAfterDelete={handleAfterDelete} onAfterChangeStatus={handleAfterChangeStatus}
+            onDeleteItem={handleDeleteItem} onAfterChangeStatus={handleAfterChangeStatus}
             onAfterSaveInputableColumn={handleAfterSaveInputableColumn}
             isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll}
             checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds}
