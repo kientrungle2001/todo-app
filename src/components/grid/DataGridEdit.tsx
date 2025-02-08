@@ -5,14 +5,14 @@ import { buildTree, flatTree } from "@/api/tree";
 import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
-import { FieldTextRenderer } from "./DataGridEditFieldRenderer/FieldTextRenderer";
-import { FieldNumberRenderer } from "./DataGridEditFieldRenderer/FieldNumberRenderer";
-import { FieldStatusRenderer } from "./DataGridEditFieldRenderer/FieldStatusRenderer";
-import { FieldDateRenderer } from "./DataGridEditFieldRenderer/FieldDateRenderer";
-import { FieldSelectRenderer } from "./DataGridEditFieldRenderer/FieldSelectRenderer";
-import { FieldCheckboxRenderer } from "./DataGridEditFieldRenderer/FieldCheckboxRenderer";
-import { FieldEditorRenderer } from "./DataGridEditFieldRenderer/FieldEditorRenderer";
-import { FieldImageRenderer } from "./DataGridEditFieldRenderer/FieldImageRenderer";
+import { FieldTextRenderer } from "./fields/FieldTextRenderer";
+import { FieldNumberRenderer } from "./fields/FieldNumberRenderer";
+import { FieldStatusRenderer } from "./fields/FieldStatusRenderer";
+import { FieldDateRenderer } from "./fields/FieldDateRenderer";
+import { FieldSelectRenderer } from "./fields/FieldSelectRenderer";
+import { FieldCheckboxRenderer } from "./fields/FieldCheckboxRenderer";
+import { FieldEditorRenderer } from "./fields/FieldEditorRenderer";
+import { FieldImageRenderer } from "./fields/FieldImageRenderer";
 import { DataGridEditField, DataGridEditFieldType, DataGridEditMode } from "./DataGridEditTypes";
 
 interface DataGridEditProps {
