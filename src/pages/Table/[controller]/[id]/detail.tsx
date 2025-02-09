@@ -1,5 +1,5 @@
 import { getSettingsByController } from "@/api/settings";
-import { NextNobelsFooter } from "@/components/grid/NextNobelsFooter";
+import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 import { QuestionGridDetail } from "@/components/grid/detail/QuestionGridDetail";
 import { TopMenuGrid } from "@/components/grid/TopMenuGrid";
@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
 import { TestGridDetail } from "@/components/grid/detail/TestGridDetail";
-import { CategoryGridDetail } from "@/components/grid/CategoryGridDetail";
+import { CategoryGridDetail } from "@/components/grid/detail/CategoryGridDetail";
 
 export default function TableEdit(): React.ReactElement {
     let router = useRouter();

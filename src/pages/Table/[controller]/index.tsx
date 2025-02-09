@@ -1,5 +1,5 @@
 import { getSettingsByController } from "@/api/settings";
-import { NextNobelsFooter } from "@/components/grid/NextNobelsFooter";
+import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 import { TableGridWrapper } from "@/components/grid/TableGridWrapper";
 import { TopMenuGrid } from "@/components/grid/TopMenuGrid";

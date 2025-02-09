@@ -1,4 +1,4 @@
-import { NextNobelsFooter } from "@/components/grid/NextNobelsFooter";
+import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridAddWrapper } from "@/components/grid/TableGridAddWrapper";
 import { TopMenuGrid } from "@/components/grid/TopMenuGrid";
 import { useRouter } from "next/router";

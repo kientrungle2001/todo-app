@@ -4,7 +4,7 @@ import axios, { getAxios } from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
-import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
+import { DataGridEditField, DataGridEditMode } from "../DataGridEditTypes";
 import { replaceMediaUrl } from "@/api/defaultSettings";
 
 interface CategoryGridEditProps {
