@@ -1,12 +1,12 @@
 import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/grid/NextNobelsFooter";
 import { TableGridSettings } from "@/components/grid/TableGrid";
-import { QuestionGridDetail } from "@/components/grid/QuestionGridDetail";
+import { QuestionGridDetail } from "@/components/grid/detail/QuestionGridDetail";
 import { TopMenuGrid } from "@/components/grid/TopMenuGrid";
 import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
-import { TestGridDetail } from "@/components/grid/TestGridDetail";
+import { TestGridDetail } from "@/components/grid/detail/TestGridDetail";
 import { CategoryGridDetail } from "@/components/grid/CategoryGridDetail";
 
 export default function TableEdit(): React.ReactElement {

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { TableGridSettings } from "./TableGrid";
+import { TableGridSettings } from "../TableGrid";
 import axios, { getAxios } from "@/api/axiosInstance";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
-import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
-import QuestionAnswerGridEdit from "./QuestionAnswerGridEdit";
+import { DataGridEditField, DataGridEditMode } from "../DataGridEditTypes";
+import TestGridEdit from "./TestGridEdit";
 
 interface TableGridProps {
     itemId: number;
@@ -12,7 +12,7 @@ interface TableGridProps {
     settings: TableGridSettings
 }
 
-export const QuestionGridDetail: React.FC<TableGridProps> = ({ controller, settings, itemId }): React.ReactElement => {
+export const TestGridDetail: React.FC<TableGridProps> = ({ controller, settings, itemId }): React.ReactElement => {
     const router = useRouter();
     const [item, setItem] = React.useState<any>(null);
 
@@ -100,7 +100,7 @@ export const QuestionGridDetail: React.FC<TableGridProps> = ({ controller, setti
     }
 
     return <>
-        <QuestionAnswerGridEdit updateLabel={settings.updateLabel} mode={DataGridEditMode.EDIT} itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
+        <TestGridEdit updateLabel={settings.updateLabel} mode={DataGridEditMode.EDIT} itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
             handleUpdateItem={handleUpdateItem} handleCancelEdit={handleCancelEdit} />
     </>
 };

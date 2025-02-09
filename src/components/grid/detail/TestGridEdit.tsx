@@ -4,8 +4,8 @@ import axios, { getAxios } from "@/api/axiosInstance";
 import 'select2';
 import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
-import { DataGridEditField, DataGridEditMode } from "./DataGridEditTypes";
-import { QuestionAnswerEditor } from "./QuestionAnswerEditor";
+import { DataGridEditField, DataGridEditMode } from "../DataGridEditTypes";
+import { QuestionAnswerEditor } from "../QuestionAnswerEditor";
 import { replaceMediaUrl } from "@/api/defaultSettings";
 
 interface TestGridEditProps {
