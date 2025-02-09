@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { TopMenuGrid } from '@/components/grid/TopMenuGrid';
+import { TopMenuGrid } from '@/components/menu/TopMenuGrid';
 import { menuRepository } from '@/api/repositories/Menu';
 import DashboardItems from '@/components/dashboard/DashboardItems';
 

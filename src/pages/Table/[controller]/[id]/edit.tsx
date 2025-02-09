@@ -2,7 +2,7 @@ import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 import { TableGridEditWrapper } from "@/components/grid/TableGridEditWrapper";
-import { TopMenuGrid } from "@/components/grid/TopMenuGrid";
+import { TopMenuGrid } from "@/components/menu/TopMenuGrid";
 import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";

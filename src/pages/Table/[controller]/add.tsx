@@ -1,6 +1,6 @@
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridAddWrapper } from "@/components/grid/TableGridAddWrapper";
-import { TopMenuGrid } from "@/components/grid/TopMenuGrid";
+import { TopMenuGrid } from "@/components/menu/TopMenuGrid";
 import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
