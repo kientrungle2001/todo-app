@@ -1,7 +1,7 @@
 import { storage } from '@/api/storage';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { NavDropdown, Dropdown } from 'react-bootstrap';
+import { NavDropdown } from 'react-bootstrap';
 
 interface MenuItem {
     id: number;
