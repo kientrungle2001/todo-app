@@ -48,7 +48,7 @@ export const QuestionGridDetail: React.FC<TableGridProps> = ({ controller, setti
         let hasRightAnswer = false;
         let hasEmptyAnswer = false;
         question.answers.forEach((answer: any) => {
-            if (!answer.content || !answer.content_vn) {
+            if (!answer.content) {
                 hasEmptyAnswer = true;
                 return false;
             }
