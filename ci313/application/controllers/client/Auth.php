@@ -80,6 +80,21 @@ class Auth extends CI_Controller
         }
     }
 
+    public function isloggedin()
+    {
+        $this->load->database();
+        $this->load->library('JWT');
+        $tokenInfo = $this->authenticate();
+        if ($tokenInfo) {
+            $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => false]))
+                ->_display();
+            die;
+        }
+    }
+
     public function register()
     {
         $this->load->library('form_validation');
@@ -112,7 +127,8 @@ class Auth extends CI_Controller
         }
     }
 
-    public function update() {
+    public function update()
+    {
         $this->load->database();
         $this->load->library('JWT');
         $tokenInfo = $this->authenticate();
@@ -158,8 +174,8 @@ class Auth extends CI_Controller
         $sql = 'select history_payment.*, courses.name, courses.image, courses.alias from history_payment inner join courses on history_payment.courseId = courses.id where username = ?';
         $courses = $this->db->query($sql, [$username])->result_array();
         $this->output->set_status_header(200)
-                ->set_content_type('application/json', 'utf-8')
-                ->set_output(json_encode($courses));
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($courses));
     }
 
     public function authenticate()
@@ -167,7 +183,7 @@ class Auth extends CI_Controller
         $this->load->model('Table_model');
         $token = $this->input->get_request_header('Authorization', TRUE);
         $token = $this->extractToken($token);
-        
+
         $authResponse = $this->Table_model->authenticate($token);
         if ($authResponse['status'] !== 200) {
             $this->output

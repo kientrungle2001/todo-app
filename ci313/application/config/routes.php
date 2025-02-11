@@ -77,6 +77,7 @@ $route['api/categories/courses/(:num)'] = 'category/courses/$1';
 $route['api/client/categories/courses/(:num)'] = 'client/category/courses/$1';
 $route['api/client/categories/courses_by_alias'] = 'client/category/courses_by_alias';
 $route['api/client/login'] = 'client/auth/login';
+$route['api/client/isloggedin'] = 'client/auth/isloggedin';
 $route['api/client/register'] = 'client/auth/register';
 $route['api/client/update'] = 'client/auth/update';
 $route['api/client/courses'] = 'client/auth/courses';
