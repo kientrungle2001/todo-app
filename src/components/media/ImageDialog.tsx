@@ -24,7 +24,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     const fetchDirectoryContents = async (path: string) => {
         try {
             const response = await getAxios(window.location.hostname).get(`/media/list`, {
-                params: { path },
+                params: { path: path.replace('//', '') },
                 headers: {
                     'Authorization': `Bearer ${storage.get('token') || ''}`
                 }
@@ -37,7 +37,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             if (response && response.data) {
                 const { files, folders } = response.data;
                 setFiles([...folders, ...files]); // Assuming the response gives separate `files` and `folders`
-                setCurrentFolder(path);
+                setCurrentFolder(path.replace('//', '/'));
                 // Update breadcrumbs based on current folder
                 const updatedBreadcrumbs: string[] = [];
                 let breadcrumbPath = '';
@@ -123,8 +123,12 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     // Handle deleting an image or directory
     const handleDelete = async (fileName: string) => {
         try {
-            const response = await getAxios(window.location.hostname).delete('/media/delete', {
-                data: { path: `${currentFolder}/${fileName}` },
+            const response = await getAxios(window.location.hostname).post('/media/delete', {
+                path: `${currentFolder}${fileName}`,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${storage.get('token') || ''}`
+                }
             }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
@@ -236,13 +240,15 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                                             if (evt.currentTarget.src != `/3rdparty/Filemanager/source${currentFolder}${file}`) {
                                                 evt.currentTarget.src = `/3rdparty/Filemanager/source${currentFolder}${file}`;
                                             }
-                                            
+
                                         }
 
                                     }} />}
                                 </div>
                                 <Card.Body>
-                                    <span>{file.replace('/', '')}</span>
+                                    <Button size="sm" variant="danger" onClick={() => {
+                                        confirm('Are you sure to delete this file "' + file.replace('/', '') + '"' ) ? handleDelete(file.replace('/', '')) : null;
+                                    }}>X</Button><span> {file.replace('/', '')}</span>
                                 </Card.Body>
                             </Card>
                         </Col>

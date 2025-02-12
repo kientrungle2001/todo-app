@@ -136,7 +136,7 @@ class Media extends CI_Controller
 
     public function delete()
     {
-        $path = $this->input->input_stream('path', TRUE);
+        $path = $this->input->post('path', TRUE);
         $fullPath = FCPATH . $this->source_dir . '/' . $path;
 
         if (is_dir($fullPath)) {
@@ -148,12 +148,16 @@ class Media extends CI_Controller
                     ->set_output(json_encode(['status' => 'success', 'message' => 'Directory deleted']));
             } else {
                 $this->output->set_content_type('application/json')
-                    ->set_output(json_encode(['status' => 'error', 'message' => 'Directory not empty']));
+                    ->set_output(json_encode(['status' => 'error', 'message' => 'Directory not empty', 'fullPath' => $fullPath]));
             }
         } elseif (is_file($fullPath)) {
             unlink($fullPath);
             $fullThumbsPath = FCPATH . '3rdparty/thumbs/' . $path;
-            unlink($fullThumbsPath);
+            try {
+                @unlink($fullThumbsPath);
+            } catch (Exception $e) {
+            }
+
             $this->output->set_content_type('application/json')
                 ->set_output(json_encode(['status' => 'success', 'message' => 'File deleted']));
         } else {
