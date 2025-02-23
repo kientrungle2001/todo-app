@@ -68,6 +68,35 @@ class Practice extends CI_Controller
         }
     }
 
+    public function history()
+    {
+        $this->load->database();
+        $this->load->library('JWT');
+        $tokenInfo = $this->authenticate();
+        if ($tokenInfo) {
+            $pageSize = $this->input->post('pageSize');
+            $currentPage = $this->input->post('currentPage');
+            $items = $this->db
+                ->select('courses_practice.*, courses.name as courseName, courses_resources.name as resourceName')
+                ->where('studentId', $tokenInfo->data->id)
+                ->join('courses', 'courses_practice.courseId=courses.id', 'inner')
+                ->join('courses_resources', 'courses_practice.courseResourceId=courses_resources.id', 'inner')
+                ->limit($pageSize)->offset($pageSize * $currentPage)
+                ->order_by('courses_practice.created', 'desc')->get('courses_practice')->result_array();
+            $totalItems = $this->db->where('studentId', $tokenInfo->data->id)->count_all('courses_practice');
+            $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'error' => false,
+                    'items' => $items,
+                    'totalItems' => $totalItems
+                ]))
+                ->_display();
+            die;
+        }
+    }
+
     public function authenticate()
     {
         $this->load->model('Table_model');
