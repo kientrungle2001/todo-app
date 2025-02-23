@@ -67,6 +67,7 @@ const gridAddFields: DataGridEditField[] = [
     DataGridEditFields.brief,
     DataGridEditFields.content,
     DataGridEditFields.hardiness,
+    DataGridEditFields.totalMinutes,
     DataGridEditFields.trial,
     DataGridEditFields.status,
 ];

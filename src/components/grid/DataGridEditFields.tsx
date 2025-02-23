@@ -53,4 +53,5 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
             label: 'Nâng cao'
         }]
     },
+    totalMinutes: { index: "totalMinutes", label: "Thời gian làm bài", type: DataGridEditFieldType.TEXT, size: 6 },
 };
