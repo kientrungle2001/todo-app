@@ -84,5 +84,6 @@ $route['api/client/update'] = 'client/auth/update';
 $route['api/client/courses'] = 'client/auth/courses';
 $route['api/courses'] = 'client/course/courses';
 $route['api/areacode/getProvinces'] = 'client/areacode/getProvinces';
+$route['api/practice/save'] = 'client/practice/save';
 // $route['3rdparty\/(.*)-(:num)x(:num)\.(jpg|png|gif|jpeg)'] = 'client/media/thumbnail/$1/$2/$3/$4';
 $route['3rdparty/Filemanager/thumbnails/(.+)-(\d+)x(\d+)\.(png|jpe?g|gif)'] = 'client/media/thumbnail/$1/$2/$3/$4';
