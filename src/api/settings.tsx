@@ -34,14 +34,14 @@ import { FullLookAdminLevelSettings } from "./settings/fulllook/FullLookAdminLev
 import { FullLookAdminLevelActionSettings } from "./settings/fulllook/FullLookAdminLevelActionSettings";
 import { getConfigsByHostName } from "./defaultSettings";
 import { PmtvAdminCategoriesSettings } from "./settings/pmtv/PmtvCategoriesSettings";
-import { PmtvAdminTestSettings } from "./settings/pmtv/PmtvTestSettings";
-import { PmtvAdminCourseSettings } from "./settings/pmtv/course/PmtvCourseSettings";
-import { PmtvAdminServicePackagesSettings } from "./settings/pmtv/PmtvServicePackagesSettings";
-import { PmtvAdminCourseResourceSettings } from "./settings/pmtv/course/PmtvCourseResourceSettings";
-import { PmtvAdminQuestionSettings } from "./settings/pmtv/PmtvQuestionSettings";
-import { PmtvAdminHistoryPaymentSettings } from "./settings/pmtv/PmtvHistoryPaymentSettings";
+import { PmtvAdminTestSettings } from "./settings/pmtv/education/PmtvTestSettings";
+import { PmtvAdminCourseSettings } from "./settings/pmtv/education/course/PmtvCourseSettings";
+import { PmtvAdminServicePackagesSettings } from "./settings/pmtv/fee/PmtvServicePackagesSettings";
+import { PmtvAdminCourseResourceSettings } from "./settings/pmtv/education/course/PmtvCourseResourceSettings";
+import { PmtvAdminQuestionSettings } from "./settings/pmtv/education/PmtvQuestionSettings";
+import { PmtvAdminHistoryPaymentSettings } from "./settings/pmtv/fee/PmtvHistoryPaymentSettings";
 import { PmtvAdminNewsSettings } from "./settings/pmtv/PmtvNewsSettings";
-import { PmtvAdminDocumentSettings } from "./settings/pmtv/PmtvDocumentSettings";
+import { PmtvAdminDocumentSettings } from "./settings/pmtv/education/PmtvDocumentSettings";
 
 export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     const hostnameConfigs = getConfigsByHostName(hostname);
