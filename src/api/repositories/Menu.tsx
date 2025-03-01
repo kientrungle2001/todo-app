@@ -1,5 +1,5 @@
 import { DataGridPagination, DataGridSort, DataGridSortDirection } from "@/components/grid/DataGridColumnTypes";
-import { FullLookAdminMenuSettings } from "../settings/FullLookMenuSettings";
+import { FullLookAdminMenuSettings } from "../settings/fulllook/FullLookMenuSettings";
 import { getAxios } from "../axiosInstance";
 import { storage } from "../storage";
 import { NextRouter } from "next/router";
