@@ -1,13 +1,13 @@
 import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridSettings } from "@/components/grid/TableGrid";
-import { QuestionGridDetail } from "@/components/grid/detail/QuestionGridDetail";
+import { QuestionGridDetail } from "@/components/grid/detail/question/QuestionGridDetail";
 import { TopMenuGrid } from "@/components/menu/TopMenuGrid";
 import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
-import { TestGridDetail } from "@/components/grid/detail/TestGridDetail";
-import { CategoryGridDetail } from "@/components/grid/detail/CategoryGridDetail";
+import { TestGridDetail } from "@/components/grid/detail/test/TestGridDetail";
+import { CategoryGridDetail } from "@/components/grid/detail/category/CategoryGridDetail";
 
 export default function TableEdit(): React.ReactElement {
     let router = useRouter();

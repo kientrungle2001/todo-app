@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { TableGridSettings } from "../TableGrid";
+import { TableGridSettings } from "../../TableGrid";
 import axios, { getAxios } from "@/api/axiosInstance";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
-import { DataGridEditField, DataGridEditMode } from "../DataGridEditTypes";
+import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
 import TestGridEdit from "./TestGridEdit";
 
 interface TableGridProps {
