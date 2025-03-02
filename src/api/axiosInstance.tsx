@@ -37,4 +37,8 @@ export const getAxios = (hostname: string) => {
   return instance;
 }
 
+export const axiosHost = () => {
+  return getAxios(window.location.hostname);
+}
+
 export default instance;

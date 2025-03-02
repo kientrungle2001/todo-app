@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { TableGridSettings } from "../../TableGrid";
-import { getAxios } from "@/api/axiosInstance";
 import { useRouter } from "next/router";
-import { storage } from "@/api/storage";
-import { DataGridEditMode } from "../../DataGridEditTypes";
 import CategoryGridEdit from "./CategoryGridEdit";
+import { categoryRepository } from "@/api/repositories/Category";
 
 interface TableGridProps {
     itemId: number;
@@ -17,20 +15,9 @@ export const CategoryGridDetail: React.FC<TableGridProps> = ({ controller, setti
     const [item, setItem] = React.useState<any>(null);
 
     useEffect(() => {
-        getAxios(window.location.hostname).post(`/tables/${settings.table}/detail/${itemId}`, {
-            settings
-        }, {
-            headers: {
-                'Authorization': `Bearer ${storage.get('token') || ''}`
-            }
-        }).then((resp: any) => {
+        categoryRepository.getCategory(itemId, settings).then((resp: any) => {
             setItem(resp.data);
             console.log("Fetched item:", resp.data);
-        }).catch((error: any) => {
-            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                storage.clearTokenInfo();
-                router.push('/login');
-            }
         });
     }, [itemId]);
 
@@ -45,7 +32,7 @@ export const CategoryGridDetail: React.FC<TableGridProps> = ({ controller, setti
     }
 
     return <>
-        <CategoryGridEdit mode={DataGridEditMode.EDIT}
+        <CategoryGridEdit
             itemId={itemId} item={item}
             handleCancelEdit={handleCancelEdit} />
     </>
