@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Tab, Tabs } from "react-bootstrap";
-import { getAxios } from "@/api/axiosInstance";
 import 'select2';
 import { useRouter } from "next/router";
-import { replaceMediaUrl } from "@/api/defaultSettings";
+import { getConfigsByHostName, replaceMediaUrl } from "@/api/defaultSettings";
 import { categoryRepository } from "@/api/repositories/Category";
 
 interface CategoryGridEditProps {
@@ -17,18 +16,26 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ itemId, item, handl
     const [questions, setQuestions] = useState<any[]>([]);
     const [tests, setTests] = useState<any[]>([]);
     const router = useRouter();
+    const [hostConfig, setHostConfig] = useState<any>(null);
     useEffect(() => {
         // load questions of test
         categoryRepository.getQuestions(itemId).then((resp: any) => {
             setQuestions(resp.data);
             console.log("Fetched questions:", resp.data);
         });
-        categoryRepository.getTests(itemId).then((resp: any) => {
-            setTests(resp.data);
-            console.log("Fetched tests:", resp.data);
-        }).catch((err: any) => {
-            // do nothing
-        });
+        const config = getConfigsByHostName();
+        setHostConfig(config);
+        if (config && config.appName == 'pmtv') {
+            setTests([]);
+        } else {
+            categoryRepository.getTests(itemId).then((resp: any) => {
+                setTests(resp.data);
+                console.log("Fetched tests:", resp.data);
+            }).catch((err: any) => {
+                // do nothing
+            });
+        }
+
     }, [item]);
     const handleAddQuestion = () => {
         router.push('/Table/admin_question2/add?backHref=/Table/admin_category/' + item.id + '/detail'
@@ -59,9 +66,13 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ itemId, item, handl
                             <Col sm={12}>
                                 Tên danh mục:{' '}
                                 <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name) }}>
-                                </span>{' '}/{' '}
-                                <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_en) }}>
-                                </em>
+                                </span>{' '}
+                                {hostConfig && hostConfig.appName != 'pmtv' && <>
+                                    /{' '}
+                                    <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_en) }}>
+                                    </em>
+                                </>}
+
                             </Col>
                         </Row>
                     </Col>
@@ -80,14 +91,20 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ itemId, item, handl
                                                 <h5>{index + 1}. Mã câu hỏi #{question.id} - Số thứ tự: {question.ordering} - {question.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'} <Button variant="primary"
                                                     href={"/Table/admin_question2/" + question.id + '/edit?backHref='
                                                         + "/Table/admin_category/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
-                                                <Row>
+                                                {hostConfig && hostConfig.appName != 'pmtv' && <Row>
                                                     <Col md={6} sm={12}>
                                                         <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name) }}></div>
                                                     </Col>
                                                     <Col md={6} sm={12}>
                                                         <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name_vn) }}></div>
                                                     </Col>
-                                                </Row>
+                                                </Row>}
+                                                {hostConfig && hostConfig.appName == 'pmtv' && <Row>
+                                                    <Col sm={12}>
+                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name) }}></div>
+                                                    </Col>
+                                                </Row>}
+
                                                 <Row>
                                                     <Col sm={12}>
                                                         <h6>Đáp án</h6>
@@ -95,9 +112,9 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ itemId, item, handl
                                                             <Row>
                                                                 {question.answers.map((answer: any) => {
                                                                     return (
-                                                                        <Col md={3} sm={12} key={answer.id}>
+                                                                        <Col sm={12} key={answer.id}>
                                                                             <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content) }}></div>
-                                                                            <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content_vn) }}></div>
+                                                                            {hostConfig && hostConfig.appName !== 'pmtv' && <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content_vn) }}></div>}
                                                                         </Col>
                                                                     )
                                                                 })}

@@ -20,9 +20,13 @@ let hostnameConfigs: any = {
 
 export const defaultConfigs: any = configs;
 export const getDefaultConfigs = () => defaultConfigs;
-export const getConfigsByHostName = (hostname: string): any | null => {
+export const getConfigsByHostName = (hostname: string | null = null): any | null => {
+    if (null === hostname) {
+        hostname = window.location.hostname;
+    }
     return typeof hostnameConfigs[hostname] !== 'undefined' ? hostnameConfigs[hostname] : configs;
 };
+
 
 export const replaceMediaUrl = (content: string) => {
     if (!content) return '';
