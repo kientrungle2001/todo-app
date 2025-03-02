@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { TableGridSettings } from "../../TableGrid";
-import axios, { getAxios } from "@/api/axiosInstance";
+import { getAxios } from "@/api/axiosInstance";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
-import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
+import { DataGridEditMode } from "../../DataGridEditTypes";
 import CategoryGridEdit from "./CategoryGridEdit";
 
 interface TableGridProps {
@@ -40,16 +40,13 @@ export const CategoryGridDetail: React.FC<TableGridProps> = ({ controller, setti
         </>
     }
 
-    const handleUpdateItem = (updatedItem: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>): void => {
-        event.preventDefault();
-    }
-
     const handleCancelEdit = (): void => {
         router.push(`/Table/${controller}`);
     }
 
     return <>
-        <CategoryGridEdit updateLabel={settings.updateLabel} mode={DataGridEditMode.EDIT} itemId={itemId} table={settings.table} item={item} setItem={setItem} fields={settings.editFields ?? settings.addFields}
-            handleUpdateItem={handleUpdateItem} handleCancelEdit={handleCancelEdit} />
+        <CategoryGridEdit mode={DataGridEditMode.EDIT}
+            itemId={itemId} item={item}
+            handleCancelEdit={handleCancelEdit} />
     </>
 };
