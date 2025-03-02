@@ -27,7 +27,7 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 5000 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
-    DataGridFilterColumns.parents,
+    {...DataGridFilterColumns.parents, size: 4},
     DataGridFilterColumns.status,
 ];
 

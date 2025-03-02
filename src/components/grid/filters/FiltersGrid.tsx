@@ -277,17 +277,17 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
     }, [filterData]);
 
     return <Form className="row g-1">
-        <Form.Group controlId={"formGroupSearch"} className="mb-1 col-md-3">
+        <Form.Group controlId={"formGroupSearch"} className="mb-1 col-md-2">
             {/*<Form.Label>Tìm kiếm</Form.Label>*/}
             <Form.Control value={searchText} onChange={(event) => setSearchText(event.target.value)} size="sm" type="text" placeholder={`Từ khóa`} />
         </Form.Group>
         {filters.map(filter => (
-            <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className="mb-1 col-md-3">
+            <Form.Group controlId={"formGroup" + filter.index} key={filter.index} className={"mb-1 col-md-" + (filter.size ?? 2)}>
                 {/*<Form.Label>{filter.label}</Form.Label>*/}
                 {renderFilter(filter)}
             </Form.Group>
         ))}
-        {sortOptions && <Form.Group controlId="formGroupSort" key="formGroupSort" className="mb-1 col-md-3">
+        {sortOptions && <Form.Group controlId="formGroupSort" key="formGroupSort" className="mb-1 col-md-2">
             {/*<Form.Label>Sắp xếp theo</Form.Label>*/}
             <Form.Select value={sortOptionSelected} size="sm" onChange={(event) => {
                 setSortOptionSelected(event.target.value);

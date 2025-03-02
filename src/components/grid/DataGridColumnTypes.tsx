@@ -79,6 +79,7 @@ export interface DataGridColumn {
 export interface DataGridFilterColumn {
     index: string;
     label: string;
+    size?: number;
     sqlIndex?: string;
     comparisonOperator?: "like" | "equal" | "inset";
     type?: DataGridFilterColumnType;
