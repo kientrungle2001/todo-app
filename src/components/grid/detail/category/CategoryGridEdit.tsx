@@ -4,6 +4,8 @@ import 'select2';
 import { useRouter } from "next/router";
 import { getConfigsByHostName, replaceMediaUrl } from "@/api/defaultSettings";
 import { categoryRepository } from "@/api/repositories/Category";
+import { CategoryDetailTitle } from "./CategoryDetailTitle";
+import { CategoryDetailQuestion } from "./CategoryDetailQuestion";
 
 interface CategoryGridEditProps {
     itemId: number;
@@ -62,19 +64,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ itemId, item, handl
                     </Col>
 
                     <Col sm={12} className="mt-3 mb-3 pt-3 pb-3">
-                        <Row>
-                            <Col sm={12}>
-                                Tên danh mục:{' '}
-                                <span className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name) }}>
-                                </span>{' '}
-                                {hostConfig && hostConfig.appName != 'pmtv' && <>
-                                    /{' '}
-                                    <em className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_en) }}>
-                                    </em>
-                                </>}
-
-                            </Col>
-                        </Row>
+                        <CategoryDetailTitle hostConfig={hostConfig} item={item} />
                     </Col>
                     <Col sm={12} className="mt-3 mb-3 pt-3 pb-3">
                         <Tabs>
@@ -86,44 +76,7 @@ const CategoryGridEdit: React.FC<CategoryGridEditProps> = ({ itemId, item, handl
                                         }}>+ Thêm Câu hỏi</Button>
                                     </Col>
                                     {questions.map((question, index) => {
-                                        return (
-                                            <Col sm={12} key={question.id} className="mt-3 mb-3">
-                                                <h5>{index + 1}. Mã câu hỏi #{question.id} - Số thứ tự: {question.ordering} - {question.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'} <Button variant="primary"
-                                                    href={"/Table/admin_question2/" + question.id + '/edit?backHref='
-                                                        + "/Table/admin_category/" + item.id + '/detail'}>Sửa</Button> <Button variant="danger">Xóa</Button> </h5>
-                                                {hostConfig && hostConfig.appName != 'pmtv' && <Row>
-                                                    <Col md={6} sm={12}>
-                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name) }}></div>
-                                                    </Col>
-                                                    <Col md={6} sm={12}>
-                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name_vn) }}></div>
-                                                    </Col>
-                                                </Row>}
-                                                {hostConfig && hostConfig.appName == 'pmtv' && <Row>
-                                                    <Col sm={12}>
-                                                        <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(question.name) }}></div>
-                                                    </Col>
-                                                </Row>}
-
-                                                <Row>
-                                                    <Col sm={12}>
-                                                        <h6>Đáp án</h6>
-                                                        <blockquote className="ps-3">
-                                                            <Row>
-                                                                {question.answers.map((answer: any) => {
-                                                                    return (
-                                                                        <Col sm={12} key={answer.id}>
-                                                                            <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content) }}></div>
-                                                                            {hostConfig && hostConfig.appName !== 'pmtv' && <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content_vn) }}></div>}
-                                                                        </Col>
-                                                                    )
-                                                                })}
-                                                            </Row>
-                                                        </blockquote>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        )
+                                        return <CategoryDetailQuestion key={question.id} question={question} index={index} item={item} hostConfig={hostConfig} />
                                     })}
                                     {!questions.length && <Col sm={12} className="p-3">Không có câu hỏi</Col>}
                                 </Row>
