@@ -61,7 +61,7 @@ class route_model extends MY_Model {
         $course = $this->db->get('courses')->row();
         if ($course) {
 			$this->applySoftwareAndSiteFilters('courses_resources');
-            $resources = $this->db->where('status', 1)->where('courseId', $course->id)->get('courses_resources')->result_array();
+            $resources = $this->db->where('status', 1)->where('courseId', $course->id)->order_by('ordering', 'ASC')->get('courses_resources')->result_array();
             $others = $this->db->where('status', 1)
             ->where('categoryId', $course->categoryId)
             ->where('id != ', $course->id)
@@ -77,7 +77,7 @@ class route_model extends MY_Model {
         $resource = $this->db->get('courses_resources')->row();
         if ($resource) {
             $course = $this->db->where('id', $resource->courseId)->where('status', 1)->get('courses')->row();
-            $resources = $this->db->where('status', 1)->where('courseId', $course->id)->get('courses_resources')->result_array();
+            $resources = $this->db->where('status', 1)->where('courseId', $course->id)->order_by('ordering', 'ASC')->get('courses_resources')->result_array();
             return array(
                 'type' => 'resource',
                 'resource' => $resource,
