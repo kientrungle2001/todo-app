@@ -17,7 +17,7 @@ export const resourceRepository = {
         })
     },
     getQuestions: (itemId: number) => {
-        return axiosHost().post(`/categories/questions/${itemId}`, {}, {
+        return axiosHost().post(`/resources/questions/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
@@ -29,7 +29,7 @@ export const resourceRepository = {
         });
     },
     getTests: (itemId: number) => {
-        return axiosHost().post(`/categories/tests/${itemId}`, {}, {
+        return axiosHost().post(`/resources/tests/${itemId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }

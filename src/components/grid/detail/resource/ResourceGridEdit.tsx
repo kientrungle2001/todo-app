@@ -6,6 +6,7 @@ import { getConfigsByHostName, replaceMediaUrl } from "@/api/defaultSettings";
 import { resourceRepository } from "@/api/repositories/Resource";
 import { ResourceDetailTitle } from "./ResourceDetailTitle";
 import { ResourceDetailQuestion } from "./ResourceDetailQuestion";
+import { PmtvAdminCourseSettings } from "@/api/settings/pmtv/education/course/PmtvCourseSettings";
 
 interface ResourceGridEditProps {
     itemId: number;
@@ -40,11 +41,19 @@ const ResourceGridEdit: React.FC<ResourceGridEditProps> = ({ itemId, item, handl
 
     }, [item]);
     const handleAddQuestion = () => {
-        router.push('/Table/admin_question2/add?backHref=/Table/admin_resource/' + item.id + '/detail'
-            + '&field_resourceIds=' + item.parents
-            + '&field_status=1'
-            + '&field_questionType=1'
-        );
+        console.log('addQuestion', item);
+        resourceRepository.getResource(item.courseId, PmtvAdminCourseSettings).then((resp: any) => {
+            console.log('course', resp.data);
+            let course = resp.data;
+            router.push('/Table/admin_question2/add?backHref=/Table/admin_course_resource/' + item.id + '/detail'
+                + '&field_categoryIds=' + course.categoryId
+                + '&field_courseId=' + course.id
+                + '&field_courseResourceId=' + item.id
+                + '&field_status=1'
+                + '&field_questionType=1'
+            );
+        })
+        
     }
 
     const handleAddTest = () => {
@@ -57,7 +66,7 @@ const ResourceGridEdit: React.FC<ResourceGridEditProps> = ({ itemId, item, handl
     return (
         <>
             <Container fluid>
-                <h2 className="text-center">Danh sách câu hỏi của danh mục - ID: {itemId}</h2>
+                <h2 className="text-center">Danh sách câu hỏi của "{item.name}" - ID: {itemId}</h2>
                 <Row>
                     <Col sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
                         <Button variant="outline-secondary" onClick={() => handleCancelEdit()}>Quay lại</Button>
@@ -79,31 +88,6 @@ const ResourceGridEdit: React.FC<ResourceGridEditProps> = ({ itemId, item, handl
                                         return <ResourceDetailQuestion key={question.id} question={question} index={index} item={item} hostConfig={hostConfig} />
                                     })}
                                     {!questions.length && <Col sm={12} className="p-3">Không có câu hỏi</Col>}
-                                </Row>
-                            </Tab>
-                            <Tab title="Đề thi" eventKey="tests">
-                                <Row>
-                                    <Col sm={12} className="p-3">
-                                        <Button variant="primary" onClick={() => {
-                                            handleAddTest();
-                                        }}>+ Thêm Đề Thi</Button>
-                                    </Col>
-                                    {tests.map((test, index) => {
-                                        return (
-                                            <Col sm={12} key={test.id} className="mt-3 mb-3">
-                                                <h5>{index + 1}. #{test.id} <span style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: test.name }}></span>{' '}/{' '}
-                                                    <em style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: test.name_en }}></em> - Số thứ tự: {test.ordering} - {test.status === '1' ? 'Đã kích hoạt' : 'Chưa kích hoạt'}
-                                                    {' '}<Button variant="primary"
-                                                        href={"/Table/admin_test/" + test.id + '/edit?backHref='
-                                                            + "/Table/admin_resource/" + item.id + '/detail'}>Sửa</Button>
-                                                    {' '}<Button variant="primary"
-                                                        href={"/Table/admin_test/" + test.id + '/detail?backHref='
-                                                            + "/Table/admin_resource/" + item.id + '/detail'}>Chi tiết</Button>
-                                                    {' '}<Button variant="danger">Xóa</Button> </h5>
-                                            </Col>
-                                        )
-                                    })}
-                                    {!tests.length && <Col sm={12} className="p-3">Không có đề thi</Col>}
                                 </Row>
                             </Tab>
                         </Tabs>

@@ -83,6 +83,7 @@ $route['api/client/register'] = 'client/auth/register';
 $route['api/client/update'] = 'client/auth/update';
 $route['api/client/courses'] = 'client/auth/courses';
 $route['api/courses'] = 'client/course/courses';
+$route['api/resources/questions/(:num)'] = 'resource/questions/$1';
 $route['api/areacode/getProvinces'] = 'client/areacode/getProvinces';
 $route['api/practice/save'] = 'client/practice/save';
 $route['api/practice/history'] = 'client/practice/history';
