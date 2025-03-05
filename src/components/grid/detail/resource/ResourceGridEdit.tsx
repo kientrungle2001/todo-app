@@ -66,7 +66,7 @@ const ResourceGridEdit: React.FC<ResourceGridEditProps> = ({ itemId, item, handl
     return (
         <>
             <Container fluid>
-                <h2 className="text-center">Danh sách câu hỏi của "{item.name}" - ID: {itemId}</h2>
+                <h2 className="text-center">Danh sách câu hỏi của &quote;{item.name}&quote; - ID: {itemId}</h2>
                 <Row>
                     <Col sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
                         <Button variant="outline-secondary" onClick={() => handleCancelEdit()}>Quay lại</Button>
