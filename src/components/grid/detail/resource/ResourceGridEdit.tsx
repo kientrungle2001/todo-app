@@ -56,13 +56,6 @@ const ResourceGridEdit: React.FC<ResourceGridEditProps> = ({ itemId, item, handl
         
     }
 
-    const handleAddTest = () => {
-        router.push('/Table/admin_test/add?backHref=/Table/admin_resource/' + item.id + '/detail'
-            + '&field_resourceIds=' + item.parents
-            + '&field_status=1'
-        );
-    }
-
     return (
         <>
             <Container fluid>
