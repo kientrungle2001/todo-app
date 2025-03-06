@@ -28,7 +28,7 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
     const [answers, setAnswers] = useState<any[]>([]);
     const router = useRouter();
     const [appName, setAppName] = React.useState<string | null>(null);
-    
+
     useEffect(() => {
         const hostnameConfigs = getConfigsByHostName(window.location.hostname);
         setAppName(hostnameConfigs.appName);
@@ -40,7 +40,19 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                 'Authorization': `Bearer ${storage.get('token') || ''}`
             }
         }).then((resp: any) => {
-            setAnswers(resp.data);
+            if (resp.data.length > 0) {
+                setAnswers(resp.data);
+            } else {
+                setAnswers([
+                    {
+                        id: 'uid' + (1000000 + Math.floor(Math.random() * 1000000)),
+                        content: '',
+                        content_vn: '',
+                        status: '0'
+                    }
+                ]);
+            }
+
             console.log("Fetched item:", resp.data);
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
@@ -115,14 +127,12 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                             <div className="text-justify" style={{ textAlign: "justify" }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_vn) }}>
                                             </div>
                                         </Col>}
-                                        
+
                                     </Row>
                                 </Col>
-                                <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3">
-                                    <h2>Đáp án: </h2>
-                                    <Button variant="primary" onClick={() => {
-                                        handleAddAnswer();
-                                    }}>Thêm</Button>
+                                <Col md={12} sm={12} className="mt-3 mb-3">
+                                    <h2>Danh sách câu trả lời: </h2>
+
                                 </Col>
                                 {answers.map((answer, index) => {
                                     return (
@@ -165,6 +175,11 @@ const QuestionAnswerGridEdit: React.FC<QuestionAnswerGridEditProps> = ({ mode, t
                                         </Col>
                                     )
                                 })}
+                                <Col sm={12} className="mt-3 mb-3">
+                                    <Button variant="primary" onClick={() => {
+                                        handleAddAnswer();
+                                    }}>+ Thêm câu trả lời</Button>
+                                </Col>
 
                                 <Col md={12} xs={12}>
                                     <h2>Lý giải</h2>
