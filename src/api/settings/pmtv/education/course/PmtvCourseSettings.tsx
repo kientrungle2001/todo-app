@@ -17,7 +17,7 @@ const gridFields: string[] = ["id", "name", "alias", "categoryId", "ordering", "
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "image", label: "Hình ảnh", type: DataGridColumnType.IMAGE },
-    { index: "name", label: "Tên Khóa học", linkFormat: (value: any, item: any) => `/Table/admin_course/${item.id}/detail`, treeMode: true },
+    { index: "name", label: "Tên Khóa học", linkFormat: (value: any, item: any) => `/Table/admin_course/${item.id}/edit`, treeMode: true },
     DataGridColumns.alias,
     DataGridColumns.categoryId,
     { index: "amount", label: "Học phí", type: DataGridColumnType.CURRENCY },
