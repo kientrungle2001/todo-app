@@ -1,8 +1,8 @@
-import { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
-import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
-import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
+import { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions as sortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumns as columns } from "@/components/grid/DataGridColumns";
+import { DataGridEditFields as editFields } from "@/components/grid/DataGridEditFields";
+import { DataGridEditField, DataGridEditFieldType as EditType } from "@/components/grid/DataGridEditTypes";
+import { DataGridFilterColumns as filterFields } from "@/components/grid/DataGridFilterColumns";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Câu hỏi";
@@ -12,45 +12,50 @@ const gridDeleteSelectedsLabel: string = "Xóa Câu hỏi đã chọn";
 const gridTable: string = "questions";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "ordering", "status", "trial", "categoryIds", "courseId", "courseResourceId"];
+const gridFields: string[] = ["id", "name", "ordering", "status", "trial", "categoryIds", "courseId", "courseResourceId", "questionType"];
 
 const gridColumns: DataGridColumn[] = [
-    DataGridColumns.id,
+    columns.id,
     {
         index: "name", label: "Nội dung", isHtml: true,
-        linkFormat: (value: any, item: any) => `/Table/admin_question2/${item.id}/detail`,
+        linkFormat: (value: any, item: any) => {
+            if (item.questionType == 4 || item.questionType == '4') {
+                return `/Table/admin_question2/${item.id}/edit`;
+            }
+            return `/Table/admin_question2/${item.id}/detail`;
+        },
     },
-    DataGridColumns.categoryIds,
-    DataGridColumns.courseId,
-    DataGridColumns.courseResourceId,
-    DataGridColumns.ordering,
-    DataGridColumns.status,
-    DataGridColumns.trial,
-    DataGridColumns.editAction,
-    DataGridColumns.deleteAction
+    columns.categoryIds,
+    columns.courseId,
+    columns.courseResourceId,
+    columns.ordering,
+    columns.status,
+    columns.trial,
+    columns.editAction,
+    columns.deleteAction
 ];
 
 const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 50 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    DataGridFilterColumns.categoryIds,
-    { ...DataGridFilterColumns.courseId, tableCondition: (item) => "categoryId = '" + item.categoryIds + "'" },
-    { ...DataGridFilterColumns.courseResourceId, tableCondition: (item) => "courseId = '" + item.courseId + "'" },
-    DataGridFilterColumns.status,
+    filterFields.categoryIds,
+    { ...filterFields.courseId, tableCondition: (item) => "categoryId = '" + item.categoryIds + "'" },
+    { ...filterFields.courseResourceId, tableCondition: (item) => "courseId = '" + item.courseId + "'" },
+    filterFields.status,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
-    DataGridSortOptions.orderingAsc,
-    DataGridSortOptions.orderingDesc,
+    sortOptions.orderingAsc,
+    sortOptions.orderingDesc,
 ];
 
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "2name" },
-    { index: "explaination", label: "Lý giải", type: DataGridEditFieldType.EDITOR, size: 6, tabGroup: "3explaination" },
+    { index: "name", label: "Nội dung", type: EditType.EDITOR, size: 6, tabGroup: "2name" },
+    { index: "explaination", label: "Lý giải", type: EditType.EDITOR, size: 6, tabGroup: "3explaination" },
     {
-        index: "classes", label: "Khối, Lớp", type: DataGridEditFieldType.SELECT, size: 6,
+        index: "classes", label: "Khối, Lớp", type: EditType.SELECT, size: 6,
         multiple: true,
         multipleSize: 4,
         options: [
@@ -62,18 +67,18 @@ const gridAddFields: DataGridEditField[] = [
         tabGroup: "0classification"
     },
     {
-        index: "courseId", label: "Khóa học", type: DataGridEditFieldType.SELECT, size: 6,
+        index: "courseId", label: "Khóa học", type: EditType.SELECT, size: 6,
         table: "courses", valueField: "id", labelField: "name", orderBy: "name asc", multiple: false, select2: true,
         tabGroup: "0classification"
     },
     {
-        index: "courseResourceId", label: "Tài nguyên Khóa học", type: DataGridEditFieldType.SELECT, size: 6,
+        index: "courseResourceId", label: "Tài nguyên Khóa học", type: EditType.SELECT, size: 6,
         table: "courses_resources", valueField: "id", labelField: "name", treeMode: true,
         tableCondition: (item) => "courseId = '" + item.courseId + "'", select2: true,
         tabGroup: "0classification"
     },
     {
-        index: "categoryIds", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
+        index: "categoryIds", label: "Danh mục", type: EditType.SELECT, size: 6,
         multiple: true,
         table: "categories",
         valueField: "id",
@@ -85,7 +90,7 @@ const gridAddFields: DataGridEditField[] = [
         tabGroup: "0classification"
     },
     {
-        index: "questionType", label: "Dạng câu hỏi", type: DataGridEditFieldType.SELECT, size: 6,
+        index: "questionType", label: "Dạng câu hỏi", type: EditType.SELECT, size: 6,
         options: [
             { value: 1, label: "Trắc nghiệm" },
             { value: 4, label: "Tự luận" }
@@ -93,7 +98,7 @@ const gridAddFields: DataGridEditField[] = [
         select2: true,
         tabGroup: "0classification"
     },
-    DataGridEditFields.status,
+    editFields.status,
 ];
 
 export const PmtvAdminQuestionSettings: TableGridSettings = {
