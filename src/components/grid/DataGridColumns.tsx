@@ -12,6 +12,9 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         hideLabel: true,
         width: "10%"
     },
+    question_content: {
+        index: "name", label: "Nội dung", isHtml: true,
+    },
     trial: {
         index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
             0: 'Chưa kích hoạt',
