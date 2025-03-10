@@ -258,8 +258,10 @@ class Table_model extends CI_Model
         }
 
         $joins = '';
-        foreach ($settings->joins as $join) {
-            $joins .= " {$join->type} JOIN {$join->table} AS " . ($join->alias ? $join->alias : $join->table) . " ON {$join->condition}";
+        if ($settings->joins) {
+            foreach ($settings->joins as $join) {
+                $joins .= " {$join->type} JOIN {$join->table} AS " . ($join->alias ? $join->alias : $join->table) . " ON {$join->condition}";
+            }
         }
 
         $searchLikes = [];
@@ -339,8 +341,10 @@ class Table_model extends CI_Model
         }
 
         $joins = '';
-        foreach ($settings->joins as $join) {
-            $joins .= " {$join->type} JOIN {$join->table} AS " . ($join->alias ? $join->alias : $join->table) . " ON {$join->condition}";
+        if ($settings->joins) {
+            foreach ($settings->joins as $join) {
+                $joins .= " {$join->type} JOIN {$join->table} AS " . ($join->alias ? $join->alias : $join->table) . " ON {$join->condition}";
+            }
         }
 
         $totalCountQuery = "
