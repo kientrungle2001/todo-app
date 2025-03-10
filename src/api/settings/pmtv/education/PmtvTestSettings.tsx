@@ -1,74 +1,72 @@
-import { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
-import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
-import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { DataGridColumn as Column, DataGridFilterColumn as FilterField, DataGridPagination as Pagination, DataGridSort as Sort, DataGridSortDirection as SortDirection, DataGridSortOption as SortOption } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumns as columns } from "@/components/grid/DataGridColumns";
+import { DataGridEditFields as editFields } from "@/components/grid/DataGridEditFields";
+import { DataGridEditField as EditField, DataGridEditFieldType as EditType } from "@/components/grid/DataGridEditTypes";
+import { DataGridFilterColumns as filterFields } from "@/components/grid/DataGridFilterColumns";
+import { TableGridSettings as Settings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Đề thi";
 const gridAddNewLabel: string = "Thêm Đề thi";
 const gridUpdateLabel: string = "Cập nhật Đề thi";
 const gridDeleteSelectedsLabel: string = "Xóa các Đề thi đã chọn";
 const gridTable: string = "tests";
-const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
 const gridFields: string[] = ["id", "name", "ordering", "status", "trial"];
 
-const gridColumns: DataGridColumn[] = [
-    DataGridColumns.id,
+const gridColumns: Column[] = [
+    columns.id,
     { index: "name", label: "Tên Đề thi", linkFormat: (value: any, item: any) => `/Table/admin_test/${item.id}/detail`, treeMode: true },
-    DataGridColumns.ordering,
-    DataGridColumns.status,
-    DataGridColumns.trial,
-    DataGridColumns.document,
-    DataGridColumns.editAction,
-    DataGridColumns.deleteAction
+    columns.ordering,
+    columns.status,
+    columns.trial,
+    columns.document,
+    columns.editAction,
+    columns.deleteAction
 ];
 
-const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 5000 };
+const gridPagination: Pagination = { currentPage: 1, pageSize: 5000 };
 
-const gridFilters: DataGridFilterColumn[] = [
-    DataGridFilterColumns.id,
-    DataGridFilterColumns.status,
-    DataGridFilterColumns.trial,
+const gridFilters: FilterField[] = [
+    filterFields.id,
+    filterFields.status,
+    filterFields.trial,
 ];
 
-const gridSortOptions: DataGridSortOption[] = [
+const gridSortOptions: SortOption[] = [
     {
         index: "nameAsc",
         label: "Tên Đề thi tăng",
         sorts: [
-            { index: "name", direction: DataGridSortDirection.ASCENDING },
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
+            { index: "name", direction: SortDirection.ASCENDING },
+            { index: "id", direction: SortDirection.DESCENDING },
         ]
     },
     {
         index: "nameDesc",
         label: "Tên Đề thi giảm",
         sorts: [
-            { index: "name", direction: DataGridSortDirection.DESCENDING },
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
+            { index: "name", direction: SortDirection.DESCENDING },
+            { index: "id", direction: SortDirection.ASCENDING },
         ]
     }
 ];
 
-const gridDefaultSorts: DataGridSort[] = [{ index: "ordering", direction: DataGridSortDirection.ASCENDING }];
+const gridDefaultSorts: Sort[] = [{ index: "ordering", direction: SortDirection.ASCENDING }];
 
-const gridAddFields: DataGridEditField[] = [
-    { index: "name", label: "Tên Đề thi", type: DataGridEditFieldType.TEXT, size: 6 },
-    { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
+const gridAddFields: EditField[] = [
+    { index: "name", label: "Tên Đề thi", type: EditType.TEXT, size: 6 },
+    { index: "content", label: "Nội dung", type: EditType.EDITOR, size: 12 },
     {
-        index: "categoryIds", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
+        index: "categoryIds", label: "Danh mục", type: EditType.SELECT, size: 6,
         table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc", multiple: true, select2: true
     },
-    DataGridEditFields.status,
+    editFields.status,
 ];
 
 
-export const PmtvAdminTestSettings: TableGridSettings = {
+export const PmtvAdminTestSettings: Settings = {
     title: gridTitle,
     table: gridTable,
-    joins: gridJoins,
     fields: gridFields,
     searchFields: gridSearchFields,
     pagination: gridPagination,
