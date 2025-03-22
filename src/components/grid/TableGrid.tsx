@@ -1,11 +1,10 @@
 import { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import React, { useEffect } from "react";
-import { getAxios } from '@/api/axiosInstance';
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
-import { useRouter } from "next/router";
 import { DataGridEditField } from "./DataGridEditTypes";
 import DataGrid from "./DataGrid";
+import { tableRepository } from "@/api/repositories/Table";
 
 export interface TableGridSettings {
     title: string,
@@ -68,15 +67,8 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
         // Implement your delete logic here
         if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
             console.log(`Deleting item with ID: ${item.id}`);
-            getAxios(window.location.hostname).delete(`/tables/${settings.table}/delete/${item.id}`, {
-                headers: { 'Authorization': `Bearer ${storage.get('token') || ''}` }
-            }).then(() => {
+            tableRepository.deleteItem(settings, item).then(() => {
                 handleAfterDelete(item);
-            }).catch((error: any) => {
-                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                    storage.clearTokenInfo();
-                    router.push('/login');
-                }
             });
         }
     };
@@ -105,15 +97,13 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
         handleListItems();
     }
 
-    const router = useRouter();
-
     const handleListItems = () => {
-        getAxios(window.location.hostname).post('/tables/search/' + settings.table, {
+        tableRepository.getList(settings, {
             settings: JSON.parse(JSON.stringify(settings)),
             search: searchText, filterData: JSON.parse(JSON.stringify(filterData)),
             sorts: JSON.parse(JSON.stringify(sorts)),
             page: pagination.currentPage, pageSize: pagination.pageSize,
-        }, { headers: { 'Authorization': `Bearer ${storage.get('token') || ''}` } })
+        })
             .then((resp: any) => {
                 if (settings.treeMode)
                     setItems(flatTree(buildTree(resp.data.items,
@@ -123,11 +113,6 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
                 setTotalItems(resp.data.totalItems);
                 setIsCheckedAll(false);
                 setCheckedItemIds([]);
-            }).catch((error: any) => {
-                if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                    storage.clearTokenInfo();
-                    router.push('/login');
-                }
             });
     };
 
