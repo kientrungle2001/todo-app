@@ -11,7 +11,15 @@ import { ColumnCurrencyRenderer } from "./columns/ColumnCurrencyRenderer";
 import { ColumnDateRenderer } from "./columns/ColumnDateRenderer";
 import { ColumnStatusRenderer } from "./columns/ColumnStatusRenderer";
 import { ColumnReferenceRenderer } from "./columns/ColumnReferenceRenderer";
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption } from "./DataGridColumnTypes";
+import {
+    DataGridColumn as Column,
+    DataGridColumnActionType as ColumnActionType,
+    DataGridColumnType as ColumnType, DataGridFilterColumn,
+    DataGridMessage,
+    DataGridPagination,
+    DataGridSort,
+    DataGridSortOption
+} from "./DataGridColumnTypes";
 import { FiltersGridCard } from "./filters/FilterGridCard";
 import { DataGridMessages } from "./messages/DataGridMessages";
 import { DataGridTitle } from "./title/DataGridTitle";
@@ -24,7 +32,7 @@ interface DataGridProps {
     table: string;
     software?: number;
     site?: number;
-    columns: DataGridColumn[];
+    columns: Column[];
     items: any[];
     totalItems: number;
     filters?: DataGridFilterColumn[];
@@ -40,8 +48,8 @@ interface DataGridProps {
     setCurrentPage: (page: number) => void;
     setPageSize: (pageSize: number) => void;
     onDeleteItem: (item: any) => void;
-    onAfterChangeStatus: (column: DataGridColumn, item: any) => void;
-    onAfterSaveInputableColumn: (column: DataGridColumn) => void;
+    onAfterChangeStatus: (column: Column, item: any) => void;
+    onAfterSaveInputableColumn: (column: Column) => void;
     messages: DataGridMessage[];
     setMessages: (messages: DataGridMessage[]) => void;
     isCheckedAll: boolean;
@@ -58,7 +66,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     const handleNavigation = (path: string) => { router.push(path); };
     const handleEditItem = (item: any) => { handleNavigation(`/Table/${controller}/${item.id}/edit`); }
 
-    const handleAddChildItem = (item: any, column: DataGridColumn) => {
+    const handleAddChildItem = (item: any, column: Column) => {
         let addChildLink = `/Table/${column.actionAddChildController ?? controller}/add?field_` + (column.actionAddChildParentField ?? 'parent') + `=` + item.id;
         if (column.actionAddChildParentFields) {
             column.actionAddChildParentFields.forEach(field => {
@@ -87,19 +95,19 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         setInputableMap(updatedInputableMap);
     }, [items]);
 
-    const ColumnActionsRenderer = (column: DataGridColumn, item: any) => {
+    const ColumnActionsRenderer = (column: Column, item: any) => {
         if (column.customFormat) {
             return column.customFormat ? column.customFormat(null, item, table) : '-';
         } else {
-            if (column.actionType === DataGridColumnActionType.EDIT) {
+            if (column.actionType === ColumnActionType.EDIT) {
                 return <Button variant="primary" size="sm" onClick={() => handleEditItem(item)}>
                     {column.label}
                 </Button>
-            } else if (column.actionType === DataGridColumnActionType.DELETE) {
+            } else if (column.actionType === ColumnActionType.DELETE) {
                 return <Button variant="danger" size="sm" onClick={() => onDeleteItem(item)}>
                     {column.label}
                 </Button>
-            } else if (column.actionType === DataGridColumnActionType.ADD_CHILD) {
+            } else if (column.actionType === ColumnActionType.ADD_CHILD) {
                 return <Button variant="secondary" size="sm" onClick={() => handleAddChildItem(item, column)}>
                     {column.label}
                 </Button>
@@ -111,43 +119,43 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         return '-';
     }
 
-    const ColumnGroupRenderer = (column: DataGridColumn, item: any, table: string,
+    const ColumnGroupRenderer = (column: Column, item: any, table: string,
         inputableMap: any, setInputableMap: (inputableMap: any) => void,
-        onAfterChangeStatus: (column: DataGridColumn, item: any) => void) => {
-        return column.groupChildren?.map((childColumn: DataGridColumn, index) => {
+        onAfterChangeStatus: (column: Column, item: any) => void) => {
+        return column.groupChildren?.map((childColumn: Column, index) => {
             return <React.Fragment key={index}>
                 {index > 0 && <br />} <strong>{childColumn.label}: </strong> {renderColumn(childColumn, item)}
             </React.Fragment>
         });
     };
 
-    const getColumnRenderer = (columnType: DataGridColumnType) => {
+    const getColumnRenderer = (columnType: ColumnType) => {
         switch (columnType) {
-            case DataGridColumnType.TEXT:
+            case ColumnType.TEXT:
                 return ColumnTextRenderer;
-            case DataGridColumnType.NUMBER:
+            case ColumnType.NUMBER:
                 return ColumnNumberRenderer;
-            case DataGridColumnType.IMAGE:
+            case ColumnType.IMAGE:
                 return ColumnImageRenderer;
-            case DataGridColumnType.CURRENCY:
+            case ColumnType.CURRENCY:
                 return ColumnCurrencyRenderer;
-            case DataGridColumnType.DATE:
+            case ColumnType.DATE:
                 return ColumnDateRenderer;
-            case DataGridColumnType.REFERENCE:
+            case ColumnType.REFERENCE:
                 return ColumnReferenceRenderer;
-            case DataGridColumnType.GROUP:
+            case ColumnType.GROUP:
                 return ColumnGroupRenderer;
-            case DataGridColumnType.STATUS:
+            case ColumnType.STATUS:
                 return ColumnStatusRenderer;
-            case DataGridColumnType.ACTIONS:
+            case ColumnType.ACTIONS:
                 return ColumnActionsRenderer;
             default:
                 return ColumnUndefinedRenderer;
         }
     };
 
-    const renderColumn = (column: DataGridColumn, item: any) => {
-        const columnRenderer = getColumnRenderer(column.type ?? DataGridColumnType.TEXT);
+    const renderColumn = (column: Column, item: any) => {
+        const columnRenderer = getColumnRenderer(column.type ?? ColumnType.TEXT);
         if (column.linkFormat) {
             return <Link style={{ textDecoration: "none" }} href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus)}</Link>;
         }
