@@ -1,20 +1,10 @@
-import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
+import { Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { PaginationGrid } from "./PaginationGrid";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import { ColumnTextRenderer } from "./columns/ColumnTextRenderer";
-import { ColumnNumberRenderer } from "./columns/ColumnNumberRenderer";
-import { ColumnImageRenderer } from "./columns/ColumnImageRenderer";
-import { ColumnCurrencyRenderer } from "./columns/ColumnCurrencyRenderer";
-import { ColumnDateRenderer } from "./columns/ColumnDateRenderer";
-import { ColumnStatusRenderer } from "./columns/ColumnStatusRenderer";
-import { ColumnReferenceRenderer } from "./columns/ColumnReferenceRenderer";
 import {
-    DataGridColumn as Column,
-    DataGridColumnActionType as ColumnActionType,
-    DataGridColumnType as ColumnType, DataGridFilterColumn,
+    DataGridColumn as Column, DataGridFilterColumn,
     DataGridMessage,
     DataGridPagination,
     DataGridSort,
@@ -25,6 +15,7 @@ import { DataGridMessages } from "./messages/DataGridMessages";
 import { DataGridTitle } from "./title/DataGridTitle";
 import { DataGridBottomToolbar } from "./bottom/DataGridBottomToolbar";
 import { DataGridHead } from "./header/DataGridHead";
+import { renderColumn } from "./columns/renderColumn";
 
 interface DataGridProps {
     title: string;
@@ -95,72 +86,6 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         setInputableMap(updatedInputableMap);
     }, [items]);
 
-    const ColumnActionsRenderer = (column: Column, item: any) => {
-        if (column.customFormat) {
-            return column.customFormat ? column.customFormat(null, item, table) : '-';
-        } else {
-            if (column.actionType === ColumnActionType.EDIT) {
-                return <Button variant="primary" size="sm" onClick={() => handleEditItem(item)}>
-                    {column.label}
-                </Button>
-            } else if (column.actionType === ColumnActionType.DELETE) {
-                return <Button variant="danger" size="sm" onClick={() => onDeleteItem(item)}>
-                    {column.label}
-                </Button>
-            } else if (column.actionType === ColumnActionType.ADD_CHILD) {
-                return <Button variant="secondary" size="sm" onClick={() => handleAddChildItem(item, column)}>
-                    {column.label}
-                </Button>
-            }
-        }
-    };
-
-    const ColumnUndefinedRenderer = () => {
-        return '-';
-    }
-
-    const ColumnGroupRenderer = (column: Column, item: any, table: string,
-        inputableMap: any, setInputableMap: (inputableMap: any) => void,
-        onAfterChangeStatus: (column: Column, item: any) => void) => {
-        return column.groupChildren?.map((childColumn: Column, index) => {
-            return <React.Fragment key={index}>
-                {index > 0 && <br />} <strong>{childColumn.label}: </strong> {renderColumn(childColumn, item)}
-            </React.Fragment>
-        });
-    };
-
-    const getColumnRenderer = (columnType: ColumnType) => {
-        switch (columnType) {
-            case ColumnType.TEXT:
-                return ColumnTextRenderer;
-            case ColumnType.NUMBER:
-                return ColumnNumberRenderer;
-            case ColumnType.IMAGE:
-                return ColumnImageRenderer;
-            case ColumnType.CURRENCY:
-                return ColumnCurrencyRenderer;
-            case ColumnType.DATE:
-                return ColumnDateRenderer;
-            case ColumnType.REFERENCE:
-                return ColumnReferenceRenderer;
-            case ColumnType.GROUP:
-                return ColumnGroupRenderer;
-            case ColumnType.STATUS:
-                return ColumnStatusRenderer;
-            case ColumnType.ACTIONS:
-                return ColumnActionsRenderer;
-            default:
-                return ColumnUndefinedRenderer;
-        }
-    };
-
-    const renderColumn = (column: Column, item: any) => {
-        const columnRenderer = getColumnRenderer(column.type ?? ColumnType.TEXT);
-        if (column.linkFormat) {
-            return <Link style={{ textDecoration: "none" }} href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus)}</Link>;
-        }
-        return columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus);
-    };
 
     const toggleCheckedItem = (id: number) => {
         if (checkedItemIds.indexOf(id) === -1) {
@@ -202,7 +127,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                             </td>
                                             {columns.map(column => (
                                                 <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap' : 'normal' }}>
-                                                    {renderColumn(column, item)}
+                                                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
                                                 </td>
                                             ))}
                                         </tr>)
