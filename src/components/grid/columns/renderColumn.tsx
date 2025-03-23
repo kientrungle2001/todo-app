@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { DataGridColumn as Column, DataGridColumnType as ColumnType } from "../DataGridColumnTypes";
+import {
+    DataGridColumn as Column,
+    DataGridColumnType as ColumnType
+} from "../DataGridColumnTypes";
 import { ColumnTextRenderer } from "./ColumnTextRenderer";
 import { ColumnNumberRenderer } from "./ColumnNumberRenderer";
 import { ColumnImageRenderer } from "./ColumnImageRenderer";
