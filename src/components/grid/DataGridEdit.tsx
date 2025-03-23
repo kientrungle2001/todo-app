@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row, Tab, Tabs } from "react-bootstrap";
-import axios, { getAxios } from "@/api/axiosInstance";
 import { buildTree, flatTree } from "@/api/tree";
 import 'select2';
-import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { FieldTextRenderer } from "./fields/FieldTextRenderer";
 import { FieldNumberRenderer } from "./fields/FieldNumberRenderer";
@@ -14,6 +12,7 @@ import { FieldCheckboxRenderer } from "./fields/FieldCheckboxRenderer";
 import { FieldEditorRenderer } from "./fields/FieldEditorRenderer";
 import { FieldImageRenderer } from "./fields/FieldImageRenderer";
 import { DataGridEditField, DataGridEditFieldType, DataGridEditMode } from "./DataGridEditTypes";
+import { tableRepository } from "@/api/repositories/Table";
 
 interface DataGridEditProps {
     mode: DataGridEditMode,
@@ -51,33 +50,18 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     if (field.treeMode) {
                         fields.push(field.parentField ?? 'parent');
                     }
-                    getAxios(window.location.hostname).post(`/tables/${field.table}/map`, {
+                    tableRepository.getItemsForSelect(field.table, {
                         fields: fields,
                         condition: condition,
                         orderBy: field.orderBy ?? 'id asc'
-                    }, {
-                        headers: {
-                            'Authorization': `Bearer ${storage.get('token') || ''}`
+                    }).then((response: any) => {
+                        let items = response.data;
+                        if (field.treeMode) {
+                            items = buildTree(items, field.parentField ?? 'parent');
+                            items = flatTree(items, 1);
                         }
-                    })
-                        .then((response: any) => {
-                            let items = response.data;
-                            if (field.treeMode) {
-                                items = buildTree(items, field.parentField ?? 'parent');
-                                items = flatTree(items, 1);
-                            }
-                            updatedMaps[field.index] = items;
-                        })
-                        .catch((error: any) => {
-                            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                                storage.clearTokenInfo();
-                                router.push('/login');
-                            }
-                        })
-                        .catch((error: any) => {
-                            console.error('Error fetching map data:', error);
-                        });
-
+                        updatedMaps[field.index] = items;
+                    });
                 }
             });
             setTimeout(() => {
@@ -188,13 +172,13 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                     ) : (
                                         <Col className="mb-3" md={tab.fields[0].size ?? 12} sm={12} key={tab.tabGroup}>
                                             <Tabs id={"controlled-tab-" + tab.tabGroup}>
-                                            {tab.fields.map(field => (
-                                                <Tab eventKey={field.index} title={field.label} key={field.index}>
-                                                    <Form.Group controlId={field.index}>
-                                                        {renderField(field, item)}
-                                                    </Form.Group>
-                                                </Tab>
-                                            ))}
+                                                {tab.fields.map(field => (
+                                                    <Tab eventKey={field.index} title={field.label} key={field.index}>
+                                                        <Form.Group controlId={field.index}>
+                                                            {renderField(field, item)}
+                                                        </Form.Group>
+                                                    </Tab>
+                                                ))}
                                             </Tabs>
                                         </Col>
                                     )
