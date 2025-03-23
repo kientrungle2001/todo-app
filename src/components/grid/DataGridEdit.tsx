@@ -2,41 +2,36 @@ import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row, Tab, Tabs } from "react-bootstrap";
 import { buildTree, flatTree } from "@/api/tree";
 import 'select2';
-import { useRouter } from "next/router";
-import { FieldTextRenderer } from "./fields/FieldTextRenderer";
-import { FieldNumberRenderer } from "./fields/FieldNumberRenderer";
-import { FieldStatusRenderer } from "./fields/FieldStatusRenderer";
-import { FieldDateRenderer } from "./fields/FieldDateRenderer";
-import { FieldSelectRenderer } from "./fields/FieldSelectRenderer";
-import { FieldCheckboxRenderer } from "./fields/FieldCheckboxRenderer";
-import { FieldEditorRenderer } from "./fields/FieldEditorRenderer";
-import { FieldImageRenderer } from "./fields/FieldImageRenderer";
-import { DataGridEditField, DataGridEditFieldType, DataGridEditMode } from "./DataGridEditTypes";
+import {
+    DataGridEditField as EditField,
+    DataGridEditFieldType as EditFieldType,
+    DataGridEditMode as EditMode
+} from "./DataGridEditTypes";
 import { tableRepository } from "@/api/repositories/Table";
+import { renderField } from "./fields/renderField";
 
 interface DataGridEditProps {
-    mode: DataGridEditMode,
+    mode: EditMode,
     table: string;
     itemId?: number;
     addNewLabel?: string;
     updateLabel?: string;
-    fields: DataGridEditField[];
+    fields: EditField[];
     item: any;
     setItem: (item: any) => void;
-    handleUpdateItem?: (item: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>) => void;
+    handleUpdateItem?: (item: any, fields: EditField[], event: React.FormEvent<HTMLFormElement>) => void;
     handleCancelEdit?: () => void;
-    handleAddItem?: (item: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>) => void;
+    handleAddItem?: (item: any, fields: EditField[], event: React.FormEvent<HTMLFormElement>) => void;
     handleCancelAdd?: () => void;
 }
 
 const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNewLabel, updateLabel, fields, item, setItem, handleUpdateItem, handleCancelEdit, handleAddItem, handleCancelAdd }): React.ReactElement => {
 
-    const router = useRouter();
     useEffect(() => {
         const setMapsForFields = () => {
             let updatedMaps = { ...maps };
             fields.forEach((field) => {
-                if (field.type === DataGridEditFieldType.SELECT && field.table) {
+                if (field.type === EditFieldType.SELECT && field.table) {
 
                     let condition = null;
                     if (field.tableCondition) {
@@ -73,41 +68,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     }, [item]);
     const [maps, setMaps] = React.useState<any>({});
 
-
-    const FieldUndefinedRenderer = () => {
-        return '-';
-    }
-
-    const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
-        switch (fieldType) {
-            case DataGridEditFieldType.TEXT:
-                return FieldTextRenderer;
-            case DataGridEditFieldType.NUMBER:
-                return FieldNumberRenderer;
-            case DataGridEditFieldType.STATUS:
-                return FieldStatusRenderer;
-            case DataGridEditFieldType.DATE:
-                return FieldDateRenderer;
-            case DataGridEditFieldType.SELECT:
-                return FieldSelectRenderer;
-            case DataGridEditFieldType.CHECKBOX:
-                return FieldCheckboxRenderer;
-            case DataGridEditFieldType.EDITOR:
-                return FieldEditorRenderer;
-            case DataGridEditFieldType.IMAGE:
-                return FieldImageRenderer;
-            default:
-                return FieldUndefinedRenderer;
-        }
-
-    }
-
-    const renderField = (field: DataGridEditField, item: any) => {
-        const renderer = getFieldRenderer(field.type);
-        return renderer(field, item, setItem, maps);
-    }
-
-    const tabGroups: { [key: string]: DataGridEditField[] } = {};
+    const tabGroups: { [key: string]: EditField[] } = {};
     fields.forEach(field => {
         let tabGroup = field.tabGroup ?? '__default';
         if (!tabGroups[tabGroup]) {
@@ -126,7 +87,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         <>
             <Container fluid>
                 {
-                    mode === DataGridEditMode.EDIT ? (
+                    mode === EditMode.EDIT ? (
                         <h2 className="text-center">{updateLabel} - ID: {itemId}</h2>
                     ) : (
                         <h2 className="text-center">{addNewLabel}</h2>
@@ -136,23 +97,23 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                 <Row>
                     <Col md={12} sm={12}>
                         <Form onSubmit={(event) => {
-                            if (mode === DataGridEditMode.EDIT && handleUpdateItem) {
+                            if (mode === EditMode.EDIT && handleUpdateItem) {
                                 handleUpdateItem(item, fields, event);
                             }
 
-                            if (mode === DataGridEditMode.ADD && handleAddItem) {
+                            if (mode === EditMode.ADD && handleAddItem) {
                                 handleAddItem(item, fields, event);
                             }
                         }}>
                             <Row>
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
-                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
+                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                                     <Button variant="outline-secondary" onClick={() => {
-                                        if (mode === DataGridEditMode.ADD && handleCancelAdd) {
+                                        if (mode === EditMode.ADD && handleCancelAdd) {
                                             handleCancelAdd();
                                         }
 
-                                        if (mode === DataGridEditMode.EDIT && handleCancelEdit) {
+                                        if (mode === EditMode.EDIT && handleCancelEdit) {
                                             handleCancelEdit();
                                         }
                                     }}>Hủy bỏ</Button>
@@ -164,7 +125,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                                 <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
                                                     <Form.Group controlId={field.index}>
                                                         <Form.Label>{field.label}</Form.Label>
-                                                        {renderField(field, item)}
+                                                        {renderField(field, item, setItem, maps)}
                                                     </Form.Group>
                                                 </Col>
                                             ))}
@@ -175,7 +136,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                                 {tab.fields.map(field => (
                                                     <Tab eventKey={field.index} title={field.label} key={field.index}>
                                                         <Form.Group controlId={field.index}>
-                                                            {renderField(field, item)}
+                                                            {renderField(field, item, setItem, maps)}
                                                         </Form.Group>
                                                     </Tab>
                                                 ))}
@@ -186,13 +147,13 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                 ))}
 
                                 <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
-                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === DataGridEditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
+                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                                     <Button variant="outline-secondary" onClick={() => {
-                                        if (mode === DataGridEditMode.ADD && handleCancelAdd) {
+                                        if (mode === EditMode.ADD && handleCancelAdd) {
                                             handleCancelAdd();
                                         }
 
-                                        if (mode === DataGridEditMode.EDIT && handleCancelEdit) {
+                                        if (mode === EditMode.EDIT && handleCancelEdit) {
                                             handleCancelEdit();
                                         }
                                     }}>Hủy bỏ</Button>
