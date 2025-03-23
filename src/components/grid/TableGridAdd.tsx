@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { TableGridSettings } from "./TableGrid";
-import axios, { getAxios } from "@/api/axiosInstance";
 import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
-import { storage } from "@/api/storage";
 import { DataGridEditField, DataGridEditFieldType, DataGridEditMode } from "./DataGridEditTypes";
+import { tableRepository } from "@/api/repositories/Table";
 
 interface TableGridProps {
     controller: string;
@@ -13,8 +12,6 @@ interface TableGridProps {
 
 export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings }): React.ReactElement => {
     const router = useRouter();
-
-
     const [item, setItem] = React.useState<any>({});
 
     useEffect(() => {
@@ -26,10 +23,9 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
                 } else {
                     queryItem[field.index] = router.query['field_' + field.index];
                 }
-                
             }
         });
-        setItem({...queryItem});
+        setItem({ ...queryItem });
     }, []);
 
     if (!item) {
@@ -37,34 +33,16 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
             <h3>Loading...</h3>
         </>
     }
-
-
-
+    
     const handleAddItem = (updatedItem: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        getAxios(window.location.hostname).post(`/tables/${settings.table}/create`, {
-            item: updatedItem,
-            settings: JSON.parse(JSON.stringify(settings)),
-            fields: JSON.parse(JSON.stringify(fields))
-        }, {
-            headers: {
-                'Authorization': `Bearer ${storage.get('token') || ''}`
-            }
-        }).then(() => {
+        tableRepository.createItem(settings, fields, updatedItem).then(() => {
             setItem(updatedItem);
             if (router.query.backHref) {
                 router.push(router.query.backHref as string);
             } else {
                 router.push(`/Table/${controller}`);
             }
-        }).catch((error: any) => {
-            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                storage.clearTokenInfo();
-                router.push('/login');
-            }
-        }).catch((error: any) => {
-            console.error("Error adding item:", error);
-            alert("Error adding item. Please try again later.");
         });
     }
 

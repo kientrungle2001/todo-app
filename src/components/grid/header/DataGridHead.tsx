@@ -1,8 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import { DataGridColumn } from "../DataGridColumnTypes";
-import { getAxios } from "@/api/axiosInstance";
-import { storage } from "@/api/storage";
-import { useRouter } from "next/navigation";
+import { tableRepository } from "@/api/repositories/Table";
 
 interface DataGridHeadProps {
     table: string;
@@ -18,7 +16,6 @@ interface DataGridHeadProps {
 }
 
 export const DataGridHead: React.FC<DataGridHeadProps> = ({ table, columns, items, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, inputableMap, setInputableMap, onAfterSaveInputableColumn }) => {
-    const router = useRouter();
     const handleSaveInputableColumn = (column: DataGridColumn) => {
         let values: any[] = [];
         for (let itemId in inputableMap) {
@@ -28,18 +25,9 @@ export const DataGridHead: React.FC<DataGridHeadProps> = ({ table, columns, item
                 value: inputableItem[column.index]
             });
         }
-        getAxios(window.location.hostname).put(`/tables/${table}/update-column`, { column: column, values }, {
-            headers: {
-                'Authorization': `Bearer ${storage.get('token') || ''}`
-            }
-        }).then(() => {
+        tableRepository.updateColumn(table, column, values).then(() => {
             onAfterSaveInputableColumn(column);
-        }).catch((error: any) => {
-            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                storage.clearTokenInfo();
-                router.push('/login');
-            }
-        });;
+        });
     }
     const handleCheckAll = (event: React.ChangeEvent<HTMLInputElement>) => {
         let checked = event.target.checked;
