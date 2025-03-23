@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { buildTree, flatTree } from "@/api/tree";
 import $ from "jquery";
 import 'select2';
+import { tableRepository } from "@/api/repositories/Table";
 
 interface FiltersGridProps {
     filters: DataGridFilterColumn[];
@@ -245,30 +246,14 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                 } else {
                     data.orderBy = filter.orderBy ?? 'id asc';
                 }
-                getAxios(window.location.hostname).post(`/tables/${filter.table}/map`, data, {
-                    headers: {
-                        'Authorization': `Bearer ${storage.get('token') || ''}`
+                tableRepository.getItemsForSelect(filter.table, data).then((response: any) => {
+                    let items: any[] = response.data;
+                    if (filter.treeMode) {
+                        items = buildTree(items, filter.treeParentField ?? 'parent');
+                        items = flatTree(items);
                     }
-                })
-                    .then((response: any) => {
-
-                        let items: any[] = response.data;
-                        if (filter.treeMode) {
-                            items = buildTree(items, filter.treeParentField ?? 'parent');
-                            items = flatTree(items);
-                        }
-                        updatedMaps[filter.index] = items;
-
-                    })
-                    .catch((error: any) => {
-                        if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                            storage.clearTokenInfo();
-                            router.push('/login');
-                        }
-                    })
-                    .catch((error: any) => {
-                        console.error('Error fetching map data:', error);
-                    });
+                    updatedMaps[filter.index] = items;
+                });
             }
         });
         setTimeout(() => {

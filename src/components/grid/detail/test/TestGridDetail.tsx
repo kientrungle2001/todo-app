@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { TableGridSettings } from "../../TableGrid";
-import axios, { getAxios } from "@/api/axiosInstance";
+import { getAxios } from "@/api/axiosInstance";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
 import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
 import TestGridEdit from "./TestGridEdit";
+import { tableRepository } from "@/api/repositories/Table";
 
 interface TableGridProps {
     itemId: number;
@@ -17,20 +18,9 @@ export const TestGridDetail: React.FC<TableGridProps> = ({ controller, settings,
     const [item, setItem] = React.useState<any>(null);
 
     useEffect(() => {
-        getAxios(window.location.hostname).post(`/tables/${settings.table}/detail/${itemId}`, {
-            settings
-        }, {
-            headers: {
-                'Authorization': `Bearer ${storage.get('token') || ''}`
-            }
-        }).then((resp: any) => {
+        tableRepository.getItem(settings, itemId).then((resp: any) => {
             setItem(resp.data);
             console.log("Fetched item:", resp.data);
-        }).catch((error: any) => {
-            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
-                storage.clearTokenInfo();
-                router.push('/login');
-            }
         });
     }, [itemId]);
 

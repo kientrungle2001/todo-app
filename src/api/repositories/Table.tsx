@@ -79,6 +79,24 @@ export const tableRepository = {
             alert("Error updating item. Please try again later.");
         });
     },
+    updateItemColumn: (table: string, itemId: number, fields: any, item: any) => {
+        return getAxios(window.location.hostname).put(`/tables/${table}/update/${itemId}`, {
+            item: item,
+            fields: JSON.parse(JSON.stringify(fields))
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
+        }).catch((error: any) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                window.location.reload();
+            }
+        }).catch((error: any) => {
+            console.error("Error updating item:", error);
+            alert("Error updating item. Please try again later.");
+        });
+    },
     updateColumn: (table: string, column: DataGridColumn, values: any) => {
         return getAxios(window.location.hostname).put(`/tables/${table}/update-column`, { column, values }, {
             headers: {
@@ -89,6 +107,20 @@ export const tableRepository = {
                 storage.clearTokenInfo();
                 window.location.reload();
             }
+        });
+    },
+    getItemsForSelect: (table: string, options: any) => {
+        return getAxios(window.location.hostname).post(`/tables/${table}/map`, options, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
+        }).catch((error: any) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                window.location.reload();
+            }
+        }).catch((error: any) => {
+            console.error('Error fetching map data:', error);
         });
     }
 }
