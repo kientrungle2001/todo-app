@@ -12,7 +12,7 @@ export const categoryRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         })
     },
@@ -24,7 +24,7 @@ export const categoryRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         });
     },
@@ -36,7 +36,7 @@ export const categoryRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         })
     }

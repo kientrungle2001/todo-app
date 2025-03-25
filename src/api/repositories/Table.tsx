@@ -13,7 +13,7 @@ export const tableRepository = {
             }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
-                    window.location.reload();
+                    window.location.href =  '/';
                 }
             });
     },
@@ -23,7 +23,7 @@ export const tableRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         });
     },
@@ -39,7 +39,7 @@ export const tableRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         }).catch((error: any) => {
             console.error("Error adding item:", error);
@@ -56,7 +56,7 @@ export const tableRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         });
     },
@@ -72,7 +72,7 @@ export const tableRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         }).catch((error: any) => {
             console.error("Error updating item:", error);
@@ -90,7 +90,7 @@ export const tableRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         }).catch((error: any) => {
             console.error("Error updating item:", error);
@@ -105,7 +105,7 @@ export const tableRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         });
     },
@@ -117,7 +117,7 @@ export const tableRepository = {
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                window.location.reload();
+                window.location.href =  '/';
             }
         }).catch((error: any) => {
             console.error('Error fetching map data:', error);

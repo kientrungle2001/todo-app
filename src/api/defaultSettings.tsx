@@ -15,6 +15,14 @@ let hostnameConfigs: any = {
         software: 1005,
         site: 1,
         appName: 'pmtv'
+    },
+    'qlhs2.vn': {
+        mediaUploadEndpoint: 'http://localhost:3002/api',
+        mediaUrlEndpoint: 'http://localhost:3002',
+        apiEndpoint: 'http://localhost:3002/api',
+        software: 201,
+        site: 1,
+        appName: 'qlhs'
     }
 }
 
