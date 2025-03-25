@@ -33,45 +33,38 @@ import { FullLookAdminLogSettings } from "./settings/fulllook/FullLookLogSetting
 import { FullLookAdminLevelSettings } from "./settings/fulllook/privilege/FullLookAdminLevelSettings";
 import { FullLookAdminLevelActionSettings } from "./settings/fulllook/privilege/FullLookAdminLevelActionSettings";
 import { getConfigsByHostName } from "./defaultSettings";
-import { PmtvAdminCategoriesSettings } from "./settings/pmtv/PmtvCategoriesSettings";
 import { PmtvAdminTestSettings } from "./settings/pmtv/education/PmtvTestSettings";
 import { PmtvAdminCourseSettings } from "./settings/pmtv/education/course/PmtvCourseSettings";
-import { PmtvAdminServicePackagesSettings } from "./settings/pmtv/fee/PmtvServicePackagesSettings";
 import { PmtvAdminCourseResourceSettings } from "./settings/pmtv/education/course/PmtvCourseResourceSettings";
-import { PmtvAdminQuestionSettings } from "./settings/pmtv/education/PmtvQuestionSettings";
-import { PmtvAdminHistoryPaymentSettings } from "./settings/pmtv/fee/PmtvHistoryPaymentSettings";
 import { PmtvAdminNewsSettings } from "./settings/pmtv/PmtvNewsSettings";
 import { PmtvAdminDocumentSettings } from "./settings/pmtv/education/PmtvDocumentSettings";
+import { getSettingsByControllerForQLHS } from "./settings/qlhs";
+import { getSettingsByControllerForPMTV } from "./settings/pmtv";
 
 export const getSettingsByController = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     const hostnameConfigs = getConfigsByHostName(hostname);
-    console.log(hostnameConfigs.appName);
-
+    console.log('hostnameConfigs.appName', hostname, hostnameConfigs.appName);
+    if (hostnameConfigs.appName == 'qlhs') {
+        let settings = getSettingsByControllerForQLHS(controller, hostname);
+        if (settings) return settings;
+    }
+    if (hostnameConfigs.appName == 'pmtv') {
+        let settings = getSettingsByControllerForPMTV(controller, hostname);
+        if (settings) return settings;
+    }
     if (controller === "student") {
         return FullLookStudentSettings
     } else if (controller === "user" || controller === "admin_user") {
         return FullLookAdminUserSettings
     } else if (controller === "history_payment" || controller === "admin_payment_historypayment") {
-        if (hostnameConfigs.appName == 'pmtv') {
-            return PmtvAdminHistoryPaymentSettings;
-        }
         return FullLookAdminHistoryPaymentSettings;
     } else if (controller === "service_packages" || controller === "admin_service_servicepackages") {
-        if (hostnameConfigs.appName == 'pmtv') {
-            return PmtvAdminServicePackagesSettings
-        }
         return FullLookAdminServicePackagesSettings
     } else if (controller === "admin_menu") {
         return FullLookAdminMenuSettings
     } else if (controller === "admin_category") {
-        if (hostnameConfigs.appName == 'pmtv') {
-            return PmtvAdminCategoriesSettings
-        }
         return FullLookAdminCategoriesSettings
     } else if (controller === "admin_question2") {
-        if (hostnameConfigs.appName == 'pmtv') {
-            return PmtvAdminQuestionSettings
-        }
         return FullLookAdminQuestionSettings
     } else if (controller === "admin_document") {
         if (hostnameConfigs.appName == 'pmtv') {

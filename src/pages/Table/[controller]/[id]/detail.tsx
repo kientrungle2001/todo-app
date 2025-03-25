@@ -10,7 +10,17 @@ import { TestGridDetail } from "@/components/grid/detail/test/TestGridDetail";
 import { CategoryGridDetail } from "@/components/grid/detail/category/CategoryGridDetail";
 import { ResourceGridDetail } from "@/components/grid/detail/resource/ResourceGridDetail";
 
-export default function TableEdit(): React.ReactElement {
+import { GetServerSideProps } from 'next';
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const host = req.headers.host; // e.g., 'localhost:3000' or 'example.com'
+
+  return {
+    props: { host },
+  };
+};
+
+export default function TableEdit({ host }: { host: string }): React.ReactElement {
     let router = useRouter();
     const { controller } = router.query;
     const { id } = router.query;
@@ -20,7 +30,8 @@ export default function TableEdit(): React.ReactElement {
     const itemId: number = parseInt(id);
     if (!['admin_question2', 'admin_test', 'admin_category', 'admin_course_resource'].includes(controller as string))
         return <div>Not found</div>;
-    let settings: TableGridSettings | null = getSettingsByController(controller as string);
+    let hostname = host.split(':')[0];
+    let settings: TableGridSettings | null = getSettingsByController(controller as string, hostname);
     if (settings) {
         return <>
             <Container fluid className="mt-3 mb-3">

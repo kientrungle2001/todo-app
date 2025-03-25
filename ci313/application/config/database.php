@@ -73,12 +73,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+$maps = array(
+	'pmtv' => 'pmtv',
+	'qlhs' => 'qlhs2',
+);
+
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '127.0.0.1',
 	'username' => 'kien',
 	'password' => 'kien102105',
-	'database' => isset($_SERVER['HTTP_X_API_APP']) && $_SERVER['HTTP_X_API_APP'] === 'pmtv' ? 'pmtv' : 'nextnobels',
+	'database' => 
+		isset($maps[$_SERVER['HTTP_X_API_APP']]) ? $maps[$_SERVER['HTTP_X_API_APP']] : 'nextnobels',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

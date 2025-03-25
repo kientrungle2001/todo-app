@@ -7,10 +7,21 @@ import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
 
-export default function TableIndex(): React.ReactElement {
+import { GetServerSideProps } from 'next';
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const host = req.headers.host; // e.g., 'localhost:3000' or 'example.com'
+
+  return {
+    props: { host },
+  };
+};
+
+export default function TableIndex({ host }: { host: string }): React.ReactElement {
     let router = useRouter();
     const { controller } = router.query;
-    let settings: TableGridSettings | null = getSettingsByController(controller as string);
+    let hostname = host.split(':')[0];
+    let settings: TableGridSettings | null = getSettingsByController(controller as string, hostname);
     if (settings) {
         return <>
             <Container fluid className="mt-3 mb-3">
