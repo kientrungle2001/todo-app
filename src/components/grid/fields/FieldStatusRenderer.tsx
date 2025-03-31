@@ -22,10 +22,10 @@ export const FieldStatusRenderer = (field: DataGridEditField, item: any, setItem
             item[field.index] = event.target.value;
         }}>
             <option value={1}>
-                {field.map[1] ?? 'Active'}
+                {getStatusLabel(1)}
             </option>
             <option value={0}>
-                {field.map[0] ?? 'Inactive'}
+                {getStatusLabel(0)}
             </option>
         </Form.Select>
     );
