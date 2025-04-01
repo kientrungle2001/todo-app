@@ -5,6 +5,21 @@ import { storage } from "@/api/storage";
 import { DataGridEditField } from "./DataGridEditTypes";
 import DataGrid from "./DataGrid";
 import { tableRepository } from "@/api/repositories/Table";
+export enum TableGridDetailType {
+    DETAIL = 'detail',
+    GRID = 'grid'
+}
+export interface DataGridDetailField extends DataGridColumn {
+    size?: number;
+}
+
+export interface TableGridDetail {
+    type?: TableGridDetailType;
+    referenceField?: string;
+    referenceType?: string;
+    fields?: DataGridDetailField[];
+    settings?: TableGridSettings;
+}
 
 export interface TableGridSettings {
     title: string,
@@ -26,6 +41,7 @@ export interface TableGridSettings {
     addNewLabel?: string;
     deleteSelectedsLabel?: string;
     updateLabel?: string;
+    details?: TableGridDetail[];
 }
 
 interface TableGridProps {

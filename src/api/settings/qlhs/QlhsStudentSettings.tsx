@@ -2,7 +2,7 @@ import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagin
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
 
 const gridTitle: string = "Quản lý Học sinh";
 const gridAddNewLabel: string = "Thêm Học sinh";
@@ -15,7 +15,11 @@ const gridFields: string[] = ["id", "name", "phone", "status", "startStudyDate",
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "name", label: "Tên Học sinh" },
+    {
+        index: "name", label: "Tên Học sinh", linkFormat: (name: any, item: any): string => {
+            return '/Table/student/' + item.id + '/detail';
+        }
+    },
     { index: "phone", label: "SĐT", isHtml: true },
     { index: "startStudyDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     { index: "endStudyDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
@@ -105,7 +109,7 @@ const gridAddFields: DataGridEditField[] = [
     {
         index: 'schoolYear',
         label: 'Niên khóa',
-        
+
         type: DataGridEditFieldType.TEXT,
         tabGroup: '1extrainfo',
         size: 6
@@ -114,6 +118,7 @@ const gridAddFields: DataGridEditField[] = [
         index: 'classes',
         label: 'classes',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '2classinfo',
         size: 6
     },
     {
@@ -135,6 +140,7 @@ const gridAddFields: DataGridEditField[] = [
         label: 'paid',
         type: DataGridEditFieldType.STATUS,
         statusToggable: true,
+        tabGroup: '4status',
         size: 6
     },
     {
@@ -162,6 +168,7 @@ const gridAddFields: DataGridEditField[] = [
         index: 'note',
         label: 'note',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
@@ -169,6 +176,7 @@ const gridAddFields: DataGridEditField[] = [
         label: 'online',
         type: DataGridEditFieldType.STATUS,
         statusToggable: true,
+        tabGroup: '4status',
         size: 6
     },
     {
@@ -176,12 +184,14 @@ const gridAddFields: DataGridEditField[] = [
         label: 'classed',
         type: DataGridEditFieldType.STATUS,
         statusToggable: true,
+        tabGroup: '4status',
         size: 6
     },
     {
         index: 'type',
         label: 'type',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
@@ -189,36 +199,42 @@ const gridAddFields: DataGridEditField[] = [
         label: 'status',
         type: DataGridEditFieldType.STATUS,
         statusToggable: true,
+        tabGroup: '4status',
         size: 6
     },
     {
         index: 'rating',
         label: 'rating',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
         index: 'assignId',
         label: 'assignId',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
         index: 'assignName',
         label: 'assignName',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
         index: 'color',
         label: 'color',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
         index: 'fontStyle',
         label: 'fontStyle',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
@@ -232,6 +248,7 @@ const gridAddFields: DataGridEditField[] = [
         index: 'subjectIds',
         label: 'subjectIds',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '2classinfo',
         size: 6
     },
     {
@@ -260,12 +277,14 @@ const gridAddFields: DataGridEditField[] = [
         label: 'adviceStatus',
         type: DataGridEditFieldType.STATUS,
         statusToggable: true,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
         index: 'adviceNote',
         label: 'adviceNote',
         type: DataGridEditFieldType.TEXT,
+        tabGroup: '5otherinfo',
         size: 6
     },
     {
@@ -277,7 +296,19 @@ const gridAddFields: DataGridEditField[] = [
     },
 ];
 
-
+const gridDetails: TableGridDetail[] = [
+    {
+        type: TableGridDetailType.DETAIL,
+        fields: [
+            {
+                index: 'name',
+                type: DataGridColumnType.TEXT,
+                label: 'Name',
+                size: 6
+            }
+        ]
+    }
+];
 export const QlhsStudentSettings: TableGridSettings = {
     title: gridTitle,
     table: gridTable,
@@ -294,4 +325,5 @@ export const QlhsStudentSettings: TableGridSettings = {
     addNewLabel: gridAddNewLabel,
     deleteSelectedsLabel: gridDeleteSelectedsLabel,
     updateLabel: gridUpdateLabel,
+    details: gridDetails
 }

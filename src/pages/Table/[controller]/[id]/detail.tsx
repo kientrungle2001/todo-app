@@ -11,13 +11,14 @@ import { CategoryGridDetail } from "@/components/grid/detail/category/CategoryGr
 import { ResourceGridDetail } from "@/components/grid/detail/resource/ResourceGridDetail";
 
 import { GetServerSideProps } from 'next';
+import { TableGridDetail } from "@/components/grid/TableGridDetail";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const host = req.headers.host; // e.g., 'localhost:3000' or 'example.com'
+    const host = req.headers.host; // e.g., 'localhost:3000' or 'example.com'
 
-  return {
-    props: { host },
-  };
+    return {
+        props: { host },
+    };
 };
 
 export default function TableEdit({ host }: { host: string }): React.ReactElement {
@@ -28,11 +29,23 @@ export default function TableEdit({ host }: { host: string }): React.ReactElemen
         return <div>Invalid ID</div>;
     }
     const itemId: number = parseInt(id);
-    if (!['admin_question2', 'admin_test', 'admin_category', 'admin_course_resource'].includes(controller as string))
-        return <div>Not found</div>;
+
     let hostname = host.split(':')[0];
     let settings: TableGridSettings | null = getSettingsByController(controller as string, hostname);
     if (settings) {
+        if (settings.details) {
+            return <>
+                <Container fluid className="mt-3 mb-3">
+                    <TopMenuGrid />
+                </Container>
+                <TableGridDetail controller={controller as string} itemId={parseInt(id)} settings={settings} />
+                <Container fluid className="mt-3 mb-3 bg-light pt-3 pb-3">
+                    <NextNobelsFooter />
+                </Container>
+            </>;
+        }
+        if (!['admin_question2', 'admin_test', 'admin_category', 'admin_course_resource'].includes(controller as string))
+            return <div>Not found</div>;
         return <>
             <Container fluid className="mt-3 mb-3">
                 <TopMenuGrid />
