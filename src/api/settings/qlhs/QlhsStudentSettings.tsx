@@ -3,6 +3,8 @@ import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
+import { FullLookAdminMenuSettings } from "../fulllook/FullLookMenuSettings";
+import { QlhsClassStudentSettings } from "./QlhsClassStudentSettings";
 
 const gridTitle: string = "Quản lý Học sinh";
 const gridAddNewLabel: string = "Thêm Học sinh";
@@ -300,13 +302,20 @@ const gridDetails: TableGridDetail[] = [
     {
         type: TableGridDetailType.DETAIL,
         fields: [
-            {
-                index: 'name',
-                type: DataGridColumnType.TEXT,
-                label: 'Name',
-                size: 6
-            }
+            { ...DataGridColumns.id, size: 4 },
+            { index: "name", label: "Tên Học sinh", size: 4 },
+            { index: "phone", label: "SĐT", isHtml: true, size: 4 },
+            { index: "startStudyDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE, size: 4 },
+            { index: "endStudyDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE, size: 4 },
+            { ...DataGridColumns.status, size: 4 }
         ]
+    },
+    {
+        type: TableGridDetailType.GRID,
+        controller: 'class_student',
+        referenceField: 'studentId',
+        referenceType: 'equal',
+        settings: QlhsClassStudentSettings
     }
 ];
 export const QlhsStudentSettings: TableGridSettings = {

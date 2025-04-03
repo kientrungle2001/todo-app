@@ -38,7 +38,7 @@ export const getConfigsByHostName = (hostname: string | null = null): any | null
 
 export const replaceMediaUrl = (content: string) => {
     if (!content) return '';
-    return content.replaceAll('http://s1.nextnobels.com', '')
+    return ('' + content).replaceAll('http://s1.nextnobels.com', '')
         .replaceAll('http://nextnobels.com', '')
         .replaceAll('http://www.fulllooksongngu.com', '');
 }

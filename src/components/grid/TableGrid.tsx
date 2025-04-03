@@ -19,6 +19,7 @@ export interface TableGridDetail {
     referenceType?: string;
     fields?: DataGridDetailField[];
     settings?: TableGridSettings;
+    controller?: string;
 }
 
 export interface TableGridSettings {
@@ -47,10 +48,11 @@ export interface TableGridSettings {
 interface TableGridProps {
     controller: string;
     // Add any additional props you need here
-    settings: TableGridSettings
+    settings: TableGridSettings,
+    defaultFilters?: any;
 }
 
-export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): React.ReactElement => {
+export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defaultFilters }): React.ReactElement => {
 
     const [pagination, setPagination] = React.useState<DataGridPagination>(settings.pagination);
     const [items, setItems] = React.useState<any[]>([]);
@@ -119,6 +121,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings }): R
             search: searchText, filterData: JSON.parse(JSON.stringify(filterData)),
             sorts: JSON.parse(JSON.stringify(sorts)),
             page: pagination.currentPage, pageSize: pagination.pageSize,
+            defaultFilters: defaultFilters
         })
             .then((resp: any) => {
                 if (settings.treeMode)

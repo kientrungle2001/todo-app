@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { TableGridDetailType, TableGridSettings } from "./TableGrid";
 import { TableGridDetail as GridDetail } from "./TableGrid";
 import { Col, Container, Row } from "react-bootstrap";
 import { TableGridDetailRendererDetail } from "./detail/renderer/TableGridDetailRendererDetail";
+import { TableGridDetailRendererGrid } from "./detail/renderer/TableGridDetailRendererGrid";
 interface TableGridDetailProps {
     itemId: number;
     controller: string;
@@ -17,7 +18,11 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
                     <Row className="mb-3">
                         <Col md={12}>
                             {detail.type && detail.type == TableGridDetailType.GRID ?
-                                'grid' : <TableGridDetailRendererDetail
+                                <TableGridDetailRendererGrid controller={controller}
+                                    settings={settings}
+                                    itemId={itemId}
+                                    detail={detail} /> :
+                                <TableGridDetailRendererDetail
                                     controller={controller}
                                     settings={settings}
                                     itemId={itemId}

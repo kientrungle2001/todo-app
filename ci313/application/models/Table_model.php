@@ -25,7 +25,7 @@ class Table_model extends CI_Model
         }
     }
 
-    public function search($settings, $page = 1, $pageSize = 10, $search = '%', $sorts = [], $filterData = [])
+    public function search($settings, $page = 1, $pageSize = 10, $search = '%', $sorts = [], $filterData = [], $defaultFilters = [])
     {
         $sorts = array_map(function ($sort) {
             $sortObj = new DataGridSort();
@@ -38,8 +38,8 @@ class Table_model extends CI_Model
         // Populate settings from the input (or pass as argument)
         populateFromRequest($settingsObj, $settings);
 
-        $query = $this->build_query($settingsObj, $search, $filterData, $sorts, $pageSize, $offset);
-        $totalCountQuery = $this->build_total_count_query($settingsObj, $search, $filterData);
+        $query = $this->build_query($settingsObj, $search, $filterData, $defaultFilters, $sorts, $pageSize, $offset);
+        $totalCountQuery = $this->build_total_count_query($settingsObj, $search, $filterData, $defaultFilters);
 
         $total = $this->db->query($totalCountQuery['sql'], $totalCountQuery['params'])->row()->total;
         $items = $this->db->query($query['sql'], $query['params'])->result_array();
@@ -49,8 +49,7 @@ class Table_model extends CI_Model
                     $item[$column->index] = $this->getItemReferenceValues($column, $item[$column->index]);
                 }
             } elseif ($column->type === 'group') {
-                foreach($column->groupChildren as $childColumn)
-                {
+                foreach ($column->groupChildren as $childColumn) {
                     if ($childColumn->type === 'reference') {
                         foreach ($items as &$item) {
                             $item[$childColumn->index] = $this->getItemReferenceValues($childColumn, $item[$childColumn->index]);
@@ -245,7 +244,7 @@ class Table_model extends CI_Model
      * @param int $offset 
      * @return array{sql: string, params: array} 
      */
-    private function build_query($settings, $search, $filterData, $sorts, $pageSize, $offset)
+    private function build_query($settings, $search, $filterData, $defaultFilters, $sorts, $pageSize, $offset)
     {
         // Xây dựng các phần của câu truy vấn
         $fields = $settings->fields;
@@ -293,6 +292,13 @@ class Table_model extends CI_Model
             }
         }
 
+        if ($defaultFilters) {
+            foreach ($defaultFilters as $key => $value) {
+                $filterConditions[] = "t.{$key} = ?";
+                $params[] = $value;
+            }
+        }
+
         if (!empty($filterConditions)) {
             $query .= " AND (" . implode(' AND ', $filterConditions) . ")";
         }
@@ -330,7 +336,7 @@ class Table_model extends CI_Model
      * @param array $filterData 
      * @return array{sql: string, params: array} 
      */
-    private function build_total_count_query($settings, $search, $filterData)
+    private function build_total_count_query($settings, $search, $filterData, $defaultFilters)
     {
         // Xây dựng câu truy vấn để đếm số bản ghi
         $searchLikes = [];
@@ -363,6 +369,13 @@ class Table_model extends CI_Model
                     $filterConditions[] = "t.{$filter->index} LIKE ?";
                     $params[] = '%' . $filterData[$filter->index] . '%';
                 }
+            }
+        }
+
+        if ($defaultFilters) {
+            foreach ($defaultFilters as $key => $value) {
+                $filterConditions[] = "t.{$key} = ?";
+                $params[] = $value;
             }
         }
 
