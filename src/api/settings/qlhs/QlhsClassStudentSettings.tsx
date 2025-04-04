@@ -11,20 +11,26 @@ const gridDeleteSelectedsLabel: string = "Xóa các Xếp lớp đã chọn";
 const gridTable: string = "class_student";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id"];
-const gridFields: string[] = ["id", "classId", "studentId", "startClassDate", "endClassDate"];
+const gridFields: string[] = ["id", "classId", "studentId", "subjectId", "startClassDate", "endClassDate"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     {
-        index: "classId", label: "Class",
+        index: "classId", label: "Lớp học",
         type: DataGridColumnType.REFERENCE,
         referenceTable: "classes",
         referenceField: "name"
     },
     {
-        index: "studentId", label: "Student",
+        index: "studentId", label: "Học sinh",
         type: DataGridColumnType.REFERENCE,
         referenceTable: "student",
+        referenceField: "name"
+    },
+    {
+        index: "subjectId", label: "Môn học",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "subject",
         referenceField: "name"
     },
     { index: "startClassDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
