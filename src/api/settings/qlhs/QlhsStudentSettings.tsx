@@ -30,7 +30,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.deleteAction,
 ];
 
-const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 20 };
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,

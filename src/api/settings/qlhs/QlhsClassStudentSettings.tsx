@@ -27,22 +27,16 @@ const gridColumns: DataGridColumn[] = [
         referenceTable: "student",
         referenceField: "name"
     },
-    {
-        index: "subjectId", label: "Môn học",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "subject",
-        referenceField: "name"
-    },
     { index: "startClassDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     { index: "endClassDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
 ];
 
-const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 20 };
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    DataGridFilterColumns.id,
+    DataGridFilterColumns.status,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [

@@ -13,9 +13,10 @@ interface DataGridHeadProps {
     inputableMap: any;
     setInputableMap: (inputableMap: any) => void;
     onAfterSaveInputableColumn: (column: DataGridColumn) => void;
+    defaultFilters?: any;
 }
 
-export const DataGridHead: React.FC<DataGridHeadProps> = ({ table, columns, items, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, inputableMap, setInputableMap, onAfterSaveInputableColumn }) => {
+export const DataGridHead: React.FC<DataGridHeadProps> = ({ table, columns, items, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, inputableMap, setInputableMap, onAfterSaveInputableColumn, defaultFilters }) => {
     const handleSaveInputableColumn = (column: DataGridColumn) => {
         let values: any[] = [];
         for (let itemId in inputableMap) {
@@ -42,7 +43,7 @@ export const DataGridHead: React.FC<DataGridHeadProps> = ({ table, columns, item
         <th style={{ width: "1%" }}>
             <Form.Check type="checkbox" checked={isCheckedAll} onChange={handleCheckAll} />
         </th>
-        {columns.map(column => (
+        {columns.filter((column) => typeof defaultFilters == 'undefined' || typeof defaultFilters[column.index] == 'undefined').map(column => (
             <th key={column.index} style={{ width: column.width }}>
                 {column.label}
                 {column.inputable && <>

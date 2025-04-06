@@ -53,12 +53,9 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.deleteAction,
 ];
 
-const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 20 };
+const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };
 
-const gridFilters: DataGridFilterColumn[] = [
-    DataGridFilterColumns.id,
-    DataGridFilterColumns.status,
-];
+const gridFilters: DataGridFilterColumn[] = [DataGridFilterColumns.status];
 
 const gridSortOptions: DataGridSortOption[] = [
     DataGridSortOptions.idAsc,
@@ -79,6 +76,7 @@ const gridAddFields: DataGridEditField[] = [
 
 const gridDetails: TableGridDetail[] = [
     {
+        label: 'Chi tiết lớp học',
         type: TableGridDetailType.DETAIL,
         fields: [
             { ...DataGridColumns.id, size: 4 },
@@ -87,6 +85,7 @@ const gridDetails: TableGridDetail[] = [
         ]
     },
     {
+        label: 'Danh sách lớp',
         type: TableGridDetailType.GRID,
         controller: 'class_student',
         referenceField: 'classId',

@@ -163,6 +163,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
             isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll}
             checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds}
             addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel}
+            defaultFilters={defaultFilters}
             parentController={parentController} parentSettings={parentSettings} parentItem={parentItem} />
     </>
 }

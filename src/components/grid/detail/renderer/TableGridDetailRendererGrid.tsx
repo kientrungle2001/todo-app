@@ -22,6 +22,7 @@ export const TableGridDetailRendererGrid: React.FC<TableGridDetailRendererGridPr
     let defaultFilters: any = {};
     defaultFilters[detail.referenceField as string] = itemId;
     return <>
+        {detail.label && <h2 className="text-center mb-3">{detail.label}</h2>}
         <Row>
             {detail.settings ?
                 <TableGrid controller={detail.controller as string} settings={detail.settings} defaultFilters={defaultFilters} parentController={controller} parentSettings={settings} parentItem={item} /> : <></>}

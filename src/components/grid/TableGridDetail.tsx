@@ -14,7 +14,7 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
     return <>
         <Container fluid>
             {settings.details?.map((detail: GridDetail, index: number) => {
-                return <React.Fragment key={index}>
+                return <React.Fragment key={controller + ' ' + (detail.controller as string) + ' ' + index}>
                     <Row className="mb-3">
                         <Col md={12}>
                             {detail.type && detail.type == TableGridDetailType.GRID ?

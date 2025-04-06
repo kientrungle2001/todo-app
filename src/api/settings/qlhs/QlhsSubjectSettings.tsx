@@ -80,6 +80,7 @@ const gridDetails: TableGridDetail[] = [
         ]
     },
     {
+        label: 'Danh sách khóa học',
         type: TableGridDetailType.GRID,
         controller: 'class',
         referenceField: 'subjectId',
