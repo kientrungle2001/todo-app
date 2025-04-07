@@ -26,8 +26,9 @@ export const TableGridDetailRendererDetail: React.FC<TableGridDetailRendererDeta
             {detail.fields?.map((field: DataGridDetailField, index: number) => {
                 return <React.Fragment key={index}>
                     <Col md={field.size ?? 12} className="mb-3 bordered">
+                        <h3>
                         <strong>{field.label}</strong>: {' '}
-                        {renderColumn(field, item, settings.table, {}, () => { }, () => { }, () => { }, () => { }, () => { })}
+                        {renderColumn(field, item, settings.table, {}, () => { }, () => { }, () => { }, () => { }, () => { })}</h3>
                     </Col>
                 </React.Fragment>
             })}
