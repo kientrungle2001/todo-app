@@ -12,7 +12,7 @@ const Index = () => {
     const router = useRouter();
     useEffect(() => {
         menuRepository.getMenu(router).then((response: any) => {
-            setItems(response.data.items);
+            setItems(response && response.data ? response.data.items : []);
         });
     }, []);
 

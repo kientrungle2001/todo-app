@@ -67,23 +67,25 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
     const [messages, setMessages] = React.useState<DataGridMessage[]>([]);
     const [isCheckedAll, setIsCheckedAll] = React.useState<boolean>(false);
     const [checkedItemIds, setCheckedItemIds] = React.useState<number[]>([]);
+    const [sortData, setSortData] = React.useState<any>({});
 
     const setCurrentPage = (page: number) => { setPagination({ ...pagination, currentPage: page }); };
     const setPageSize = (pageSize: number) => { setPagination({ ...pagination, pageSize: pageSize, currentPage: 1 }); };
-    const setSavedFilterData = (data: any) => { storage.set(controller + '.filterData', data); };
+    const setSavedFilterData = (data: any) => { storage.set((parentController ? parentController as string : 'global') + '.' + (parentItem ? parentItem.id : '0') + '.' + controller + '.filterData', data); };
 
     useEffect(() => {
-        const savedFilterData = storage.get(controller + '.filterData');
+        const savedFilterData = storage.get((parentController ? parentController as string : 'global') + '.' + (parentItem ? parentItem.id : '0') + '.' + controller + '.filterData');
         if (savedFilterData) {
             setFilterData(savedFilterData.filterData);
+            setSortData(savedFilterData.sortData);
             setPagination({ pageSize: savedFilterData.pageSize, currentPage: savedFilterData.currentPage });
             setSearchText(savedFilterData.searchText);
         }
     }, []);
 
     useEffect(() => {
-        setSavedFilterData({ filterData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts });
-    }, [filterData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
+        setSavedFilterData({ filterData, sortData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts });
+    }, [filterData, sortData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
 
     const handleDeleteItem = (item: any) => {
         // Implement your delete logic here
@@ -120,20 +122,27 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
     }
 
     const handleListItems = () => {
+        let sortDatas: DataGridSort[] = [];
+        for (var field in sortData) {
+            sortDatas.push({
+                index: field,
+                direction: sortData[field]
+            });
+        }
         tableRepository.getList(settings, {
             settings: JSON.parse(JSON.stringify(settings)),
             search: searchText, filterData: JSON.parse(JSON.stringify(filterData)),
-            sorts: JSON.parse(JSON.stringify(sorts)),
+            sorts: JSON.parse(JSON.stringify(sortDatas.length ? sortDatas : sorts)),
             page: pagination.currentPage, pageSize: pagination.pageSize,
             defaultFilters: defaultFilters
         })
             .then((resp: any) => {
                 if (settings.treeMode)
-                    setItems(flatTree(buildTree(resp.data.items,
+                    setItems(flatTree(buildTree(resp && resp.data ? resp.data.items : [],
                         settings.treeParentField ?? 'parent')));
                 else
-                    setItems(resp.data.items);
-                setTotalItems(resp.data.totalItems);
+                    setItems(resp && resp.data ? resp.data.items : []);
+                setTotalItems(resp && resp.data ? resp.data.totalItems : 0);
                 setIsCheckedAll(false);
                 setCheckedItemIds([]);
             });
@@ -145,7 +154,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
     useEffect(() => {
         const handler = setTimeout(() => { handleListItems(); }, 300);
         return () => { clearTimeout(handler); };
-    }, [pagination, searchText, sorts, filterData]);
+    }, [pagination, searchText, sorts, filterData, sortData]);
 
     return <>
         <DataGrid title={settings.title}
@@ -164,6 +173,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
             checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds}
             addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel}
             defaultFilters={defaultFilters}
-            parentController={parentController} parentSettings={parentSettings} parentItem={parentItem} />
+            parentController={parentController} parentSettings={parentSettings} parentItem={parentItem}
+            sortData={sortData} setSortData={setSortData} />
     </>
 }

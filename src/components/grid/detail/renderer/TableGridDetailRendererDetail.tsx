@@ -15,7 +15,7 @@ export const TableGridDetailRendererDetail: React.FC<TableGridDetailRendererDeta
     const [item, setItem] = useState<any>(null);
     useEffect(() => {
         tableRepository.getItem(settings, itemId).then((resp: any) => {
-            setItem(resp.data);
+            setItem(resp && resp.data ? resp.data : null);
         });
     }, [itemId]);
     if (!item)
@@ -26,9 +26,9 @@ export const TableGridDetailRendererDetail: React.FC<TableGridDetailRendererDeta
             {detail.fields?.map((field: DataGridDetailField, index: number) => {
                 return <React.Fragment key={index}>
                     <Col md={field.size ?? 12} className="mb-3 bordered">
-                        <h3>
-                        <strong>{field.label}</strong>: {' '}
-                        {renderColumn(field, item, settings.table, {}, () => { }, () => { }, () => { }, () => { }, () => { })}</h3>
+                        <h5>
+                            <strong>{field.label}</strong>: {' '}
+                            {renderColumn(field, item, settings.table, {}, () => { }, () => { }, () => { }, () => { }, () => { })}</h5>
                     </Col>
                 </React.Fragment>
             })}

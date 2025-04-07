@@ -17,7 +17,7 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
 
     useEffect(() => {
         tableRepository.getItem(settings, itemId).then((resp: any) => {
-            setItem(resp.data);
+            setItem(resp && resp.data ? resp.data : null);
             console.log("Fetched item:", resp.data);
         });
     }, [itemId]);
