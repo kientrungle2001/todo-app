@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
@@ -55,7 +55,39 @@ const gridColumns: DataGridColumn[] = [
 
 const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };
 
-const gridFilters: DataGridFilterColumn[] = [DataGridFilterColumns.status];
+const gridFilters: DataGridFilterColumn[] = [
+    {
+        index: 'subjectId',
+        label: 'Môn học',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'subject',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
+    },
+    {
+        index: 'teacherId',
+        label: 'Giáo viên',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'teacher',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
+    },
+    {
+        index: 'roomId',
+        label: 'Phòng học',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'room',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
+    },
+    DataGridFilterColumns.status
+];
 
 const gridSortOptions: DataGridSortOption[] = [
     DataGridSortOptions.idAsc,
