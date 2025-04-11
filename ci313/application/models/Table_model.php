@@ -251,8 +251,16 @@ class Table_model extends CI_Model
         if (is_string($fields)) {
             $fields = $fields;
         } elseif (is_array($fields)) {
-            $fields = implode(', ', array_map(function ($field) {
-                return strpos($field, '.') === false ? "t.$field" : $field;
+            $fields = implode(', ', array_map(function ($field) use ($settings) {
+                if (strpos($field, '.') === false) {
+                    if ($this->isFieldExisted($settings->table, $field)) {
+                        return "t.$field";
+                    } else {
+                        return $field;
+                    }
+                } else {
+                    return $field;
+                }
             }, $fields));
         }
 
