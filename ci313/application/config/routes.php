@@ -89,3 +89,4 @@ $route['api/practice/save'] = 'client/practice/save';
 $route['api/practice/history'] = 'client/practice/history';
 // $route['3rdparty\/(.*)-(:num)x(:num)\.(jpg|png|gif|jpeg)'] = 'client/media/thumbnail/$1/$2/$3/$4';
 $route['3rdparty/Filemanager/thumbnails/(.+)-(\d+)x(\d+)\.(png|jpe?g|gif)'] = 'client/media/thumbnail/$1/$2/$3/$4';
+$route['api/cron/runJob'] = 'cron/runJob';

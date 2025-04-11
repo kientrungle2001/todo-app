@@ -315,7 +315,15 @@ class Table_model extends CI_Model
 
         $orderBys = [];
         foreach ($sorts as $sort) {
-            $orderBys[] = "t.{$sort->index} {$sort->direction}";
+            if (strpos($sort->index, '.') === false) {
+                if ($this->isFieldExisted($settings->table, $sort->index)) {
+                    $orderBys[] = "t.{$sort->index} {$sort->direction}";
+                } else {
+                    $orderBys[] = "{$sort->index} {$sort->direction}";
+                }
+            } else {
+                $orderBys[] = "{$sort->index} {$sort->direction}";
+            }
         }
         $orderBy = implode(', ', $orderBys);
 
