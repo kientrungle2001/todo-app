@@ -3,8 +3,10 @@ class MY_Model extends CI_Model {
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper('array');
+        $this->load->library('JWT');
         $this->load->database();
+        $this->load->helper('datagrid');
+        $this->load->helper('array');
     }
 
     protected function applySoftwareAndSiteFilters($table) {
