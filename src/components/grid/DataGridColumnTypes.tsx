@@ -158,6 +158,22 @@ export const DataGridSortOptions: { [key: string]: DataGridSortOption } = {
             { index: "id", direction: DataGridSortDirection.ASCENDING },
         ]
     },
+    reversedNameAsc: {
+        index: "reversedNameAsc",
+        label: "Tên tăng",
+        sorts: [
+            { index: "reversedName", direction: DataGridSortDirection.ASCENDING },
+            { index: "id", direction: DataGridSortDirection.DESCENDING },
+        ]
+    },
+    reversedNameDesc: {
+        index: "reversedNameDesc",
+        label: "Tên giảm",
+        sorts: [
+            { index: "reversedName", direction: DataGridSortDirection.DESCENDING },
+            { index: "id", direction: DataGridSortDirection.ASCENDING },
+        ]
+    },
 };
 
 export interface DataGridPagination {

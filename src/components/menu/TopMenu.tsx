@@ -1,3 +1,4 @@
+import { getAxios } from '@/api/axiosInstance';
 import { storage } from '@/api/storage';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -53,6 +54,25 @@ const TopMenu: React.FC<MenuProps> = ({ data }) => {
                 router.push('/login');
             }
         }>Logout</NavDropdown.Item>
+        <NavDropdown.Item className="mt-2 me-2" onClick={
+            () => {
+                getAxios(window.location.hostname).post(`/cron/runJob`, {}, {
+                    headers: {
+                        'Authorization': `Bearer ${storage.get('token') || ''}`
+                    }
+                }).catch((error: any) => {
+                    if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                        storage.clearTokenInfo();
+                        window.location.href = '/';
+                    }
+                }).catch((error: any) => {
+                    console.error("Error updating item:", error);
+                    alert("Error updating item. Please try again later.");
+                }).then((resp: any) => {
+                    console.log(resp);
+                });
+            }
+        }>Cron</NavDropdown.Item>
     </>;
 };
 

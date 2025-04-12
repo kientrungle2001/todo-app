@@ -15,9 +15,7 @@ const gridFields: string[] = ["id", "name", "startDate", "endDate", "status"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    {
-        index: "name", label: "Kỳ thanh toán"
-    },
+    { index: "name", label: "Kỳ thanh toán" },
     { index: "startDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     { index: "endDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
     DataGridColumns.status,

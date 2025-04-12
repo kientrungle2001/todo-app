@@ -40,6 +40,8 @@ const gridFilters: DataGridFilterColumn[] = [
 const gridSortOptions: DataGridSortOption[] = [
     DataGridSortOptions.idAsc,
     DataGridSortOptions.idDesc,
+    DataGridSortOptions.reversedNameAsc,
+    DataGridSortOptions.reversedNameDesc
 ];
 
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];

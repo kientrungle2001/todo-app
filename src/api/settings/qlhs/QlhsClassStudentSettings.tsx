@@ -9,9 +9,13 @@ const gridAddNewLabel: string = "Thêm Xếp lớp";
 const gridUpdateLabel: string = "Cập nhật Xếp lớp";
 const gridDeleteSelectedsLabel: string = "Xóa các Xếp lớp đã chọn";
 const gridTable: string = "class_student";
-const gridJoins: DataGridTableJoin[] = [];
+const gridJoins: DataGridTableJoin[] = [{
+    table: 'student',
+    alias: 's',
+    condition: 't.studentId=s.id'
+}];
 const gridSearchFields: string[] = ["id"];
-const gridFields: string[] = ["id", "classId", "studentId", "subjectId", "startClassDate", "endClassDate"];
+const gridFields: string[] = ["id", "classId", "studentId", "s.name as studentName", "reversedName", "subjectId", "startClassDate", "endClassDate"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
@@ -21,12 +25,7 @@ const gridColumns: DataGridColumn[] = [
         referenceTable: "classes",
         referenceField: "name"
     },
-    {
-        index: "studentId", label: "Học sinh",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "student",
-        referenceField: "name"
-    },
+    { index: "studentName", label: "Học sinh" },
     { index: "startClassDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     { index: "endClassDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
     DataGridColumns.editAction,
@@ -42,9 +41,11 @@ const gridFilters: DataGridFilterColumn[] = [
 const gridSortOptions: DataGridSortOption[] = [
     DataGridSortOptions.idAsc,
     DataGridSortOptions.idDesc,
+    DataGridSortOptions.reversedNameAsc,
+    DataGridSortOptions.reversedNameDesc
 ];
 
-const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
+const gridDefaultSorts: DataGridSort[] = [{ index: "reversedName", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
 
