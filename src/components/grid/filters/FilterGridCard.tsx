@@ -21,12 +21,13 @@ export const FiltersGridCard: React.FC<FiltersGridCardProps> = ({ filters, sortO
     return <Card className="border-0">
         <Card.Body className="border-0 pt-0">
             <Card.Title className="d-flex justify-content-between align-items-center">
-                <span>Bộ lọc</span>
+                <div style={{ width: "90%" }}>
+                    <FiltersGrid filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
+                </div>
                 <div>
                     <Button size="sm" variant="danger" onClick={handleResetFilter}>Reset</Button>
                 </div>
             </Card.Title>
-            <FiltersGrid filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
         </Card.Body>
     </Card>
 }

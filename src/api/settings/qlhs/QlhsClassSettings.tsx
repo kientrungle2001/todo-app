@@ -4,6 +4,7 @@ import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/Data
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
 import { QlhsClassStudentSettings } from "./QlhsClassStudentSettings";
+import { QlhsClassScheduleSettings } from "./QlhsClassScheduleSettings";
 
 const gridTitle: string = "Quản lý Lớp";
 const gridAddNewLabel: string = "Thêm Lớp";
@@ -123,6 +124,14 @@ const gridDetails: TableGridDetail[] = [
         referenceField: 'classId',
         referenceType: 'equal',
         settings: QlhsClassStudentSettings
+    },
+    {
+        label: 'Lịch học lớp',
+        type: TableGridDetailType.GRID,
+        controller: 'class_schedule',
+        referenceField: 'classId',
+        referenceType: 'equal',
+        settings: QlhsClassScheduleSettings
     }
 ];
 export const QlhsClassSettings: TableGridSettings = {

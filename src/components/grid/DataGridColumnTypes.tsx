@@ -174,6 +174,24 @@ export const DataGridSortOptions: { [key: string]: DataGridSortOption } = {
             { index: "id", direction: DataGridSortDirection.ASCENDING },
         ]
     },
+    studyDateAsc: {
+        index: "studyDateAsc",
+        label: "Ngày học tăng",
+        sorts: [
+            { index: "studyDate", direction: DataGridSortDirection.ASCENDING },
+            { index: "studyTime", direction: DataGridSortDirection.ASCENDING },
+            { index: "id", direction: DataGridSortDirection.DESCENDING },
+        ]
+    },
+    studyDateDesc: {
+        index: "studyDateDesc",
+        label: "Ngày học giảm",
+        sorts: [
+            { index: "studyDate", direction: DataGridSortDirection.DESCENDING },
+            { index: "studyTime", direction: DataGridSortDirection.DESCENDING },
+            { index: "id", direction: DataGridSortDirection.ASCENDING },
+        ]
+    },
 };
 
 export interface DataGridPagination {
