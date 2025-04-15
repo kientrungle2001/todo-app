@@ -21,6 +21,7 @@ export interface TableGridDetail {
     fields?: DataGridDetailField[];
     settings?: TableGridSettings;
     controller?: string;
+    customFilters?: (item: any) => any;
 }
 
 export interface TableGridSettings {

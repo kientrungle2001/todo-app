@@ -20,7 +20,12 @@ export const TableGridDetailRendererGrid: React.FC<TableGridDetailRendererGridPr
     if (!item)
         return <></>
     let defaultFilters: any = {};
-    defaultFilters[detail.referenceField as string] = itemId;
+    if (detail.customFilters) {
+        defaultFilters = detail.customFilters(item);
+    } else {
+        defaultFilters[detail.referenceField as string] = itemId;
+    }
+    
     return <>
         {detail.label && <h2 className="text-center mb-3">{detail.label}</h2>}
         <Row>

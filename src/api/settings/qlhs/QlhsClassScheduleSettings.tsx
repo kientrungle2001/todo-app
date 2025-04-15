@@ -2,7 +2,9 @@ import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagin
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
+import { QlhsRoomSettings } from "./QlhsRoomSettings";
+import { QlhsStudentAttendanceSettings } from "./QlhsStudentAttendanceSettings";
 
 const gridTitle: string = "Quản lý Lịch học";
 const gridAddNewLabel: string = "Thêm Lịch học";
@@ -20,7 +22,12 @@ const gridColumns: DataGridColumn[] = [
         referenceTable: "classes",
         referenceField: "name"
     },
-    { index: "studyDate", label: "Ngày học", type: DataGridColumnType.DATE },
+    {
+        index: "studyDate", label: "Ngày học", type: DataGridColumnType.DATE,
+        linkFormat: (name: any, item: any): string => {
+            return '/Table/class_schedule/' + item.id + '/detail';
+        }
+    },
     { index: "studyTime", label: "Giờ học" },
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
@@ -48,6 +55,36 @@ const gridAddFields: DataGridEditField[] = [
 
 ];
 
+const gridDetails: TableGridDetail[] = [
+    {
+        label: 'Chi tiết điểm danh',
+        type: TableGridDetailType.DETAIL,
+        controller: 'class_schedule',
+        fields: [
+            {
+                index: "studyDate", label: "Ngày học", type: DataGridColumnType.DATE,
+                linkFormat: (name: any, item: any): string => {
+                    return '/Table/class_schedule/' + item.id + '/detail';
+                }
+            },
+            { index: "studyTime", label: "Giờ học" },
+        ]
+    },
+    {
+        label: 'Danh sách điểm danh',
+        type: TableGridDetailType.GRID,
+        controller: 'student_attendance',
+        customFilters: (item: any) => {
+            return {
+                classId: item.classId,
+                attendanceDate: item.studyDate
+            }
+        },
+        referenceType: 'equal',
+        settings: QlhsStudentAttendanceSettings
+    }
+];
+
 export const QlhsClassScheduleSettings: TableGridSettings = {
     title: gridTitle,
     table: gridTable,
@@ -64,4 +101,5 @@ export const QlhsClassScheduleSettings: TableGridSettings = {
     addNewLabel: gridAddNewLabel,
     deleteSelectedsLabel: gridDeleteSelectedsLabel,
     updateLabel: gridUpdateLabel,
+    details: gridDetails
 }
