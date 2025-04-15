@@ -56,6 +56,12 @@ class Cron extends CI_Controller
                 cs.centerName = c.name
             where cs.centerId = c.id';
         $this->db->query($updateCenterSql);
+        $updateCenterSql = 'update 
+                classes cs, room r 
+            set 
+                cs.centerId = r.centerId
+            where cs.roomId = r.id';
+        $this->db->query($updateCenterSql);
         
         if ($errors = $this->db->error()) {
             echo json_encode($errors);

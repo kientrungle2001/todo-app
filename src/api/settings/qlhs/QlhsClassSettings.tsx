@@ -13,7 +13,7 @@ const gridDeleteSelectedsLabel: string = "Xóa các Lớp đã chọn";
 const gridTable: string = "classes";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "subjectId", "teacherId", "roomId", "startDate", "endDate", "amount", "feeType", "status"];
+const gridFields: string[] = ["id", "name", "subjectId", "teacherId", "centerId", "roomId", "startDate", "endDate", "amount", "feeType", "status"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
@@ -32,6 +32,12 @@ const gridColumns: DataGridColumn[] = [
         index: "teacherId", label: "Giáo viên",
         type: DataGridColumnType.REFERENCE,
         referenceTable: "teacher",
+        referenceField: "name"
+    },
+    {
+        index: "centerId", label: "Trung tâm",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "center",
         referenceField: "name"
     },
     {
@@ -72,6 +78,16 @@ const gridFilters: DataGridFilterColumn[] = [
         label: 'Giáo viên',
         type: DataGridFilterColumnType.SELECT,
         table: 'teacher',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
+    },
+    {
+        index: 'centerId',
+        label: 'Trung tâm',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'center',
         valueField: 'id',
         labelField: 'name',
         tableCondition: 'status=1',
