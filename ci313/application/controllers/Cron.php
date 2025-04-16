@@ -11,62 +11,101 @@ class Cron extends CI_Controller
     {
         // your logic
         $this->load->database();
-        $updateStudentSql = 'update 
-                class_student cs, student s 
-            set 
-                cs.studentName = s.name 
-            where cs.studentId = s.id';
-        $this->db->query($updateStudentSql);
-        $updateClassesSql = 'update 
-                class_student cs, classes c 
-            set cs.className = c.name, 
-                cs.subjectId = c.subjectId, 
-                cs.teacherId = c.teacherId, 
-                cs.roomId = c.roomId 
-            where cs.classId = c.id';
-        $this->db->query($updateClassesSql);
-        $updateSubjectSql = 'update 
-                class_student cs, subject s 
-            set 
-                cs.subjectName = s.name 
-            where cs.subjectId = s.id';
-        $this->db->query($updateSubjectSql);
-        $updateTeacherSql = 'update 
-                class_student cs, teacher t 
-            set 
-                cs.teacherName = t.name 
-            where cs.teacherId = t.id';
-        $this->db->query($updateTeacherSql);
-        $updateTeacher2Sql = 'update 
-                class_student cs, teacher t 
-            set 
-                cs.teacher2Name = t.name 
-            where cs.teacher2Id = t.id';
-        $this->db->query($updateTeacher2Sql);
-        $updateRoomSql = 'update 
-                class_student cs, room r 
-            set 
-                cs.roomName = r.name,
-                cs.centerId = r.centerId 
-            where cs.roomId = r.id';
-        $this->db->query($updateRoomSql);
-        $updateCenterSql = 'update 
-                class_student cs, center c 
-            set 
-                cs.centerName = c.name
-            where cs.centerId = c.id';
-        $this->db->query($updateCenterSql);
-        $updateCenterSql = 'update 
-                classes cs, room r 
-            set 
-                cs.centerId = r.centerId
-            where cs.roomId = r.id';
-        $this->db->query($updateCenterSql);
-        
+        $this->updateColumn(array(
+            'class_student' => 'cs',
+            'student' => 's'
+        ), array(
+            'cs.studentName' => 's.name'
+        ), array(
+            'cs.studentId' => 's.id'
+        ));
+
+        $this->updateColumn(array(
+            'class_student' => 'cs',
+            'classes' => 'c'
+        ), array(
+            'cs.className' => 'c.name',
+            'cs.subjectId' => 'c.subjectId',
+            'cs.teacherId' => 'c.teacherId',
+            'cs.roomId' => 'c.roomId'
+        ), array(
+            'cs.classId' => 'c.id'
+        ));
+        $this->updateColumn(array(
+            'class_student' => 'cs',
+            'subject' => 's'
+        ), array(
+            'cs.subjectName' => 's.name'
+        ), array(
+            'cs.subjectId' => 's.id'
+        ));
+        $this->updateColumn(array(
+            'class_student' => 'cs',
+            'teacher' => 't'
+        ), array(
+            'cs.teacherName' => 't.name'
+        ), array(
+            'cs.teacherId' => 't.id'
+        ));
+        $this->updateColumn(array(
+            'class_student' => 'cs',
+            'teacher' => 't'
+        ), array(
+            'cs.teacher2Name' => 't.name'
+        ), array(
+            'cs.teacher2Id' => 't.id'
+        ));
+        $this->updateColumn(array(
+            'class_student' => 'cs',
+            'room' => 'r'
+        ), array(
+            'cs.roomName' => 'r.name',
+            'cs.centerId' => 'r.centerId'
+        ), array(
+            'cs.roomId' => 'r.id'
+        ));
+        $this->updateColumn(array(
+            'class_student' => 'cs',
+            'center' => 'c'
+        ), array(
+            'cs.centerName' => 'c.name'
+        ), array(
+            'cs.centerId' => 'c.id'
+        ));
+        $this->updateColumn(array(
+            'classes' => 'cs',
+            'room' => 'r'
+        ), array(
+            'cs.centerId' => 'r.centerId'
+        ), array(
+            'cs.roomId' => 'r.id'
+        ));
+
         if ($errors = $this->db->error()) {
             echo json_encode($errors);
         } else {
             echo "Running cron job safely...\n";
         }
+    }
+
+    public function updateColumn($tables, $set, $where)
+    {
+        $tablesArr = array();
+        foreach ($tables as $table => $alias) {
+            $tablesArr[] = '`' . $table . '` ' . '`' . $alias . '`';
+        }
+        $tablesStr = implode(', ', $tablesArr);
+        $setArr = array();
+        foreach ($set as $left => $right) {
+            $setArr[] = $left . '=' . $right;
+        }
+        $setStr = implode(', ', $setArr);
+        $whereArr = array();
+        foreach ($where as $left => $right) {
+            $whereArr[] = $left . '=' . $right;
+        }
+        $whereStr = implode(' AND ', $whereArr);
+        $sql = 'update ' . $tablesStr . ' set ' . $setStr . ' where ' . $whereStr;
+        $this->db->query($sql);
     }
 }
