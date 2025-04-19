@@ -10,7 +10,6 @@ class Auth_Model extends CI_Model
     public function authenticate($token)
     {
         try {
-            $this->load->library('JWT');
             $this->tokenInfo = JWT::decode($token, 'SC2lcAAA23!!@C!!^', ['HS256']);
             return array('status' => 200);
         } catch (Exception $e) {

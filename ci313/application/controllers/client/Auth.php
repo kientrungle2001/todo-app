@@ -39,7 +39,6 @@ class Auth extends CI_Controller
 
     public function login()
     {
-        $this->load->library('form_validation');
 
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -62,7 +61,6 @@ class Auth extends CI_Controller
                     $user->province = null;
                 }
                 # encrypt bearer token php5.6 for user unset password
-                $this->load->library('JWT');
                 $token = array(
                     'iat' => time(),
                     'exp' => time() + 3 * 60 * 60, // 10 secs
@@ -82,8 +80,7 @@ class Auth extends CI_Controller
 
     public function isloggedin()
     {
-        $this->load->database();
-        $this->load->library('JWT');
+        
         $tokenInfo = $this->authenticate();
         if ($tokenInfo) {
             $this->output
@@ -97,7 +94,6 @@ class Auth extends CI_Controller
 
     public function register()
     {
-        $this->load->library('form_validation');
 
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -129,8 +125,7 @@ class Auth extends CI_Controller
 
     public function update()
     {
-        $this->load->database();
-        $this->load->library('JWT');
+        
         $tokenInfo = $this->authenticate();
         $username = $tokenInfo->data->username;
         $post = $this->input->post();
@@ -148,7 +143,6 @@ class Auth extends CI_Controller
                 $user->province = null;
             }
             # encrypt bearer token php5.6 for user unset password
-            $this->load->library('JWT');
             $token = array(
                 'iat' => time(),
                 'exp' => time() + 3 * 60 * 60, // 10 secs
@@ -167,8 +161,7 @@ class Auth extends CI_Controller
 
     public function courses()
     {
-        $this->load->database();
-        $this->load->library('JWT');
+        
         $tokenInfo = $this->authenticate();
         $username = $tokenInfo->data->username;
         $sql = 'select history_payment.*, courses.name, courses.image, courses.alias from history_payment inner join courses on history_payment.courseId = courses.id where username = ?';

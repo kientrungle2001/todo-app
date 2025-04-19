@@ -20,8 +20,7 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->database();
-		$this->load->helper('datagrid');
+		
 		$settings = new DataGridSettings();
 		populateFromRequest($settings, array(
 			'table' => 'student',

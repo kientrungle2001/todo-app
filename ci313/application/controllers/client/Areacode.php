@@ -8,7 +8,7 @@ class Areacode extends CI_Controller
 
     public function getProvinces()
     {
-        $this->load->database();
+        
         $provinces = $this->db->where('status', 1)->where('type', 'province')->get('areacode')->result_array();
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')

@@ -25,7 +25,6 @@ class Media extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('JWT');
         $token = $this->input->get_request_header('Authorization', TRUE);
         if (!$token) {
             $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')));
@@ -54,7 +53,6 @@ class Media extends CI_Controller
     public function list_images()
     {
         $path = $this->input->get('path', TRUE); // Get path from query params
-        $this->load->helper('directory');
 
         $fullPath = FCPATH . $this->source_dir . '/' . $path; // Assuming you store media in 'uploads' folder
         $map = directory_map($fullPath);
@@ -79,8 +77,11 @@ class Media extends CI_Controller
         $config['upload_path'] = './' . $this->source_dir . '/' . $this->input->post('folder');
         $config['allowed_types'] = 'jpg|png|gif|jpeg|webp|mp4|doc|docx|pdf';
         $config['max_size'] = 204800; // 2MB max
-
-        $this->load->library('upload', $config);
+        /**
+         * @var CI_Upload $upload
+         */
+        $this->upload;
+        $this->upload->initialize($config, FALSE);
 
         if (!$this->upload->do_upload('file')) {
             $error = array('error' => $this->upload->display_errors());
@@ -101,7 +102,6 @@ class Media extends CI_Controller
     {
         $width = 122;
         $height = 91;
-        $this->load->library('image_lib');
         $config['image_library']  = 'gd2';
         $config['source_image']   = $data['upload_data']['full_path'];
         $config['create_thumb']   = false;

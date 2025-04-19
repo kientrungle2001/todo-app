@@ -10,7 +10,7 @@ class Cron extends CI_Controller
     public function runJob()
     {
         // your logic
-        $this->load->database();
+        
         $this->updateColumn(array(
             'class_student' => 'cs',
             'student' => 's'

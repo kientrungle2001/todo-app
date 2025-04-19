@@ -2,14 +2,9 @@
 # codeigniter 3 Resource model
 class Resource_model extends CI_Model
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->helper('array');
-    }
     public function get_questions($resourceId)
     {
-        $this->load->database();
+        
         $questions = $this->db->query("SELECT * FROM questions WHERE courseResourceId = ? ORDER BY ordering asc", [$resourceId])
             ->result_array();
         $questionIds = array_map(function ($question) {
@@ -35,7 +30,7 @@ class Resource_model extends CI_Model
 
     public function get_tests($resourceId)
     {
-        $this->load->database();
+        
         $tests = $this->db->query("SELECT * FROM tests WHERE FIND_IN_SET(?, resourceIds) ORDER BY ordering asc", [$resourceId])
             ->result_array();
         return casting_numeric_fields($tests);
@@ -43,7 +38,7 @@ class Resource_model extends CI_Model
 
     public function get_courses($resourceId)
     {
-        $this->load->database();
+        
         $courses = $this->db->query("SELECT * FROM courses WHERE resourceId = ? ORDER BY ordering asc", [$resourceId])
             ->result_array();
         return casting_numeric_fields($courses);
@@ -51,7 +46,7 @@ class Resource_model extends CI_Model
 
     public function get_courses_by_alias($resourceAlias)
     {
-        $this->load->database();
+        
         /**
          * @var CI_DB
          */

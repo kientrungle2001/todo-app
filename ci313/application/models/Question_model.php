@@ -2,7 +2,7 @@
 # codeigniter 3 Question model
 class question_model extends CI_Model {
     public function get_answers($questionId) {
-        $this->load->database();
+        
         $answers = $this->db->where('question_id', $questionId)
             ->get('answers_question_tn')
             ->result_array();
@@ -10,7 +10,7 @@ class question_model extends CI_Model {
     }
 
     public function update_answers($questionId, $question) {
-        $this->load->database();
+        
         $this->db->where('id', $questionId)->update('questions', array(
             'explaination' => $question['explaination']
         ));
@@ -36,8 +36,7 @@ class question_model extends CI_Model {
 
     public function get_resource_questions($resourceId)
 	{
-		$this->load->database();
-		$this->load->helper('array');
+		
 		$questions = $this->db->query("SELECT * FROM questions WHERE courseResourceId = ? and status = 1 ORDER BY ordering asc", [$resourceId])
             ->result_array();
 		$questionIds = array_map(function ($question) {

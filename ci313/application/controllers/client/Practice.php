@@ -26,8 +26,7 @@ class Practice extends CI_Controller
 
     public function save()
     {
-        $this->load->database();
-        $this->load->library('JWT');
+        
         $tokenInfo = $this->authenticate();
         if ($tokenInfo) {
             $resourceId = $this->input->post('resourceId');
@@ -70,8 +69,7 @@ class Practice extends CI_Controller
 
     public function history()
     {
-        $this->load->database();
-        $this->load->library('JWT');
+        
         $tokenInfo = $this->authenticate();
         if ($tokenInfo) {
             $pageSize = $this->input->post('pageSize');

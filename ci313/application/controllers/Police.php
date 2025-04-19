@@ -33,7 +33,6 @@ class Police extends CI_Controller
 
     public function route()
     {
-        $this->load->library('form_validation');
 
         $this->form_validation->set_rules('alias', 'Alias', 'required');
 
@@ -57,8 +56,6 @@ class Police extends CI_Controller
 
     public function document_route()
     {
-        $this->load->library('form_validation');
-
         $this->form_validation->set_rules('alias', 'Alias', 'required');
 
         if ($this->form_validation->run()) {
@@ -81,7 +78,6 @@ class Police extends CI_Controller
 
     public function course_route()
     {
-        $this->load->library('JWT');
         $token = $this->input->get_request_header('Authorization', TRUE);
         $user = false;
 		$error = false;
@@ -99,8 +95,6 @@ class Police extends CI_Controller
 				}
 			}
 		}
-
-        $this->load->library('form_validation');
 
         $this->form_validation->set_rules('alias', 'Alias', 'required');
 

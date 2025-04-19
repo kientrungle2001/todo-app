@@ -28,7 +28,6 @@ class Auth extends CI_Controller
 
     public function login()
     {
-        $this->load->library('form_validation');
 
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -45,7 +44,6 @@ class Auth extends CI_Controller
             if ($user && md5($password) === $user->password) {
                 $user->password = null;
                 # encrypt bearer token php5.6 for user unset password
-                $this->load->library('JWT');
                 $token = array(
                     'iat' => time(),
                     'exp' => time() + 3 * 60 * 60, // 10 secs

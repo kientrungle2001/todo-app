@@ -3,14 +3,6 @@ class Table_model extends CI_Model
 {
     public $tokenInfo;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->library('JWT');
-        $this->load->database();
-        $this->load->helper('datagrid');
-    }
-
     public function authenticate($token)
     {
         if (!$token) {

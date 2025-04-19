@@ -2,14 +2,8 @@
 # codeigniter 3 Category model
 class Category_model extends CI_Model
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->helper('array');
-    }
     public function get_questions($categoryId)
-    {
-        $this->load->database();
+    {        
         $questions = $this->db->query("SELECT * FROM questions WHERE FIND_IN_SET(?, categoryIds) ORDER BY ordering asc", [$categoryId])
             ->result_array();
         $questionIds = array_map(function ($question) {
@@ -35,7 +29,7 @@ class Category_model extends CI_Model
 
     public function get_tests($categoryId)
     {
-        $this->load->database();
+        
         $tests = $this->db->query("SELECT * FROM tests WHERE FIND_IN_SET(?, categoryIds) ORDER BY ordering asc", [$categoryId])
             ->result_array();
         return casting_numeric_fields($tests);
@@ -43,7 +37,7 @@ class Category_model extends CI_Model
 
     public function get_courses($categoryId)
     {
-        $this->load->database();
+        
         $courses = $this->db->query("SELECT * FROM courses WHERE categoryId = ? ORDER BY ordering asc", [$categoryId])
             ->result_array();
         return casting_numeric_fields($courses);
@@ -51,7 +45,7 @@ class Category_model extends CI_Model
 
     public function get_courses_by_alias($categoryAlias)
     {
-        $this->load->database();
+        
         /**
          * @var CI_DB
          */

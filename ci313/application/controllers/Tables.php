@@ -24,7 +24,6 @@ class Tables extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Table_model');
-        $this->load->library('JWT');
     }
 
     public function authenticate()

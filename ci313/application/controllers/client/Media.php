@@ -19,7 +19,6 @@ class Media extends CI_Controller
             mkdir($fullDestDir, 0755, true);  // Create directories recursively
         }
 
-        $this->load->library('image_lib');
         $config['image_library']  = 'gd2';
         $config['source_image']   = $sourceFile;
         $config['create_thumb']   = false;
