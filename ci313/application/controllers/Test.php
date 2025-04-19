@@ -49,7 +49,6 @@ class Test extends CI_Controller
 
     public function questions($testId)
     {
-        $this->load->model('test_model');
         $questions = $this->test_model->get_questions($testId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')

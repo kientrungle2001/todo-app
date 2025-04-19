@@ -49,7 +49,6 @@ class Question extends CI_Controller
 
     public function answers($questionId)
     {
-        $this->load->model('question_model');
         $answers = $this->question_model->get_answers($questionId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')
@@ -57,7 +56,6 @@ class Question extends CI_Controller
     }
 
     public function updateAnswers($questionId) {
-        $this->load->model('question_model');
         $item = $this->input->post('item');
         $result = $this->question_model->update_answers($questionId, $item);
         $this->output->set_status_header(200)

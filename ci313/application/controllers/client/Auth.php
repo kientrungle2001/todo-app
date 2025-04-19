@@ -49,12 +49,10 @@ class Auth extends CI_Controller
             $password = $this->input->post('password');
 
             // Check if user exists in the database
-            $this->load->model('user_model');
             $user = $this->user_model->get_by_username($username);
 
             if ($user && md5($password) === $user->password) {
                 $user->password = null;
-                $this->load->model('areacode_model');
                 if ($user->areacode) {
                     $user->province =  $this->areacode_model->get_by_id($user->areacode);
                 } else {
@@ -102,7 +100,6 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('phone', 'Phone', 'required');
 
         if ($this->form_validation->run()) {
-            $this->load->model('user_model');
             $user = $this->user_model->get_by_username($this->input->post('username'));
             if ($user) {
                 $this->output->set_status_header(400)
@@ -131,12 +128,10 @@ class Auth extends CI_Controller
         $post = $this->input->post();
         $this->db->where('username', $username)->update('user', $post);
         // Check if user exists in the database
-        $this->load->model('user_model');
         $user = $this->user_model->get_by_username($username);
 
         if ($user) {
             $user->password = null;
-            $this->load->model('areacode_model');
             if ($user->areacode) {
                 $user->province =  $this->areacode_model->get_by_id($user->areacode);
             } else {
@@ -173,7 +168,6 @@ class Auth extends CI_Controller
 
     public function authenticate()
     {
-        $this->load->model('Table_model');
         $token = $this->input->get_request_header('Authorization', TRUE);
         $token = $this->extractToken($token);
 

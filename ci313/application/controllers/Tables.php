@@ -20,12 +20,6 @@ class Tables extends CI_Controller
      */
     public $Table_model;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->model('Table_model');
-    }
-
     public function authenticate()
     {
         $token = $this->input->get_request_header('Authorization', TRUE);

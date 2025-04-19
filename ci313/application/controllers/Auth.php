@@ -38,7 +38,6 @@ class Auth extends CI_Controller
             $password = $this->input->post('password');
 
             // Check if user exists in the database
-            $this->load->model('admin_model');
             $user = $this->admin_model->get_by_username($username);
 
             if ($user && md5($password) === $user->password) {

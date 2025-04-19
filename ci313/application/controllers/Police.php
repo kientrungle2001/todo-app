@@ -31,6 +31,11 @@ class Police extends CI_Controller
      */
     public $payment_model;
 
+    /**
+     * @var question_model
+     */
+    public $question_model;
+
     public function route()
     {
 
@@ -39,7 +44,6 @@ class Police extends CI_Controller
         if ($this->form_validation->run()) {
             $alias = $this->input->post('alias');
 
-            $this->load->model('route_model');
             $route = $this->route_model->get_by_alias($alias);
             if ($route) {
                 
@@ -61,7 +65,6 @@ class Police extends CI_Controller
         if ($this->form_validation->run()) {
             $alias = $this->input->post('alias');
 
-            $this->load->model('route_model');
             $route = $this->route_model->document_get_by_alias($alias);
             if ($route) {
                 
@@ -101,13 +104,11 @@ class Police extends CI_Controller
         if ($this->form_validation->run()) {
             $alias = $this->input->post('alias');
 
-            $this->load->model('route_model');
             $route = $this->route_model->course_get_by_alias($alias);
             if ($route) {
                 $payment = false;
                 if ($user) {
                     // get user payment
-                    $this->load->model('payment_model');
                     $payment = $this->payment_model->get_payment_info($user->data, $route);
                     if (!$payment) {
                         $payment = false;
@@ -117,7 +118,6 @@ class Police extends CI_Controller
 				if ($payment) {
 					if ($route['type'] === 'resource') {
 						// get questions of resource
-						$this->load->model('question_model');
 						$questions = $this->question_model->get_resource_questions($route['resource']->id);
 					}
 

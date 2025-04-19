@@ -49,7 +49,6 @@ class Resource extends CI_Controller
 
     public function questions($resourceId)
     {
-        $this->load->model('resource_model');
         $questions = $this->resource_model->get_questions($resourceId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')
@@ -59,7 +58,6 @@ class Resource extends CI_Controller
 
     public function tests($resourceId)
     {
-        $this->load->model('resource_model');
         $tests = $this->resource_model->get_tests($resourceId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')
@@ -69,7 +67,6 @@ class Resource extends CI_Controller
 
     public function courses($resourceId)
     {
-        $this->load->model('resource_model');
         $courses = $this->resource_model->get_courses($resourceId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')

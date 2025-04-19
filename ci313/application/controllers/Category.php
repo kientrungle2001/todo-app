@@ -49,7 +49,6 @@ class Category extends CI_Controller
 
     public function questions($categoryId)
     {
-        $this->load->model('category_model');
         $questions = $this->category_model->get_questions($categoryId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')
@@ -59,7 +58,6 @@ class Category extends CI_Controller
 
     public function tests($categoryId)
     {
-        $this->load->model('category_model');
         $tests = $this->category_model->get_tests($categoryId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')
@@ -69,7 +67,6 @@ class Category extends CI_Controller
 
     public function courses($categoryId)
     {
-        $this->load->model('category_model');
         $courses = $this->category_model->get_courses($categoryId);
         $this->output->set_status_header(200)
             ->set_content_type('application/json', 'utf-8')

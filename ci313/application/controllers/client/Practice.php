@@ -97,7 +97,6 @@ class Practice extends CI_Controller
 
     public function authenticate()
     {
-        $this->load->model('Table_model');
         $token = $this->input->get_request_header('Authorization', TRUE);
         $token = $this->extractToken($token);
 
