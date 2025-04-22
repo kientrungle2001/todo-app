@@ -27,8 +27,10 @@ const gridColumns: DataGridColumn[] = [
         referenceTable: "student",
         referenceField: "name"
     },
-    
     { index: "attendanceDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
+    {
+        index: "note", label: "Ghi chú"
+    },
     DataGridColumns.status,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,

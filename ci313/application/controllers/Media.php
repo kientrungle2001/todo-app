@@ -1,23 +1,6 @@
 <?php
-class Media extends CI_Controller
+class Media extends MY_Controller
 {
-    /**
-     * 
-     * @var CI_Input
-     */
-    public $input;
-
-    /**
-     * @var CI_Output
-     */
-    public $output;
-
-    /**
-     * @var CI_Upload
-     */
-    public $upload;
-
-    public $tokenInfo;
 
     protected $source_dir = '3rdparty/Filemanager/source';
     protected $thumbs_dir = '3rdparty/Filemanager/thumbs';
@@ -25,29 +8,7 @@ class Media extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $token = $this->input->get_request_header('Authorization', TRUE);
-        if (!$token) {
-            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')));
-            die;
-        }
-        $token = explode(' ', $token);
-        if (!isset($token[1]) || !trim($token[1])) {
-            $token = '';
-        } else {
-            $token = $token[1];
-        }
-        try {
-            $tokenInfo = JWT::decode($token, 'SC2lcAAA23!!@C!!^', array('HS256'));
-        } catch (Exception $e) {
-            $tokenInfo = null;
-            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')))->_display();
-            die;
-        }
-
-        if (!$tokenInfo) {
-            $this->output->set_status_header(401)->set_content_type('application/json')->set_output(json_encode(array('error' => 'Invalid token')))->_display();
-            die;
-        }
+        $this->authenticate();
     }
 
     public function list_images()
@@ -67,9 +28,7 @@ class Media extends CI_Controller
                 $files[] = $item; // Files
             }
         }
-
-        $this->output->set_content_type('application/json')
-            ->set_output(json_encode(['files' => $files, 'folders' => $folders]));
+        $this->json(['files' => $files, 'folders' => $folders]);
     }
 
     public function upload()
@@ -84,17 +43,14 @@ class Media extends CI_Controller
         $this->upload->initialize($config, FALSE);
 
         if (!$this->upload->do_upload('file')) {
-            $error = array('error' => $this->upload->display_errors());
-            $this->output->set_content_type('application/json')
-                ->set_output(json_encode($error));
+            $this->json_exception($this->upload->display_errors());
         } else {
             $data = array('upload_data' => $this->upload->data());
             $ext = explode('.', $data['upload_data']['full_path']);
             $ext = array_pop($ext);
             if (in_array(strtolower($ext), array('jpg', 'png', 'gif', 'jpeg', 'webp')))
                 $this->create_thumbs($data);
-            $this->output->set_content_type('application/json')
-                ->set_output(json_encode($data));
+            $this->json($data);
         }
     }
 
@@ -126,11 +82,9 @@ class Media extends CI_Controller
             mkdir($fullPath, 0755, TRUE); // Create directory with 755 permissions
             $fullThumbsPath = FCPATH . $this->thumbs_dir . '/' . $folder . '/' . $name;
             mkdir($fullThumbsPath, 0755, TRUE); // Create directory with 755 permissions
-            $this->output->set_content_type('application/json')
-                ->set_output(json_encode(['status' => 'success', 'message' => 'Directory created']));
+            $this->json(['status' => 'success', 'message' => 'Directory created']);
         } else {
-            $this->output->set_content_type('application/json')
-                ->set_output(json_encode(['status' => 'error', 'message' => 'Directory already exists']));
+            $this->json_exception('Directory already exists');
         }
     }
 

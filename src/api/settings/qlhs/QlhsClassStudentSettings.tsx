@@ -2,7 +2,8 @@ import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagin
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
+import { QlhsStudentAttendanceSettings } from "./QlhsStudentAttendanceSettings";
 
 const gridTitle: string = "Quản lý Xếp lớp";
 const gridAddNewLabel: string = "Thêm Xếp lớp";
@@ -25,7 +26,12 @@ const gridColumns: DataGridColumn[] = [
         referenceTable: "classes",
         referenceField: "name"
     },
-    { index: "studentName", label: "Học sinh" },
+    {
+        index: "studentName", label: "Học sinh",
+        linkFormat: (name: any, item: any): string => {
+            return '/Table/class_student/' + item.id + '/detail';
+        }
+    },
     { index: "startClassDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     { index: "endClassDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
     DataGridColumns.editAction,
@@ -51,6 +57,33 @@ const gridAddFields: DataGridEditField[] = [
 
 ];
 
+const gridDetails: TableGridDetail[] = [
+    {
+        label: 'Chi tiết Xếp lớp',
+        type: TableGridDetailType.DETAIL,
+        controller: 'class_student',
+        fields: [
+            { index: "className", label: "Lớp" },
+            { index: "studentName", label: "Học sinh" },
+            { index: "startClassDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
+            { index: "endClassDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
+        ]
+    },
+    {
+        label: 'Danh sách điểm danh',
+        type: TableGridDetailType.GRID,
+        controller: 'student_attendance',
+        customFilters: (item: any) => {
+            return {
+                classId: item.classId,
+                studentId: item.studentId
+            }
+        },
+        referenceType: 'equal',
+        settings: QlhsStudentAttendanceSettings
+    }
+];
+
 export const QlhsClassStudentSettings: TableGridSettings = {
     title: gridTitle,
     table: gridTable,
@@ -67,4 +100,5 @@ export const QlhsClassStudentSettings: TableGridSettings = {
     addNewLabel: gridAddNewLabel,
     deleteSelectedsLabel: gridDeleteSelectedsLabel,
     updateLabel: gridUpdateLabel,
+    details: gridDetails
 }

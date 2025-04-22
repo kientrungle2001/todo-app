@@ -12,21 +12,23 @@ const gridDeleteSelectedsLabel: string = "Xóa các Phòng đã chọn";
 const gridTable: string = "room";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "centerId", "status"];
+const gridFields: string[] = ["id", "name", "centerId", "size", "note", "status"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    {
-        index: "name", label: "Tên Phòng", linkFormat: (name: any, item: any): string => {
-            return '/Table/room/' + item.id + '/detail';
-        }
-    },
     {
         index: "centerId", label: "Trung tâm",
         type: DataGridColumnType.REFERENCE,
         referenceTable: "center",
         referenceField: "name"
     },
+    {
+        index: "name", label: "Tên Phòng", linkFormat: (name: any, item: any): string => {
+            return '/Table/room/' + item.id + '/detail';
+        }
+    },
+    { index: "size", label: "Kích cỡ" },
+    { index: "note", label: "Ghi chú" },
     DataGridColumns.status,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
@@ -48,11 +50,26 @@ const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSort
 
 const gridAddFields: DataGridEditField[] = [
     {
+        index: "centerId", label: "Trung tâm",
+        type: DataGridEditFieldType.SELECT,
+        table: "center",
+        valueField: "id",
+        labelField: "name",
+        size: 6
+    },
+    {
         index: 'name',
         label: 'Tên Phòng',
         type: DataGridEditFieldType.TEXT,
-        tabGroup: '0info',
         size: 6
+    },
+    {
+        index: "size", type: DataGridEditFieldType.TEXT,
+        size: 6, label: "Kích cỡ"
+    },
+    {
+        index: "note", type: DataGridEditFieldType.TEXT,
+        size: 6, label: "Ghi chú"
     },
 ];
 

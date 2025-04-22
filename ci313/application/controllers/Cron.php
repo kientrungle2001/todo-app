@@ -10,7 +10,7 @@ class Cron extends CI_Controller
     public function runJob()
     {
         // your logic
-        
+
         $this->updateColumn(array(
             'class_student' => 'cs',
             'student' => 's'
@@ -79,6 +79,14 @@ class Cron extends CI_Controller
             'cs.centerId' => 'r.centerId'
         ), array(
             'cs.roomId' => 'r.id'
+        ));
+        $this->updateColumn(array(
+            'class_schedule' => 'cs',
+            'classes' => 'c'
+        ), array(
+            'cs.className' => 'c.name'
+        ), array(
+            'cs.classId' => 'c.id'
         ));
 
         if ($errors = $this->db->error()) {

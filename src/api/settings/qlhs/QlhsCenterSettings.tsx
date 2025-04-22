@@ -13,7 +13,7 @@ const gridDeleteSelectedsLabel: string = "Xóa các Trung tâm đã chọn";
 const gridTable: string = "center";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "status"];
+const gridFields: string[] = ["id", "name", "code", "address", "status"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
@@ -22,6 +22,8 @@ const gridColumns: DataGridColumn[] = [
             return '/Table/center/' + item.id + '/detail';
         }
     },
+    { index: "code", label: "Mã Trung tâm" },
+    { index: "address", label: "Địa chỉ" },
     DataGridColumns.status,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
@@ -45,6 +47,18 @@ const gridAddFields: DataGridEditField[] = [
     {
         index: 'name',
         label: 'Tên Trung tâm/cơ sở',
+        type: DataGridEditFieldType.TEXT,
+        tabGroup: '0info',
+        size: 6
+    },
+    {
+        index: "code", label: "Mã Trung tâm",
+        type: DataGridEditFieldType.TEXT,
+        tabGroup: '0info',
+        size: 6
+    },
+    {
+        index: "address", label: "Địa chỉ",
         type: DataGridEditFieldType.TEXT,
         tabGroup: '0info',
         size: 6

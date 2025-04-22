@@ -21,6 +21,16 @@ class MY_Controller extends CI_Controller
     public $form_validation;
 
     /**
+     * @var CI_Upload
+     */
+    public $upload;
+
+    /**
+     * @var CI_Image_lib
+     */
+    public $image_lib;
+
+    /**
      * 
      * @var Table_model
      */

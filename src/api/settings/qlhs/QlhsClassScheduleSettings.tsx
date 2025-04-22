@@ -61,6 +61,7 @@ const gridDetails: TableGridDetail[] = [
         type: TableGridDetailType.DETAIL,
         controller: 'class_schedule',
         fields: [
+            { index: "className", label: "Lớp học" },
             {
                 index: "studyDate", label: "Ngày học", type: DataGridColumnType.DATE,
                 linkFormat: (name: any, item: any): string => {
