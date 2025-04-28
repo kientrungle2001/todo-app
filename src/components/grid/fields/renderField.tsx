@@ -8,6 +8,9 @@ import { FieldSelectRenderer } from "./FieldSelectRenderer";
 import { FieldStatusRenderer } from "./FieldStatusRenderer";
 import { FieldTextRenderer } from "./FieldTextRenderer";
 import { FieldUndefinedRenderer } from "./FieldUndefinedRenderer";
+import {
+    DataGridEditMode as EditMode
+} from "@/components/grid/DataGridEditTypes";
 
 export const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
     switch (fieldType) {
@@ -33,7 +36,7 @@ export const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
 
 }
 
-export const renderField = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any) => {
+export const renderField = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any, mode: EditMode) => {
     const renderer = getFieldRenderer(field.type);
-    return renderer(field, item, setItem, maps);
+    return renderer(field, item, setItem, maps, mode);
 }

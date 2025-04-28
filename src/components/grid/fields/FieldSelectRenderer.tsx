@@ -2,12 +2,22 @@ import React, { useEffect } from "react";
 import { Form } from "react-bootstrap";
 import $ from 'jquery';
 import { DataGridEditField } from "../DataGridEditTypes";
+import {
+    DataGridEditMode as EditMode
+} from "@/components/grid/DataGridEditTypes";
+import { useRouter } from "next/router";
+export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any, mode: EditMode) => {
 
-export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any) => {
     const selectRef: any = {};
     selectRef[field.index] = React.useRef(null);
+    const router = useRouter();
 
     useEffect(() => {
+        if (mode == EditMode.ADD
+            && typeof item[field.index] !== 'undefined'
+            && typeof router.query['field_' + field.index] !== 'undefined') {
+            return () => { }
+        }
         if (field.select2 && selectRef[field.index].current && (field.options || maps[field.index])) {
             const $select = $(selectRef[field.index].current);
 
@@ -43,6 +53,11 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
         }
     }, [field, item, maps[field.index], field.options]); // Re-run when options or maps change
 
+    if (mode == EditMode.ADD
+        && typeof item[field.index] !== 'undefined'
+        && typeof router.query['field_' + field.index] !== 'undefined') {
+        return <Form.Control readOnly value={item[field.index]} name={field.index} ref={selectRef[field.index]} />
+    }
     if (field.options) {
         return (
             <Form.Select

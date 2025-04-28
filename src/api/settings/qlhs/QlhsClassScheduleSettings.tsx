@@ -3,7 +3,6 @@ import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
-import { QlhsRoomSettings } from "./QlhsRoomSettings";
 import { QlhsStudentAttendanceSettings } from "./QlhsStudentAttendanceSettings";
 
 const gridTitle: string = "Quản lý Lịch học";

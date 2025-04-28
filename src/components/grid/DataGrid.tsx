@@ -122,7 +122,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 <Card className="border-0">
                     <Card.Body className="border-0 pt-0">
                         <DataGridTitle controller={controller} title={title} addNewLabel={addNewLabel} deleteSelectedsLabel={deleteSelectedsLabel} parentController={parentController}
-                        parentSettings={parentSettings} parentItem={parentItem} />
+                        parentSettings={parentSettings} parentItem={parentItem} defaultFilters={defaultFilters} />
                         <DataGridMessages messages={messages} setMessages={setMessages} />
                         <div className="table-responsive">
                             <Table size="sm" striped hover>

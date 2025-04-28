@@ -10,9 +10,10 @@ interface DataGridTitleProps {
     parentController?: string;
     parentSettings?: TableGridSettings;
     parentItem?: any;
+    defaultFilters?: any;
 }
 
-export const DataGridTitle: React.FC<DataGridTitleProps> = ({ title, controller, addNewLabel, deleteSelectedsLabel, parentController, parentSettings, parentItem }) => {
+export const DataGridTitle: React.FC<DataGridTitleProps> = ({ title, controller, addNewLabel, deleteSelectedsLabel, parentController, parentSettings, parentItem, defaultFilters }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -21,6 +22,11 @@ export const DataGridTitle: React.FC<DataGridTitleProps> = ({ title, controller,
                 path += `&backHref=/Table/${parentController}/${parentItem.id}/detail`;
             } else {
                 path += `?backHref=/Table/${parentController}/${parentItem.id}/detail`;
+            }
+            if (defaultFilters) {
+                for (var key in defaultFilters) {
+                    path += '&field_' + key + '=' + defaultFilters[key];       
+                }
             }
         }
         router.push(path);

@@ -76,7 +76,6 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         }
         tabGroups[tabGroup].push(field);
     });
-    console.log('tabGroups:', tabGroups);
     const tabs = Object.keys(tabGroups).map(tabGroup => ({
         tabGroup: tabGroup,
         fields: tabGroups[tabGroup]
@@ -125,7 +124,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                                 <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
                                                     <Form.Group controlId={field.index}>
                                                         <Form.Label>{field.label}</Form.Label>
-                                                        {renderField(field, item, setItem, maps)}
+                                                        {renderField(field, item, setItem, maps, mode)}
                                                     </Form.Group>
                                                 </Col>
                                             ))}
@@ -136,7 +135,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                                                 {tab.fields.map(field => (
                                                     <Tab eventKey={field.index} title={field.label} key={field.index}>
                                                         <Form.Group controlId={field.index}>
-                                                            {renderField(field, item, setItem, maps)}
+                                                            {renderField(field, item, setItem, maps, mode)}
                                                         </Form.Group>
                                                     </Tab>
                                                 ))}

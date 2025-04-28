@@ -1,6 +1,6 @@
 import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
 import { QlhsStudentAttendanceSettings } from "./QlhsStudentAttendanceSettings";
@@ -54,7 +54,24 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "reversedName", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-
+    {
+        index: "classId", label: "Chọn lớp",
+        type: DataGridEditFieldType.SELECT,
+        table: "classes",
+        valueField: "id",
+        labelField: "name",
+        size: 6
+    },
+    {
+        index: "studentId", label: "Chọn học sinh",
+        type: DataGridEditFieldType.SELECT,
+        table: "student",
+        valueField: "id",
+        labelField: "name",
+        size: 6
+    },
+    { index: "startClassDate", label: "Ngày bắt đầu", type: DataGridEditFieldType.DATE, size: 6 },
+    { index: "endClassDate", label: "Ngày kết thúc", type: DataGridEditFieldType.DATE, size: 6 },
 ];
 
 const gridDetails: TableGridDetail[] = [
