@@ -1,17 +1,17 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Button, Modal, Form, InputGroup, Breadcrumb, Row, Col, Card } from 'react-bootstrap';
-import { getAxios } from '@/api/mediaAxiosInstance';
-import { storage } from '@/api/storage';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Row, Col, Card } from 'react-bootstrap';
 import { useRouter } from 'next/router';
+import { TableGridSettings } from '../../TableGrid';
 
 interface GridDialogProps {
     show: boolean;
     value: any;
     onClose: () => void;
     onSelect: (item: any) => void;
+    settings?: TableGridSettings;
 }
 
-export const GridDialog: React.FC<GridDialogProps> = ({ value, show, onClose, onSelect }) => {
+export const GridDialog: React.FC<GridDialogProps> = ({ value, show, onClose, onSelect, settings }) => {
     const [items, setItems] = useState<any[]>([]);
     const [selectedItem, setSelectedItem] = useState<string | null>();
     const router = useRouter();

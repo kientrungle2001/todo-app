@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { GridDialog } from './GridDialog';
+import { TableGridSettings } from '../../TableGrid';
 
 interface GridSelectorProps {
     value: any;
     setValue: (value: any) => void;
     hideInput?: boolean;
     selectLabel?: string;
+    settings?: TableGridSettings;
 }
 
-export const GridSelector: React.FC<GridSelectorProps> = ({ value, setValue, hideInput, selectLabel }) => {
+export const GridSelector: React.FC<GridSelectorProps> = ({ value, setValue, hideInput, selectLabel, settings }) => {
     const [show, setShow] = useState(false);
 
     const handleOpenDialog = () => setShow(true);
@@ -34,6 +36,7 @@ export const GridSelector: React.FC<GridSelectorProps> = ({ value, setValue, hid
                 </Button>
             </div>
             <GridDialog
+                settings={settings}
                 show={show}
                 onClose={handleCloseDialog}
                 value={value}

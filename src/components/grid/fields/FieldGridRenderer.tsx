@@ -1,13 +1,14 @@
-import { ImageSelector } from "@/components/media/ImageSelector";
 import { DataGridEditField } from "../DataGridEditTypes";
+import { GridSelector } from "./grid/GridSelector";
 
 export const FieldGridRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     return (
-        <ImageSelector
-            selectedImage={item[field.index]}
-            setSelectedImage={(imageUrl: string) => {
+        <GridSelector
+            settings={field.gridSettings}
+            value={item[field.index]}
+            setValue={(value: any) => {
                 let updatedItem: any = { ...item };
-                updatedItem[field.index] = imageUrl;
+                updatedItem[field.index] = value;
                 setItem(updatedItem);
             }}
         />

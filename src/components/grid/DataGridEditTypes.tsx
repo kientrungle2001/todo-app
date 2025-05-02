@@ -1,3 +1,5 @@
+import { TableGridSettings } from "./TableGrid";
+
 export enum DataGridEditFieldType {
     TEXT = "text",
     NUMBER = "number",
@@ -34,4 +36,5 @@ export interface DataGridEditField {
     multipleSize?: number;
     select2?: boolean;
     tabGroup?: string;
+    gridSettings?: TableGridSettings;
 }
