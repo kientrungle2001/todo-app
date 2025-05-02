@@ -1,45 +1,42 @@
-import React, { useEffect } from "react";
-import { TableGridSettings } from "./TableGrid";
+import React, { useState, useEffect } from "react";
+import { TableGridSettings as Settings } from "./TableGrid";
 import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
-import { DataGridEditField, DataGridEditFieldType, DataGridEditMode } from "./DataGridEditTypes";
+import { DataGridEditField as Field, DataGridEditFieldType as FieldType, DataGridEditMode as Mode } from "./DataGridEditTypes";
 import { tableRepository } from "@/api/repositories/Table";
 
 interface TableGridProps {
     controller: string;
-    settings: TableGridSettings
+    settings: Settings
 }
 
 export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings }): React.ReactElement => {
     const router = useRouter();
-    const [item, setItem] = React.useState<any>({});
+    const query = router.query;
+    const [item, setItem] = useState<any>({});
 
     useEffect(() => {
         const queryItem: any = {};
-        settings.addFields.forEach((field: DataGridEditField) => {
-            if (typeof router.query['field_' + field.index] !== 'undefined') {
-                if (field.type === DataGridEditFieldType.STATUS) {
-                    queryItem[field.index] = parseInt(router.query['field_' + field.index] as string);
+        settings.addFields.forEach((field: Field) => {
+            if (typeof query['field_' + field.index] !== 'undefined') {
+                if (field.type === FieldType.STATUS) {
+                    queryItem[field.index] = parseInt(query['field_' + field.index] as string);
                 } else {
-                    queryItem[field.index] = router.query['field_' + field.index];
+                    queryItem[field.index] = query['field_' + field.index];
                 }
             }
         });
         setItem({ ...queryItem });
     }, []);
 
-    if (!item) {
-        return <>
-            <h3>Loading...</h3>
-        </>
-    }
-    
-    const handleAddItem = (updatedItem: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>): void => {
+    if (!item) return <h3>Loading...</h3>;
+
+    const handleAddItem = (updatedItem: any, fields: Field[], event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         tableRepository.createItem(settings, fields, updatedItem).then(() => {
             setItem(updatedItem);
-            if (router.query.backHref) {
-                router.push(router.query.backHref as string);
+            if (query.backHref) {
+                router.push(query.backHref as string);
             } else {
                 router.push(`/Table/${controller}`);
             }
@@ -47,16 +44,20 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
     }
 
     const handleCancelAdd = (): void => {
-        if (router.query.backHref) {
-            router.push(router.query.backHref as string);
+        if (query.backHref) {
+            router.push(query.backHref as string);
         } else {
             router.push(`/Table/${controller}`);
         }
     }
 
     // make bootstrap edit form here
-    return <>
-        <DataGridEdit addNewLabel={settings.addNewLabel} mode={DataGridEditMode.ADD} table={settings.table} item={item} setItem={setItem} fields={settings.addFields}
-            handleAddItem={handleAddItem} handleCancelAdd={handleCancelAdd} />
-    </>
+    return <DataGridEdit
+        mode={Mode.ADD}
+        addNewLabel={settings.addNewLabel}
+        table={settings.table}
+        fields={settings.addFields}
+        item={item} setItem={setItem}
+        handleAddItem={handleAddItem}
+        handleCancelAdd={handleCancelAdd} />
 };
