@@ -18,13 +18,10 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
     useEffect(() => {
         const queryItem: any = {};
         settings.addFields.forEach((field: Field) => {
-            if (typeof query['field_' + field.index] !== 'undefined') {
-                if (field.type === FieldType.STATUS) {
-                    queryItem[field.index] = parseInt(query['field_' + field.index] as string);
-                } else {
-                    queryItem[field.index] = query['field_' + field.index];
-                }
-            }
+            if (typeof query['field_' + field.index] !== 'undefined')
+                queryItem[field.index] = field.type === FieldType.STATUS ?
+                    parseInt(query['field_' + field.index] as string) :
+                    query['field_' + field.index];
         });
         setItem({ ...queryItem });
     }, []);
@@ -44,11 +41,10 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
     }
 
     const handleCancelAdd = (): void => {
-        if (query.backHref) {
+        if (query.backHref)
             router.push(query.backHref as string);
-        } else {
+        else
             router.push(`/Table/${controller}`);
-        }
     }
 
     // make bootstrap edit form here

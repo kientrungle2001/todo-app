@@ -82,88 +82,80 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
     }));
     tabs.sort((a, b) => a.tabGroup.localeCompare(b.tabGroup));
 
-    return (
-        <>
-            <Container fluid>
-                {
-                    mode === EditMode.EDIT ? (
-                        <h2 className="text-center">{updateLabel} - ID: {itemId}</h2>
-                    ) : (
-                        <h2 className="text-center">{addNewLabel}</h2>
-                    )
-                }
+    return <Container fluid>
+        {mode === EditMode.EDIT ?
+            <h2 className="text-center">{updateLabel} - ID: {itemId}</h2> :
+            <h2 className="text-center">{addNewLabel}</h2>}
 
-                <Row>
-                    <Col md={12} sm={12}>
-                        <Form onSubmit={(event) => {
-                            if (mode === EditMode.EDIT && handleUpdateItem) {
-                                handleUpdateItem(item, fields, event);
-                            }
+        <Row>
+            <Col md={12} sm={12}>
+                <Form onSubmit={(event) => {
+                    if (mode === EditMode.EDIT && handleUpdateItem) {
+                        handleUpdateItem(item, fields, event);
+                    }
 
-                            if (mode === EditMode.ADD && handleAddItem) {
-                                handleAddItem(item, fields, event);
-                            }
-                        }}>
-                            <Row>
-                                <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
-                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
-                                    <Button variant="outline-secondary" onClick={() => {
-                                        if (mode === EditMode.ADD && handleCancelAdd) {
-                                            handleCancelAdd();
-                                        }
+                    if (mode === EditMode.ADD && handleAddItem) {
+                        handleAddItem(item, fields, event);
+                    }
+                }}>
+                    <Row>
+                        <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
+                            <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
+                            <Button variant="outline-secondary" onClick={() => {
+                                if (mode === EditMode.ADD && handleCancelAdd) {
+                                    handleCancelAdd();
+                                }
 
-                                        if (mode === EditMode.EDIT && handleCancelEdit) {
-                                            handleCancelEdit();
-                                        }
-                                    }}>Hủy bỏ</Button>
-                                </Col>
-                                {tabs.map(tab => (
-                                    tab.tabGroup === '__default' ? (
-                                        <React.Fragment key={tab.tabGroup}>
-                                            {tab.fields.map(field => (
-                                                <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
-                                                    <Form.Group controlId={field.index}>
-                                                        <Form.Label>{field.label}</Form.Label>
-                                                        {renderField(field, item, setItem, maps, mode)}
-                                                    </Form.Group>
-                                                </Col>
-                                            ))}
-                                        </React.Fragment>
-                                    ) : (
-                                        <Col className="mb-3" md={tab.fields[0].size ?? 12} sm={12} key={tab.tabGroup}>
-                                            <Tabs id={"controlled-tab-" + tab.tabGroup}>
-                                                {tab.fields.map(field => (
-                                                    <Tab eventKey={field.index} title={field.label} key={field.index}>
-                                                        <Form.Group controlId={field.index}>
-                                                            {renderField(field, item, setItem, maps, mode)}
-                                                        </Form.Group>
-                                                    </Tab>
-                                                ))}
-                                            </Tabs>
+                                if (mode === EditMode.EDIT && handleCancelEdit) {
+                                    handleCancelEdit();
+                                }
+                            }}>Hủy bỏ</Button>
+                        </Col>
+                        {tabs.map(tab => (
+                            tab.tabGroup === '__default' ? (
+                                <React.Fragment key={tab.tabGroup}>
+                                    {tab.fields.map(field => (
+                                        <Col className="mb-3" md={field.size ?? 12} sm={12} key={field.index}>
+                                            <Form.Group controlId={field.index}>
+                                                <Form.Label>{field.label}</Form.Label>
+                                                {renderField(field, item, setItem, maps, mode)}
+                                            </Form.Group>
                                         </Col>
-                                    )
-
-                                ))}
-
-                                <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
-                                    <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
-                                    <Button variant="outline-secondary" onClick={() => {
-                                        if (mode === EditMode.ADD && handleCancelAdd) {
-                                            handleCancelAdd();
-                                        }
-
-                                        if (mode === EditMode.EDIT && handleCancelEdit) {
-                                            handleCancelEdit();
-                                        }
-                                    }}>Hủy bỏ</Button>
+                                    ))}
+                                </React.Fragment>
+                            ) : (
+                                <Col className="mb-3" md={tab.fields[0].size ?? 12} sm={12} key={tab.tabGroup}>
+                                    <Tabs id={"controlled-tab-" + tab.tabGroup}>
+                                        {tab.fields.map(field => (
+                                            <Tab eventKey={field.index} title={field.label} key={field.index}>
+                                                <Form.Group controlId={field.index}>
+                                                    {renderField(field, item, setItem, maps, mode)}
+                                                </Form.Group>
+                                            </Tab>
+                                        ))}
+                                    </Tabs>
                                 </Col>
-                            </Row>
-                        </Form>
-                    </Col>
-                </Row>
+                            )
 
-            </Container>
-        </>
-    );
+                        ))}
+
+                        <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
+                            <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
+                            <Button variant="outline-secondary" onClick={() => {
+                                if (mode === EditMode.ADD && handleCancelAdd) {
+                                    handleCancelAdd();
+                                }
+
+                                if (mode === EditMode.EDIT && handleCancelEdit) {
+                                    handleCancelEdit();
+                                }
+                            }}>Hủy bỏ</Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </Col>
+        </Row>
+
+    </Container>;
 };
 export default DataGridEdit;
