@@ -10,6 +10,7 @@ export enum DataGridEditFieldType {
     STATUS = "status",
     EDITOR = "editor",
     IMAGE = "image",
+    GRID = "grid"
 };
 
 export enum DataGridEditMode {

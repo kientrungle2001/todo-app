@@ -2,6 +2,7 @@ import { DataGridEditField, DataGridEditFieldType } from "../DataGridEditTypes";
 import { FieldCheckboxRenderer } from "./FieldCheckboxRenderer";
 import { FieldDateRenderer } from "./FieldDateRenderer";
 import { FieldEditorRenderer } from "./FieldEditorRenderer";
+import { FieldGridRenderer } from "./FieldGridRenderer";
 import { FieldImageRenderer } from "./FieldImageRenderer";
 import { FieldNumberRenderer } from "./FieldNumberRenderer";
 import { FieldSelectRenderer } from "./FieldSelectRenderer";
@@ -30,6 +31,8 @@ export const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
             return FieldEditorRenderer;
         case DataGridEditFieldType.IMAGE:
             return FieldImageRenderer;
+        case DataGridEditFieldType.GRID:
+            return FieldGridRenderer;
         default:
             return FieldUndefinedRenderer;
     }

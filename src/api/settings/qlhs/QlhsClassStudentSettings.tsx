@@ -4,6 +4,7 @@ import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/Data
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
 import { QlhsStudentAttendanceSettings } from "./QlhsStudentAttendanceSettings";
+import { QlhsGridStudentSettings } from "./QlhsGridStudentSettings";
 
 const gridTitle: string = "Quản lý Xếp lớp";
 const gridAddNewLabel: string = "Thêm Xếp lớp";
@@ -64,7 +65,8 @@ const gridAddFields: DataGridEditField[] = [
     },
     {
         index: "studentId", label: "Chọn học sinh",
-        type: DataGridEditFieldType.SELECT,
+        type: DataGridEditFieldType.GRID,
+        gridSettings: QlhsGridStudentSettings,
         table: "student",
         valueField: "id",
         labelField: "name",
