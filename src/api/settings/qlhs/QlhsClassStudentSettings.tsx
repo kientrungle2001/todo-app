@@ -5,6 +5,7 @@ import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
 import { QlhsStudentAttendanceSettings } from "./QlhsStudentAttendanceSettings";
 import { QlhsGridStudentSettings } from "./QlhsGridStudentSettings";
+import { QlhsGridClassSettings } from "./QlhsGridClassSettings";
 
 const gridTitle: string = "Quản lý Xếp lớp";
 const gridAddNewLabel: string = "Thêm Xếp lớp";
@@ -57,7 +58,8 @@ const gridDefaultSorts: DataGridSort[] = [{ index: "reversedName", direction: Da
 const gridAddFields: DataGridEditField[] = [
     {
         index: "classId", label: "Chọn lớp",
-        type: DataGridEditFieldType.SELECT,
+        type: DataGridEditFieldType.GRID,
+        gridSettings: QlhsGridClassSettings,
         table: "classes",
         valueField: "id",
         labelField: "name",
