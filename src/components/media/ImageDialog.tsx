@@ -195,7 +195,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
     return (
         <Modal show={show} onHide={onClose} size="xl">
             <Modal.Header closeButton>
-                <Modal.Title>Select Image</Modal.Title>
+                <Modal.Title>Chọn Hình ảnh / Video / Tài liệu</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <h5>Current Folder: {currentFolder}</h5>

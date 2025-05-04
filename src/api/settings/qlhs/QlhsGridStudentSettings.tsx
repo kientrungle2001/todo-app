@@ -20,8 +20,6 @@ const gridColumns: DataGridColumn[] = [
     { index: "startStudyDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     { index: "endStudyDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
     DataGridColumns.status,
-    DataGridColumns.editAction,
-    DataGridColumns.deleteAction,
 ];
 
 const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };

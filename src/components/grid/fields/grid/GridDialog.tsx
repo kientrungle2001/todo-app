@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Row, Col, Card } from 'react-bootstrap';
-import { useRouter } from 'next/router';
+import { Button, Modal } from 'react-bootstrap';
 import { TableGridSettings } from '../../TableGrid';
-import { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridPagination, DataGridSort } from "@/components/grid/DataGridColumnTypes";
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
 import { tableRepository } from "@/api/repositories/Table";
@@ -20,7 +19,6 @@ interface GridDialogProps {
 
 export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onClose, onSelect, settings }) => {
     const [selectedItem, setSelectedItem] = useState<string | null>();
-    const router = useRouter();
 
     const [pagination, setPagination] = React.useState<DataGridPagination>(settings.pagination);
     const [items, setItems] = React.useState<any[]>([]);
@@ -28,9 +26,6 @@ export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onCl
     const [filterData, setFilterData] = React.useState<any>({});
     const [searchText, setSearchText] = React.useState("");
     const [sorts, setSorts] = React.useState<DataGridSort[]>(settings.defaultSorts);
-    const [messages, setMessages] = React.useState<DataGridMessage[]>([]);
-    const [isCheckedAll, setIsCheckedAll] = React.useState<boolean>(false);
-    const [checkedItemIds, setCheckedItemIds] = React.useState<number[]>([]);
     const [sortData, setSortData] = React.useState<any>({});
 
     const setCurrentPage = (page: number) => { setPagination({ ...pagination, currentPage: page }); };
@@ -51,39 +46,11 @@ export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onCl
         setSavedFilterData({ filterData, sortData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts });
     }, [filterData, sortData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
 
-    const handleDeleteItem = (item: any) => {
-        // Implement your delete logic here
-        if (window.confirm(`Are you sure you want to delete item with ID: ${item.id}?`)) {
-            console.log(`Deleting item with ID: ${item.id}`);
-            tableRepository.deleteItem(settings, item).then(() => {
-                handleAfterDelete(item);
-            });
+    useEffect(() => {
+        if (!value) {
+            setSelectedItem(null);
         }
-    };
-
-    const handleAfterDelete = (item: any) => {
-        let updatedMessages: DataGridMessage[] = [...messages];
-        updatedMessages.push({
-            label: `Item #${item.id} has been deleted successfully`,
-            variant: "success"
-        });
-        setMessages(updatedMessages);
-        handleListItems();
-    };
-
-    const handleAfterChangeStatus = (column: DataGridColumn, item: any) => {
-        handleListItems();
-    }
-
-    const handleAfterSaveInputableColumn = (column: DataGridColumn) => {
-        let updatedMessages: DataGridMessage[] = [...messages];
-        updatedMessages.push({
-            label: `Column #${column.label} has been updated successfully`,
-            variant: "success"
-        });
-        setMessages(updatedMessages);
-        handleListItems();
-    }
+    }, [value]);
 
     const handleListItems = () => {
         let sortDatas: DataGridSort[] = [];
@@ -106,8 +73,6 @@ export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onCl
                 else
                     setItems(resp && resp.data ? resp.data.items : []);
                 setTotalItems(resp && resp.data ? resp.data.totalItems : 0);
-                setIsCheckedAll(false);
-                setCheckedItemIds([]);
             });
     };
 
@@ -119,26 +84,15 @@ export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onCl
         return () => { clearTimeout(handler); };
     }, [pagination, searchText, sorts, filterData, sortData]);
 
-    // Handle folder navigation and file selection
-    const handleItemClick = (item: any) => {
-
-    };
-
-    useEffect(() => {
-        if (show) {
-
-        }
-    }, [show, selectedItem]);
-
     return (
         <Modal show={show} onHide={onClose} size="xl">
             <Modal.Header closeButton>
-                <Modal.Title>Select Image</Modal.Title>
+                <Modal.Title>Chọn bản ghi</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <GridDataGrid
                     title={settings.title}
-                     table={settings.table} defaultSorts={settings.defaultSorts}
+                    table={settings.table} defaultSorts={settings.defaultSorts}
                     software={settings.software} site={settings.site}
                     pagination={pagination} totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize}
                     columns={settings.columns} filters={settings.filters}
@@ -146,12 +100,8 @@ export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onCl
                     items={items}
                     filterData={filterData} setFilterData={setFilterData}
                     searchText={searchText} setSearchText={setSearchText}
-                    onDeleteItem={handleDeleteItem} onAfterChangeStatus={handleAfterChangeStatus}
-                    onAfterSaveInputableColumn={handleAfterSaveInputableColumn}
-                    isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll}
-                    checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds}
-                    addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel}
                     sortData={sortData} setSortData={setSortData}
+                    selectedItem={selectedItem} setSelectedItem={setSelectedItem}
                 />
             </Modal.Body>
             <Modal.Footer>
@@ -161,8 +111,7 @@ export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onCl
                 <Button
                     variant="primary"
                     disabled={!selectedItem}
-                    onClick={() => selectedItem && onSelect(selectedItem)}
-                >
+                    onClick={() => selectedItem && onSelect(selectedItem)}>
                     Done
                 </Button>
             </Modal.Footer>
