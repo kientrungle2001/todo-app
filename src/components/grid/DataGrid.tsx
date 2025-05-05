@@ -115,10 +115,10 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
 
     return <Container fluid className="mb-0 mt-0">
         <Row className="g-0">
-            <Col sm={12} md={3} lg={12}>
+            <Col sm={12} md={12} lg={12}>
                 <FiltersGridCard filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
             </Col>
-            <Col sm={12} md={9} lg={12}>
+            <Col sm={12} md={12} lg={12}>
                 <Card className="border-0">
                     <Card.Body className="border-0 pt-0">
                         <DataGridTitle controller={controller} title={title} addNewLabel={addNewLabel} deleteSelectedsLabel={deleteSelectedsLabel} parentController={parentController}
