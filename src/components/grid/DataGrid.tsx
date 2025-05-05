@@ -68,8 +68,8 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             } else {
                 path += `?backHref=/Table/${parentController}/${parentItem.id}/detail`;
             }
-        } 
-        router.push(path); 
+        }
+        router.push(path);
     };
     const handleEditItem = (item: any) => { handleNavigation(`/Table/${controller}/${item.id}/edit`); }
 
@@ -113,6 +113,38 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         }
     }
 
+    const [bulkAction, setBulkAction] = useState<string>("");
+
+    const handleApplyBulkAction = () => {
+        if (!bulkAction || checkedItemIds.length === 0) return;
+
+        if (bulkAction === "delete") {
+            if (!confirm("Bạn có chắc chắn muốn xoá các mục đã chọn không?")) return;
+            checkedItemIds.forEach(id => {
+                const item = items.find(i => i.id === id);
+                if (item) onDeleteItem(item);
+            });
+        }
+
+        if (bulkAction === "publish" || bulkAction === "unpublish") {
+            const publishValue = bulkAction === "publish" ? 1 : 0;
+            const statusColumn = columns.find(col => col.index === "published" || col.index === "status");
+
+            if (statusColumn) {
+                checkedItemIds.forEach(id => {
+                    const item = items.find(i => i.id === id);
+                    if (item) {
+                        item[statusColumn.index] = publishValue;
+                        onAfterChangeStatus(statusColumn, item);
+                    }
+                });
+            }
+        }
+
+        setCheckedItemIds([]);
+        setBulkAction("");
+    };
+
     return <Container fluid className="mb-0 mt-0">
         <Row className="g-0">
             <Col sm={12} md={12} lg={12}>
@@ -122,7 +154,23 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 <Card className="border-0">
                     <Card.Body className="border-0 pt-0">
                         <DataGridTitle controller={controller} title={title} addNewLabel={addNewLabel} deleteSelectedsLabel={deleteSelectedsLabel} parentController={parentController}
-                        parentSettings={parentSettings} parentItem={parentItem} defaultFilters={defaultFilters} />
+                            parentSettings={parentSettings} parentItem={parentItem} defaultFilters={defaultFilters} />
+                        <Form className="d-flex align-items-center gap-2 mb-2">
+                            <Form.Select size="sm" value={bulkAction} onChange={(e) => setBulkAction(e.target.value)} style={{ maxWidth: '200px' }}>
+                                <option value="">-- Chọn hành động --</option>
+                                <option value="delete">Xoá</option>
+                                <option value="publish">Đăng</option>
+                                <option value="unpublish">Gỡ đăng</option>
+                            </Form.Select>
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-primary"
+                                onClick={handleApplyBulkAction}
+                                disabled={!bulkAction || checkedItemIds.length === 0}
+                            >
+                                Áp dụng
+                            </button>
+                        </Form>
                         <DataGridMessages messages={messages} setMessages={setMessages} />
                         <div className="table-responsive">
                             <Table size="sm" striped hover>
