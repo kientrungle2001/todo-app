@@ -1,36 +1,46 @@
+// components/grid/detail/renderer/TableGridDetailRendererGrid.tsx
 import React, { useEffect, useState } from "react";
-import { TableGrid, TableGridDetail, TableGridSettings } from "../../TableGrid";
-import { tableRepository } from "@/api/repositories/Table";
 import { Row } from "react-bootstrap";
+import { TableGrid, TableGridSettings, TableGridDetail } from "../../TableGrid";
+import { tableRepository } from "@/api/repositories/Table";
+import { useDefaultFilters } from "./useDefaultFilters";
+import { DetailLabel } from "./DetailLabel";
 
-interface TableGridDetailRendererGridProps {
-    itemId: number;
-    controller: string;
-    settings: TableGridSettings;
-    detail: TableGridDetail;
+interface Props {
+  itemId: number;
+  controller: string;
+  settings: TableGridSettings;
+  detail: TableGridDetail;
 }
 
-export const TableGridDetailRendererGrid: React.FC<TableGridDetailRendererGridProps> = ({ controller, settings, itemId, detail }): React.ReactElement => {
-    const [item, setItem] = useState<any>(null);
-    useEffect(() => {
-        tableRepository.getItem(settings, itemId).then((resp: any) => {
-            setItem(resp && resp.data ? resp.data : null);
-        });
-    }, [itemId]);
-    if (!item)
-        return <></>
-    let defaultFilters: any = {};
-    if (detail.customFilters) {
-        defaultFilters = detail.customFilters(item);
-    } else {
-        defaultFilters[detail.referenceField as string] = itemId;
-    }
-    
-    return <>
-        {detail.label && <h2 className="text-center mb-3">{detail.label}</h2>}
-        <Row>
-            {detail.settings ?
-                <TableGrid controller={detail.controller as string} settings={detail.settings} defaultFilters={defaultFilters} parentController={controller} parentSettings={settings} parentItem={item} /> : <></>}
-        </Row>
+export const TableGridDetailRendererGrid: React.FC<Props> = ({ controller, settings, itemId, detail }) => {
+  const [item, setItem] = useState<any>(null);
+
+  useEffect(() => {
+    tableRepository.getItem(settings, itemId).then((resp: any) => {
+      setItem(resp?.data ?? null);
+    });
+  }, [itemId]);
+
+  const defaultFilters = useDefaultFilters(detail, itemId, item);
+
+  if (!item) return null;
+
+  return (
+    <>
+      <DetailLabel label={detail.label} />
+      <Row>
+        {detail.settings && (
+          <TableGrid
+            controller={detail.controller as string}
+            settings={detail.settings}
+            defaultFilters={defaultFilters}
+            parentController={controller}
+            parentSettings={settings}
+            parentItem={item}
+          />
+        )}
+      </Row>
     </>
-}
+  );
+};
