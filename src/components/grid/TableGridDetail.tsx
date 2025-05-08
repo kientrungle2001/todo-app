@@ -56,7 +56,7 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
 
             <Tab.Container activeKey={activeKey} onSelect={handleTabSelect}>
                 <Row>
-                    <Col sm={3} className="border-end">
+                    <Col sm={3} md={2} className="border-end">
                         <Nav variant="pills" className="flex-column">
                             {settings.details?.map((detail: GridDetail, index: number) => (
                                 <Nav.Item key={`${controller}-${detail.controller}-${index}`}>
@@ -68,7 +68,7 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
                         </Nav>
                     </Col>
 
-                    <Col sm={9}>
+                    <Col sm={9} md={10}>
                         <Tab.Content>
                             {settings.details?.map((detail: GridDetail, index: number) => (
                                 <Tab.Pane eventKey={index.toString()} key={index}>
