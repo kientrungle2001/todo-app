@@ -1,8 +1,10 @@
 import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
+import { QlhsClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings";
+import { QlhsGridClassPaymentPeriodSettings } from "./QlhsGridClassPaymentPeriodSettings";
 
 const gridTitle: string = "Quản lý Kỳ thanh toán";
 const gridAddNewLabel: string = "Thêm Kỳ thanh toán";
@@ -15,7 +17,11 @@ const gridFields: string[] = ["id", "name", "startDate", "endDate", "status"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "name", label: "Kỳ thanh toán" },
+    { 
+        index: "name", label: "Kỳ thanh toán", linkFormat: (name: any, item: any): string => {
+            return '/Table/payment_period/' + item.id + '/detail';
+        }
+     },
     { index: "startDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     { index: "endDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
     DataGridColumns.status,
@@ -37,7 +43,34 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
+    {
+        index: 'name',
+        label: 'Tên Kỳ thanh toán',
+        type: DataGridEditFieldType.TEXT,
+        size: 12
+    },
+    { index: "startDate", label: "Ngày bắt đầu", type: DataGridEditFieldType.DATE, size: 6 },
+    { index: "endDate", label: "Ngày kết thúc", type: DataGridEditFieldType.DATE, size: 6 },
+];
 
+const gridDetails: TableGridDetail[] = [
+    {
+        label: 'Chi tiết',
+        type: TableGridDetailType.DETAIL,
+        fields: [
+            { ...DataGridColumns.id, size: 4 },
+            { index: "name", label: "Tên Kỳ thanh toán", size: 4 },
+            { ...DataGridColumns.status, size: 4 }
+        ]
+    },
+    {
+        label: 'Kỳ thanh toán lớp',
+        type: TableGridDetailType.GRID,
+        controller: 'class_payment_period',
+        referenceField: 'paymentPeriodId',
+        referenceType: 'equal',
+        settings: QlhsGridClassPaymentPeriodSettings
+    }
 ];
 
 export const QlhsPaymentPeriodSettings: TableGridSettings = {
@@ -56,4 +89,5 @@ export const QlhsPaymentPeriodSettings: TableGridSettings = {
     addNewLabel: gridAddNewLabel,
     deleteSelectedsLabel: gridDeleteSelectedsLabel,
     updateLabel: gridUpdateLabel,
+    details: gridDetails,
 }

@@ -5,6 +5,7 @@ import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
 import { QlhsClassStudentSettings } from "./QlhsClassStudentSettings";
 import { QlhsClassScheduleSettings } from "./QlhsClassScheduleSettings";
+import { QlhsClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings";
 
 const gridTitle: string = "Quản lý Lớp";
 const gridAddNewLabel: string = "Thêm Lớp";
@@ -148,6 +149,14 @@ const gridDetails: TableGridDetail[] = [
         referenceField: 'classId',
         referenceType: 'equal',
         settings: QlhsClassScheduleSettings
+    },
+    {
+        label: 'Kỳ thanh toán lớp',
+        type: TableGridDetailType.GRID,
+        controller: 'class_payment_period',
+        referenceField: 'classId',
+        referenceType: 'equal',
+        settings: QlhsClassPaymentPeriodSettings
     }
 ];
 export const QlhsClassSettings: TableGridSettings = {
