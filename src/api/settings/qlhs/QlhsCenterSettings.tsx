@@ -48,19 +48,16 @@ const gridAddFields: DataGridEditField[] = [
         index: 'name',
         label: 'Tên Trung tâm/cơ sở',
         type: DataGridEditFieldType.TEXT,
-        tabGroup: '0info',
         size: 6
     },
     {
         index: "code", label: "Mã Trung tâm",
         type: DataGridEditFieldType.TEXT,
-        tabGroup: '0info',
         size: 6
     },
     {
         index: "address", label: "Địa chỉ",
         type: DataGridEditFieldType.TEXT,
-        tabGroup: '0info',
         size: 6
     },
 ];
