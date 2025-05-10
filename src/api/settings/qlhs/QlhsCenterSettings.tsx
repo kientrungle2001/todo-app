@@ -3,7 +3,6 @@ import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
-import { QlhsClassSettings } from "./QlhsClassSettings";
 import { QlhsRoomSettings } from "./QlhsRoomSettings";
 
 const gridTitle: string = "Quản lý Trung tâm";

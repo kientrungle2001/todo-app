@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import { DataGridColumn as Column, DataGridColumnActionType as ColumnActionType } from "../DataGridColumnTypes";
 import React from "react";
+import Link from "next/link";
 
 export const ColumnActionsRenderer = (column: Column, item: any, table: string,
     inputableMap: any,
@@ -25,6 +26,12 @@ export const ColumnActionsRenderer = (column: Column, item: any, table: string,
             return <Button variant="secondary" size="sm" onClick={() => handleAddChildItem(item, column)}>
                 {column.label}
             </Button>
+        } else if (column.actionType === ColumnActionType.CUSTOM_LINK) {
+            let link = '#';
+            if (column.actionLinkFormat) {
+                link = column.actionLinkFormat(item, column, table) as string;
+            }
+            return <Link href={link}>{column.label}</Link>
         }
     }
 }

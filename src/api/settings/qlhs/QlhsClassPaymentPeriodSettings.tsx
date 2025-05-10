@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
@@ -26,6 +26,15 @@ const gridSearchFields: string[] = ["id", "c.name", "p.name"];
 const gridFields: string[] = ["id", "classId", "paymentPeriodId", "c.name as className", "p.name as paymentPeriodName", "p.startDate as startDate", "p.endDate as endDate", "status"];
 
 const gridColumns: DataGridColumn[] = [
+    {
+        index: "_detail",
+        label: "Chi tiết",
+        type: DataGridColumnType.ACTIONS,
+        actionType: DataGridColumnActionType.CUSTOM_LINK,
+        actionLinkFormat: (item: any, column: DataGridColumn, controller: string) => {
+            return '/Table/class_payment_period/' + item.id + '/detail';
+        },
+    },
     {
         index: "classId", label: "Lớp",
         type: DataGridColumnType.REFERENCE,
@@ -94,6 +103,7 @@ const gridDetails: TableGridDetail[] = [
         customFilters: (item: any) => {
             return {
                 classId: item.classId,
+                paymentPeriodId: item.paymentPeriodId
             }
         },
         referenceType: 'equal',
