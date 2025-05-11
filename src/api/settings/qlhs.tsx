@@ -9,6 +9,7 @@ import { QlhsTeacherSettings } from "./qlhs/QlhsTeacherSettings";
 import { QlhsPaymentPeriodSettings } from "./qlhs/QlhsPaymentPeriodSettings";
 import { QlhsClassScheduleSettings } from "./qlhs/QlhsClassScheduleSettings";
 import { QlhsClassPaymentPeriodSettings } from "./qlhs/QlhsClassPaymentPeriodSettings";
+import { QlhsStudentAttendanceSettings } from "./qlhs/QlhsStudentAttendanceSettings";
 
 export const getSettingsByControllerForQLHS = (controller: string, hostname: string = 'localhost'): TableGridSettings | null => {
     if (controller === 'center') {
@@ -40,6 +41,9 @@ export const getSettingsByControllerForQLHS = (controller: string, hostname: str
     }
     if (controller === 'class_schedule') {
         return QlhsClassScheduleSettings;
+    }
+    if (controller === 'student_attendance') {
+        return QlhsStudentAttendanceSettings;
     }
     return null;
 }
