@@ -5,6 +5,7 @@ export const FieldGridRenderer = (field: DataGridEditField, item: any, setItem: 
     return (
         field.gridSettings ?
             <GridSelector
+                item={item}
                 field={field}
                 settings={field.gridSettings}
                 value={item[field.index]}

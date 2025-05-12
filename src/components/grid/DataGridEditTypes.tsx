@@ -28,7 +28,7 @@ export interface DataGridEditField {
     options?: any[];
     map?: any;
     table?: string;
-    tableCondition?: string | ((item: any) => string);
+    tableCondition?: string | ((item: any, field?: DataGridEditField) => string | any);
     valueField?: string;
     labelField?: string;
     treeMode?: boolean;

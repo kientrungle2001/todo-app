@@ -16,13 +16,9 @@ const gridFields: string[] = ["id", "name", "code", "address", "status"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    {
-        index: "name", label: "Tên Trung tâm", linkFormat: (name: any, item: any): string => {
-            return '/Table/center/' + item.id + '/detail';
-        }
-    },
-    { index: "code", label: "Mã Trung tâm" },
-    { index: "address", label: "Địa chỉ" },
+    DataGridColumns.nameCenter,
+    DataGridColumns.codeCenter,
+    DataGridColumns.addressCenter,
     DataGridColumns.status,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,

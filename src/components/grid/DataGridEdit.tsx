@@ -36,7 +36,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     let condition = null;
                     if (field.tableCondition) {
                         if (typeof field.tableCondition === 'function') {
-                            condition = field.tableCondition(item);
+                            condition = field.tableCondition(item, field);
                         } else {
                             condition = field.tableCondition;
                         }

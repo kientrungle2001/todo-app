@@ -9,6 +9,7 @@ import { DataGridEditField } from '../../DataGridEditTypes';
 import GridDataGrid from './GridDataGrid';
 
 interface GridDialogProps {
+    item: any;
     field: DataGridEditField;
     show: boolean;
     value: any;
@@ -17,7 +18,7 @@ interface GridDialogProps {
     settings: TableGridSettings;
 }
 
-export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onClose, onSelect, settings }) => {
+export const GridDialog: React.FC<GridDialogProps> = ({ item, field, value, show, onClose, onSelect, settings }) => {
     const [selectedItem, setSelectedItem] = useState<string | null>();
 
     const [pagination, setPagination] = React.useState<DataGridPagination>(settings.pagination);
@@ -51,20 +52,25 @@ export const GridDialog: React.FC<GridDialogProps> = ({ field, value, show, onCl
             setSelectedItem(null);
         }
     }, [value]);
-
+    
     const handleListItems = () => {
+        let defaultFilters: any = {};
+        if (field.tableCondition && typeof field.tableCondition == 'function') {
+            defaultFilters = field.tableCondition(item, field);
+        }    
         let sortDatas: DataGridSort[] = [];
-        for (var field in sortData) {
+        for (var sortField in sortData) {
             sortDatas.push({
-                index: field,
-                direction: sortData[field]
+                index: sortField,
+                direction: sortData[sortField]
             });
         }
         tableRepository.getList(settings, {
             settings: JSON.parse(JSON.stringify(settings)),
             search: searchText, filterData: JSON.parse(JSON.stringify(filterData)),
             sorts: JSON.parse(JSON.stringify(sortDatas.length ? sortDatas : sorts)),
-            page: pagination.currentPage, pageSize: pagination.pageSize
+            page: pagination.currentPage, pageSize: pagination.pageSize,
+            defaultFilters: defaultFilters
         })
             .then((resp: any) => {
                 if (settings.treeMode)

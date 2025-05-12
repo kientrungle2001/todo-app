@@ -4,8 +4,8 @@ import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/Data
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridSettings } from "@/components/grid/TableGrid";
 import { QlhsGridClassSettings } from "./QlhsGridClassSettings";
-import { QlhsGridStudentSettings } from "./QlhsGridStudentSettings";
 import { QlhsPaymentPeriodSettings } from "./QlhsPaymentPeriodSettings";
+import { QlhsGridClassStudentSettings } from "./QlhsGridClassStudentSettings";
 
 const gridTitle: string = "Quản lý Điểm danh";
 const gridAddNewLabel: string = "Thêm Điểm danh";
@@ -51,21 +51,26 @@ const gridAddFields: DataGridEditField[] = [
         size: 6
     },
     {
-        index: "studentId", label: "Chọn học sinh",
-        type: DataGridEditFieldType.GRID,
-        gridSettings: QlhsGridStudentSettings,
-        table: "student",
-        valueField: "id",
-        labelField: "name",
-        size: 6
-    },
-    {
         index: "paymentPeriodId", label: "Chọn kỳ thanh toán",
         type: DataGridEditFieldType.GRID,
         gridSettings: QlhsPaymentPeriodSettings,
         table: "payment_period",
         valueField: "id",
         labelField: "name",
+        size: 6
+    },
+    {
+        index: "studentId", label: "Chọn học sinh",
+        type: DataGridEditFieldType.GRID,
+        gridSettings: QlhsGridClassStudentSettings,
+        table: "student",
+        valueField: "studentId",
+        labelField: "name",
+        tableCondition: (item: any, field?: DataGridEditField) => {
+            return {
+                classId: item.classId
+            };
+        },
         size: 6
     },
     { index: "attendanceDate", label: "Ngày điểm danh", type: DataGridEditFieldType.DATE, size: 6 },

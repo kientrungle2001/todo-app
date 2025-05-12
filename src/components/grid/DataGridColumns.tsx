@@ -2,6 +2,7 @@ import { DataGridColumn, DataGridColumnActionType, DataGridColumnType } from "./
 
 export const DataGridColumns: { [key: string]: DataGridColumn } = {
     addChildAction: { index: "addChildAction", label: "Thêm Con", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.ADD_CHILD },
+    addressCenter: { index: "address", label: "Địa chỉ" },
     alias: { index: "alias", label: "Đường dẫn" },
     attendanceDate: { index: "attendanceDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
     categoryId: {
@@ -24,6 +25,7 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         referenceTable: "classes",
         referenceField: "name"
     },
+    codeCenter: { index: "code", label: "Mã Trung tâm" },
     courseId: {
         index: "courseId",
         label: "Khóa học",
@@ -49,6 +51,11 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
     },
     editAction: { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%", sortable: false },
     id: { index: "id", label: "ID", width: "1%" },
+    nameCenter: {
+        index: "name", label: "Tên Trung tâm", linkFormat: (name: any, item: any): string => {
+            return '/Table/center/' + item.id + '/detail';
+        }
+    },
     note: { index: "note", label: "Ghi chú" },
     ordering: { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
     question_content: {
