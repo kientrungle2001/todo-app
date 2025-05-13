@@ -4,6 +4,7 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
     addChildAction: { index: "addChildAction", label: "Thêm Con", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.ADD_CHILD },
     addressCenter: { index: "address", label: "Địa chỉ" },
     alias: { index: "alias", label: "Đường dẫn" },
+    amount: { index: "amount", label: "Học phí", type: DataGridColumnType.CURRENCY },
     attendanceDate: { index: "attendanceDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
     categoryId: {
         index: "categoryId",
@@ -17,6 +18,12 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         label: "Danh mục",
         type: DataGridColumnType.REFERENCE,
         referenceTable: "categories",
+        referenceField: "name"
+    },
+    centerId: {
+        index: "centerId", label: "Trung tâm",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "center",
         referenceField: "name"
     },
     classId: {
@@ -49,11 +56,28 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         hideLabel: true,
         statusToggable: true
     },
+    endDate: { index: "endDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
     editAction: { index: "editAction", label: "Sửa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.EDIT, width: "1%", sortable: false },
+    feeType: {
+        index: "feeType", label: "Cách tính", type: DataGridColumnType.STATUS, map: {
+            "0": "Theo buổi",
+            "1": "Theo khóa"
+        }
+    },
     id: { index: "id", label: "ID", width: "1%" },
     nameCenter: {
         index: "name", label: "Tên Trung tâm", linkFormat: (name: any, item: any): string => {
             return '/Table/center/' + item.id + '/detail';
+        }
+    },
+    nameClass: {
+        index: "name", label: "Tên Lớp", linkFormat: (name: any, item: any): string => {
+            return '/Table/class/' + item.id + '/detail';
+        }
+    },
+    nameRoom: {
+        index: "name", label: "Tên Phòng", linkFormat: (name: any, item: any): string => {
+            return '/Table/room/' + item.id + '/detail';
         }
     },
     note: { index: "note", label: "Ghi chú" },
@@ -61,6 +85,14 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
     question_content: {
         index: "name", label: "Nội dung", isHtml: true,
     },
+    roomId: {
+        index: "roomId", label: "Phòng",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "room",
+        referenceField: "name"
+    },
+    size: { index: "size", label: "Kích cỡ" },
+    startDate: { index: "startDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
     status: {
         index: "status", type: DataGridColumnType.STATUS, label: "Trạng thái", map: {
             0: 'Chưa kích hoạt',
@@ -74,6 +106,18 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         index: "studentId", label: "Học sinh",
         type: DataGridColumnType.REFERENCE,
         referenceTable: "student",
+        referenceField: "name"
+    },
+    subjectId: {
+        index: "subjectId", label: "Môn học",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "subject",
+        referenceField: "name"
+    },
+    teacherId: {
+        index: "teacherId", label: "Giáo viên",
+        type: DataGridColumnType.REFERENCE,
+        referenceTable: "teacher",
         referenceField: "name"
     },
     trial: {

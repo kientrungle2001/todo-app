@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
@@ -18,44 +18,15 @@ const gridFields: string[] = ["id", "name", "subjectId", "teacherId", "centerId"
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    {
-        index: "name", label: "Tên Lớp", linkFormat: (name: any, item: any): string => {
-            return '/Table/class/' + item.id + '/detail';
-        }
-    },
-    {
-        index: "subjectId", label: "Môn học",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "subject",
-        referenceField: "name"
-    },
-    {
-        index: "teacherId", label: "Giáo viên",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "teacher",
-        referenceField: "name"
-    },
-    {
-        index: "centerId", label: "Trung tâm",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "center",
-        referenceField: "name"
-    },
-    {
-        index: "roomId", label: "Phòng",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "room",
-        referenceField: "name"
-    },
-    { index: "startDate", label: "Ngày bắt đầu", type: DataGridColumnType.DATE },
-    { index: "endDate", label: "Ngày kết thúc", type: DataGridColumnType.DATE },
-    { index: "amount", label: "Học phí", type: DataGridColumnType.CURRENCY },
-    {
-        index: "feeType", label: "Cách tính", type: DataGridColumnType.STATUS, map: {
-            "0": "Theo buổi",
-            "1": "Theo khóa"
-        }
-    },
+    DataGridColumns.nameClass,
+    DataGridColumns.subjectId,
+    DataGridColumns.teacherId,
+    DataGridColumns.centerId,
+    DataGridColumns.roomId,
+    DataGridColumns.startDate,
+    DataGridColumns.endDate,
+    DataGridColumns.amount,
+    DataGridColumns.feeType,
     DataGridColumns.status,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
@@ -64,46 +35,10 @@ const gridColumns: DataGridColumn[] = [
 const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };
 
 const gridFilters: DataGridFilterColumn[] = [
-    {
-        index: 'subjectId',
-        label: 'Môn học',
-        type: DataGridFilterColumnType.SELECT,
-        table: 'subject',
-        valueField: 'id',
-        labelField: 'name',
-        tableCondition: 'status=1',
-        comparisonOperator: 'equal'
-    },
-    {
-        index: 'teacherId',
-        label: 'Giáo viên',
-        type: DataGridFilterColumnType.SELECT,
-        table: 'teacher',
-        valueField: 'id',
-        labelField: 'name',
-        tableCondition: 'status=1',
-        comparisonOperator: 'equal'
-    },
-    {
-        index: 'centerId',
-        label: 'Trung tâm',
-        type: DataGridFilterColumnType.SELECT,
-        table: 'center',
-        valueField: 'id',
-        labelField: 'name',
-        tableCondition: 'status=1',
-        comparisonOperator: 'equal'
-    },
-    {
-        index: 'roomId',
-        label: 'Phòng học',
-        type: DataGridFilterColumnType.SELECT,
-        table: 'room',
-        valueField: 'id',
-        labelField: 'name',
-        tableCondition: 'status=1',
-        comparisonOperator: 'equal'
-    },
+    DataGridFilterColumns.subjectId,
+    DataGridFilterColumns.teacherId,
+    DataGridFilterColumns.centerId,
+    DataGridFilterColumns.roomId,
     DataGridFilterColumns.status
 ];
 
@@ -119,7 +54,6 @@ const gridAddFields: DataGridEditField[] = [
         index: 'name',
         label: 'Tên lớp',
         type: DataGridEditFieldType.TEXT,
-        tabGroup: '0info',
         size: 6
     },
 ];

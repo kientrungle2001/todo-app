@@ -1,4 +1,4 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
@@ -16,19 +16,10 @@ const gridFields: string[] = ["id", "name", "centerId", "size", "note", "status"
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    {
-        index: "centerId", label: "Trung tâm",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "center",
-        referenceField: "name"
-    },
-    {
-        index: "name", label: "Tên Phòng", linkFormat: (name: any, item: any): string => {
-            return '/Table/room/' + item.id + '/detail';
-        }
-    },
-    { index: "size", label: "Kích cỡ" },
-    { index: "note", label: "Ghi chú" },
+    DataGridColumns.centerId,
+    DataGridColumns.nameRoom,
+    DataGridColumns.size,
+    DataGridColumns.note,
     DataGridColumns.status,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,

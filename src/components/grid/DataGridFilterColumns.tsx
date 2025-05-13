@@ -1,6 +1,16 @@
 import { DataGridFilterColumn, DataGridFilterColumnType } from "./DataGridColumnTypes";
 
 export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
+    centerId: {
+        index: 'centerId',
+        label: 'Trung tâm',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'center',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
+    },
     status: {
         index: "status", label: "Trạng thái", type: DataGridFilterColumnType.STATUS, map: {
             0: 'Chưa kích hoạt',
@@ -18,6 +28,26 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
             1: 'Đã kích hoạt'
         },
         comparisonOperator: "equal"
+    },
+    roomId: {
+        index: 'roomId',
+        label: 'Phòng học',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'room',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
+    },
+    subjectId: {
+        index: 'subjectId',
+        label: 'Môn học',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'subject',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
     },
     categoryId: {
         index: "categoryId", label: "Danh mục", type: DataGridFilterColumnType.SELECT,
@@ -45,6 +75,16 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         select2: true,
         comparisonOperator: "inset",
         treeMode: true,
+    },
+    teacherId: {
+        index: 'teacherId',
+        label: 'Giáo viên',
+        type: DataGridFilterColumnType.SELECT,
+        table: 'teacher',
+        valueField: 'id',
+        labelField: 'name',
+        tableCondition: 'status=1',
+        comparisonOperator: 'equal'
     },
     courseId: {
         index: "courseId", label: "Khóa học", type: DataGridFilterColumnType.SELECT,
