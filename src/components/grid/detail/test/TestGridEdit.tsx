@@ -1,16 +1,12 @@
-// components/grid/detail/test/TestGridEdit.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { getAxios } from "@/api/axiosInstance";
-import { storage } from "@/api/storage";
 import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
-import { replaceMediaUrl } from "@/api/defaultSettings";
-
 import { TestHeader } from "./TestHeader";
 import { TestForm } from "./TestForm";
 import { TestQuestionList } from "./TestQuestionList";
-import { QuestionAnswerEditor } from "../../question/QuestionAnswerEditor";
+import { TestContentEditor } from "./TestContentEditor";
+import { useLoadTestQuestions } from "./useLoadTestQuestions";
 
 interface TestGridEditProps {
   mode: DataGridEditMode;
@@ -41,22 +37,8 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({
   handleAddItem,
   handleCancelAdd,
 }) => {
-  const [questions, setQuestions] = useState<any[]>([]);
   const router = useRouter();
-
-  useEffect(() => {
-    getAxios(window.location.hostname)
-      .post(`/tests/questions/${itemId}`, {}, {
-        headers: { Authorization: `Bearer ${storage.get("token") || ""}` },
-      })
-      .then((resp: any) => setQuestions(resp.data))
-      .catch((err: any) => {
-        if (err.response?.status === 401 && err.response.data.error === "Invalid token") {
-          storage.clearTokenInfo();
-          router.push("/login");
-        }
-      });
-  }, [item]);
+  const { questions, setQuestions } = useLoadTestQuestions(itemId);
 
   const handleAddQuestion = () => {
     router.push(
@@ -66,11 +48,10 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({
   };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    item.questions = questions;
     if (mode === DataGridEditMode.EDIT && handleUpdateItem) {
-      item.questions = questions;
       handleUpdateItem(item, fields, event);
     }
-
     if (mode === DataGridEditMode.ADD && handleAddItem) {
       handleAddItem(item, fields, event);
     }
@@ -99,14 +80,7 @@ const TestGridEdit: React.FC<TestGridEditProps> = ({
             />
 
             <TestQuestionList questions={questions} item={item} />
-
-            <Col md={12} xs={12}>
-              <h2>Đề bài</h2>
-              <QuestionAnswerEditor
-                value={item.content}
-                updateValue={(value) => (item.content = value)}
-              />
-            </Col>
+            <TestContentEditor value={item.content} updateValue={(value) => (item.content = value)} />
           </Form>
         </Col>
       </Row>
