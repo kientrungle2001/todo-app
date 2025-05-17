@@ -40,6 +40,24 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
         multipleSize: 10,
         select2: true,
     },
+    centerName: {
+        index: 'name',
+        label: 'Tên Trung tâm/cơ sở',
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    centerCode: {
+        index: 'code',
+        label: 'Mã Trung tâm',
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    address: {
+        index: 'address',
+        label: 'Địa chỉ',
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
     classes: {
         index: "classes", label: "Khối, Lớp", type: DataGridEditFieldType.SELECT, size: 6,
         multiple: true,
@@ -91,4 +109,31 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
         }]
     },
     totalMinutes: { index: "totalMinutes", label: "Thời gian làm bài", type: DataGridEditFieldType.TEXT, size: 6 },
+    centerId: {
+        index: "centerId",
+        label: "Trung tâm",
+        type: DataGridEditFieldType.SELECT,
+        table: "center",
+        valueField: "id",
+        labelField: "name",
+        size: 6
+    },
+    roomName: {
+        index: 'name',
+        label: 'Tên Phòng',
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    size: {
+        index: "size",
+        label: "Kích cỡ",
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    note: {
+        index: "note",
+        label: "Ghi chú",
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    }
 };

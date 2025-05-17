@@ -1,9 +1,10 @@
 import { DataGridColumn, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
 import { QlhsClassSettings } from "./QlhsClassSettings";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 
 const gridTitle: string = "Quản lý Phòng";
 const gridAddNewLabel: string = "Thêm Phòng";
@@ -40,28 +41,10 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    {
-        index: "centerId", label: "Trung tâm",
-        type: DataGridEditFieldType.SELECT,
-        table: "center",
-        valueField: "id",
-        labelField: "name",
-        size: 6
-    },
-    {
-        index: 'name',
-        label: 'Tên Phòng',
-        type: DataGridEditFieldType.TEXT,
-        size: 6
-    },
-    {
-        index: "size", type: DataGridEditFieldType.TEXT,
-        size: 6, label: "Kích cỡ"
-    },
-    {
-        index: "note", type: DataGridEditFieldType.TEXT,
-        size: 6, label: "Ghi chú"
-    },
+    DataGridEditFields.centerId,
+    DataGridEditFields.roomName,
+    DataGridEditFields.size,
+    DataGridEditFields.note,
 ];
 
 const gridDetails: TableGridDetail[] = [
