@@ -1,15 +1,14 @@
-// components/grid/detail/question/QuestionAnswerGridEdit.tsx
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { getAxios } from "@/api/axiosInstance";
 import { storage } from "@/api/storage";
-import { getConfigsByHostName, replaceMediaUrl } from "@/api/defaultSettings";
+import { getConfigsByHostName } from "@/api/defaultSettings";
 import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
-
 import { QuestionAnswerHeader } from "./QuestionAnswerHeader";
-import { AnswerList } from "./AnswerList";
 import { ExplanationEditor } from "./ExplanationEditor";
+import { AnswerSection } from "./AnswerSection";
+import { QuestionNameRenderer } from "./QuestionNameRenderer";
 
 interface Props {
   mode: DataGridEditMode;
@@ -55,12 +54,18 @@ const QuestionAnswerGridEdit: React.FC<Props> = ({
         headers: { Authorization: `Bearer ${storage.get("token") || ""}` },
       })
       .then((resp: any) => {
-        setAnswers(resp.data.length > 0 ? resp.data : [{
-          id: "uid" + Math.floor(Math.random() * 1000000),
-          content: "",
-          content_vn: "",
-          status: "0",
-        }]);
+        setAnswers(
+          resp.data.length > 0
+            ? resp.data
+            : [
+              {
+                id: "uid" + Math.floor(Math.random() * 1000000),
+                content: "",
+                content_vn: "",
+                status: "0",
+              },
+            ]
+        );
       })
       .catch((err: any) => {
         if (err.response?.status === 401 && err.response.data.error === "Invalid token") {
@@ -71,12 +76,15 @@ const QuestionAnswerGridEdit: React.FC<Props> = ({
   }, [item]);
 
   const handleAddAnswer = () => {
-    setAnswers([...answers, {
-      id: "uid" + Math.floor(Math.random() * 1000000),
-      content: "",
-      content_vn: "",
-      status: "0",
-    }]);
+    setAnswers([
+      ...answers,
+      {
+        id: "uid" + Math.floor(Math.random() * 1000000),
+        content: "",
+        content_vn: "",
+        status: "0",
+      },
+    ]);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -99,29 +107,14 @@ const QuestionAnswerGridEdit: React.FC<Props> = ({
       />
 
       <Form onSubmit={onSubmit}>
-        <Row>
-          <Col md={6}>
-            <div dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name) }} />
-          </Col>
-          {appName !== "pmtv" && (
-            <Col md={6}>
-              <div dangerouslySetInnerHTML={{ __html: replaceMediaUrl(item.name_vn) }} />
-            </Col>
-          )}
-        </Row>
-
-        <AnswerList
+        <QuestionNameRenderer item={item} appName={appName} />
+        <AnswerSection
           answers={answers}
           setAnswers={setAnswers}
           appName={appName}
+          handleAddAnswer={handleAddAnswer}
         />
-
-        <Col sm={12}>
-          <Button variant="primary" onClick={handleAddAnswer}>+ Thêm câu trả lời</Button>
-        </Col>
-
         <ExplanationEditor item={item} />
-
         <QuestionAnswerHeader
           mode={mode}
           itemId={itemId}
