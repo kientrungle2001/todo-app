@@ -1,16 +1,15 @@
-// components/grid/detail/renderer/TableGridDetailRendererGrid.tsx
 import React, { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
-import { TableGrid, TableGridSettings, TableGridDetail } from "../../TableGrid";
 import { tableRepository } from "@/api/repositories/Table";
-import { useDefaultFilters } from "./useDefaultFilters";
 import { DetailLabel } from "./DetailLabel";
+import { useDefaultFilters } from "./useDefaultFilters";
+import { TableGridDetailWrapper } from "./TableGridDetailWrapper";
 
 interface Props {
   itemId: number;
   controller: string;
-  settings: TableGridSettings;
-  detail: TableGridDetail;
+  settings: any;
+  detail: any;
 }
 
 export const TableGridDetailRendererGrid: React.FC<Props> = ({ controller, settings, itemId, detail }) => {
@@ -29,18 +28,13 @@ export const TableGridDetailRendererGrid: React.FC<Props> = ({ controller, setti
   return (
     <>
       <DetailLabel label={detail.label} />
-      <Row>
-        {detail.settings && (
-          <TableGrid
-            controller={detail.controller as string}
-            settings={detail.settings}
-            defaultFilters={defaultFilters}
-            parentController={controller}
-            parentSettings={settings}
-            parentItem={item}
-          />
-        )}
-      </Row>
+      <TableGridDetailWrapper
+        detail={detail}
+        controller={controller}
+        settings={settings}
+        item={item}
+        defaultFilters={defaultFilters}
+      />
     </>
   );
 };
