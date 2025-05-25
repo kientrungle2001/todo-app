@@ -124,6 +124,56 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
         type: DataGridEditFieldType.TEXT,
         size: 6
     },
+    roomId: {
+        index: "roomId",
+        label: "Phòng học",
+        type: DataGridEditFieldType.SELECT,
+        table: "room",
+        valueField: "id",
+        labelField: "name",
+        size: 6
+    },
+    subjectId: {
+        index: "subjectId",
+        label: "Môn học",
+        type: DataGridEditFieldType.SELECT,
+        table: "subject",
+        valueField: "id",
+        labelField: "name",
+        tableCondition: 'status=1',
+        size: 6
+    },
+    teacherId: {
+        index: "teacherId",
+        label: "Giáo viên",
+        type: DataGridEditFieldType.SELECT,
+        table: "teacher",
+        valueField: "id",
+        labelField: "name",
+        size: 6
+    },
+    classId: {
+        index: "classId",
+        label: "Lớp học",
+        type: DataGridEditFieldType.SELECT,
+        table: "classes",
+        valueField: "id",
+        labelField: "name",
+        tableCondition: 'status=1',
+        size: 6
+    },
+    className: {
+        index: 'name',
+        label: 'Tên lớp',
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    classCode: {
+        index: 'code',
+        label: 'Mã Lớp',
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
     size: {
         index: "size",
         label: "Kích cỡ",
@@ -134,6 +184,64 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
         index: "note",
         label: "Ghi chú",
         type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    studyDate: {
+        index: "studyDate",
+        label: "Ngày học",
+        type: DataGridEditFieldType.DATE,
+        size: 6
+    },
+    studyTime: {
+        index: "studyTime",
+        label: "Giờ học",
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    startDate: {
+        index: "startDate",
+        label: "Ngày bắt đầu",
+        type: DataGridEditFieldType.DATE,
+        size: 6
+    },
+    endDate: {
+        index: "endDate",
+        label: "Ngày kết thúc",
+        type: DataGridEditFieldType.DATE,
+        size: 6
+    },
+    level: {
+        index: "level",
+        label: "Khối lớp",
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    amount: {
+        index: "amount",
+        label: "Học phí",
+        type: DataGridEditFieldType.TEXT,
+        size: 6
+    },
+    feeType: {
+        index: "feeType",
+        label: "Loại học phí",
+        type: DataGridEditFieldType.SELECT,
+        options: [{
+            value: 0, label: 'Theo buổi',
+        }, {
+            value: 1, label: 'Theo khóa'
+        }],
+        size: 6
+    },
+    classed: {
+        index: "classed",
+        label: "Trạng thái Xếp lớp",
+        type: DataGridEditFieldType.SELECT,
+        options: [{
+            value: 0, label: 'Chưa xếp lớp',
+        }, {
+            value: 1, label: 'Đã xếp lớp'
+        }],
         size: 6
     }
 };

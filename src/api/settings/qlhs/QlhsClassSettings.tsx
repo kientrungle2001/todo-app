@@ -6,6 +6,7 @@ import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/compo
 import { QlhsClassStudentSettings } from "./QlhsClassStudentSettings";
 import { QlhsClassScheduleSettings } from "./QlhsClassScheduleSettings";
 import { QlhsClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 
 const gridTitle: string = "Quản lý Lớp";
 const gridAddNewLabel: string = "Thêm Lớp";
@@ -50,12 +51,18 @@ const gridSortOptions: DataGridSortOption[] = [
 const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
 
 const gridAddFields: DataGridEditField[] = [
-    {
-        index: 'name',
-        label: 'Tên lớp',
-        type: DataGridEditFieldType.TEXT,
-        size: 6
-    },
+    DataGridEditFields.className,
+    DataGridEditFields.classCode,
+    DataGridEditFields.startDate,
+    DataGridEditFields.endDate,
+    DataGridEditFields.centerId,
+    DataGridEditFields.roomId,
+    DataGridEditFields.subjectId,
+    DataGridEditFields.teacherId,
+    DataGridEditFields.level,
+    DataGridEditFields.amount,
+    DataGridEditFields.feeType,
+    DataGridEditFields.classed,
 ];
 
 const gridDetails: TableGridDetail[] = [

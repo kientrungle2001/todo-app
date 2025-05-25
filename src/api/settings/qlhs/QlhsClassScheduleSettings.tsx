@@ -1,5 +1,6 @@
 import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridSortOptions, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridDetail, TableGridDetailType, TableGridSettings } from "@/components/grid/TableGrid";
@@ -15,19 +16,9 @@ const gridSearchFields: string[] = ["id"];
 const gridFields: string[] = ["id", "classId", "studyDate", "studyTime", "status"];
 
 const gridColumns: DataGridColumn[] = [
-    {
-        index: "classId", label: "Lớp học",
-        type: DataGridColumnType.REFERENCE,
-        referenceTable: "classes",
-        referenceField: "name"
-    },
-    {
-        index: "studyDate", label: "Ngày học", type: DataGridColumnType.DATE,
-        linkFormat: (name: any, item: any): string => {
-            return '/Table/class_schedule/' + item.id + '/detail';
-        }
-    },
-    { index: "studyTime", label: "Giờ học" },
+    DataGridColumns.classId,
+    DataGridColumns.studyDate,
+    DataGridColumns.studyTime,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
 ];
@@ -51,7 +42,9 @@ const gridDefaultSorts: DataGridSort[] = [
 ];
 
 const gridAddFields: DataGridEditField[] = [
-
+    DataGridEditFields.classId,
+    DataGridEditFields.studyDate,
+    DataGridEditFields.studyTime,
 ];
 
 const gridDetails: TableGridDetail[] = [

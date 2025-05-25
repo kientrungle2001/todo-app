@@ -32,6 +32,13 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         referenceTable: "classes",
         referenceField: "name"
     },
+    studyDate: {
+        index: "studyDate", label: "Ngày học", type: DataGridColumnType.DATE,
+        linkFormat: (name: any, item: any): string => {
+            return '/Table/class_schedule/' + item.id + '/detail';
+        }
+    },
+    studyTime: { index: "studyTime", label: "Giờ học" },
     codeCenter: { index: "code", label: "Mã Trung tâm" },
     courseId: {
         index: "courseId",

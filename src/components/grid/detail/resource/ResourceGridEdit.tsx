@@ -1,6 +1,6 @@
 // components/grid/detail/resource/ResourceGridEdit.tsx
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row, Tabs, Tab } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { getConfigsByHostName } from "@/api/defaultSettings";
 import { resourceRepository } from "@/api/repositories/Resource";

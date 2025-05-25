@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import $ from 'jquery';
 import { DataGridEditField } from "../DataGridEditTypes";
@@ -6,8 +6,11 @@ import {
     DataGridEditMode as EditMode
 } from "@/components/grid/DataGridEditTypes";
 import { useRouter } from "next/router";
+import { tableRepository } from "@/api/repositories/Table";
+
 export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any, mode: EditMode) => {
 
+    const [label, setLabel] = useState<string>(null);
     const selectRef: any = {};
     selectRef[field.index] = React.useRef(null);
     const router = useRouter();
@@ -53,10 +56,25 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
         }
     }, [field, item, maps[field.index], field.options]); // Re-run when options or maps change
 
+    useEffect(() => {
+        if (mode == EditMode.ADD
+        && typeof item[field.index] !== 'undefined'
+        && typeof router.query['field_' + field.index] !== 'undefined') {
+            tableRepository.get(field.table, item[field.index]).then((resp: any) => {
+                if (resp) {
+                    setLabel(resp.data[field.labelField]);
+                }
+            })
+        }
+    }, [mode, item, router.query]);
+
     if (mode == EditMode.ADD
         && typeof item[field.index] !== 'undefined'
         && typeof router.query['field_' + field.index] !== 'undefined') {
-        return <Form.Control readOnly value={item[field.index]} name={field.index} ref={selectRef[field.index]} />
+        return <>
+            <Form.Control readOnly value={label} />
+            <Form.Control type="hidden" readOnly value={item[field.index]} name={field.index} ref={selectRef[field.index]} />
+        </>
     }
     if (field.options) {
         return (
@@ -81,9 +99,9 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
                     }
                 }}
             >
-                <option value={0}>Select</option>
+                <option value={''}>Select</option>
                 {field.options.map(option => (
-                    <option key={option.value} value={option.value}>
+                    <option key={option.value} value={option.value} selected={option.value == item[field.index]}>
                         {option.label}
                     </option>
                 ))}
