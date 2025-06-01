@@ -26,22 +26,21 @@ const gridColumns: DataGridColumn[] = [
     {
         index: "menu",
         label: "Menu",
-        width: "20%"
+        width: "1%"
     },
     {
         index: "admin_controller",
         label: "Admin URL",
-        width: "20%"
+        width: "1%"
     },
     {
         index: "actionType",
         label: "Action Type",
-        type: DataGridColumnType.TEXT,
+        width: "1%"
     },
     {
         index: "brief",
         label: "Mô tả",
-        width: "40%",
         isHtml: true
     },
 
