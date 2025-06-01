@@ -1,7 +1,7 @@
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { getAxios } from "../axiosInstance";
 import { storage } from "../storage";
-import { DataGridColumn } from "@/components/grid/DataGridColumnTypes";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 
 export const tableRepository = {
     getList: (settings: TableGridSettings, query: any) => {

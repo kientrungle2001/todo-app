@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
 import { GetServerSideProps } from 'next';
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { getSettingsByController } from "@/api/settings";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {

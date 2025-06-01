@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
-import { DataGridColumn as Column, DataGridColumnActionType as ColumnActionType } from "../DataGridColumnTypes";
+import { DataGridColumnActionType as ColumnActionType } from "@/types/grid/DataGridColumnActionType";
+import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
 import React from "react";
 import Link from "next/link";
 

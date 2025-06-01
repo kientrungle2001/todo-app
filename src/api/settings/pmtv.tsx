@@ -1,4 +1,4 @@
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { PmtvAdminHistoryPaymentSettings } from "./pmtv/fee/PmtvHistoryPaymentSettings";
 import { PmtvAdminServicePackagesSettings } from "./pmtv/fee/PmtvServicePackagesSettings";
 import { PmtvAdminCategoriesSettings } from "./pmtv/PmtvCategoriesSettings";

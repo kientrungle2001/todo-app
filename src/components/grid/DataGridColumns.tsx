@@ -1,4 +1,6 @@
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType } from "./DataGridColumnTypes";
+import { DataGridColumnActionType } from "@/types/grid/DataGridColumnActionType";
+import { DataGridColumnType } from "@/types/grid/DataGridColumnType";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 
 export const DataGridColumns: { [key: string]: DataGridColumn } = {
     addChildAction: { index: "addChildAction", label: "Thêm Con", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.ADD_CHILD },

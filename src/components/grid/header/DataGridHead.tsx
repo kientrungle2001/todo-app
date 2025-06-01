@@ -1,5 +1,5 @@
 import { Button, Form } from "react-bootstrap";
-import { DataGridColumn } from "../DataGridColumnTypes";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { tableRepository } from "@/api/repositories/Table";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleUp, faChevronDown, faChevronUp, faEnvelope } from '@fortawesome/free-solid-svg-icons'

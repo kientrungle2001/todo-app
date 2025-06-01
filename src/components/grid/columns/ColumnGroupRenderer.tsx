@@ -1,4 +1,4 @@
-import { DataGridColumn as Column } from "../DataGridColumnTypes";
+import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
 import React from "react";
 import { renderColumn } from "./renderColumn";
 

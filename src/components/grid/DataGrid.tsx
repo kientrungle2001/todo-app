@@ -3,20 +3,19 @@ import { PaginationGrid } from "./PaginationGrid";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import {
-    DataGridColumn as Column, DataGridFilterColumn,
-    DataGridMessage,
-    DataGridPagination,
-    DataGridSort,
-    DataGridSortOption
-} from "./DataGridColumnTypes";
+import { DataGridMessage } from "@/types/grid/DataGridMessage";
+import { DataGridPagination } from "@/types/grid/DataGridPagination";
+import { DataGridSortOption } from "@/types/grid/DataGridSortOption";
+import { DataGridSort } from "@/types/grid/DataGridSort";
+import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
+import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
 import { FiltersGridCard } from "./filters/FilterGridCard";
 import { DataGridMessages } from "./messages/DataGridMessages";
 import { DataGridTitle } from "./title/DataGridTitle";
 import { DataGridBottomToolbar } from "./bottom/DataGridBottomToolbar";
 import { DataGridHead } from "./header/DataGridHead";
 import { renderColumn } from "./columns/renderColumn";
-import { TableGridSettings } from "./TableGrid";
+import { TableGridSettings } from "../../types/TableGridSettings";
 
 interface DataGridProps {
     title: string;

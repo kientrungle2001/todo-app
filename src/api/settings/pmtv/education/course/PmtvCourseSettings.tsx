@@ -1,9 +1,16 @@
-import { DataGridColumn as Column, DataGridColumnType as ColumnType, DataGridFilterColumn as FilterField, DataGridPagination as Pagination, DataGridSort as Sort, DataGridSortDirection as SortDirection, DataGridSortOption as SortOption, DataGridSortOptions as SortOptions } from "@/components/grid/DataGridColumnTypes";
+import { DataGridSortOptions as SortOptions } from "@/components/grid/DataGridColumnTypes";
+import { DataGridPagination as Pagination } from "@/types/grid/DataGridPagination";
+import { DataGridSortOption as SortOption } from "@/types/grid/DataGridSortOption";
+import { DataGridSortDirection as SortDirection } from "@/types/grid/DataGridSortDirection";
+import { DataGridSort as Sort } from "@/types/grid/DataGridSort";
+import { DataGridFilterColumn as FilterField } from "@/types/grid/DataGridFilterColumn";
+import { DataGridColumnType as ColumnType } from "@/types/grid/DataGridColumnType";
+import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
 import { DataGridColumns as columns } from "@/components/grid/DataGridColumns";
 import { DataGridEditFields as editFields } from "@/components/grid/DataGridEditFields";
 import { DataGridEditField as EditField, DataGridEditFieldType as EditType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns as filterFields } from "@/components/grid/DataGridFilterColumns";
-import { TableGridSettings as Settings } from "@/components/grid/TableGrid";
+import { TableGridSettings as Settings } from "@/types/TableGridSettings";
 
 const gridTitle: string = "Quản lý Khóa học";
 const gridAddNewLabel: string = "Thêm Khóa học";

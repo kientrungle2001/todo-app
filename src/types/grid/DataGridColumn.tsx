@@ -1,6 +1,7 @@
+import { DataGridWorkflowState } from "./DataGridWorkflowState";
 import { DataGridColumnActionType } from "./DataGridColumnActionType";
 import { DataGridColumnType } from "./DataGridColumnType";
-import { DataGridWorkflowState } from "./DataGridWorkflowState";
+
 
 export interface DataGridColumn {
     index: string;
@@ -16,10 +17,10 @@ export interface DataGridColumn {
     linkFormat?: (value: any, item: any) => string;
     sortable?: boolean;
     actionType?: DataGridColumnActionType;
-    actionLinkFormat?: (item: any, column: DataGridColumn, controller: string) => string | React.ReactNode,
-    actionAddChildParentField?: string,
-    actionAddChildParentFields?: string[],
-    actionAddChildController?: string,
+    actionLinkFormat?: (item: any, column: DataGridColumn, controller: string) => string | React.ReactNode;
+    actionAddChildParentField?: string;
+    actionAddChildParentFields?: string[];
+    actionAddChildController?: string;
     width?: string;
     map?: any;
     workflow?: DataGridWorkflowState[];

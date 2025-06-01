@@ -1,4 +1,5 @@
-import { DataGridFilterColumn, DataGridFilterColumnType } from "./DataGridColumnTypes";
+import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
+import { DataGridFilterColumnType } from "@/types/grid/DataGridFilterColumnType";
 
 export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
     centerId: {

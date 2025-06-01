@@ -1,6 +1,6 @@
 import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { TableGridWrapper } from "@/components/grid/TableGridWrapper";
 import { TopMenuGrid } from "@/components/menu/TopMenuGrid";
 import { useRouter } from "next/router";

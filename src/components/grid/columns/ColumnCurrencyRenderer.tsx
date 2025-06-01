@@ -1,4 +1,4 @@
-import { DataGridColumn } from "../DataGridColumnTypes";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 
 function formatCurrency(amount: number) {
     if (typeof amount == 'undefined') {

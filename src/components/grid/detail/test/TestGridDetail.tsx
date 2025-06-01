@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { TableGridSettings } from "../../TableGrid";
+import { TableGridSettings } from "../../../../types/TableGridSettings";
 import { getAxios } from "@/api/axiosInstance";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";

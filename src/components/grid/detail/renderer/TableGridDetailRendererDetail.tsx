@@ -1,6 +1,7 @@
 // components/grid/detail/renderer/TableGridDetailRendererDetail.tsx
 import React, { useEffect, useState } from "react";
-import { TableGridSettings, TableGridDetail, DataGridDetailField } from "../../TableGrid";
+import { TableGridDetail, DataGridDetailField } from "../../TableGrid";
+import { TableGridSettings } from "../../../../types/TableGridSettings";
 import { tableRepository } from "@/api/repositories/Table";
 import { Row } from "react-bootstrap";
 

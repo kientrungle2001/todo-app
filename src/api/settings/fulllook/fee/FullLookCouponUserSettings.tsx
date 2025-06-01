@@ -29,9 +29,18 @@ CREATE TABLE `coupon_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
  * 
  */
-import { DataGridColumn, DataGridColumnActionType, DataGridColumnType, DataGridFilterColumn, DataGridFilterColumnType, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridPagination } from "@/types/grid/DataGridPagination";
+import { DataGridSortOption } from "@/types/grid/DataGridSortOption";
+import { DataGridSortDirection } from "@/types/grid/DataGridSortDirection";
+import { DataGridSort } from "@/types/grid/DataGridSort";
+import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
+import { DataGridTableJoin } from "@/types/grid/DataGridTableJoin";
+import { DataGridColumnActionType } from "@/types/grid/DataGridColumnActionType";
+import { DataGridFilterColumnType } from "@/types/grid/DataGridFilterColumnType";
+import { DataGridColumnType } from "@/types/grid/DataGridColumnType";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 
 const gridTitle: string = "Quản lý Người nạp Coupon";
 const gridTable: string = "coupon_user";

@@ -1,4 +1,4 @@
-import { DataGridColumn } from "../DataGridColumnTypes";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 
 export const ColumnReferenceRenderer = (column: DataGridColumn, item: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void) => {
     let items = item[column.index];

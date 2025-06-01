@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TableGridSettings as Settings } from "./TableGrid";
+import { TableGridSettings as Settings } from "../../types/TableGridSettings";
 import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
 import { DataGridEditField as Field, DataGridEditFieldType as FieldType, DataGridEditMode as Mode } from "./DataGridEditTypes";

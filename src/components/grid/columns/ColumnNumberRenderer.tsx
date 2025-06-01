@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { DataGridColumn } from "../DataGridColumnTypes";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 
 export const ColumnNumberRenderer = (column: DataGridColumn, item: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void) => {
     if (column.inputable) {

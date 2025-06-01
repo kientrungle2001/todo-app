@@ -1,4 +1,4 @@
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { FullLookStudentSettings } from "./settings/fulllook/fee/FullLookStudentSettings";
 import { FullLookAdminUserSettings } from "./settings/fulllook/fee/FullLookUserSettings";
 import { FullLookAdminCategoriesSettings } from "./settings/fulllook/FullLookCategoriesSettings";

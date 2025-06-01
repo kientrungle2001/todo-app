@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { TableGridDetailType, TableGridSettings } from "./TableGrid";
+import { TableGridDetailType } from "../../types/grid/TableGridDetailType";
+import { TableGridSettings } from "../../types/TableGridSettings";
 import { TableGridDetail as GridDetail } from "./TableGrid";
 import { Container, Row, Col, Nav, Tab, Button } from "react-bootstrap";
 import { TableGridDetailRendererDetail } from "./detail/renderer/TableGridDetailRendererDetail";

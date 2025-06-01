@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { TableGridSettings } from "./TableGrid";
+import { TableGridSettings } from "../../types/TableGridSettings";
 import { getSettingsByController } from "@/api/settings";
 import { TableGridEdit } from "./TableGridEdit";
 

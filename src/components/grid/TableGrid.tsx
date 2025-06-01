@@ -1,14 +1,14 @@
-import { DataGridColumn, DataGridFilterColumn, DataGridMessage, DataGridPagination, DataGridSort, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridMessage } from "@/types/grid/DataGridMessage";
+import { DataGridPagination } from "@/types/grid/DataGridPagination";
+import { DataGridSort } from "@/types/grid/DataGridSort";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import React, { useEffect } from "react";
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
-import { DataGridEditField } from "./DataGridEditTypes";
 import DataGrid from "./DataGrid";
 import { tableRepository } from "@/api/repositories/Table";
-export enum TableGridDetailType {
-    DETAIL = 'detail',
-    GRID = 'grid'
-}
+import { TableGridSettings } from "../../types/TableGridSettings";
+import { TableGridDetailType } from "../../types/grid/TableGridDetailType";
 export interface DataGridDetailField extends DataGridColumn {
     size?: number;
 }
@@ -22,29 +22,6 @@ export interface TableGridDetail {
     settings?: TableGridSettings;
     controller?: string;
     customFilters?: (item: any) => any;
-}
-
-export interface TableGridSettings {
-    title: string,
-    treeMode?: boolean;
-    treeParentField?: string;
-    fields?: string | string[];
-    searchFields?: string[];
-    joins?: DataGridTableJoin[];
-    software?: number;
-    site?: number;
-    pagination: DataGridPagination;
-    columns: DataGridColumn[];
-    filters: DataGridFilterColumn[];
-    sortOptions: DataGridSortOption[];
-    defaultSorts: DataGridSort[];
-    table: string;
-    addFields: DataGridEditField[];
-    editFields?: DataGridEditField[];
-    addNewLabel?: string;
-    deleteSelectedsLabel?: string;
-    updateLabel?: string;
-    details?: TableGridDetail[];
 }
 
 interface TableGridProps {

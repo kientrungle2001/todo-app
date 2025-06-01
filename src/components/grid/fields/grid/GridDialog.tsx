@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { TableGridSettings } from '../../TableGrid';
-import { DataGridPagination, DataGridSort } from "@/components/grid/DataGridColumnTypes";
+import { TableGridSettings } from "../../../../types/TableGridSettings";
+import { DataGridPagination } from "@/types/grid/DataGridPagination";
+import { DataGridSort } from "@/types/grid/DataGridSort";
 import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
 import { tableRepository } from "@/api/repositories/Table";

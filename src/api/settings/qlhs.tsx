@@ -1,4 +1,4 @@
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { QlhsStudentSettings } from "./qlhs/QlhsStudentSettings";
 import { QlhsClassSettings } from "./qlhs/QlhsClassSettings";
 import { QlhsSubjectSettings } from "./qlhs/QlhsSubjectSettings";

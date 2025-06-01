@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { Button, Card } from "react-bootstrap";
-import { TableGridSettings } from "../TableGrid";
+import { TableGridSettings } from "../../../types/TableGridSettings";
 
 interface DataGridTitleProps {
     title: string;

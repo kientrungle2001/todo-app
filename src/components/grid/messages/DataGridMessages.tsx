@@ -1,5 +1,5 @@
 import { Alert } from "react-bootstrap"
-import { DataGridMessage } from "../DataGridColumnTypes"
+import { DataGridMessage } from "@/types/grid/DataGridMessage";
 
 interface DataGridMessagesProps {
     messages: DataGridMessage[];

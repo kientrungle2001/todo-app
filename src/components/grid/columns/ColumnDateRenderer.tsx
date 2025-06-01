@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { DataGridColumn } from "../DataGridColumnTypes";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 
 export const ColumnDateRenderer = (column: DataGridColumn, item: any, table: string) => {
     let dateValue = new Date(item[column.index]);

@@ -1,5 +1,7 @@
 import { Button, Card } from "react-bootstrap";
-import { DataGridFilterColumn, DataGridSort, DataGridSortOption } from "../DataGridColumnTypes";
+import { DataGridSortOption } from "@/types/grid/DataGridSortOption";
+import { DataGridSort } from "@/types/grid/DataGridSort";
+import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
 import { FiltersGrid } from "./FiltersGrid";
 
 interface FiltersGridCardProps {

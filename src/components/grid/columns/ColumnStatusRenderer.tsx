@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { DataGridColumn } from "../DataGridColumnTypes";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { tableRepository } from "@/api/repositories/Table";
 
 export const ColumnStatusRenderer = (column: DataGridColumn, item: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: DataGridColumn, item: any) => void) => {

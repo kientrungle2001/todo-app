@@ -1,8 +1,15 @@
-import { DataGridColumn, DataGridColumnType, DataGridFilterColumn, DataGridPagination, DataGridSort, DataGridSortDirection, DataGridSortOption, DataGridTableJoin } from "@/components/grid/DataGridColumnTypes";
+import { DataGridPagination } from "@/types/grid/DataGridPagination";
+import { DataGridSortOption } from "@/types/grid/DataGridSortOption";
+import { DataGridSortDirection } from "@/types/grid/DataGridSortDirection";
+import { DataGridSort } from "@/types/grid/DataGridSort";
+import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
+import { DataGridTableJoin } from "@/types/grid/DataGridTableJoin";
+import { DataGridColumnType } from "@/types/grid/DataGridColumnType";
+import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridSettings } from "@/components/grid/TableGrid";
+import { TableGridSettings } from "@/types/TableGridSettings";
 
 const gridTitle: string = "Quản lý Media";
 const gridAddNewLabel: string = "Thêm Media";

@@ -1,4 +1,6 @@
-import { DataGridPagination, DataGridSort, DataGridSortDirection } from "@/components/grid/DataGridColumnTypes";
+import { DataGridPagination } from "@/types/grid/DataGridPagination";
+import { DataGridSortDirection } from "@/types/grid/DataGridSortDirection";
+import { DataGridSort } from "@/types/grid/DataGridSort";
 import { FullLookAdminMenuSettings } from "../settings/fulllook/FullLookMenuSettings";
 import { getAxios } from "../axiosInstance";
 import { storage } from "../storage";

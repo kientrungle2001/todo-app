@@ -1,4 +1,4 @@
-import { TableGridSettings } from "./TableGrid";
+import { TableGridSettings } from "../../types/TableGridSettings";
 
 export enum DataGridEditFieldType {
     TEXT = "text",
