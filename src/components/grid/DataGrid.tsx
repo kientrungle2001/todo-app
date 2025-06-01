@@ -15,7 +15,7 @@ import { DataGridTitle } from "./title/DataGridTitle";
 import { DataGridBottomToolbar } from "./bottom/DataGridBottomToolbar";
 import { DataGridHead } from "./header/DataGridHead";
 import { renderColumn } from "./columns/renderColumn";
-import { TableGridSettings } from "../../types/TableGridSettings";
+import { TableGridSettings } from "@/types/TableGridSettings";
 
 interface DataGridProps {
     title: string;

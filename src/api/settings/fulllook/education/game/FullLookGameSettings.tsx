@@ -1,4 +1,4 @@
-import { DataGridSortOptions } from "@/components/grid/DataGridColumnTypes";
+import { DataGridSortOptions } from "@/components/grid/DataGridSortOptions";
 import { DataGridPagination } from "@/types/grid/DataGridPagination";
 import { DataGridSortOption } from "@/types/grid/DataGridSortOption";
 import { DataGridSortDirection } from "@/types/grid/DataGridSortDirection";
