@@ -15,7 +15,7 @@ const gridFields: string[] = ["id", "content", "username", "email", "phone", "no
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "content", label: "Nội dung" },
+    { index: "content", label: "Nội dung", width: "600px" },
     { index: "username", label: "Tên đăng nhập" },
     { index: "email", label: "Email" },
     { index: "phone", label: "Số điện thoại" },

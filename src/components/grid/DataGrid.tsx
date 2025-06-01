@@ -191,8 +191,10 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                                 <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
                                             </td>
                                             {columns.filter((column) => typeof defaultFilters == 'undefined' || typeof defaultFilters[column.index] == 'undefined').map(column => (
-                                                <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap' : 'normal' }}>
-                                                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                                                <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap' : 'normal', wordBreak: 'break-all' }}>
+                                                    <div style={{ width: column.width ? (column.width == '1%' ? 'auto' : column.width) : 'auto', whiteSpace: (column.inputable) ? 'nowrap' : (column.width && column.width == '1%' ? 'nowrap' : 'normal'), wordBreak: 'break-all' }}>
+                                                        {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                                                    </div>
                                                 </td>
                                             ))}
                                         </tr>)
