@@ -1,4 +1,5 @@
-import { DataGridEditField, DataGridEditFieldType } from "./DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditFieldType } from "@/types/edit/DataGridEditFieldType";
 
 export const DataGridEditFields: { [key: string]: DataGridEditField } = {
     name: { index: "name", label: "Tên Danh mục", type: DataGridEditFieldType.TEXT, size: 6 },

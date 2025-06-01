@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GridDialog } from "./GridDialog";
 import { GridSelectorHeader } from "./GridSelectorHeader";
-import { TableGridSettings } from "../../../../types/TableGridSettings";
-import { DataGridEditField } from "../../DataGridEditTypes";
+import { TableGridSettings } from "../../../TableGridSettings";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
 import { tableRepository } from "@/api/repositories/Table";
 
 interface GridSelectorProps {

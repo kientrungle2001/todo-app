@@ -1,5 +1,5 @@
 // components/grid/detail/renderer/useDefaultFilters.ts
-import { TableGridDetail } from "../../TableGrid";
+import { TableGridDetail } from "@/types/detail/TableGridDetail";
 
 export const useDefaultFilters = (
   detail: TableGridDetail,

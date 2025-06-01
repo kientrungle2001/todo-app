@@ -1,5 +1,5 @@
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { FiltersGridCard } from "../../filters/FilterGridCard";
+import { FiltersGridCard } from "../../../../components/grid/filters/FilterGridCard";
 import { GridTableWrapper } from "./GridTableWrapper";
 
 interface Props {

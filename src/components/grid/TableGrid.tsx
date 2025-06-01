@@ -7,23 +7,7 @@ import { buildTree, flatTree } from "@/api/tree";
 import { storage } from "@/api/storage";
 import DataGrid from "./DataGrid";
 import { tableRepository } from "@/api/repositories/Table";
-import { TableGridSettings } from "../../types/TableGridSettings";
-import { TableGridDetailType } from "../../types/grid/TableGridDetailType";
-export interface DataGridDetailField extends DataGridColumn {
-    size?: number;
-}
-
-export interface TableGridDetail {
-    type?: TableGridDetailType;
-    label?: string;
-    referenceField?: string;
-    referenceType?: string;
-    fields?: DataGridDetailField[];
-    settings?: TableGridSettings;
-    controller?: string;
-    customFilters?: (item: any) => any;
-}
-
+import { TableGridSettings } from "@/types/TableGridSettings";
 interface TableGridProps {
     controller: string;
     // Add any additional props you need here

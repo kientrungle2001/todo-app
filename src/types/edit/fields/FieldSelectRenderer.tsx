@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import $ from 'jquery';
-import { DataGridEditField } from "../DataGridEditTypes";
-import {
-    DataGridEditMode as EditMode
-} from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditMode as EditMode } from "@/types/edit/DataGridEditMode";
 import { useRouter } from "next/router";
 import { tableRepository } from "@/api/repositories/Table";
 

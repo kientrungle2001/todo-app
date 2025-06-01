@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { TableGrid } from "./TableGrid";
-import { TableGridSettings } from "../../types/TableGridSettings";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { getSettingsByController } from "@/api/settings";
 
 interface TableGridWrapperProps { controller: string; }

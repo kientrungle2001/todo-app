@@ -2,13 +2,11 @@ import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row, Tab, Tabs } from "react-bootstrap";
 import { buildTree, flatTree } from "@/api/tree";
 import 'select2';
-import {
-    DataGridEditField as EditField,
-    DataGridEditFieldType as EditFieldType,
-    DataGridEditMode as EditMode
-} from "./DataGridEditTypes";
+import { DataGridEditField as EditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditMode as EditMode } from "@/types/edit/DataGridEditMode";
+import { DataGridEditFieldType as EditFieldType } from "@/types/edit/DataGridEditFieldType";
 import { tableRepository } from "@/api/repositories/Table";
-import { renderField } from "./fields/renderField";
+import { renderField } from "@/types/edit/fields/renderField";
 
 interface DataGridEditProps {
     mode: EditMode,

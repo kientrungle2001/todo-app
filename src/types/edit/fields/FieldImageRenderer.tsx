@@ -1,5 +1,5 @@
 import { ImageSelector } from "@/components/media/ImageSelector";
-import { DataGridEditField } from "../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
 
 export const FieldImageRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     return (

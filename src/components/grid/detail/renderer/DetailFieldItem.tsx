@@ -1,7 +1,7 @@
 // components/grid/detail/renderer/DetailFieldItem.tsx
 import { Col } from "react-bootstrap";
-import { DataGridDetailField } from "../../TableGrid";
-import { renderColumn } from "../../columns/renderColumn";
+import { DataGridDetailField } from "@/types/detail/DataGridDetailField";
+import { renderColumn } from "../../../../types/grid/columns/renderColumn";
 
 interface Props {
   field: DataGridDetailField;

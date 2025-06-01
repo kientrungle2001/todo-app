@@ -7,7 +7,7 @@ import { DataGridFilterColumn as FilterField } from "@/types/grid/DataGridFilter
 import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
 import { DataGridColumns as columns } from "@/components/grid/DataGridColumns";
 import { DataGridEditFields as editFields } from "@/components/grid/DataGridEditFields";
-import { DataGridEditField as EditField } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField as EditField } from "@/types/edit/DataGridEditField";
 import { DataGridFilterColumns as filterFields } from "@/components/grid/DataGridFilterColumns";
 import { TableGridSettings as Settings } from "@/types/TableGridSettings";
 

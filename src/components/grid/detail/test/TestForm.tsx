@@ -1,7 +1,8 @@
 // components/grid/detail/test/TestForm.tsx
 import { Button, Col, Row } from "react-bootstrap";
 import { replaceMediaUrl } from "@/api/defaultSettings";
-import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditMode } from "@/types/edit/DataGridEditMode";
 
 interface TestFormProps {
   mode: DataGridEditMode;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ImageSelector } from "@/components/media/ImageSelector";
-import { DataGridEditField } from "../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
 import { TinyMCEEditor } from "./TinyMCEEditor";
 
 export const FieldEditorRenderer = (

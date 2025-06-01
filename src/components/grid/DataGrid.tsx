@@ -14,7 +14,7 @@ import { DataGridMessages } from "./messages/DataGridMessages";
 import { DataGridTitle } from "./title/DataGridTitle";
 import { DataGridBottomToolbar } from "./bottom/DataGridBottomToolbar";
 import { DataGridHead } from "./header/DataGridHead";
-import { renderColumn } from "./columns/renderColumn";
+import { renderColumn } from "@/types/grid/columns/renderColumn";
 import { TableGridSettings } from "@/types/TableGridSettings";
 
 interface DataGridProps {

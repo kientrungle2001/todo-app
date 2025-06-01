@@ -7,7 +7,7 @@ import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
 import { DataGridTableJoin } from "@/types/grid/DataGridTableJoin";
 import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridSettings } from "@/types/TableGridSettings";
 

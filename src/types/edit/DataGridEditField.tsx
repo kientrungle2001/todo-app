@@ -1,22 +1,6 @@
-import { TableGridSettings } from "../../types/TableGridSettings";
+import { TableGridSettings } from "../TableGridSettings";
+import { DataGridEditFieldType } from "./DataGridEditFieldType";
 
-export enum DataGridEditFieldType {
-    TEXT = "text",
-    NUMBER = "number",
-    DATE = "date",
-    CURRENCY = "currency",
-    SELECT = "select",
-    CHECKBOX = "checkbox",
-    STATUS = "status",
-    EDITOR = "editor",
-    IMAGE = "image",
-    GRID = "grid"
-};
-
-export enum DataGridEditMode {
-    ADD = "add",
-    EDIT = "edit"
-}
 
 export interface DataGridEditField {
     index: string;

@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { DataGridEditField } from "../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
 
 export const FieldCheckboxRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {
     return (

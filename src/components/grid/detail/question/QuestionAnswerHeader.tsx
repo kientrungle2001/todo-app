@@ -1,6 +1,6 @@
 // components/grid/detail/question/QuestionAnswerHeader.tsx
 import { Col } from "react-bootstrap";
-import { DataGridEditMode } from "../../DataGridEditTypes";
+import { DataGridEditMode } from "@/types/edit/DataGridEditMode";
 import { Button } from "react-bootstrap";
 
 interface Props {

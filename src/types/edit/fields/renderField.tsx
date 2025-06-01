@@ -1,4 +1,5 @@
-import { DataGridEditField, DataGridEditFieldType } from "../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditFieldType } from "@/types/edit/DataGridEditFieldType";
 import { FieldCheckboxRenderer } from "./FieldCheckboxRenderer";
 import { FieldDateRenderer } from "./FieldDateRenderer";
 import { FieldEditorRenderer } from "./FieldEditorRenderer";
@@ -9,9 +10,7 @@ import { FieldSelectRenderer } from "./FieldSelectRenderer";
 import { FieldStatusRenderer } from "./FieldStatusRenderer";
 import { FieldTextRenderer } from "./FieldTextRenderer";
 import { FieldUndefinedRenderer } from "./FieldUndefinedRenderer";
-import {
-    DataGridEditMode as EditMode
-} from "@/components/grid/DataGridEditTypes";
+import { DataGridEditMode as EditMode } from "@/types/edit/DataGridEditMode";
 
 export const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
     switch (fieldType) {

@@ -7,10 +7,11 @@ import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
 import { DataGridTableJoin } from "@/types/grid/DataGridTableJoin";
 import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditFieldType } from "@/types/edit/DataGridEditFieldType";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridDetail } from "@/components/grid/TableGrid";
-import { TableGridDetailType } from "@/types/grid/TableGridDetailType";
+import { TableGridDetail } from "@/types/detail/TableGridDetail";
+import { TableGridDetailType } from "@/types/detail/TableGridDetailType";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { QlhsClassSettings } from "./QlhsClassSettings";
 

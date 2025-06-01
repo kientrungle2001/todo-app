@@ -1,7 +1,7 @@
 import { Table } from "react-bootstrap";
-import { renderColumn } from "../../columns/renderColumn";
+import { renderColumn } from "../../../grid/columns/renderColumn";
 import { GridDataGridHead } from "./GridDataGridHead";
-import { PaginationGrid } from "../../PaginationGrid";
+import { PaginationGrid } from "../../../../components/grid/PaginationGrid";
 
 interface Props {
     table: string;

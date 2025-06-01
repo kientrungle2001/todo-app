@@ -1,7 +1,8 @@
 import React from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditMode } from "@/types/edit/DataGridEditMode";
 import { TestHeader } from "./TestHeader";
 import { TestForm } from "./TestForm";
 import { TestQuestionList } from "./TestQuestionList";

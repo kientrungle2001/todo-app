@@ -4,8 +4,8 @@ import { DataGridSort } from "./grid/DataGridSort";
 import { DataGridFilterColumn } from "./grid/DataGridFilterColumn";
 import { DataGridTableJoin } from "./grid/DataGridTableJoin";
 import { DataGridColumn } from "./grid/DataGridColumn";
-import { DataGridEditField } from "../components/grid/DataGridEditTypes";
-import { TableGridDetail } from "../components/grid/TableGrid";
+import { DataGridEditField } from "./edit/DataGridEditField";
+import { TableGridDetail } from "./detail/TableGridDetail";
 
 
 export interface TableGridSettings {

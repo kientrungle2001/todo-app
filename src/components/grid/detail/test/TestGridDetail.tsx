@@ -3,7 +3,8 @@ import { TableGridSettings } from "../../../../types/TableGridSettings";
 import { getAxios } from "@/api/axiosInstance";
 import { useRouter } from "next/router";
 import { storage } from "@/api/storage";
-import { DataGridEditField, DataGridEditMode } from "../../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditMode } from "@/types/edit/DataGridEditMode";
 import TestGridEdit from "./TestGridEdit";
 import { tableRepository } from "@/api/repositories/Table";
 

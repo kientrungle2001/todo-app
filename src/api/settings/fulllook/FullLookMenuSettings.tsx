@@ -8,7 +8,8 @@ import { DataGridFilterColumnType } from "@/types/grid/DataGridFilterColumnType"
 import { DataGridColumnType } from "@/types/grid/DataGridColumnType";
 import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditField, DataGridEditFieldType } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditFieldType } from "@/types/edit/DataGridEditFieldType";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
 import { TableGridSettings } from "@/types/TableGridSettings";
 

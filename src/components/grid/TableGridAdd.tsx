@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { TableGridSettings as Settings } from "../../types/TableGridSettings";
+import { TableGridSettings as Settings } from "@/types/TableGridSettings";
 import DataGridEdit from "./DataGridEdit";
 import { useRouter } from "next/router";
-import { DataGridEditField as Field, DataGridEditFieldType as FieldType, DataGridEditMode as Mode } from "./DataGridEditTypes";
+import { DataGridEditField as Field } from "@/types/edit/DataGridEditField";
+import { DataGridEditMode as Mode } from "@/types/edit/DataGridEditMode";
+import { DataGridEditFieldType as FieldType } from "@/types/edit/DataGridEditFieldType";
 import { tableRepository } from "@/api/repositories/Table";
 
 interface TableGridProps {

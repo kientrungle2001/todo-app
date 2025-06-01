@@ -1,4 +1,4 @@
-import { DataGridEditField } from "../DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
 import { GridSelector } from "./grid/GridSelector";
 
 export const FieldGridRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void) => {

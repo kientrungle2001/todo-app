@@ -9,10 +9,10 @@ import { DataGridColumnType } from "@/types/grid/DataGridColumnType";
 import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
-import { DataGridEditField } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField } from "@/types/edit/DataGridEditField";
 import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridDetail } from "@/components/grid/TableGrid";
-import { TableGridDetailType } from "@/types/grid/TableGridDetailType";
+import { TableGridDetail } from "@/types/detail/TableGridDetail";
+import { TableGridDetailType } from "@/types/detail/TableGridDetailType";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { QlhsStudentAttendanceSettings } from "./QlhsStudentAttendanceSettings";
 

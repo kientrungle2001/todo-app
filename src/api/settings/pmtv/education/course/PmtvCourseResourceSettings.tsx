@@ -8,7 +8,8 @@ import { DataGridTableJoin as Join } from "@/types/grid/DataGridTableJoin";
 import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
 import { DataGridColumns as columns } from "@/components/grid/DataGridColumns";
 import { DataGridEditFields as editFields } from "@/components/grid/DataGridEditFields";
-import { DataGridEditField as EditField, DataGridEditFieldType as EditType } from "@/components/grid/DataGridEditTypes";
+import { DataGridEditField as EditField } from "@/types/edit/DataGridEditField";
+import { DataGridEditFieldType as EditType } from "@/types/edit/DataGridEditFieldType";
 import { DataGridFilterColumns as filterFields } from "@/components/grid/DataGridFilterColumns";
 import { TableGridSettings as Settings } from "@/types/TableGridSettings";
 

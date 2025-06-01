@@ -1,5 +1,5 @@
 // components/grid/detail/renderer/DetailFieldsList.tsx
-import { DataGridDetailField } from "../../TableGrid";
+import { DataGridDetailField } from "@/types/detail/DataGridDetailField";
 import { DetailFieldItem } from "./DetailFieldItem";
 
 interface Props {

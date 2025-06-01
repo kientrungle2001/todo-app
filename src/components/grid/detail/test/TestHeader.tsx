@@ -1,5 +1,5 @@
 // components/grid/detail/test/TestHeader.tsx
-import { DataGridEditMode } from "../../DataGridEditTypes";
+import { DataGridEditMode } from "@/types/edit/DataGridEditMode";
 import { Button, Col, Row } from "react-bootstrap";
 
 interface TestHeaderProps {
