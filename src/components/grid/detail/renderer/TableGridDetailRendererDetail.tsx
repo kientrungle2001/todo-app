@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { DataGridDetailField } from "@/types/detail/DataGridDetailField";
 import { TableGridDetail } from "@/types/detail/TableGridDetail";
-import { TableGridSettings } from "../../../../types/TableGridSettings";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { tableRepository } from "@/api/repositories/Table";
 import { Row } from "react-bootstrap";
 

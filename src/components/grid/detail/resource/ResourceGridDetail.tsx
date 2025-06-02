@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { TableGridSettings } from "../../../../types/TableGridSettings";
+import { TableGridSettings } from "@/types/TableGridSettings";
 import { useRouter } from "next/router";
 import ResourceGridEdit from "./ResourceGridEdit";
 import { resourceRepository } from "@/api/repositories/Resource";
