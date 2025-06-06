@@ -19,6 +19,14 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         },
         comparisonOperator: "equal"
     },
+    questionType: {
+        index: "questionType", label: "Dạng câu hỏi", type: DataGridFilterColumnType.SELECT, size: 6,
+        options: [
+            { value: 1, label: "Trắc nghiệm" },
+            { value: 4, label: "Tự luận" }
+        ],
+        select2: true
+    },
     id: { index: "id", label: "ID", type: DataGridFilterColumnType.TEXT },
     trial: {
         index: "trial",

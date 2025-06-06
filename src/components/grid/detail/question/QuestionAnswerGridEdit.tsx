@@ -109,12 +109,12 @@ const QuestionAnswerGridEdit: React.FC<Props> = ({
 
       <Form onSubmit={onSubmit}>
         <QuestionNameRenderer item={item} appName={appName} />
-        <AnswerSection
+        {(item.questionType != 4) && <AnswerSection
           answers={answers}
           setAnswers={setAnswers}
           appName={appName}
           handleAddAnswer={handleAddAnswer}
-        />
+        />}
         <ExplanationEditor item={item} />
         <QuestionAnswerHeader
           mode={mode}

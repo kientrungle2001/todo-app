@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { useRouter } from "next/router";
 import CategoryGridEdit from "./CategoryGridEdit";
@@ -10,9 +10,9 @@ interface TableGridProps {
     settings: TableGridSettings
 }
 
-export const CategoryGridDetail: React.FC<TableGridProps> = ({ controller, settings, itemId }): React.ReactElement => {
+export const CategoryGridDetail: FC<TableGridProps> = ({ controller, settings, itemId }): ReactElement => {
     const router = useRouter();
-    const [item, setItem] = React.useState<any>(null);
+    const [item, setItem] = useState<any>(null);
 
     useEffect(() => {
         categoryRepository.getCategory(itemId, settings).then((resp: any) => {

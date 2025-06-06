@@ -32,14 +32,10 @@ export const CategoryDetailQuestion: React.FC<CategoryDetailQuestionProps> = ({ 
                 <h6>Đáp án</h6>
                 <blockquote className="ps-3">
                     <Row>
-                        {question.answers.map((answer: any) => {
-                            return (
-                                <Col sm={12} key={answer.id}>
-                                    <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content) }}></div>
-                                    {hostConfig && hostConfig.appName !== 'pmtv' && <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content_vn) }}></div>}
-                                </Col>
-                            )
-                        })}
+                        {question.answers.map((answer: any) => <Col sm={12} key={answer.id}>
+                            <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content) }}></div>
+                            {hostConfig && hostConfig.appName !== 'pmtv' && <div style={{ textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: replaceMediaUrl(answer.content_vn) }}></div>}
+                        </Col>)}
                     </Row>
                 </blockquote>
             </Col>

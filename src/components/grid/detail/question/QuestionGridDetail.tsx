@@ -43,6 +43,7 @@ export const QuestionGridDetail: React.FC<TableGridProps> = ({ controller, setti
 
 
     const validateQuestionAnswers = (question: any): boolean => {
+        if (question.questionType == 4) return true;
         if (question.answers.length <= 0) {
             return false;
         }

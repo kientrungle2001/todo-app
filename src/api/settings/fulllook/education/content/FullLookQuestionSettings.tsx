@@ -64,6 +64,7 @@ const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
     DataGridFilterColumns.categoryIds,
     DataGridFilterColumns.testId,
+    DataGridFilterColumns.questionType,
     DataGridFilterColumns.status,
     DataGridFilterColumns.trial,
 ];
