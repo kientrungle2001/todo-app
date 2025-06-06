@@ -18,7 +18,7 @@ export const QuestionAnswerHeader: React.FC<Props> = ({
   handleCancelEdit,
   handleCancelAdd,
 }) => (
-  <Col md={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
+  <Col md={12} className="mt-3 mb-3 p-3 bg-warning">
     <Button size="lg" variant="primary" type="submit" className="me-2">
       {mode === DataGridEditMode.EDIT ? "Cập nhật" : addNewLabel || "Thêm mới"}
     </Button>

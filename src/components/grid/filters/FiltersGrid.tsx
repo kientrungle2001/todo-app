@@ -97,7 +97,6 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
 
         useEffect(() => {
             if (filter.select2 && selectRef[filter.index].current && (filter.options || maps[filter.index])) {
-                console.log('Initializing Select2 for filter field:', filter.index);
                 const $select = $(selectRef[filter.index].current);
 
                 $select.select2({
@@ -149,7 +148,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     <option value={''}>Chọn {filter.label}</option>
                     {maps[filter.index].map((option: any) => (
                         <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}
-                            selected={(filterData[filter.index] ?? '') == option[filter.valueField as string]}
+                            
                         >
                             {filter.treeMode ? '|____'.repeat(option.__level + 1) : ''}
                             #{option[filter.valueField as string]}&nbsp;-&nbsp;

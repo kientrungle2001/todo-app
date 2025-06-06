@@ -20,7 +20,7 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         comparisonOperator: "equal"
     },
     questionType: {
-        index: "questionType", label: "Dạng câu hỏi", type: DataGridFilterColumnType.SELECT, size: 6,
+        index: "questionType", label: "Dạng câu hỏi", type: DataGridFilterColumnType.SELECT, size: 2,
         options: [
             { value: 1, label: "Trắc nghiệm" },
             { value: 4, label: "Tự luận" }
