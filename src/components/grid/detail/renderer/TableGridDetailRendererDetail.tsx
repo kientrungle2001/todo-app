@@ -25,7 +25,7 @@ export const TableGridDetailRendererDetail: React.FC<Props> = ({
   const [item, setItem] = useState<any>(null);
 
   useEffect(() => {
-    tableRepository.getItem(settings, itemId).then((resp) => {
+    tableRepository.getItem(settings, itemId).then((resp: any) => {
       setItem(resp?.data ?? null);
     });
   }, [itemId]);
