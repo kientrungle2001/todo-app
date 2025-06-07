@@ -57,6 +57,14 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         referenceField: "name"
     },
     deleteAction: { index: "deleteAction", label: "Xóa", type: DataGridColumnType.ACTIONS, actionType: DataGridColumnActionType.DELETE, width: "1%", sortable: false },
+    display: {
+        index: "display", type: DataGridColumnType.STATUS, label: "Hiển thị", map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        hideLabel: true,
+        statusToggable: true
+    },
     document: {
         index: "document", type: DataGridColumnType.STATUS, label: "Tài liệu", map: {
             0: 'Chưa kích hoạt',
@@ -74,6 +82,7 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         }
     },
     id: { index: "id", label: "ID", width: "1%" },
+    nameCategory: { index: "name", label: "Tên Danh mục", linkFormat: (value: any, item: any) => `/Table/admin_category/${item.id}/detail`, treeMode: true },
     nameCenter: {
         index: "name", label: "Tên Trung tâm", linkFormat: (name: any, item: any): string => {
             return '/Table/center/' + item.id + '/detail';
@@ -91,6 +100,14 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
     },
     note: { index: "note", label: "Ghi chú" },
     ordering: { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true },
+    practice: {
+        index: "practice", type: DataGridColumnType.STATUS, label: "Luyện tập", map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        hideLabel: true,
+        statusToggable: true
+    },
     question_content: {
         index: "name", label: "Nội dung", isHtml: true,
     },

@@ -5,8 +5,6 @@ import { DataGridSortDirection } from "@/types/grid/DataGridSortDirection";
 import { DataGridSort } from "@/types/grid/DataGridSort";
 import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
 import { DataGridTableJoin } from "@/types/grid/DataGridTableJoin";
-import { DataGridFilterColumnType } from "@/types/grid/DataGridFilterColumnType";
-import { DataGridColumnType } from "@/types/grid/DataGridColumnType";
 import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { DataGridColumns } from "@/components/grid/DataGridColumns";
 import { DataGridEditField } from "@/types/edit/DataGridEditField";
@@ -22,33 +20,13 @@ const gridFields: string[] = ["id", "name", "name_en", "name_vn", "alias", "rout
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
-    { index: "name", label: "Tên Danh mục", linkFormat: (value: any, item: any) => `/Table/admin_category/${item.id}/detail`, treeMode: true },
-    { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true, treeMode: true },
+    DataGridColumns.nameCategory,
+    DataGridColumns.ordering,
     DataGridColumns.status,
-    {
-        index: "display", type: DataGridColumnType.STATUS, label: "Hiển thị", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    {
-        index: "trial", type: DataGridColumnType.STATUS, label: "Dùng thử", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
-    {
-        index: "document", type: DataGridColumnType.STATUS, label: "Tài liệu", map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        hideLabel: true,
-        statusToggable: true
-    },
+    DataGridColumns.display,
+    DataGridColumns.practice,
+    DataGridColumns.document,
+    DataGridColumns.trial,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction
 ];
@@ -57,56 +35,18 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 5000 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
-    {
-        index: "parents", label: "Danh mục cha", type: DataGridFilterColumnType.SELECT,
-        table: "categories",
-        valueField: "id",
-        labelField: "name",
-        treeMode: true,
-        select2: true,
-        comparisonOperator: "inset"
-    },
+    DataGridFilterColumns.parents,
     DataGridFilterColumns.status,
-    {
-        index: "display", label: "Hiển thị", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
-    {
-        index: "trial", label: "Dùng thử", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
-    {
-        index: "document", label: "Tài liệu", type: DataGridFilterColumnType.STATUS, map: {
-            0: 'Chưa kích hoạt',
-            1: 'Đã kích hoạt'
-        },
-        comparisonOperator: "equal"
-    },
+    DataGridFilterColumns.display,
+    DataGridFilterColumns.trial,
+    DataGridFilterColumns.document,
 ];
 
 const gridSortOptions: DataGridSortOption[] = [
-    {
-        index: "nameAsc",
-        label: "Tên Danh mục tăng",
-        sorts: [
-            { index: "name", direction: DataGridSortDirection.ASCENDING },
-            { index: "id", direction: DataGridSortDirection.DESCENDING },
-        ]
-    },
-    {
-        index: "nameDesc",
-        label: "Tên Danh mục giảm",
-        sorts: [
-            { index: "name", direction: DataGridSortDirection.DESCENDING },
-            { index: "id", direction: DataGridSortDirection.ASCENDING },
-        ]
-    },
+    DataGridSortOptions.orderingAsc,
+    DataGridSortOptions.orderingDesc,
+    DataGridSortOptions.nameAsc,
+    DataGridSortOptions.nameDesc,
     DataGridSortOptions.idAsc,
     DataGridSortOptions.idDesc,
 ];

@@ -122,4 +122,18 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         select2: true,
         comparisonOperator: "inset"
     },
+    display: {
+        index: "display", label: "Hiển thị", type: DataGridFilterColumnType.STATUS, map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        comparisonOperator: "equal"
+    },
+    document: {
+        index: "document", label: "Tài liệu", type: DataGridFilterColumnType.STATUS, map: {
+            0: 'Chưa kích hoạt',
+            1: 'Đã kích hoạt'
+        },
+        comparisonOperator: "equal"
+    },
 };

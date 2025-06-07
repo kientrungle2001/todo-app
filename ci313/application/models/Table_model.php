@@ -102,6 +102,24 @@ class Table_model extends CI_Model
         $data = [];
         foreach ($fields as $field) {
             if (isset($item[$field['index']])) {
+                if (isset($field['multiple']) && $field['multiple']) {
+                    $value = $item[$field['index']];
+                    if ($value) {
+                        $value = explode(',', $value);
+                        $values = [];
+                        foreach($value as $v) {
+                            if ($v) {
+                                $values[] = $v;
+                            }
+                        }
+                        if (count($values)) {
+                            $value = ',' . implode(',', $values) . ',';
+                        } else {
+                            $value = '';
+                        }
+                    }
+                    $item[$field['index']] = $value;
+                }
                 $data[$field['index']] = $item[$field['index']];
             }
         }
