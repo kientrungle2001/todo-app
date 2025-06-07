@@ -8,7 +8,7 @@ import { tableRepository } from "@/api/repositories/Table";
 
 export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any, mode: EditMode) => {
 
-    const [label, setLabel] = useState<string>(null);
+    const [label, setLabel] = useState<string>('');
     const selectRef: any = {};
     selectRef[field.index] = React.useRef(null);
     const router = useRouter();
@@ -58,9 +58,9 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
         if (mode == EditMode.ADD
         && typeof item[field.index] !== 'undefined'
         && typeof router.query['field_' + field.index] !== 'undefined') {
-            tableRepository.get(field.table, item[field.index]).then((resp: any) => {
+            tableRepository.get(field.table ?? '', item[field.index]).then((resp: any) => {
                 if (resp) {
-                    setLabel(resp.data[field.labelField]);
+                    setLabel(resp.data[field.labelField ?? '']);
                 }
             })
         }
