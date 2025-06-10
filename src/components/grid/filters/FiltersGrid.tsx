@@ -133,6 +133,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
                 }} aria-placeholder={filter.label}>
+                    <option>Chọn {filter.label}</option>
                     {filter.options.map((option, index) => (
                         <option key={index} value={option.value}>{option.label}</option>
                     ))}
@@ -145,10 +146,10 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                     updatedFilterData[filter.index] = event.target.value;
                     setFilterData(updatedFilterData);
                 }} aria-placeholder={filter.label}>
-                    <option value={''}>Chọn {filter.label}</option>
+                    <option>Chọn {filter.label}</option>
                     {maps[filter.index].map((option: any) => (
                         <option key={option[filter.valueField as string]} value={option[filter.valueField as string]}
-                            
+
                         >
                             {filter.treeMode ? '|____'.repeat(option.__level + 1) : ''}
                             #{option[filter.valueField as string]}&nbsp;-&nbsp;
