@@ -18,11 +18,12 @@ const gridDeleteSelectedsLabel: string = "Xóa các Đề thi đã chọn";
 const gridTable: string = "tests";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name", "name_en", "name_sn"];
-const gridFields: string[] = ["id", "name", "name_en", "name_sn", "ordering", "status", "trial", "categoryId", "parent"];
+const gridFields: string[] = ["id", "name", "name_en", "name_sn", "ordering", "status", "trial", "categoryId", "categoryIds", "parent"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     { index: "name", label: "Tên Đề thi", linkFormat: (value: any, item: any) => `/Table/admin_test/${item.id}/detail`, treeMode: true },
+    DataGridColumns.categoryIds,
     DataGridColumns.ordering,
     DataGridColumns.status,
     DataGridColumns.trial,
@@ -35,6 +36,7 @@ const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 5000 };
 
 const gridFilters: DataGridFilterColumn[] = [
     DataGridFilterColumns.id,
+    {...DataGridFilterColumns.categoryIds, size: 4},
     DataGridFilterColumns.status,
     DataGridFilterColumns.trial,
 ];

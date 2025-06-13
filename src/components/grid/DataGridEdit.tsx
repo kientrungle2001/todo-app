@@ -97,7 +97,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
                     }
                 }}>
                     <Row>
-                        <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
+                        <Col md={12} sm={12} className="mt-3 mb-3 p-3 bg-warning">
                             <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                             <Button variant="outline-secondary" onClick={() => {
                                 if (mode === EditMode.ADD && handleCancelAdd) {
@@ -137,7 +137,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
 
                         ))}
 
-                        <Col md={12} sm={12} className="mt-3 mb-3 pt-3 pb-3 bg-warning">
+                        <Col md={12} sm={12} className="mt-3 mb-3 p-3 bg-warning">
                             <Button size="lg" variant="primary" type="submit" className="me-2">{mode === EditMode.EDIT ? 'Cập nhật' : 'Thêm mới'} </Button>
                             <Button variant="outline-secondary" onClick={() => {
                                 if (mode === EditMode.ADD && handleCancelAdd) {

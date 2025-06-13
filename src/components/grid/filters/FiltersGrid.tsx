@@ -4,8 +4,6 @@ import { DataGridSort } from "@/types/grid/DataGridSort";
 import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
 import { DataGridFilterColumnType } from "@/types/grid/DataGridFilterColumnType";
 import React, { useEffect } from "react";
-import { getAxios } from "@/api/axiosInstance";
-import { storage } from "@/api/storage";
 import { useRouter } from "next/router";
 import { buildTree, flatTree } from "@/api/tree";
 import $ from "jquery";
@@ -181,7 +179,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({ filters, sortOptions, 
                 updatedFilterData[filter.index] = event.target.value;
                 setFilterData(updatedFilterData);
             }}>
-                <option value={''}>Chọn {filter.label}</option>
+                <option value="">Chọn {filter.label}</option>
                 <option value={1}>
                     {filter?.map ? filter?.map[1] : 'Active'}
                 </option>
