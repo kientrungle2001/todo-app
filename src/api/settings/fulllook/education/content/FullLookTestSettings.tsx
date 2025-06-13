@@ -68,10 +68,6 @@ const gridAddFields: DataGridEditField[] = [
     { index: "name_sn", label: "Tên Đề thi Song ngữ", type: DataGridEditFieldType.TEXT, size: 6 },
     { index: "content", label: "Nội dung", type: DataGridEditFieldType.EDITOR, size: 12 },
     {
-        index: "categoryId", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
-        table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc", select2: true
-    },
-    {
         index: "categoryIds", label: "Danh mục", type: DataGridEditFieldType.SELECT, size: 6,
         table: "categories", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc", multiple: true, select2: true
     },
