@@ -51,8 +51,8 @@ export const PaginationGrid: React.FC<PaginationGridProps> = ({ pagination, setC
                 {/* Next button */}
                 <Pagination.Next />
             </Pagination>
-            ({totalItems} bản ghi)
         </>}
+        ({totalItems} bản ghi)
 
     </>
 }
