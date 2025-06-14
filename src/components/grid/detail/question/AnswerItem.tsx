@@ -24,7 +24,7 @@ export const AnswerItem: React.FC<Props> = ({ answer, index, answers, setAnswers
   };
 
   return (
-    <Col md={6} className="mt-3 mb-3">
+    <Col md={12} className="mt-3 mb-3">
       <InputGroup>
         <InputGroup.Radio
           checked={answer.status === "1"}
