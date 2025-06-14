@@ -1,18 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TableGrid } from "./TableGrid";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { getSettingsByController } from "@/api/settings";
 
-interface TableGridWrapperProps { controller: string; }
+interface TableGridWrapperProps {
+  controller: string;
+}
 
 export const TableGridWrapper: React.FC<TableGridWrapperProps> = ({ controller }): React.ReactElement => {
-    const [hostname, setHostname] = React.useState<string | null>(null);
+  const [hostname, setHostname] = useState<string | null>(null);
+  const [settings, setSettings] = useState<TableGridSettings | null>(null);
 
-    useEffect(() => { setHostname(window.location.hostname); }, []);
-    if (null === hostname) return <h1>Not Found</h1>
+  useEffect(() => {
+    const h = window.location.hostname;
+    setHostname(h);
 
-    let settings: TableGridSettings | null = getSettingsByController(controller as string, hostname);
-    if (null === settings) return <h1>Not Found</h1>
+    const s = getSettingsByController(controller, h);
+    setSettings(s);
+  }, [controller]);
 
-    return <TableGrid controller={controller} settings={settings} />
-}
+  if (!hostname || !settings) {
+    return <h1>Not Found</h1>;
+  }
+
+  return <TableGrid controller={controller} settings={settings} />;
+};

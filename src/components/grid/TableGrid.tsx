@@ -43,11 +43,11 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
             setPagination({ pageSize: savedFilterData.pageSize, currentPage: savedFilterData.currentPage });
             setSearchText(savedFilterData.searchText);
         }
-    }, []);
+    }, [controller]);
 
     useEffect(() => {
         setSavedFilterData({ filterData, sortData, searchText, currentPage: pagination.currentPage, pageSize: pagination.pageSize, sorts });
-    }, [filterData, sortData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
+    }, [controller, filterData, sortData, searchText, pagination.currentPage, pagination.pageSize, sorts]);
 
     const handleDeleteItem = (item: any) => {
         // Implement your delete logic here
