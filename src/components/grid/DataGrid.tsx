@@ -144,7 +144,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
         setBulkAction("");
     };
 
-    return <Container fluid className="mb-0 mt-0">
+    return <Container fluid className="mb-0 mt-0 d-none">
         <Row className="g-0">
             <Col sm={12} md={12} lg={12}>
                 <FiltersGridCard filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />

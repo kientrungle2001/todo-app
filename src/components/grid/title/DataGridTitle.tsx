@@ -41,7 +41,7 @@ export const DataGridTitle: React.FC<DataGridTitleProps> = ({ title, controller,
             {/* Button as a link */}
             <Button size="sm" variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
             {/* Regular Button */}
-            <Button size="sm" variant="danger">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
+            <Button size="sm" variant="danger" className="d-none">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
         </div>
     </Card.Title>
 };
