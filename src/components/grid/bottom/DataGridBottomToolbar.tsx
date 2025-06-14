@@ -14,6 +14,6 @@ export const DataGridBottomToolbar: React.FC<DataGridBottomToolbarProps> = ({ co
     const handleAddItem = () => { handleNavigation(`/Table/${controller}/add`); }
     return <div className="d-flex justify-content-end">
         <Button variant="primary" className="me-2" onClick={handleAddItem}>{addNewLabel ?? 'Add New'}</Button>
-        <Button variant="danger" className="me-2">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
+        <Button variant="danger" className="me-2 d-none">{deleteSelectedsLabel ?? 'Delete Selecteds'}</Button>
     </div>
 }
