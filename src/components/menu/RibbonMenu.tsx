@@ -18,8 +18,39 @@ interface RibbonMenuProps {
 }
 
 const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
-  const [tab, setTab] = React.useState<string>('dashboard');
   const router = useRouter();
+
+  const [tab, setTab] = React.useState<string>('dashboard');
+  const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
+
+  // Restore from localStorage
+  React.useEffect(() => {
+    const storedTab = localStorage.getItem('ribbonSelectedTab');
+    const storedExpanded = localStorage.getItem('ribbonIsExpanded');
+
+    if (storedTab) setTab(storedTab);
+    if (storedExpanded !== null) setIsExpanded(storedExpanded === 'true');
+  }, []);
+
+  // Save state to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('ribbonSelectedTab', tab);
+    localStorage.setItem('ribbonIsExpanded', isExpanded.toString());
+  }, [tab, isExpanded]);
+
+  // Auto-collapse if currently collapsed and route changes
+  React.useEffect(() => {
+    const handleRouteChange = () => {
+      const storedExpanded = localStorage.getItem('ribbonIsExpanded');
+      if (storedExpanded === 'false') {
+        setIsExpanded(false);
+      }
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   const handleLogout = () => {
     storage.clearTokenInfo();
@@ -61,9 +92,6 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
                 </Button>
               )}
             </Card.Body>
-            {/* <Card.Footer className="text-center p-1 small fw-bold bg-white border-top">
-              {item.name}
-            </Card.Footer> */}
           </Card>
         </Col>
       ))}
@@ -108,42 +136,58 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
 
   return (
     <div className="bg-white border-bottom shadow-sm">
-      <Tabs activeKey={tab} onSelect={(k) => setTab(k || 'dashboard')} className="px-3 pt-2">
-        {topTabs.map(item => (
-          <Tab key={item.id} eventKey={item.name.toLowerCase()} title={item.name} />
-        ))}
-      </Tabs>
+      <div className="d-flex justify-content-between align-items-center px-3 pt-2">
+        <Tabs
+          activeKey={tab}
+          onSelect={(k) => {
+            setTab(k || 'dashboard');
+            setIsExpanded(true); // mở rộng khi chọn tab
+          }}
+          className="flex-grow-1"
+        >
+          {topTabs.map(item => (
+            <Tab key={item.id} eventKey={item.name.toLowerCase()} title={item.name} />
+          ))}
+        </Tabs>
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          className="ms-2"
+          onClick={() => setIsExpanded(prev => !prev)}
+        >
+          {isExpanded ? '⬆ Ẩn nội dung' : '⬇ Hiện nội dung'}
+        </Button>
+      </div>
 
-      <Container fluid className="bg-light border-top py-2">
-        {tab === 'dashboard' ? (
-          <Row>
-            <Col xs="auto">
-              <Card className="p-2">
-                <Card.Body className="p-2">
-                  <Button variant="primary" size="sm" onClick={() => router.push('/')}>🏠 Dashboard</Button>
-                </Card.Body>
-                {/* <Card.Footer className="text-center p-1 small fw-bold bg-white border-top">Dashboard</Card.Footer> */}
-              </Card>
-            </Col>
-            <Col xs="auto">
-              <Card className="p-2">
-                <Card.Body className="p-2">
-                  <Button variant="danger" size="sm" onClick={handleLogout}>🚪 Logout</Button>
-                </Card.Body>
-                {/* <Card.Footer className="text-center p-1 small fw-bold bg-white border-top">Logout</Card.Footer> */}
-              </Card>
-            </Col>
-            <Col xs="auto">
-              <Card className="p-2">
-                <Card.Body className="p-2">
-                  <Button variant="warning" size="sm" onClick={handleCron}>⚙️ Cron</Button>
-                </Card.Body>
-                {/* <Card.Footer className="text-center p-1 small fw-bold bg-white border-top">Cron</Card.Footer> */}
-              </Card>
-            </Col>
-          </Row>
-        ) : renderButtons(getChildrenForTab(tab))}
-      </Container>
+      {isExpanded && (
+        <Container fluid className="bg-light border-top py-2">
+          {tab === 'dashboard' ? (
+            <Row>
+              <Col xs="auto">
+                <Card className="p-2">
+                  <Card.Body className="p-2">
+                    <Button variant="primary" size="sm" onClick={() => router.push('/')}>🏠 Dashboard</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col xs="auto">
+                <Card className="p-2">
+                  <Card.Body className="p-2">
+                    <Button variant="danger" size="sm" onClick={handleLogout}>🚪 Logout</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col xs="auto">
+                <Card className="p-2">
+                  <Card.Body className="p-2">
+                    <Button variant="warning" size="sm" onClick={handleCron}>⚙️ Cron</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          ) : renderButtons(getChildrenForTab(tab))}
+        </Container>
+      )}
     </div>
   );
 };
