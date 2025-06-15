@@ -136,7 +136,7 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-white border-bottom shadow-sm">
+    <div className="bg-white border-bottom shadow-sm mb-3">
       <div className="d-flex justify-content-between align-items-center px-3 pt-2">
         <Tabs
           activeKey={tab}
