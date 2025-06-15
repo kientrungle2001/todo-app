@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { TopMenuGrid } from '@/components/menu/TopMenuGrid';
 import { menuRepository } from '@/api/repositories/Menu';
 import DashboardItems from '@/components/dashboard/DashboardItems';
+import RibbonMenuGrid from '@/components/menu/RibbonMenuGrid';
 
 const Index = () => {
     const [items, setItems] = useState<any[]>([]);
@@ -17,8 +17,9 @@ const Index = () => {
     }, []);
 
     return <>
-        <Container fluid className="mt-3 mb-3">
-            <TopMenuGrid />
+        <Container fluid>
+            {/* <TopMenuGrid /> */}
+            <RibbonMenuGrid />
         </Container>
         <Container className="mt-5">
             <DashboardItems items={items} />

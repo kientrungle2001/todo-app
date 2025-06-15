@@ -12,6 +12,7 @@ import { ResourceGridDetail } from "@/components/grid/detail/resource/ResourceGr
 
 import { GetServerSideProps } from 'next';
 import { TableGridDetail } from "@/components/grid/TableGridDetail";
+import RibbonMenuGrid from "@/components/menu/RibbonMenuGrid";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const host = req.headers.host; // e.g., 'localhost:3000' or 'example.com'
@@ -47,8 +48,9 @@ export default function TableEdit({ host }: { host: string }): React.ReactElemen
         if (!['admin_question2', 'admin_test', 'admin_category', 'admin_course_resource'].includes(controller as string))
             return <div>Not found</div>;
         return <>
-            <Container fluid className="mt-3 mb-3">
-                <TopMenuGrid />
+            <Container fluid>
+                {/* <TopMenuGrid /> */}
+                <RibbonMenuGrid />
             </Container>
             {('admin_question2' === (controller as string))
                 && <QuestionGridDetail controller={controller as string} itemId={itemId} settings={settings} />}

@@ -2,8 +2,6 @@ import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { TableGridWrapper } from "@/components/grid/TableGridWrapper";
-import { TopMenuGrid } from "@/components/menu/TopMenuGrid";
-import { RibbonUI } from '@/components/RibbonUI';
 import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
@@ -26,7 +24,7 @@ export default function TableIndex({ host }: { host: string }): React.ReactEleme
     let settings: TableGridSettings | null = getSettingsByController(controller as string, hostname);
     if (settings) {
         return <>
-            <Container fluid className="mt-3 mb-3">
+            <Container fluid>
                 {/* <TopMenuGrid /> */}
                 <RibbonMenuGrid />
             </Container>
