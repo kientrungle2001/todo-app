@@ -2,7 +2,6 @@ import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { QuestionGridDetail } from "@/components/grid/detail/question/QuestionGridDetail";
-import { TopMenuGrid } from "@/components/menu/TopMenuGrid";
 import { useRouter } from "next/router";
 import React from "react";
 import { Container } from "react-bootstrap";
@@ -36,8 +35,9 @@ export default function TableEdit({ host }: { host: string }): React.ReactElemen
     if (settings) {
         if (settings.details) {
             return <>
-                <Container fluid className="mt-3 mb-3">
-                    <TopMenuGrid />
+                <Container fluid>
+                    {/* <TopMenuGrid /> */}
+                    <RibbonMenuGrid />
                 </Container>
                 <TableGridDetail controller={controller as string} itemId={parseInt(id)} settings={settings} />
                 <Container fluid className="mt-3 mb-3 bg-light pt-3 pb-3">

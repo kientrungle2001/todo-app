@@ -21,24 +21,25 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
   const router = useRouter();
 
   const [tab, setTab] = React.useState<string>('dashboard');
-  const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
+  const [isExpanded, setIsExpanded] = React.useState<boolean>(false); // Mặc định ẩn
+  const [hasVisitedDashboard, setHasVisitedDashboard] = React.useState<boolean>(false); // Theo dõi lần đầu
 
-  // Restore from localStorage
   React.useEffect(() => {
     const storedTab = localStorage.getItem('ribbonSelectedTab');
     const storedExpanded = localStorage.getItem('ribbonIsExpanded');
+    const storedVisited = localStorage.getItem('ribbonVisitedDashboard');
 
     if (storedTab) setTab(storedTab);
     if (storedExpanded !== null) setIsExpanded(storedExpanded === 'true');
+    if (storedVisited === 'true') setHasVisitedDashboard(true);
   }, []);
 
-  // Save state to localStorage
   React.useEffect(() => {
     localStorage.setItem('ribbonSelectedTab', tab);
     localStorage.setItem('ribbonIsExpanded', isExpanded.toString());
-  }, [tab, isExpanded]);
+    localStorage.setItem('ribbonVisitedDashboard', hasVisitedDashboard.toString());
+  }, [tab, isExpanded, hasVisitedDashboard]);
 
-  // Auto-collapse if currently collapsed and route changes
   React.useEffect(() => {
     const handleRouteChange = () => {
       const storedExpanded = localStorage.getItem('ribbonIsExpanded');
@@ -140,8 +141,25 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
         <Tabs
           activeKey={tab}
           onSelect={(k) => {
-            setTab(k || 'dashboard');
-            setIsExpanded(true); // mở rộng khi chọn tab
+            if (!k) return;
+
+            if (tab === k) {
+              setIsExpanded(prev => !prev); // toggle nếu nhấn lại
+            } else {
+              setTab(k);
+
+              if (k === 'dashboard') {
+                // Nếu đã từng vào thì mở, còn lần đầu thì ẩn
+                if (hasVisitedDashboard) {
+                  setIsExpanded(true);
+                } else {
+                  setIsExpanded(false);
+                  setHasVisitedDashboard(true);
+                }
+              } else {
+                setIsExpanded(true); // các tab khác luôn mở
+              }
+            }
           }}
           className="flex-grow-1"
         >
