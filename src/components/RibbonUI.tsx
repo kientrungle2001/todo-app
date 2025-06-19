@@ -18,9 +18,7 @@ export function RibbonUI() {
                     <Nav.Link eventKey="layout" onClick={() => setKey('layout')}>Layout</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <a href="/Table/admin_user/">
-                        <Nav.Link eventKey="user">User</Nav.Link>
-                    </a>
+                    <Nav.Link href="/Table/admin_user/" eventKey="user">User</Nav.Link>
                 </Nav.Item>
             </Nav>
 
