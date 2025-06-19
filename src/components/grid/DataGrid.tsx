@@ -148,13 +148,11 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
     return <Container fluid className="mb-0 mt-0">
         <Row className="g-0">
             <Col sm={12} md={12} lg={12}>
-                <FiltersGridCard filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
-            </Col>
-            <Col sm={12} md={12} lg={12}>
                 <Card className="border-0">
                     <Card.Body className="border-0 pt-0">
                         <DataGridTitle controller={controller} title={title} addNewLabel={addNewLabel} deleteSelectedsLabel={deleteSelectedsLabel} parentController={parentController}
                             parentSettings={parentSettings} parentItem={parentItem} defaultFilters={defaultFilters} />
+                        <FiltersGridCard filters={filters} sortOptions={sortOptions} filterData={filterData} setFilterData={setFilterData} searchText={searchText} setSearchText={setSearchText} sorts={sorts} setSorts={setSorts} defaultSorts={defaultSorts} />
                         <Form className="d-flex align-items-center gap-2 mb-2 d-none">
                             <Form.Select size="sm" value={bulkAction} onChange={(e) => setBulkAction(e.target.value)} style={{ maxWidth: '200px' }}>
                                 <option value="">-- Chọn hành động --</option>
