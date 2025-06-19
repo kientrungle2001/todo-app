@@ -23,6 +23,7 @@ interface DataGridProps {
     table: string;
     software?: number;
     site?: number;
+    viewMode?: string;
     columns: Column[];
     items: any[];
     totalItems: number;
@@ -57,7 +58,7 @@ interface DataGridProps {
     setSortData: (sortData: any) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onDeleteItem, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn, defaultFilters, parentController, parentSettings, parentItem, sortData, setSortData }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, viewMode, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onDeleteItem, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn, defaultFilters, parentController, parentSettings, parentItem, sortData, setSortData }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -184,22 +185,64 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {items.length ? items.map((item, index) =>
-                                        <tr key={index} onClick={() => toggleCheckedItem(item.id)} className={checkedItemIds.indexOf(item.id) !== -1 ? "table-success" : ""} style={{ "cursor": "pointer" }}>
-                                            <td style={{ width: "1%" }}>
-                                                <Form.Check type="checkbox" checked={checkedItemIds.indexOf(item.id) !== -1} onChange={() => toggleCheckedItem(item.id)} />
+                                    {viewMode === 'grid' ? (
+                                        <tr>
+                                            <td colSpan={columns.length + 1}>
+                                                <Row className="g-3">
+                                                    {items.length > 0 ? items.map((item, index) => (
+                                                        <Col key={index} sm={6} md={4} lg={4}>
+                                                            <Card
+                                                                className={`h-100 ${checkedItemIds.includes(item.id) ? 'border-success' : ''}`}
+                                                                onClick={() => toggleCheckedItem(item.id)}
+                                                                style={{ cursor: 'pointer' }}
+                                                            >
+                                                                <Card.Body>
+                                                                    <Form.Check
+                                                                        type="checkbox"
+                                                                        checked={checkedItemIds.includes(item.id)}
+                                                                        onChange={() => toggleCheckedItem(item.id)}
+                                                                    />
+                                                                    {columns.filter(column => !defaultFilters || !defaultFilters[column.index]).map(column => (
+                                                                        <div key={column.index} style={{ marginBottom: '0.5rem' }}>
+                                                                            <strong>{column.label || column.index}: </strong>
+                                                                            {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                                                                        </div>
+                                                                    ))}
+                                                                </Card.Body>
+                                                            </Card>
+                                                        </Col>
+                                                    )) : (
+                                                        <Col>
+                                                            <div className="text-center py-5">No data available.</div>
+                                                        </Col>
+                                                    )}
+                                                </Row>
                                             </td>
-                                            {columns.filter((column) => typeof defaultFilters == 'undefined' || typeof defaultFilters[column.index] == 'undefined').map(column => (
-                                                <td key={column.index} style={{ width: column.width, whiteSpace: (column.inputable) ? 'nowrap' : 'normal', wordBreak: 'break-all' }}>
-                                                    <div style={{ width: column.width ? (column.width == '1%' ? 'auto' : column.width) : 'auto', whiteSpace: (column.inputable) ? 'nowrap' : (column.width && column.width == '1%' ? 'nowrap' : 'normal'), wordBreak: 'break-all' }}>
-                                                        {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
-                                                    </div>
+                                        </tr>
+                                    ) : (
+                                        items.length ? items.map((item, index) =>
+                                            <tr key={index} onClick={() => toggleCheckedItem(item.id)} className={checkedItemIds.includes(item.id) ? "table-success" : ""} style={{ cursor: "pointer" }}>
+                                                <td style={{ width: "1%" }}>
+                                                    <Form.Check type="checkbox" checked={checkedItemIds.includes(item.id)} onChange={() => toggleCheckedItem(item.id)} />
                                                 </td>
-                                            ))}
-                                        </tr>)
-                                        : <tr>
-                                            <td colSpan={columns.length + 1} className="text-center">No data available.</td>
-                                        </tr>}
+                                                {columns.filter(column => !defaultFilters || !defaultFilters[column.index]).map(column => (
+                                                    <td key={column.index} style={{ width: column.width, whiteSpace: column.inputable ? 'nowrap' : 'normal', wordBreak: 'break-all' }}>
+                                                        <div style={{
+                                                            width: column.width ? (column.width === '1%' ? 'auto' : column.width) : 'auto',
+                                                            whiteSpace: column.inputable ? 'nowrap' : (column.width === '1%' ? 'nowrap' : 'normal'),
+                                                            wordBreak: 'break-word'
+                                                        }}>
+                                                            {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                                                        </div>
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={columns.length + 1} className="text-center">No data available.</td>
+                                            </tr>
+                                        )
+                                    )}
                                 </tbody>
                                 <tfoot>
                                     <tr>

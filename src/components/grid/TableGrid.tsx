@@ -121,7 +121,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
     return <>
         <DataGrid title={settings.title}
             controller={controller} table={settings.table} defaultSorts={settings.defaultSorts}
-            software={settings.software} site={settings.site}
+            software={settings.software} site={settings.site} viewMode={settings.viewMode}
             messages={messages} setMessages={setMessages}
             pagination={pagination} totalItems={totalItems} setCurrentPage={setCurrentPage} setPageSize={setPageSize}
             columns={settings.columns} filters={settings.filters}

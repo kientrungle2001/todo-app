@@ -77,6 +77,7 @@ const gridDetails: TableGridDetail[] = [
 ];
 export const QlhsRoomSettings: TableGridSettings = {
     title: gridTitle,
+    viewMode: 'grid',
     table: gridTable,
     joins: gridJoins,
     fields: gridFields,

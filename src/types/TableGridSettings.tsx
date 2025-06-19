@@ -17,6 +17,7 @@ export interface TableGridSettings {
     joins?: DataGridTableJoin[];
     software?: number;
     site?: number;
+    viewMode?: 'list' | 'grid';
     pagination: DataGridPagination;
     columns: DataGridColumn[];
     filters: DataGridFilterColumn[];

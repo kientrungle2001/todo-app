@@ -100,6 +100,7 @@ const gridDetails: TableGridDetail[] = [
 ];
 export const QlhsSubjectSettings: TableGridSettings = {
     title: gridTitle,
+    viewMode: 'grid',
     table: gridTable,
     joins: gridJoins,
     fields: gridFields,

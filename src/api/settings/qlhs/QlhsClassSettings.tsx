@@ -112,6 +112,7 @@ const gridDetails: TableGridDetail[] = [
 ];
 export const QlhsClassSettings: TableGridSettings = {
     title: gridTitle,
+    viewMode: 'grid',
     table: gridTable,
     joins: gridJoins,
     fields: gridFields,
