@@ -8,9 +8,9 @@ interface DashboardItemProps {
 const DashboardItem: React.FC<DashboardItemProps> = ({ item }) => {
     return <Card>
         <Card.Body>
-            <Link href={"/Table/" + item.admin_controller}>
+            <a href={"/Table/" + item.admin_controller}>
                 <Card.Img variant="top" src={replaceMediaUrl(item.thumbnail ? item.thumbnail : 'https://placehold.co/600x400/EEE/31343C/png?font=montserrat&text=' + encodeURIComponent(item.name))} />
-            </Link>
+            </a>
         </Card.Body>
         <Card.Footer>
             <div className="d-grid">

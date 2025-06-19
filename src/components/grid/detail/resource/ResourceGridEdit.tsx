@@ -34,7 +34,7 @@ const ResourceGridEdit: React.FC<ResourceGridEditProps> = ({ itemId, item, handl
   const handleAddQuestion = () => {
     resourceRepository.getResource(item.courseId, PmtvAdminCourseSettings).then((resp: any) => {
       const course = resp.data;
-      router.push(
+      window.location.href = (
         `/Table/admin_question2/add?backHref=/Table/admin_course_resource/${item.id}/detail` +
         `&field_categoryIds=${course.categoryId}` +
         `&field_courseId=${course.id}` +

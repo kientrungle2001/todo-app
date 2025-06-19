@@ -31,7 +31,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
-                    router.push('/login');
+                    window.location.href = ('/login');
                 }
             });
             if (response && response.data) {
@@ -88,7 +88,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
                 }).catch((error: any) => {
                     if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                         storage.clearTokenInfo();
-                        router.push('/login');
+                        window.location.href = ('/login');
                     }
                 });
                 fetchDirectoryContents(currentFolder); // Refresh the folder contents after upload
@@ -111,7 +111,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
-                    router.push('/login');
+                    window.location.href = ('/login');
                 }
             });
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after creation
@@ -132,7 +132,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
-                    router.push('/login');
+                    window.location.href = ('/login');
                 }
             });
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after deletion
@@ -157,7 +157,7 @@ export const ImageDialog: React.FC<ImageDialogProps> = ({ selectedImage, show, o
             }).catch((error: any) => {
                 if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                     storage.clearTokenInfo();
-                    router.push('/login');
+                    window.location.href = ('/login');
                 }
             });
             fetchDirectoryContents(currentFolder); // Refresh the folder contents after renaming

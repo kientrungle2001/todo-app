@@ -5,7 +5,7 @@ const MainMenu = () => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
-        router.push(path);
+        window.location.href = (path);
     };
 
     return (

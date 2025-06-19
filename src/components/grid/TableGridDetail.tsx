@@ -42,7 +42,7 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
 
     // Quay lại trang danh sách
     const handleBack = () => {
-        router.push(`/Table/${controller}`);
+        window.location.href = (`/Table/${controller}`);
     };
 
     return (

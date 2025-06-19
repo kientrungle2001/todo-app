@@ -29,7 +29,7 @@ export const DataGridTitle: React.FC<DataGridTitleProps> = ({ title, controller,
                 }
             }
         }
-        router.push(path);
+        window.location.href = (path);
     };
     const handleAddItem = () => { handleNavigation(`/Table/${controller}/add`); }
     return <Card.Title className="d-flex justify-content-between align-items-center">

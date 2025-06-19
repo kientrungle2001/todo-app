@@ -51,7 +51,7 @@ const TopMenu: React.FC<MenuProps> = ({ data }) => {
         <NavDropdown.Item className="mt-2 me-2" onClick={
             () => {
                 storage.clearTokenInfo();
-                router.push('/login');
+                window.location.href = ('/login');
             }
         }>Logout</NavDropdown.Item>
         <NavDropdown.Item className="mt-2 me-2" onClick={

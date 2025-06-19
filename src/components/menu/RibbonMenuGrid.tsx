@@ -27,7 +27,7 @@ const RibbonMenuGrid: React.FC<RibbonMenuGridProps> = () => {
     }).catch((error: any) => {
       if (error.response?.status === 401 && error.response.data.error === 'Invalid token') {
         storage.clearTokenInfo();
-        router.push('/login');
+        window.location.href = ('/login');
       }
     });
   }, []);

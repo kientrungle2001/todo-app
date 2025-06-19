@@ -71,7 +71,7 @@ const QuestionAnswerGridEdit: React.FC<Props> = ({
       .catch((err: any) => {
         if (err.response?.status === 401 && err.response.data.error === "Invalid token") {
           storage.clearTokenInfo();
-          router.push("/login");
+          window.location.href = ("/login");
         }
       });
   }, [item]);

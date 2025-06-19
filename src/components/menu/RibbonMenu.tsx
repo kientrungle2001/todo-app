@@ -55,7 +55,7 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
 
   const handleLogout = () => {
     storage.clearTokenInfo();
-    router.push('/login');
+    window.location.href = ('/login');
   };
 
   const handleCron = () => {
@@ -88,7 +88,7 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
                 <Button
                   variant="outline-primary"
                   size="sm"
-                  onClick={() => router.push(`/Table/${item.admin_controller}`)}>
+                  onClick={() => window.location.href = (`/Table/${item.admin_controller}`)}>
                   {item.name}
                 </Button>
               )}
@@ -113,14 +113,14 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {child.__children.map(grand => (
-                  <Dropdown.Item key={grand.id} onClick={() => router.push(`/Table/${grand.admin_controller}`)}>
+                  <Dropdown.Item key={grand.id} onClick={() => window.location.href = (`/Table/${grand.admin_controller}`)}>
                     {grand.name}
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
             </Dropdown>
           ) : (
-            <Dropdown.Item key={child.id} onClick={() => router.push(`/Table/${child.admin_controller}`)}>
+            <Dropdown.Item key={child.id} onClick={() => window.location.href = (`/Table/${child.admin_controller}`)}>
               {child.name}
             </Dropdown.Item>
           )
@@ -184,7 +184,7 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
               <Col xs="auto">
                 <Card className="p-2">
                   <Card.Body className="p-2">
-                    <Button variant="primary" size="sm" onClick={() => router.push('/')}>🏠 Dashboard</Button>
+                    <Button variant="primary" size="sm" onClick={() => window.location.href = ('/')}>🏠 Dashboard</Button>
                   </Card.Body>
                 </Card>
               </Col>

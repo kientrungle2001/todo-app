@@ -32,7 +32,7 @@ export const ColumnActionsRenderer = (column: Column, item: any, table: string,
             if (column.actionLinkFormat) {
                 link = column.actionLinkFormat(item, column, table) as string;
             }
-            return <Link href={link}>{column.label}</Link>
+            return <a href={link}>{column.label}</a>
         }
     }
 }

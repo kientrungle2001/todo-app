@@ -35,18 +35,18 @@ export const TableGridAdd: React.FC<TableGridProps> = ({ controller, settings })
         tableRepository.createItem(settings, fields, updatedItem).then(() => {
             setItem(updatedItem);
             if (query.backHref) {
-                router.push(query.backHref as string);
+                window.location.href = (query.backHref as string);
             } else {
-                router.push(`/Table/${controller}`);
+                window.location.href = (`/Table/${controller}`);
             }
         });
     }
 
     const handleCancelAdd = (): void => {
         if (query.backHref)
-            router.push(query.backHref as string);
+            window.location.href = (query.backHref as string);
         else
-            router.push(`/Table/${controller}`);
+            window.location.href = (`/Table/${controller}`);
     }
 
     // make bootstrap edit form here

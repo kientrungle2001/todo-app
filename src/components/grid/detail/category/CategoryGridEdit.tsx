@@ -31,11 +31,11 @@ const CategoryGridEdit: React.FC<Props> = ({ itemId, item, handleCancelEdit }) =
   }, [item]);
 
   const handleAddQuestion = () => {
-    router.push(`/Table/admin_question2/add?backHref=/Table/admin_category/${item.id}/detail&field_categoryIds=${item.parents}&field_status=1&field_questionType=1`);
+    window.location.href = (`/Table/admin_question2/add?backHref=/Table/admin_category/${item.id}/detail&field_categoryIds=${item.parents}&field_status=1&field_questionType=1`);
   };
 
   const handleAddTest = () => {
-    router.push(`/Table/admin_test/add?backHref=/Table/admin_category/${item.id}/detail&field_categoryIds=${item.parents}&field_status=1`);
+    window.location.href = (`/Table/admin_test/add?backHref=/Table/admin_category/${item.id}/detail&field_categoryIds=${item.parents}&field_status=1`);
   };
 
   return (

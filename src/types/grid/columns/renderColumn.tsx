@@ -21,7 +21,7 @@ export const renderColumn = (column: Column, item: any, table: string,
 ) => {
     const columnRenderer = getColumnRenderer(column.type ?? ColumnType.TEXT);
     if (column.linkFormat) {
-        return <Link style={{ textDecoration: "none" }} href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}</Link>;
+        return <a style={{ textDecoration: "none" }} href={column.linkFormat(item[column.index], item)}>{columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}</a>;
     }
     return columnRenderer(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem);
 };

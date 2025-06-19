@@ -28,7 +28,7 @@ export const CategoryGridDetail: FC<TableGridProps> = ({ controller, settings, i
     }
 
     const handleCancelEdit = (): void => {
-        router.push(`/Table/${controller}`);
+        window.location.href = (`/Table/${controller}`);
     }
 
     return <>

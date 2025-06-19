@@ -30,7 +30,7 @@ export const TopMenuGrid: React.FC<TopMenuGridProps> = ({ }): React.ReactElement
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                router.push('/login');
+                window.location.href = ('/login');
             }
         });
     }, []);

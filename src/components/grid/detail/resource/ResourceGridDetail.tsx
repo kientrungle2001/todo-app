@@ -28,7 +28,7 @@ export const ResourceGridDetail: React.FC<TableGridProps> = ({ controller, setti
     }
 
     const handleCancelEdit = (): void => {
-        router.push(`/Table/${controller}`);
+        window.location.href = (`/Table/${controller}`);
     }
 
     return <>

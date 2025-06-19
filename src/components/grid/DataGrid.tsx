@@ -68,7 +68,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                 path += `?backHref=/Table/${parentController}/${parentItem.id}/detail`;
             }
         }
-        router.push(path);
+        window.location.href = (path);
     };
     const handleEditItem = (item: any) => { handleNavigation(`/Table/${controller}/${item.id}/edit`); }
 

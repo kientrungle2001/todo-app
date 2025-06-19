@@ -16,7 +16,7 @@ export const useLoadTestQuestions = (itemId?: number) => {
       .catch((err: any) => {
         if (err.response?.status === 401 && err.response.data.error === "Invalid token") {
           storage.clearTokenInfo();
-          router.push("/login");
+          window.location.href = ("/login");
         }
       });
   }, [itemId]);

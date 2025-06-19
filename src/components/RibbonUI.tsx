@@ -18,9 +18,9 @@ export function RibbonUI() {
                     <Nav.Link eventKey="layout" onClick={() => setKey('layout')}>Layout</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Link href="/Table/admin_user/" passHref legacyBehavior>
+                    <a href="/Table/admin_user/" passHref legacyBehavior>
                         <Nav.Link eventKey="user">User</Nav.Link>
-                    </Link>
+                    </a>
                 </Nav.Item>
             </Nav>
 

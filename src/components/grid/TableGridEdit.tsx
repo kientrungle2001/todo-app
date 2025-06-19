@@ -38,18 +38,18 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
         tableRepository.updateItem(settings, itemId, fields, updatedItem).then(() => {
             setItem(updatedItem);
             if (router.query.backHref) {
-                router.push(router.query.backHref as string);
+                window.location.href = (router.query.backHref as string);
             } else {
-                router.push(`/Table/${controller}`);
+                window.location.href = (`/Table/${controller}`);
             }
         });
     }
 
     const handleCancelEdit = (): void => {
         if (router.query.backHref) {
-            router.push(router.query.backHref as string);
+            window.location.href = (router.query.backHref as string);
         } else {
-            router.push(`/Table/${controller}`);
+            window.location.href = (`/Table/${controller}`);
         }
     }
 

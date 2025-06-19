@@ -30,7 +30,7 @@ export const QuestionGridDetail: React.FC<TableGridProps> = ({ controller, setti
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                router.push('/login');
+                window.location.href = ('/login');
             }
         });
     }, [itemId]);
@@ -85,11 +85,11 @@ export const QuestionGridDetail: React.FC<TableGridProps> = ({ controller, setti
             }
         }).then(() => {
             setItem(updatedItem);
-            router.push(`/Table/${controller}`);
+            window.location.href = (`/Table/${controller}`);
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                router.push('/login');
+                window.location.href = ('/login');
             }
         }).catch((error: any) => {
             console.error("Error updating item:", error);
@@ -98,7 +98,7 @@ export const QuestionGridDetail: React.FC<TableGridProps> = ({ controller, setti
     }
 
     const handleCancelEdit = (): void => {
-        router.push(`/Table/${controller}`);
+        window.location.href = (`/Table/${controller}`);
     }
 
     return <>

@@ -74,11 +74,11 @@ export const TestGridDetail: React.FC<TableGridProps> = ({ controller, settings,
             }
         }).then(() => {
             setItem(updatedItem);
-            router.push(`/Table/${controller}`);
+            window.location.href = (`/Table/${controller}`);
         }).catch((error: any) => {
             if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
                 storage.clearTokenInfo();
-                router.push('/login');
+                window.location.href = ('/login');
             }
         }).catch((error: any) => {
             console.error("Error updating item:", error);
@@ -87,7 +87,7 @@ export const TestGridDetail: React.FC<TableGridProps> = ({ controller, settings,
     }
 
     const handleCancelEdit = (): void => {
-        router.push(`/Table/${controller}`);
+        window.location.href = (`/Table/${controller}`);
     }
 
     return <>
