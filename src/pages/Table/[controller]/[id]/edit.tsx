@@ -1,3 +1,4 @@
+'use client';
 import { getSettingsByController } from "@/api/settings";
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridSettings } from "@/types/TableGridSettings";

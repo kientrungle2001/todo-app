@@ -12,4 +12,5 @@ export interface TableGridDetail {
     settings?: TableGridSettings;
     controller?: string;
     customFilters?: (item: any) => any;
+    renderer?: (itemId: number, detail: TableGridDetail) => any;
 }

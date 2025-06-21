@@ -17,6 +17,8 @@ import { QlhsClassStudentSettings } from "./QlhsClassStudentSettings";
 import { QlhsClassScheduleSettings } from "./QlhsClassScheduleSettings";
 import { QlhsClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings";
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
+import { QlhsGridClassStudentSettings } from "./QlhsGridClassStudentSettings";
+import ClassAttendance from "@/components/class/ClassAttendance";
 
 const gridTitle: string = "Quản lý Lớp";
 const gridAddNewLabel: string = "Thêm Lớp";
@@ -84,6 +86,17 @@ const gridDetails: TableGridDetail[] = [
             { index: "name", label: "Tên Lớp", size: 4 },
             { ...DataGridColumns.status, size: 4 }
         ]
+    },
+    {
+        label: 'Điểm danh',
+        type: TableGridDetailType.CUSTOM,
+        controller: 'class_student',
+        referenceField: 'classId',
+        referenceType: 'equal',
+        settings: QlhsGridClassStudentSettings,
+        renderer: (itemId: number, detail: TableGridDetail) => {
+            return <ClassAttendance itemId={itemId} detail={detail} />
+        }
     },
     {
         label: 'Danh sách lớp',

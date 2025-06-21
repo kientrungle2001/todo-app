@@ -1,6 +1,6 @@
-import Link from 'next/link';
+'use client';
 import { useState } from 'react';
-import { Tab, Tabs, Button, ButtonGroup, Container, Row, Col, Card, Nav } from 'react-bootstrap';
+import { Button, ButtonGroup, Container, Row, Col, Card, Nav } from 'react-bootstrap';
 
 export function RibbonUI() {
     const [key, setKey] = useState<string>('home');

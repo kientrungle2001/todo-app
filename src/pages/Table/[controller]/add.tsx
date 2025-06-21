@@ -1,3 +1,4 @@
+'use client';
 import { NextNobelsFooter } from "@/components/footer/NextNobelsFooter";
 import { TableGridAddWrapper } from "@/components/grid/TableGridAddWrapper";
 import { useRouter } from "next/router";

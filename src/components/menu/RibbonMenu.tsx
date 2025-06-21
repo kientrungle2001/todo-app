@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Tabs, Tab, Button, Row, Col, Card, Container, Dropdown } from 'react-bootstrap';
 import { useRouter } from 'next/router';

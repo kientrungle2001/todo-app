@@ -1,4 +1,5 @@
 export enum TableGridDetailType {
     DETAIL = 'detail',
-    GRID = 'grid'
+    GRID = 'grid',
+    CUSTOM = 'custom'
 }

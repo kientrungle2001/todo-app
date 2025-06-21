@@ -1,15 +1,14 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import RibbonMenu from './RibbonMenu';
 import { getAxios } from '@/api/axiosInstance';
 import { buildTree } from '@/api/tree';
 import { storage } from '@/api/storage';
-import { useRouter } from 'next/router';
 
 interface RibbonMenuGridProps {}
 
 const RibbonMenuGrid: React.FC<RibbonMenuGridProps> = () => {
   const [data, setData] = useState<any[]>([]);
-  const router = useRouter();
 
   useEffect(() => {
     getAxios(window.location.hostname).post('/tables/admin_menu/map', {

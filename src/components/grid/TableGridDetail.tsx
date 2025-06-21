@@ -1,7 +1,6 @@
 'use client'; // cần thiết nếu bạn dùng Next.js App Router (với Server Component mặc định)
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { TableGridDetailType } from "@/types/detail/TableGridDetailType";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { TableGridDetail as GridDetail } from "@/types/detail/TableGridDetail";
@@ -16,7 +15,6 @@ interface TableGridDetailProps {
 }
 
 export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, settings, itemId }): React.ReactElement => {
-    const router = useRouter();
     const [activeKey, setActiveKey] = useState<string>("0");
 
     // Đọc hash từ URL khi load
@@ -73,14 +71,15 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
                         <Tab.Content>
                             {settings.details?.map((detail: GridDetail, index: number) => (
                                 <Tab.Pane eventKey={index.toString()} key={index}>
-                                    {detail.type === TableGridDetailType.GRID ? (
+                                    {detail.type === TableGridDetailType.GRID && (
                                         <TableGridDetailRendererGrid
                                             controller={controller}
                                             settings={settings}
                                             itemId={itemId}
                                             detail={detail}
                                         />
-                                    ) : (
+                                    )}
+                                    {detail.type === TableGridDetailType.DETAIL && (
                                         <TableGridDetailRendererDetail
                                             controller={controller}
                                             settings={settings}
@@ -88,6 +87,8 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
                                             detail={detail}
                                         />
                                     )}
+                                    {detail.type === TableGridDetailType.CUSTOM && detail.renderer &&
+                                        detail.renderer(itemId, detail)}
                                 </Tab.Pane>
                             ))}
                         </Tab.Content>
