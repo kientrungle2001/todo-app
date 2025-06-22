@@ -7,6 +7,15 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
     addressCenter: { index: "address", label: "Địa chỉ" },
     alias: { index: "alias", label: "Đường dẫn" },
     amount: { index: "amount", label: "Học phí", type: DataGridColumnType.CURRENCY },
+    attendanceClass: {
+        index: "attendanceClass", label: "Điểm danh",
+        sortable: false,
+        type: DataGridColumnType.ACTIONS,
+        actionType: DataGridColumnActionType.CUSTOM_LINK, 
+        actionLinkFormat: (item: any, column: DataGridColumn, table: string): string => {
+            return '/Table/class/' + item.id + '/detail#tab-attendance';
+        }
+    },
     attendanceDate: { index: "attendanceDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
     categoryId: {
         index: "categoryId",

@@ -53,7 +53,7 @@ export const classRepository = {
             page: 0, pageSize: 1000,
         });
     },
-    updateAttendance: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, studentId: string | number, attendanceDate: string, value:  string | number) => {
-
+    updateAttendance: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, studentId: string | number, attendanceDate: string, value: string | number) => {
+        return tableRepository.updateAttendance(settings, classId, paymentPeriodId, studentId, attendanceDate, value);
     }
 }

@@ -74,4 +74,11 @@ class Tables extends MY_Controller
         $response = $this->Table_model->update_column($table, $column, $values);
         $this->json($response);
     }
+
+    public function update_attendance($table, $classId, $paymentPeriodId)
+    {
+        $attendances = $this->input->post('attendances');
+        $response = $this->Table_model->update_attendance($table, $classId, $paymentPeriodId, $attendances);
+        $this->json($response);
+    }
 }

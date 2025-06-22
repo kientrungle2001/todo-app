@@ -31,6 +31,7 @@ const gridFields: string[] = ["id", "name", "subjectId", "teacherId", "centerId"
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
+    DataGridColumns.attendanceClass,
     DataGridColumns.nameClass,
     DataGridColumns.subjectId,
     DataGridColumns.teacherId,
@@ -89,6 +90,7 @@ const gridDetails: TableGridDetail[] = [
     },
     {
         label: 'Điểm danh',
+        index: 'attendance',
         type: TableGridDetailType.CUSTOM,
         controller: 'class_student',
         referenceField: 'classId',

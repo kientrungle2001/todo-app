@@ -107,7 +107,7 @@ class Table_model extends CI_Model
                     if ($value) {
                         $value = explode(',', $value);
                         $values = [];
-                        foreach($value as $v) {
+                        foreach ($value as $v) {
                             if ($v) {
                                 $values[] = $v;
                             }
@@ -161,6 +161,29 @@ class Table_model extends CI_Model
             $this->db->set($column['index'], $value, true);
             $this->db->where('id', $id);
             $this->db->update($table);
+        }
+        return ['message' => 'Update successful'];
+    }
+
+    public function update_attendance($table, $classId, $paymentPeriodId, $attendances)
+    {
+        foreach ($attendances as $attendance) {
+            if ($attendance['status'] === '') {
+                $attendance['status'] = 0;
+            }
+            $item = $this->db->query('select * from `' . $table . '` where classId=? and paymentPeriodId=? and studentId=? and attendanceDate=?', [$classId, $paymentPeriodId, $attendance['studentId'], $attendance['attendanceDate']])->row_array();
+            if ($item) {
+                $this->db->set('status', $attendance['status'])
+                    ->where('id', $item['id'])->update($table);
+            } else {
+                $this->db->insert($table, [
+                    'classId' => $classId,
+                    'paymentPeriodId' => $paymentPeriodId,
+                    'studentId' => $attendance['studentId'],
+                    'attendanceDate' => $attendance['attendanceDate'],
+                    'status' => $attendance['status']
+                ]);
+            }
         }
         return ['message' => 'Update successful'];
     }
@@ -312,8 +335,23 @@ class Table_model extends CI_Model
 
         if ($defaultFilters) {
             foreach ($defaultFilters as $key => $value) {
-                $filterConditions[] = "t.{$key} = ?";
-                $params[] = $value;
+                if (is_array($value)) {
+                    if (isset($value['from'])) {
+                        $filterConditions[] = "t.{$key} >= ?";
+                        $params[] = $value['from'];
+                    }
+                    if (isset($value['to'])) {
+                        $filterConditions[] = "t.{$key} <= ?";
+                        $params[] = $value['to'];
+                    }
+                    if (isset($value[0])) {
+                        $filterConditions[] = "t.{$key} in (?)";
+                        $params[] = $value;
+                    }
+                } else {
+                    $filterConditions[] = "t.{$key} = ?";
+                    $params[] = $value;
+                }
             }
         }
 
@@ -400,8 +438,23 @@ class Table_model extends CI_Model
 
         if ($defaultFilters) {
             foreach ($defaultFilters as $key => $value) {
-                $filterConditions[] = "t.{$key} = ?";
-                $params[] = $value;
+                if (is_array($value)) {
+                    if (isset($value['from'])) {
+                        $filterConditions[] = "t.{$key} >= ?";
+                        $params[] = $value['from'];
+                    }
+                    if (isset($value['to'])) {
+                        $filterConditions[] = "t.{$key} <= ?";
+                        $params[] = $value['to'];
+                    }
+                    if (isset($value[0])) {
+                        $filterConditions[] = "t.{$key} in (?)";
+                        $params[] = $value;
+                    }
+                } else {
+                    $filterConditions[] = "t.{$key} = ?";
+                    $params[] = $value;
+                }
             }
         }
 

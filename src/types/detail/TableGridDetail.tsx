@@ -6,6 +6,7 @@ import { TableGridSettings } from "../TableGridSettings";
 export interface TableGridDetail {
     type?: TableGridDetailType;
     label?: string;
+    index?: string;
     referenceField?: string;
     referenceType?: string;
     fields?: DataGridDetailField[];

@@ -72,6 +72,8 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
         }
         mapAttendances[studentId][attendanceDate] = value;
         setAttendances(mapAttendances);
+        let attendanceSettings = QlhsStudentAttendanceSettings;
+        classRepository.updateAttendance(attendanceSettings, itemId, selectedPeriodId, studentId, attendanceDate, value);
     }
     return <>
         <div className="d-flex align-items-center justify-content-between">
