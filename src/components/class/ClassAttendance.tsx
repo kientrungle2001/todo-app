@@ -75,6 +75,28 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
         let attendanceSettings = QlhsStudentAttendanceSettings;
         classRepository.updateAttendance(attendanceSettings, itemId, selectedPeriodId, studentId, attendanceDate, value);
     }
+    function handleAllAttendance(attendanceDate: string, value: string | number) {
+        let dateAttendances: any = [];
+        let mapAttendances: any = { ...attendances };
+        items.forEach((item: any) => {
+            let studentId = item.studentId;
+            if (typeof mapAttendances[studentId] === 'undefined') {
+                mapAttendances[studentId] = {};
+            }
+            mapAttendances[studentId][attendanceDate] = value;
+            dateAttendances.push({
+                studentId: studentId,
+                attendanceDate,
+                status: value,
+            });
+        });
+
+
+        setAttendances(mapAttendances);
+
+        let attendanceSettings = QlhsStudentAttendanceSettings;
+        classRepository.updateAttendances(attendanceSettings, itemId, selectedPeriodId, dateAttendances);
+    }
     return <>
         <div className="d-flex align-items-center justify-content-between">
             <h1>{detail.label}</h1>
@@ -96,7 +118,9 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
                     <th>Họ và tên</th>
                     {schedules.map((schedule) => {
                         return <th key={'schedule-' + schedule.id} className="text-center">{formatShortDate(new Date(schedule.studyDate))}<br />
-                            <select>
+                            <select onChange={(evt: any) => {
+                                handleAllAttendance(schedule.studyDate, evt.target.value);
+                            }}>
                                 <option value="">Chọn</option>
                                 <option value="1">CM</option>
                                 <option value="2">NTT</option>

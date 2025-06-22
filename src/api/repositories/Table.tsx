@@ -155,4 +155,22 @@ export const tableRepository = {
             alert("Error updating attendance. Please try again later.");
         });
     },
+    updateAttendances: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, attendances: any[]) => {
+        return getAxios(window.location.hostname).put(`/tables/${settings.table}/updateAttendance/${classId}/${paymentPeriodId}`, {
+            attendances,
+            settings: JSON.parse(JSON.stringify(settings))
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
+        }).catch((error: any) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                window.location.href = '/';
+            }
+        }).catch((error: any) => {
+            console.error("Error updating attendance:", error);
+            alert("Error updating attendance. Please try again later.");
+        });
+    },
 }
