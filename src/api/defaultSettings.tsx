@@ -42,3 +42,7 @@ export const replaceMediaUrl = (content: string) => {
         .replaceAll('http://nextnobels.com', '')
         .replaceAll('http://www.fulllooksongngu.com', '');
 }
+
+export const formatShortDate = (d: Date) => {
+    return d.getDate() + '/' + (d.getMonth() + 1);
+}
