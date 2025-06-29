@@ -173,4 +173,21 @@ export const tableRepository = {
             alert("Error updating attendance. Please try again later.");
         });
     },
+    calculateInfoForCreatePhieuThu: (classId: string | number, paymentPeriodId: string | number, studentId: string | number) => {
+        return getAxios(window.location.hostname).post(`/tables/classes/calculateInfoForCreatePhieuThu/${classId}/${paymentPeriodId}`, {
+            students: [{studentId}]
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
+        }).catch((error: any) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                window.location.href = '/';
+            }
+        }).catch((error: any) => {
+            console.error("Error getting information:", error);
+            alert("Error getting information. Please try again later.");
+        });
+    }
 }

@@ -96,7 +96,7 @@ const gridDetails: TableGridDetail[] = [
         referenceType: 'equal',
         settings: QlhsGridClassStudentSettings,
         renderer: (itemId: number, detail: TableGridDetail) => {
-            return <ClassAttendance itemId={itemId} detail={detail} />
+            return <ClassAttendance classId={itemId} detail={detail} />
         }
     },
     {

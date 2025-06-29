@@ -1,10 +1,10 @@
 import { TableGridSettings } from "@/types/TableGridSettings";
-import { getAxios } from "../axiosInstance";
-import { storage } from "../storage";
-import { DataGridColumn } from "@/types/grid/DataGridColumn";
 import { tableRepository } from "./Table";
 
 export const classRepository = {
+    getClass: (classId: number) => {
+        return tableRepository.get('classes', classId);
+    },
     getStudents: (settings: TableGridSettings, classId: number) => {
         return tableRepository.getList(settings, {
             settings: JSON.parse(JSON.stringify(settings)),
@@ -19,7 +19,8 @@ export const classRepository = {
         return tableRepository.getList(settings, {
             settings: JSON.parse(JSON.stringify(settings)),
             search: '', defaultFilters: JSON.parse(JSON.stringify({
-                classId: classId
+                classId: classId,
+                status: 1
             })),
             sorts: settings.defaultSorts,
             page: 0, pageSize: 100,
@@ -58,5 +59,8 @@ export const classRepository = {
     },
     updateAttendances: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, attendances: any[]) => {
         return tableRepository.updateAttendances(settings, classId, paymentPeriodId, attendances);
+    },
+    calculateInfoForCreatePhieuThu: (classId: string | number, paymentPeriodId: string | number, studentId: string | number) => {
+        return tableRepository.calculateInfoForCreatePhieuThu(classId, paymentPeriodId, studentId);
     } 
 }

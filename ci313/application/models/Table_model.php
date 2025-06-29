@@ -188,6 +188,100 @@ class Table_model extends CI_Model
         return ['message' => 'Update successful'];
     }
 
+    public function calculate_info_for_create_phieu_thu($table, $classId, $paymentPeriodId, $students)
+    {
+        $result = [];
+        foreach ($students as $student) {
+            $studentId = $student['studentId'];
+            $total_attendances = $this->getTotalAttendances($classId, $paymentPeriodId, $studentId);
+            $substract_attendances = $this->getSubtractAttendances($classId, $paymentPeriodId, $studentId);
+            $prev_subtract_attendances = $this->getPrevSubtractAttendances($classId, $paymentPeriodId, $studentId);
+            $result[$studentId] = [
+                'total_attendances' => $total_attendances,
+                'substract_attendances' => $substract_attendances,
+                'prev_subtract_attendances' => $prev_subtract_attendances
+            ];
+        }
+
+        return $result;
+    }
+
+    public function getTotalAttendances($classId, $paymentPeriodId, $studentId)
+    {
+        $period = $this->getOne('payment_period', $paymentPeriodId);
+        $attendances = $this->getMany('student_attendance', 'classId', $classId, array(
+            'studentId' => $studentId,
+            'attendanceDate >=' => $period['startDate'],
+            'attendanceDate <=' => $period['endDate'],
+        ));
+        return count($attendances);
+    }
+
+    public function getSubtractAttendances($classId, $paymentPeriodId, $studentId)
+    {
+        $period = $this->getOne('payment_period', $paymentPeriodId);
+        $attendances = $this->getMany('student_attendance', 'classId', $classId, array(
+            'studentId' => $studentId,
+            'attendanceDate >=' => $period['startDate'],
+            'attendanceDate <=' => $period['endDate'],
+            'status' => 4
+        ));
+        return count($attendances);
+    }
+
+    public function getPrevSubtractAttendances($classId, $paymentPeriodId, $studentId)
+    {
+        $prev_period = $this->getPrevPeroid($classId, $paymentPeriodId);
+        
+        if ($prev_period) {
+            $attendances = $this->getMany('student_attendance', 'classId', $classId, array(
+                'studentId' => $studentId,
+                'attendanceDate >=' => $prev_period['startDate'],
+                'attendanceDate <=' => $prev_period['endDate'],
+                'status' => 2
+            ));
+            return count($attendances);
+        }
+        return 0;
+    }
+
+    protected function getPrevPeroid($classId, $paymentPeriodId)
+    {
+        $period = $this->getOne('payment_period', $paymentPeriodId);
+        if ($period) {
+            $rows = $this->getMany('class_payment_period', 'classId', $classId);
+            $prev_periods = array();
+            foreach ($rows as $row) {
+                $prev_period = $this->getOne('payment_period', $row['paymentPeriodId']);
+                $prev_periods[] = $prev_period;
+            }
+            $prev_periods = array_filter($prev_periods, function($prev_period) use ($period) {
+                return $prev_period['status'] && $prev_period['startDate'] < $period['startDate'];
+            });
+            usort($prev_periods, function($a, $b) {
+                return $a['startDate'] > $b['startDate'] ? -1 : 1;
+            });
+            if (count($prev_periods)) {
+                return $prev_periods[0];
+            }
+        }
+        return null;
+    }
+
+    public function getOne($table, $id)
+    {
+        return $this->db->where('id', $id)->get($table)->row_array();
+    }
+
+    public function getMany($table, $field, $id, $conds = array())
+    {
+        $this->db->where($field, $id);
+        if ($conds) {
+            $this->db->where($conds);
+        }
+        return $this->db->get($table)->result_array();
+    }
+
     private function applySoftwareAndSiteFields(&$data, $table)
     {
         $software = $this->input->get_request_header('X-Api-Software');

@@ -73,7 +73,7 @@ const gridSortOptions: DataGridSortOption[] = [
     DataGridSortOptions.idDesc
 ];
 
-const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.ASCENDING }];
+const gridDefaultSorts: DataGridSort[] = [{ index: "startDate", direction: DataGridSortDirection.ASCENDING }];
 
 const gridAddFields: DataGridEditField[] = [];
 

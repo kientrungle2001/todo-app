@@ -8,30 +8,34 @@ import { classRepository } from "@/api/repositories/ClassRepository";
 import { QlhsStudentAttendanceSettings } from "@/api/settings/qlhs/QlhsStudentAttendanceSettings";
 
 interface ClassAttendanceProps {
-    itemId: number;
+    classId: number;
     detail: TableGridDetail;
 }
 
-const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => {
-    const [items, setItems] = useState<any[]>([]);
+const ClassAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail }) => {
+    const [klass, setKlass] = useState<any>();
+    const [students, setStudents] = useState<any[]>([]);
     const [periods, setPeriods] = useState<any[]>([]);
     const [schedules, setSchedules] = useState<any[]>([]);
     const [selectedPeriodId, setSelectedPeriodId] = useState<number | string>('');
     const [attendances, setAttendances] = useState<any>({});
     useEffect(() => {
         if (detail.settings) {
-            classRepository.getStudents(detail.settings, itemId)
+            classRepository.getClass(classId).then((resp: any) => {
+                setKlass(resp.data);
+            });
+            classRepository.getStudents(detail.settings, classId)
                 .then((resp: any) => {
-                    setItems(resp.data.items);
+                    setStudents(resp.data.items);
                 });
 
             let periodSettings = QlhsGridClassPaymentPeriodSettings;
-            classRepository.getPaymentPeriods(periodSettings, itemId)
+            classRepository.getPaymentPeriods(periodSettings, classId)
                 .then((resp: any) => {
                     setPeriods(resp.data.items);
                 });
         }
-    }, [itemId]);
+    }, [classId]);
 
     useEffect(() => {
         if (selectedPeriodId) {
@@ -47,12 +51,12 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
 
         let { startDate, endDate } = selectedPeriod;
         let scheduleSettings = QlhsGridClassScheduleSettings;
-        classRepository.getSchedules(scheduleSettings, itemId, startDate, endDate)
+        classRepository.getSchedules(scheduleSettings, classId, startDate, endDate)
             .then((resp: any) => {
                 setSchedules(resp.data.items);
             });
         let attendanceSettings = QlhsStudentAttendanceSettings;
-        classRepository.getAttendances(attendanceSettings, itemId, selectedPeriodId, startDate, endDate).then((resp: any) => {
+        classRepository.getAttendances(attendanceSettings, classId, selectedPeriodId, startDate, endDate).then((resp: any) => {
             let mapAttendances: any = {};
             resp.data.items.forEach((attendance: any) => {
                 let currentStudentId = attendance.studentId[0].id;
@@ -73,13 +77,13 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
         mapAttendances[studentId][attendanceDate] = value;
         setAttendances(mapAttendances);
         let attendanceSettings = QlhsStudentAttendanceSettings;
-        classRepository.updateAttendance(attendanceSettings, itemId, selectedPeriodId, studentId, attendanceDate, value);
+        classRepository.updateAttendance(attendanceSettings, classId, selectedPeriodId, studentId, attendanceDate, value);
     }
     function handleAllAttendance(attendanceDate: string, value: string | number) {
         let dateAttendances: any = [];
         let mapAttendances: any = { ...attendances };
-        items.forEach((item: any) => {
-            let studentId = item.studentId;
+        students.forEach((student: any) => {
+            let studentId = student.studentId;
             if (typeof mapAttendances[studentId] === 'undefined') {
                 mapAttendances[studentId] = {};
             }
@@ -95,7 +99,7 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
         setAttendances(mapAttendances);
 
         let attendanceSettings = QlhsStudentAttendanceSettings;
-        classRepository.updateAttendances(attendanceSettings, itemId, selectedPeriodId, dateAttendances);
+        classRepository.updateAttendances(attendanceSettings, classId, selectedPeriodId, dateAttendances);
     }
     return <>
         <div className="d-flex align-items-center justify-content-between">
@@ -125,6 +129,8 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
                                 <option value="1">CM</option>
                                 <option value="2">NTT</option>
                                 <option value="3">NKT</option>
+                                <option value="4">KTT</option>
+                                <option value="5">DH</option>
                             </select>
                         </th>
                     })}
@@ -132,23 +138,25 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ itemId, detail }) => 
                 </tr>
             </thead>
             <tbody>
-                {items.map(item => {
-                    return <tr key={'attendance-' + item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.studentName}</td>
+                {students.map(student => {
+                    return <tr key={'attendance-' + student.id}>
+                        <td>{student.id}</td>
+                        <td>{student.studentName}</td>
                         {schedules.map((schedule) => {
                             return <td key={'schedule-' + schedule.id} className="text-center">
-                                <select value={attendances[item.studentId] && attendances[item.studentId][schedule.studyDate]} onChange={(evt: any) => {
-                                    handleChangeAttendance(item.studentId, schedule.studyDate, evt.target.value);
+                                <select value={attendances[student.studentId] && attendances[student.studentId][schedule.studyDate]} onChange={(evt: any) => {
+                                    handleChangeAttendance(student.studentId, schedule.studyDate, evt.target.value);
                                 }}>
                                     <option value="">Chọn</option>
                                     <option value="1">CM</option>
                                     <option value="2">NTT</option>
                                     <option value="3">NKT</option>
+                                    <option value="4">KTT</option>
+                                    <option value="5">DH</option>
                                 </select>
                             </td>
                         })}
-                        {schedules.length > 0 && <td><a href={"/fee/create?classId=" + itemId + "&studentId=" + item.studentId + "&periodId=" + selectedPeriodId}>Tạo HĐ</a></td>}
+                        {schedules.length > 0 && <td><a href={"/fee/create?centerId=" + klass.centerId + "&subjectId=" + klass.subjectId + "&classId=" + classId + "&studentId=" + student.studentId + "&periodId=" + selectedPeriodId}>Tạo HĐ</a></td>}
                     </tr>
                 })}
             </tbody>

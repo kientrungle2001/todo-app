@@ -81,4 +81,10 @@ class Tables extends MY_Controller
         $response = $this->Table_model->update_attendance($table, $classId, $paymentPeriodId, $attendances);
         $this->json($response);
     }
+
+    public function calculate_info_for_create_phieu_thu($table, $classId, $paymentPeriodId) {
+        $students = $this->input->post('students');
+        $response = $this->Table_model->calculate_info_for_create_phieu_thu($table, $classId, $paymentPeriodId, $students);
+        $this->json($response);
+    }
 }
