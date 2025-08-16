@@ -37,6 +37,15 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
         referenceTable: "center",
         referenceField: "name"
     },
+    centerRooms: {
+        index: "centerRooms", label: "Phòng học",
+        sortable: false,
+        type: DataGridColumnType.ACTIONS,
+        actionType: DataGridColumnActionType.CUSTOM_LINK, 
+        actionLinkFormat: (item: any, column: DataGridColumn, table: string): string => {
+            return '/Table/center/' + item.id + '/detail#tab-rooms';
+        }
+    },
     classId: {
         index: "classId", label: "Lớp học",
         type: DataGridColumnType.REFERENCE,

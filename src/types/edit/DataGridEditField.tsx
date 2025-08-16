@@ -11,8 +11,11 @@ export interface DataGridEditField {
     size?: number;
     options?: any[];
     map?: any;
-    table?: string;
+    table?: string; // student
     tableCondition?: string | ((item: any, field?: DataGridEditField) => string | any);
+    tableField?: string; // studentId
+    linkTable?: string; // class_student
+    linkField?: string; // classId
     valueField?: string;
     labelField?: string;
     treeMode?: boolean;

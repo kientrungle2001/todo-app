@@ -32,10 +32,10 @@ export const TableGridEdit: React.FC<TableGridProps> = ({ controller, settings, 
 
 
     const handleUpdateItem = (updatedItem: any, fields: DataGridEditField[], event: React.FormEvent<HTMLFormElement>): void => {
-        console.log("Updating item:", updatedItem);
+        console.log("Updating item:", JSON.stringify(updatedItem));
         event.preventDefault();
-        console.log("Fields:", fields);
-        tableRepository.updateItem(settings, itemId, fields, updatedItem).then(() => {
+        tableRepository.updateItem(settings, itemId, fields, updatedItem).then((resp: any) => {
+            console.log('after update', resp.data);
             setItem(updatedItem);
             if (router.query.backHref) {
                 window.location.href = (router.query.backHref as string);

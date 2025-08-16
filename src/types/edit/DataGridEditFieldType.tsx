@@ -9,5 +9,6 @@ export enum DataGridEditFieldType {
     STATUS = "status",
     EDITOR = "editor",
     IMAGE = "image",
-    GRID = "grid"
+    GRID = "grid",
+    MANY = "many",
 }

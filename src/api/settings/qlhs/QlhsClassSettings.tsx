@@ -75,6 +75,7 @@ const gridAddFields: DataGridEditField[] = [
     DataGridEditFields.amount,
     DataGridEditFields.feeType,
     DataGridEditFields.classed,
+    DataGridEditFields.status,
 ];
 
 const gridDetails: TableGridDetail[] = [

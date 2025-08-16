@@ -9,6 +9,7 @@ import { buildTree, flatTree } from "@/api/tree";
 import $ from "jquery";
 import 'select2';
 import { tableRepository } from "@/api/repositories/Table";
+import { setTimeout } from "timers";
 
 interface FiltersGridProps {
   filters: DataGridFilterColumn[];
@@ -86,8 +87,17 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
   const [maps, setMaps] = useState<{ [key: string]: any[] }>({});
   const router = useRouter();
 
-  const FilterTextRenderer = (filter: DataGridFilterColumn) => (
-    <Form.Control
+  const FilterTextRenderer = (filter: DataGridFilterColumn) => {
+    useEffect(() => {
+      if (typeof router.query[filter.index] !== 'undefined' &&
+        (router.query[filter.index] as string).trim() !== '') {
+        console.log('router.query', router.query[filter.index]);
+        setTimeout(() => {
+          setFilterData({ ...filterData, [filter.index]: router.query[filter.index] });
+        }, 100);
+      }
+    }, [filter.index]);
+    return <Form.Control
       size="sm"
       type="text"
       value={filterData?.[filter.index] || ''}
@@ -96,7 +106,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
       }
       placeholder={filter.label}
     />
-  );
+  };
 
   const FilterNumberRenderer = (filter: DataGridFilterColumn) => (
     <>
@@ -126,6 +136,15 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
   );
 
   const FilterSelectRenderer = (filter: DataGridFilterColumn) => {
+    useEffect(() => {
+      if (typeof router.query[filter.index] !== 'undefined' &&
+        (router.query[filter.index] as string).trim() !== '') {
+        let updatedFilterData = { ...filterData };
+        updatedFilterData[filter.index] = router.query[filter.index];
+        setFilterData(updatedFilterData);
+      }
+      console.log('router.query', router.query);
+    }, []);
     const options = filter.options || maps[filter.index] || [];
     return (
       <SelectFilter
@@ -151,8 +170,17 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
     />
   );
 
-  const FilterStatusRenderer = (filter: DataGridFilterColumn) => (
-    <Form.Select
+  const FilterStatusRenderer = (filter: DataGridFilterColumn) => {
+    useEffect(() => {
+      if (typeof router.query[filter.index] !== 'undefined' &&
+        (router.query[filter.index] as string).trim() !== '') {
+        console.log('router.query', router.query[filter.index]);
+        setTimeout(() => {
+          setFilterData({ ...filterData, [filter.index]: router.query[filter.index] });
+        }, 100);
+      }
+    }, [filter.index]);
+    return <Form.Select
       size="sm"
       value={filterData?.[filter.index] || ''}
       onChange={(e) => {
@@ -165,7 +193,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
       <option value={1}>{filter.map?.[1] || 'Active'}</option>
       <option value={0}>{filter.map?.[0] || 'Inactive'}</option>
     </Form.Select>
-  );
+  };
 
   const FilterUndefinedRenderer = () => '-';
 

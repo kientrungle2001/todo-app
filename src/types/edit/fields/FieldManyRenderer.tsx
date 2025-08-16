@@ -6,7 +6,7 @@ import { DataGridEditMode as EditMode } from "@/types/edit/DataGridEditMode";
 import { useRouter } from "next/router";
 import { tableRepository } from "@/api/repositories/Table";
 
-export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any, mode: EditMode) => {
+export const FieldManyRenderer = (field: DataGridEditField, item: any, setItem: (item: any) => void, maps: any, mode: EditMode) => {
 
     const [label, setLabel] = useState<string>('');
     const selectRef: any = {};
@@ -33,11 +33,7 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
                 const selectedValues = $select.val();
                 if (typeof selectedValues !== 'undefined') {
                     let updatedItem = { ...item };
-                    if (field.multiple) {
-                        updatedItem[field.index] = (selectedValues as string[])?.join(',');
-                    } else {
-                        updatedItem[field.index] = '' + selectedValues;
-                    }
+                    updatedItem[field.index] = (selectedValues as string[])?.join(',');
                     setItem(updatedItem);
                 }
             });
@@ -56,8 +52,8 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
 
     useEffect(() => {
         if (mode == EditMode.ADD
-        && typeof item[field.index] !== 'undefined'
-        && typeof router.query['field_' + field.index] !== 'undefined') {
+            && typeof item[field.index] !== 'undefined'
+            && typeof router.query['field_' + field.index] !== 'undefined') {
             tableRepository.get(field.table ?? '', item[field.index]).then((resp: any) => {
                 if (resp) {
                     setLabel(resp.data[field.labelField ?? '']);
@@ -77,24 +73,15 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
     if (field.options) {
         return (
             <Form.Select
-                multiple={field.multiple}
-                htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
-                value={field.multiple ?
-                    (item[field.index] ? '' + item[field.index] : '').split(',')
-                    :
-                    '' + [item[field.index]]}
+                multiple={true}
+                htmlSize={field.multipleSize ?? 3}
+                value={(item[field.index] ? '' + item[field.index] : '').split(',')}
                 ref={selectRef[field.index]}
                 onChange={(event) => {
-                    if (field.multiple) {
-                        const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = selectedOptions.join(',');
-                        setItem(updatedItem);
-                    } else {
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = event.target.value;
-                        setItem(updatedItem);
-                    }
+                    const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                    let updatedItem = { ...item };
+                    updatedItem[field.index] = selectedOptions.join(',');
+                    setItem(updatedItem);
                 }}
             >
                 <option value={''}>Select</option>
@@ -108,24 +95,16 @@ export const FieldSelectRenderer = (field: DataGridEditField, item: any, setItem
     } else if (typeof maps[field.index] === 'object') {
         return (
             <Form.Select
-                multiple={field.multiple}
-                htmlSize={field.multiple ? (field.multipleSize ?? 3) : 1}
-                value={field.multiple ?
-                    (item[field.index] ? '' + item[field.index] : '').split(',')
-                    :
-                    '' + [item[field.index]]}
+                multiple={true}
+                htmlSize={field.multipleSize ?? 3}
+                value={(item[field.index] ? '' + item[field.index] : '').split(',')}
                 ref={selectRef[field.index]}
                 onChange={(event) => {
-                    if (field.multiple) {
-                        const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = selectedOptions.join(',');
-                        setItem(updatedItem);
-                    } else {
-                        let updatedItem = { ...item };
-                        updatedItem[field.index] = event.target.value;
-                        setItem(updatedItem);
-                    }
+                    const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+                    let updatedItem = { ...item };
+                    updatedItem[field.index] = selectedOptions.join(',');
+                    setItem(updatedItem);
+
                 }}
             >
                 <option value={0}>Select</option>

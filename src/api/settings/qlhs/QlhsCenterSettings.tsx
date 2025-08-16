@@ -30,6 +30,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.codeCenter,
     DataGridColumns.addressCenter,
     DataGridColumns.status,
+    DataGridColumns.centerRooms,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
 ];
@@ -67,6 +68,7 @@ const gridDetails: TableGridDetail[] = [
     {
         label: 'Danh sách phòng học',
         type: TableGridDetailType.GRID,
+        index: 'rooms',
         controller: 'room',
         referenceField: 'centerId',
         referenceType: 'equal',

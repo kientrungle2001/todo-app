@@ -11,6 +11,7 @@ import { FieldStatusRenderer } from "./FieldStatusRenderer";
 import { FieldTextRenderer } from "./FieldTextRenderer";
 import { FieldUndefinedRenderer } from "./FieldUndefinedRenderer";
 import { DataGridEditMode as EditMode } from "@/types/edit/DataGridEditMode";
+import { FieldManyRenderer } from "./FieldManyRenderer";
 
 export const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
     switch (fieldType) {
@@ -32,6 +33,8 @@ export const getFieldRenderer = (fieldType: DataGridEditFieldType) => {
             return FieldImageRenderer;
         case DataGridEditFieldType.GRID:
             return FieldGridRenderer;
+        case DataGridEditFieldType.MANY:
+            return FieldManyRenderer;
         default:
             return FieldUndefinedRenderer;
     }
