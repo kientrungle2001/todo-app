@@ -206,6 +206,90 @@ class Table_model extends CI_Model
         return $result;
     }
 
+    public function create_phieu_thu($table, $classId, $paymentPeriodId, $students, $orderData)
+    {
+        $result = [];
+        $info = $this->calculate_info_for_create_phieu_thu($table, $classId, $paymentPeriodId, $students);
+
+        foreach ($info as $studentId => $orderInfo) {
+            return $this->createOrderPhieuThu($classId, $paymentPeriodId, $studentId, $orderInfo, $orderData);
+        }
+
+        return $result;
+    }
+
+    public function createOrderPhieuThu($classId, $paymentPeriodId, $studentId, $orderInfo, $orderData)
+    {
+        $class = $this->getOne('classes', $classId);
+        $subject = null;
+        if ($class['subjectId'])
+            $subject = $this->getOne('subject', $class['subjectId']);
+        $period = $this->getOne('payment_period', $paymentPeriodId);
+        $student = $this->getOne('student', $studentId);
+        $reason = 'Nộp tiền lớp ' . $class['name'];
+        if ($subject) $reason .= ' môn ' . $subject['name'];
+        if ($period) $reason .= ', ' . $period['name'];
+        $amount = $class['amount'] * ($orderInfo['total_attendances']
+            - $orderInfo['substract_attendances']
+            - $orderInfo['prev_subtract_attendances']);
+        $order = array(
+            'orderType' => 'invoice',
+            'type' => 'student',
+            'amount' => $amount,
+            'reason' => $reason,
+            'createdTime' => time(),
+            'created' => date('Y-m-d H:i:s'),
+            'bookNum' => 245,
+            'noNum' => 48,
+            'debit' => 0,
+            'name' => $student['name'],
+            'address' => $student['address'],
+            'phone' => $student['phone'],
+            'additional' => '',
+            'invoiceNum' => '0',
+            'status' => '',
+            'studentId' => $studentId,
+            'teacherId' => 0,
+            'partnerId' => 0,
+            'paymentType' => 1,
+            'adviceId' => 0,
+            'paymentNote' => '',
+            'bank' => '',
+            'transactionCode' => '',
+            'shipperId' => 0,
+            'shipCode' => '',
+            'gift_amount' => 0
+        );
+        $order_detail = array(
+            'orderId' => 0,
+            'studentId' => $studentId,
+            'classId' => $classId,
+            'amount' => $amount,
+            'payment_periodId' => $paymentPeriodId,
+            'createdTime' => time(),
+            'created' => date('Y-m-d H:i:s'),
+            'bookNum' => 0,
+            'noNum' => 0,
+            'debit' => 0,
+            'name' => $student['name'],
+            'address' => $student['address'],
+            'phone' => $student['phone'],
+            'reason' => $reason,
+            'additional' => '',
+            'invoiceNum' => '0',
+            'muster' => $orderInfo['total_attendances'] - $orderInfo['substract_attendances'],
+            'discount' => $orderInfo['prev_subtract_attendances'] * $class['amount'],
+            'total_before_discount' => ($orderInfo['total_attendances'] - $orderInfo['substract_attendances']) * $class['amount'],
+            'price' => intval($class['amount']),
+            'discount_reason' => $orderInfo['prev_subtract_attendances'] ? 'Trừ T.trước ' . $orderInfo['prev_subtract_attendances'] . ' buổi' : '',
+            'status' => '',
+            'gift_amount' => '',
+            'unit' => ''
+        );
+        $order['detail'] = $order_detail;
+        return $order;
+    }
+
     public function getTotalAttendances($classId, $paymentPeriodId, $studentId)
     {
         $period = $this->getOne('payment_period', $paymentPeriodId);
@@ -232,7 +316,7 @@ class Table_model extends CI_Model
     public function getPrevSubtractAttendances($classId, $paymentPeriodId, $studentId)
     {
         $prev_period = $this->getPrevPeroid($classId, $paymentPeriodId);
-        
+
         if ($prev_period) {
             $attendances = $this->getMany('student_attendance', 'classId', $classId, array(
                 'studentId' => $studentId,
@@ -255,10 +339,10 @@ class Table_model extends CI_Model
                 $prev_period = $this->getOne('payment_period', $row['paymentPeriodId']);
                 $prev_periods[] = $prev_period;
             }
-            $prev_periods = array_filter($prev_periods, function($prev_period) use ($period) {
+            $prev_periods = array_filter($prev_periods, function ($prev_period) use ($period) {
                 return $prev_period['status'] && $prev_period['startDate'] < $period['startDate'];
             });
-            usort($prev_periods, function($a, $b) {
+            usort($prev_periods, function ($a, $b) {
                 return $a['startDate'] > $b['startDate'] ? -1 : 1;
             });
             if (count($prev_periods)) {

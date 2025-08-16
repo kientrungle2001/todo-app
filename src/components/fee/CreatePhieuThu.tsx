@@ -18,6 +18,9 @@ const FeeCreatePhieuThu: React.FC<FeeCreatePhieuThuProps> = ({ centerId, subject
     const [student, setStudent] = useState<any>();
     const [period, setPeriod] = useState<any>();
     const [info, setInfo] = useState<any>();
+    const [orderDate, setOrderDate] = useState<string>('');
+    const [additional, setAdditional] = useState<string>('');
+    const [invoiceNum, setInvoiceNum] = useState<string>('');
     useEffect(() => {
         tableRepository.get('center', parseInt(centerId as string)).then((resp: any) => {
             setCenter(resp.data);
@@ -39,17 +42,21 @@ const FeeCreatePhieuThu: React.FC<FeeCreatePhieuThuProps> = ({ centerId, subject
                 setInfo(resp.data);
             });
     }, [centerId, subjectId, classId, studentId, periodId]);
+    
+    function createPhieuThu() {
+        classRepository.createPhieuThu(classId, periodId, studentId, {
+            orderDate, additional, invoiceNum
+        }).then((resp: any) => {
+            console.log(resp.data);
+            // window.location.href = '/fee/phieu_thu/' + resp.data.id;
+        });
+    }
+
     return <>
-        <form method="post">
-            <input type="hidden" name="multiple" value="1" />
-            <input type="hidden" name="classIds" value="197" />
-            <input type="hidden" name="amounts" value="1040000" />
-            <input type="hidden" name="musters" value="8" />
-            <input type="hidden" name="discounts" value="0" />
-            <input type="hidden" name="discount_reasons" value=" " />
-            <input type="hidden" name="prices" value="130000" />
-            <input type="hidden" name="studentId" value="3150" />
-            <input type="hidden" name="payment_periodId" value="26" />
+        <form method="post" onSubmit={(evt:any) => {
+            evt.preventDefault();
+            createPhieuThu();
+        }}>
             <div className="order_wrapper">
                 <div className="order_header">
                     <div className="order_company">
@@ -65,7 +72,7 @@ const FeeCreatePhieuThu: React.FC<FeeCreatePhieuThuProps> = ({ centerId, subject
                     <div className="order_date">
                         <div className="order_line">
                             <strong className="order_line_label order_line_label_header">Phiếu Thu</strong><br />
-                            <span className="order_line_value">Ngày <input className="easyui-datebox" type="text" name="created" value="06/23/2025" /></span>
+                            <span className="order_line_value">Ngày <input className="easyui-datebox" type="date" name="created" value={orderDate} onChange={(evt: any) => setOrderDate(evt.target.value)} /></span>
                         </div>
                     </div>
                     <div className="order_no">
@@ -137,16 +144,16 @@ const FeeCreatePhieuThu: React.FC<FeeCreatePhieuThuProps> = ({ centerId, subject
                     <div className="order_line">
                         <span className="order_line_label">Số tiền: </span>
                         <span className="order_line_value"><input type="text" name="amount" value={klass && info && (
-                                    (info[studentId].total_attendances - info[studentId].substract_attendances
-                                        - info[studentId].prev_subtract_attendances
-                                    ) * klass.amount
-                                )} /></span>
+                            (info[studentId].total_attendances - info[studentId].substract_attendances
+                                - info[studentId].prev_subtract_attendances
+                            ) * klass.amount
+                        )} /></span>
                     </div>
                     <div className="order_line">
                         <span className="order_line_label">Kèm theo: </span>
-                        <span className="order_line_value"><input type="text" name="additional" /></span>
+                        <span className="order_line_value"><input type="text" name="additional" value={additional} onChange={(evt: any) => setAdditional(evt.target.value)} /></span>
                         <span className="order_line_label">Chứng từ kế toán: </span>
-                        <span className="order_line_value"><input type="text" name="invoiceNum" /></span>
+                        <span className="order_line_value"><input type="text" name="invoiceNum" value={invoiceNum} onChange={(evt: any) => setInvoiceNum(evt.target.value)} /></span>
                     </div>
                 </div>
 
@@ -180,7 +187,7 @@ const FeeCreatePhieuThu: React.FC<FeeCreatePhieuThuProps> = ({ centerId, subject
             </div>
             <div className="form_action">
                 <input type="submit" value="Gửi" />
-                <a href="/Table/class">Quay lại</a>
+                <a href={"/Table/class/" + classId + "/detail/#tab-attendance"}>Quay lại</a>
             </div>
         </form>
     </>

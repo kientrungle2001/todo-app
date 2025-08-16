@@ -62,5 +62,10 @@ export const classRepository = {
     },
     calculateInfoForCreatePhieuThu: (classId: string | number, paymentPeriodId: string | number, studentId: string | number) => {
         return tableRepository.calculateInfoForCreatePhieuThu(classId, paymentPeriodId, studentId);
-    } 
+    },
+    createPhieuThu(classId: string | number, paymentPeriodId: string | number, studentId: string | number, orderData: {
+        orderDate: string | number, additional: string | number, invoiceNum: string | number
+    }) {
+        return tableRepository.createPhieuThu(classId, paymentPeriodId, studentId, orderData);
+    }
 }

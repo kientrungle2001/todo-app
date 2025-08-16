@@ -175,7 +175,27 @@ export const tableRepository = {
     },
     calculateInfoForCreatePhieuThu: (classId: string | number, paymentPeriodId: string | number, studentId: string | number) => {
         return getAxios(window.location.hostname).post(`/tables/classes/calculateInfoForCreatePhieuThu/${classId}/${paymentPeriodId}`, {
-            students: [{studentId}]
+            students: [{ studentId }]
+        }, {
+            headers: {
+                'Authorization': `Bearer ${storage.get('token') || ''}`
+            }
+        }).catch((error: any) => {
+            if (error.response && error.response.status === 401 && error.response.data.error === 'Invalid token') {
+                storage.clearTokenInfo();
+                window.location.href = '/';
+            }
+        }).catch((error: any) => {
+            console.error("Error getting information:", error);
+            alert("Error getting information. Please try again later.");
+        });
+    },
+    createPhieuThu(classId: string | number, paymentPeriodId: string | number, studentId: string | number, orderData: {
+        orderDate: string | number, additional: string | number, invoiceNum: string | number
+    }) {
+        return getAxios(window.location.hostname).post(`/tables/classes/createPhieuThu/${classId}/${paymentPeriodId}`, {
+            students: [{ studentId }],
+            orderData
         }, {
             headers: {
                 'Authorization': `Bearer ${storage.get('token') || ''}`

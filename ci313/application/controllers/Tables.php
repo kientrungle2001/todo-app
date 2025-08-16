@@ -87,4 +87,11 @@ class Tables extends MY_Controller
         $response = $this->Table_model->calculate_info_for_create_phieu_thu($table, $classId, $paymentPeriodId, $students);
         $this->json($response);
     }
+
+    public function create_phieu_thu($table, $classId, $paymentPeriodId) {
+        $students = $this->input->post('students');
+        $orderData = $this->input->post('orderData');
+        $response = $this->Table_model->create_phieu_thu($table, $classId, $paymentPeriodId, $students, $orderData);
+        $this->json($response);
+    }
 }
