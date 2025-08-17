@@ -18,7 +18,7 @@ import { QlhsClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { QlhsGridClassStudentSettings } from "./QlhsGridClassStudentSettings";
 import ClassAttendance from "@/components/class/ClassAttendance";
-import { Form } from "react-bootstrap";
+import { Card, Form } from "react-bootstrap";
 import { renderColumn } from "@/types/grid/columns/renderColumn";
 
 const gridTitle: string = "Quản lý Lớp";
@@ -48,18 +48,65 @@ const gridColumns: DataGridColumn[] = [
 ];
 
 const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGridColumn[], defaultFilters: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: DataGridColumn, item: any) => void, handleEditItem: (item: any) => void, onDeleteItem: (item: any) => void, handleAddChildItem: (item: any, column: DataGridColumn) => void, toggleCheckedItem: (id: number) => void) => {
+    const renderColumnName = (name: string, className?: string, withLabel?: Boolean) => {
+        return columns
+            .filter(column => !defaultFilters || !defaultFilters[column.index])
+            .filter(column => column.index == name)
+            .map(column => (
+                <div key={column.index} className={className}>
+                    {withLabel ? <strong>{column.label || column.index}: </strong> : null}
+                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                </div>
+            ));
+    }
+    const renderColumnsExclude = (names: string[]) => {
+        return columns
+            .filter(column => !defaultFilters || !defaultFilters[column.index])
+            .filter(column => !names.includes(column.index))
+            .map(column => (
+                <div key={column.index} style={{ marginBottom: '0.5rem' }}>
+                    <strong>{column.label || column.index}: </strong>
+                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                </div>
+            ))
+    }
     return <>
-        <Form.Check
-            type="checkbox"
-            checked={checkedItemIds.includes(item.id)}
-            onChange={() => toggleCheckedItem(item.id)}
-        />
-        {columns.filter(column => !defaultFilters || !defaultFilters[column.index]).map(column => (
-            <div key={column.index} style={{ marginBottom: '0.5rem' }}>
-                <strong>{column.label || column.index}: </strong>
-                {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+        <Card.Title className="d-flex align-items-center">
+            <Form.Check
+                type="checkbox"
+                checked={checkedItemIds.includes(item.id)}
+                onChange={() => toggleCheckedItem(item.id)}
+            />
+            <div className="ms-1">
+                # {item.id}
             </div>
-        ))}
+            {renderColumnName('name', 'ms-1')}
+        </Card.Title>
+        <div className="d-flex align-items-center justify-content-between mb-2">
+            {renderColumnName('centerId', undefined, false)}
+            {renderColumnName('roomId', undefined, true)}
+        </div>
+        <div className="d-flex align-items-center justify-content-between mb-2">
+            {renderColumnName('subjectId', undefined, false)}
+            {renderColumnName('teacherId', undefined, true)}
+        </div>
+        <div className="d-flex align-items-center justify-content-between mb-2">
+            {renderColumnName('startDate', undefined, true)} {' ===> '} 
+            {renderColumnName('endDate', undefined)}
+        </div>
+        <div className="d-flex align-items-center justify-content-between mb-2">
+            {renderColumnName('amount', undefined, true)} 
+            {renderColumnName('feeType', undefined)}
+        </div>
+
+        {renderColumnsExclude([
+            'id', 'name', 'centerId', 'roomId', 'subjectId', 'teacherId', 'startDate', 'endDate', 'amount', 'feeType', 'status', 'editAction', 'deleteAction'
+        ])}
+        <div className="d-flex align-items-center justify-content-between">
+            {renderColumnName('editAction')}
+            {renderColumnName('status', undefined, false)}
+            {renderColumnName('deleteAction')}
+        </div>
     </>
 }
 
