@@ -66,6 +66,17 @@ class DataGridEditField {
     public $table;
     public $valueField;
     public $labelField;
+    public $tableCondition;
+    public $tableField;
+    public $linkTable; // class_student
+    public $linkField; // classId
+    public $treeMode;
+    public $parentField;
+    public $orderBy;
+    public $multiple;
+    public $multipleSize;
+    public $select2;
+    public $tabGroup;
 }
 
 class DataGridPagination {

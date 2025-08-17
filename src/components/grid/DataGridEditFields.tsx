@@ -130,6 +130,7 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
         label: "Phòng học",
         type: DataGridEditFieldType.SELECT,
         table: "room",
+        tableCondition: (item) => "centerId = '" + item.centerId + "'",
         valueField: "id",
         labelField: "name",
         size: 6
@@ -149,6 +150,7 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
         label: "Giáo viên",
         type: DataGridEditFieldType.SELECT,
         table: "teacher",
+        tableCondition: (item) => "subjectId = '" + item.subjectId + "'",
         valueField: "id",
         labelField: "name",
         size: 6

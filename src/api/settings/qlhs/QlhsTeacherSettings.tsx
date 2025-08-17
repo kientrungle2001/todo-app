@@ -14,6 +14,7 @@ import { TableGridDetail } from "@/types/detail/TableGridDetail";
 import { TableGridDetailType } from "@/types/detail/TableGridDetailType";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { QlhsClassSettings } from "./QlhsClassSettings";
+import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 
 const gridTitle: string = "Quản lý Giáo viên";
 const gridAddNewLabel: string = "Thêm Giáo viên";
@@ -55,9 +56,9 @@ const gridAddFields: DataGridEditField[] = [
         index: 'name',
         label: 'Tên Giáo viên',
         type: DataGridEditFieldType.TEXT,
-        tabGroup: '0info',
         size: 6
     },
+    DataGridEditFields.subjectId
 ];
 
 const gridDetails: TableGridDetail[] = [

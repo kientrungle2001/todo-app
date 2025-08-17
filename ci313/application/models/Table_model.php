@@ -93,7 +93,25 @@ class Table_model extends CI_Model
     public function detail($table, $id, $settings)
     {
         // TODO: detail by settings
+        $settingsObj = new DataGridSettings();
+        populateFromRequest($settingsObj, $settings);
         $item = $this->db->query("SELECT * FROM `$table` WHERE id =?", [$id])->row_array();
+        foreach ($settingsObj->addFields as $addField) {
+            if ($addField->type == 'many') {
+                $linkTable = $addField->linkTable;
+                $linkField = $addField->linkField;
+                $tableField = $addField->tableField;
+                $rows = $this->db->query("SELECT * FROM `$linkTable` WHERE `$linkField` =?", [$id])->result_array();
+                $valueIds = [];
+                foreach ($rows as $row) {
+                    $valueIds[] = $row[$tableField];
+                }
+                $item[$addField->index] = implode(',', $valueIds);
+                if ($item[$addField->index]) {
+                    $item[$addField->index] = ',' . $item[$addField->index] . ',';
+                }
+            }
+        }
         $cast = $this->casting_numeric_fields([$item]);
         return isset($cast[0]) ? $cast[0] : null;
     }
@@ -102,27 +120,50 @@ class Table_model extends CI_Model
     {
         $data = [];
         foreach ($fields as $field) {
-            if (isset($item[$field['index']])) {
-                if (isset($field['multiple']) && $field['multiple']) {
-                    $value = $item[$field['index']];
-                    if ($value) {
-                        $value = explode(',', $value);
-                        $values = [];
-                        foreach ($value as $v) {
-                            if ($v) {
-                                $values[] = $v;
-                            }
-                        }
-                        if (count($values)) {
-                            $value = ',' . implode(',', $values) . ',';
-                        } else {
-                            $value = '';
+            $fieldObj = new DataGridEditField();
+            populateFromRequest($fieldObj, $field);
+            if (!isset($item[$fieldObj->index])) continue;
+            if ($fieldObj->type == 'many') {
+                $linkTable = $fieldObj->linkTable;
+                $linkField = $fieldObj->linkField;
+                $tableField = $fieldObj->tableField;
+                if (!$item[$fieldObj->index]) {
+                    $this->db->query("DELETE FROM $linkTable WHERE $linkField = ?", [$id]);
+                } else {
+                    $values = trim($item[$fieldObj->index], ',');
+                    $values = explode(',', $values);
+                    // xóa bản ghi không nằm trong danh sách
+                    $this->db->query("DELETE FROM $linkTable WHERE $linkField not in ?", [$values]);
+                    // chèn vào những bản ghi mới
+                    foreach ($values as $value) {
+                        $count = $this->db->query("SELECT count(*) as c FROM $linkTable WHERE $linkField = ? AND $tableField = ?", [$id, $value])->row_array();
+                        if (!$count['c']) {
+                            $this->db->query("INSERT INTO $linkTable ($linkField, $tableField) VALUES (?, ?)", [$id, $value]);
                         }
                     }
-                    $item[$field['index']] = $value;
                 }
-                $data[$field['index']] = $item[$field['index']];
+
+                continue;
             }
+            if (isset($fieldObj->multiple) && $fieldObj->multiple) {
+                $value = $item[$fieldObj->index];
+                if ($value) {
+                    $value = explode(',', $value);
+                    $values = [];
+                    foreach ($value as $v) {
+                        if ($v) {
+                            $values[] = $v;
+                        }
+                    }
+                    if (count($values)) {
+                        $value = ',' . implode(',', $values) . ',';
+                    } else {
+                        $value = '';
+                    }
+                }
+                $item[$fieldObj->index] = $value;
+            }
+            $data[$fieldObj->index] = $item[$fieldObj->index];
         }
         $this->applySoftwareAndSiteFields($data, $table);
         $this->applyModifiedFields($data, $table);
