@@ -18,6 +18,8 @@ import { QlhsClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { QlhsGridClassStudentSettings } from "./QlhsGridClassStudentSettings";
 import ClassAttendance from "@/components/class/ClassAttendance";
+import { Form } from "react-bootstrap";
+import { renderColumn } from "@/types/grid/columns/renderColumn";
 
 const gridTitle: string = "Quản lý Lớp";
 const gridAddNewLabel: string = "Thêm Lớp";
@@ -44,6 +46,22 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
 ];
+
+const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGridColumn[], defaultFilters: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: DataGridColumn, item: any) => void, handleEditItem: (item: any) => void, onDeleteItem: (item: any) => void, handleAddChildItem: (item: any, column: DataGridColumn) => void, toggleCheckedItem: (id: number) => void) => {
+    return <>
+        <Form.Check
+            type="checkbox"
+            checked={checkedItemIds.includes(item.id)}
+            onChange={() => toggleCheckedItem(item.id)}
+        />
+        {columns.filter(column => !defaultFilters || !defaultFilters[column.index]).map(column => (
+            <div key={column.index} style={{ marginBottom: '0.5rem' }}>
+                <strong>{column.label || column.index}: </strong>
+                {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+            </div>
+        ))}
+    </>
+}
 
 const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };
 
@@ -129,6 +147,7 @@ const gridDetails: TableGridDetail[] = [
 export const QlhsClassSettings: TableGridSettings = {
     title: gridTitle,
     viewMode: 'grid',
+    customRowTemplate: customRowTemplate,
     table: gridTable,
     joins: gridJoins,
     fields: gridFields,

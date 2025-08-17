@@ -135,10 +135,10 @@ export const tableRepository = {
             console.error('Error fetching map data:', error);
         });
     },
-    updateAttendance: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, studentId: string | number, attendanceDate: string, value: string | number) => {
+    updateAttendance: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, studentId: string | number, studyDate: string, value: string | number) => {
         return getAxios(window.location.hostname).put(`/tables/${settings.table}/updateAttendance/${classId}/${paymentPeriodId}`, {
             attendances: [{
-                studentId, attendanceDate, status: value
+                studentId, studyDate, status: value
             }],
             settings: JSON.parse(JSON.stringify(settings))
         }, {

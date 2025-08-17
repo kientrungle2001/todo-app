@@ -80,7 +80,7 @@ const gridDetails: TableGridDetail[] = [
         customFilters: (item: any) => {
             return {
                 classId: item.classId,
-                attendanceDate: item.studyDate
+                studyDate: item.studyDate
             }
         },
         referenceType: 'equal',

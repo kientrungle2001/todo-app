@@ -246,7 +246,7 @@ class Table_model extends CI_Model
             if ($attendance['status'] === '') {
                 $attendance['status'] = 0;
             }
-            $item = $this->db->query('select * from `' . $table . '` where classId=? and paymentPeriodId=? and studentId=? and attendanceDate=?', [$classId, $paymentPeriodId, $attendance['studentId'], $attendance['attendanceDate']])->row_array();
+            $item = $this->db->query('select * from `' . $table . '` where classId=? and paymentPeriodId=? and studentId=? and studyDate=?', [$classId, $paymentPeriodId, $attendance['studentId'], $attendance['studyDate']])->row_array();
             if ($item) {
                 $this->db->set('status', $attendance['status'])
                     ->where('id', $item['id'])->update($table);
@@ -255,7 +255,7 @@ class Table_model extends CI_Model
                     'classId' => $classId,
                     'paymentPeriodId' => $paymentPeriodId,
                     'studentId' => $attendance['studentId'],
-                    'attendanceDate' => $attendance['attendanceDate'],
+                    'studyDate' => $attendance['studyDate'],
                     'status' => $attendance['status']
                 ]);
             }
@@ -370,8 +370,8 @@ class Table_model extends CI_Model
         $period = $this->getOne('payment_period', $paymentPeriodId);
         $attendances = $this->getMany('student_attendance', 'classId', $classId, array(
             'studentId' => $studentId,
-            'attendanceDate >=' => $period['startDate'],
-            'attendanceDate <=' => $period['endDate'],
+            'studyDate >=' => $period['startDate'],
+            'studyDate <=' => $period['endDate'],
         ));
         return count($attendances);
     }
@@ -381,8 +381,8 @@ class Table_model extends CI_Model
         $period = $this->getOne('payment_period', $paymentPeriodId);
         $attendances = $this->getMany('student_attendance', 'classId', $classId, array(
             'studentId' => $studentId,
-            'attendanceDate >=' => $period['startDate'],
-            'attendanceDate <=' => $period['endDate'],
+            'studyDate >=' => $period['startDate'],
+            'studyDate <=' => $period['endDate'],
             'status' => 4
         ));
         return count($attendances);
@@ -395,8 +395,8 @@ class Table_model extends CI_Model
         if ($prev_period) {
             $attendances = $this->getMany('student_attendance', 'classId', $classId, array(
                 'studentId' => $studentId,
-                'attendanceDate >=' => $prev_period['startDate'],
-                'attendanceDate <=' => $prev_period['endDate'],
+                'studyDate >=' => $prev_period['startDate'],
+                'studyDate <=' => $prev_period['endDate'],
                 'status' => 2
             ));
             return count($attendances);

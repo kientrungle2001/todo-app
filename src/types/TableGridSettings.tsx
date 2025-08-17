@@ -18,6 +18,7 @@ export interface TableGridSettings {
     software?: number;
     site?: number;
     viewMode?: 'list' | 'grid';
+    customRowTemplate?: (item: any, checkedItemIds: number[], columns: DataGridColumn[], defaultFilters: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: DataGridColumn, item: any) => void, handleEditItem: (item: any) => void, onDeleteItem: (item: any) => void, handleAddChildItem: (item: any, column: DataGridColumn) => void, toggleCheckedItem: (id: number) => void) => string | React.ReactNode;
     pagination: DataGridPagination;
     columns: DataGridColumn[];
     filters: DataGridFilterColumn[];

@@ -22,13 +22,13 @@ const gridDeleteSelectedsLabel: string = "Xóa các Điểm danh đã chọn";
 const gridTable: string = "student_attendance";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id"];
-const gridFields: string[] = ["id", "classId", "studentId", "paymentPeriodId", "attendanceDate", "status", "note"];
+const gridFields: string[] = ["id", "classId", "studentId", "paymentPeriodId", "studyDate", "status", "note"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     DataGridColumns.classId,
     DataGridColumns.studentId,
-    DataGridColumns.attendanceDate,
+    DataGridColumns.studyDate,
     DataGridColumns.note,
     DataGridColumns.status,
     DataGridColumns.editAction,
@@ -81,7 +81,7 @@ const gridAddFields: DataGridEditField[] = [
         },
         size: 6
     },
-    { index: "attendanceDate", label: "Ngày điểm danh", type: DataGridEditFieldType.DATE, size: 6 },
+    { index: "studyDate", label: "Ngày điểm danh", type: DataGridEditFieldType.DATE, size: 6 },
 ];
 
 export const QlhsStudentAttendanceSettings: TableGridSettings = {

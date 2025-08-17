@@ -46,16 +46,16 @@ export const classRepository = {
             search: '', defaultFilters: JSON.parse(JSON.stringify({
                 classId: classId,
                 paymentPeriodId: paymentPeriodId,
-                attendanceDate: { from: startDate, to: endDate }
+                studyDate: { from: startDate, to: endDate }
             })),
             sorts: [
-                { index: 'attendanceDate', direction: 'asc' },
+                { index: 'studyDate', direction: 'asc' },
             ],
             page: 0, pageSize: 1000,
         });
     },
-    updateAttendance: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, studentId: string | number, attendanceDate: string, value: string | number) => {
-        return tableRepository.updateAttendance(settings, classId, paymentPeriodId, studentId, attendanceDate, value);
+    updateAttendance: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, studentId: string | number, studyDate: string, value: string | number) => {
+        return tableRepository.updateAttendance(settings, classId, paymentPeriodId, studentId, studyDate, value);
     },
     updateAttendances: (settings: TableGridSettings, classId: string | number, paymentPeriodId: string | number, attendances: any[]) => {
         return tableRepository.updateAttendances(settings, classId, paymentPeriodId, attendances);

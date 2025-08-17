@@ -63,23 +63,23 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail }) =>
                 if (typeof mapAttendances[currentStudentId] === 'undefined') {
                     mapAttendances[currentStudentId] = {};
                 }
-                mapAttendances[currentStudentId][attendance.attendanceDate] = attendance.status;
+                mapAttendances[currentStudentId][attendance.studyDate] = attendance.status;
             });
             setAttendances(mapAttendances);
         })
     }
 
-    function handleChangeAttendance(studentId: number, attendanceDate: string, value: string | number) {
+    function handleChangeAttendance(studentId: number, studyDate: string, value: string | number) {
         let mapAttendances: any = { ...attendances };
         if (typeof mapAttendances[studentId] === 'undefined') {
             mapAttendances[studentId] = {};
         }
-        mapAttendances[studentId][attendanceDate] = value;
+        mapAttendances[studentId][studyDate] = value;
         setAttendances(mapAttendances);
         let attendanceSettings = QlhsStudentAttendanceSettings;
-        classRepository.updateAttendance(attendanceSettings, classId, selectedPeriodId, studentId, attendanceDate, value);
+        classRepository.updateAttendance(attendanceSettings, classId, selectedPeriodId, studentId, studyDate, value);
     }
-    function handleAllAttendance(attendanceDate: string, value: string | number) {
+    function handleAllAttendance(studyDate: string, value: string | number) {
         let dateAttendances: any = [];
         let mapAttendances: any = { ...attendances };
         students.forEach((student: any) => {
@@ -87,10 +87,10 @@ const ClassAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail }) =>
             if (typeof mapAttendances[studentId] === 'undefined') {
                 mapAttendances[studentId] = {};
             }
-            mapAttendances[studentId][attendanceDate] = value;
+            mapAttendances[studentId][studyDate] = value;
             dateAttendances.push({
                 studentId: studentId,
-                attendanceDate,
+                studyDate,
                 status: value,
             });
         });

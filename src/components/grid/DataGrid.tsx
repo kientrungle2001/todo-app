@@ -24,6 +24,7 @@ interface DataGridProps {
     software?: number;
     site?: number;
     viewMode?: string;
+    customRowTemplate?: (item: any, checkedItemIds: number[], columns: Column[], defaultFilters: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: Column, item: any) => void, handleEditItem: (item: any) => void, onDeleteItem: (item: any) => void, handleAddChildItem: (item: any, column: Column) => void, toggleCheckedItem: (id: number) => void) => string | React.ReactNode;
     columns: Column[];
     items: any[];
     totalItems: number;
@@ -58,7 +59,7 @@ interface DataGridProps {
     setSortData: (sortData: any) => void;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, viewMode, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onDeleteItem, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn, defaultFilters, parentController, parentSettings, parentItem, sortData, setSortData }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, viewMode, customRowTemplate, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onDeleteItem, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn, defaultFilters, parentController, parentSettings, parentItem, sortData, setSortData }) => {
     const router = useRouter();
     // Function to handle navigation
     const handleNavigation = (path: string) => {
@@ -195,17 +196,20 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                                                 style={{ cursor: 'pointer' }}
                                                             >
                                                                 <Card.Body>
-                                                                    <Form.Check
-                                                                        type="checkbox"
-                                                                        checked={checkedItemIds.includes(item.id)}
-                                                                        onChange={() => toggleCheckedItem(item.id)}
-                                                                    />
-                                                                    {columns.filter(column => !defaultFilters || !defaultFilters[column.index]).map(column => (
-                                                                        <div key={column.index} style={{ marginBottom: '0.5rem' }}>
-                                                                            <strong>{column.label || column.index}: </strong>
-                                                                            {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
-                                                                        </div>
-                                                                    ))}
+                                                                    {customRowTemplate ? customRowTemplate(item, checkedItemIds, columns, defaultFilters, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem, toggleCheckedItem) : <>
+                                                                        <Form.Check
+                                                                            type="checkbox"
+                                                                            checked={checkedItemIds.includes(item.id)}
+                                                                            onChange={() => toggleCheckedItem(item.id)}
+                                                                        />
+                                                                        {columns.filter(column => !defaultFilters || !defaultFilters[column.index]).map(column => (
+                                                                            <div key={column.index} style={{ marginBottom: '0.5rem' }}>
+                                                                                <strong>{column.label || column.index}: </strong>
+                                                                                {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                                                                            </div>
+                                                                        ))}
+                                                                    </>}
+
                                                                 </Card.Body>
                                                             </Card>
                                                         </Col>

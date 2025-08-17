@@ -16,7 +16,7 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
             return '/Table/class/' + item.id + '/detail#tab-attendance';
         }
     },
-    attendanceDate: { index: "attendanceDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
+    studyDate: { index: "studyDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
     categoryId: {
         index: "categoryId",
         label: "Danh mục",
