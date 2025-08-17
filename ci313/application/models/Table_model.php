@@ -184,15 +184,48 @@ class Table_model extends CI_Model
     {
         $data = [];
         foreach ($fields as $field) {
-            if (isset($item[$field['index']])) {
-                $data[$field['index']] = $item[$field['index']];
+            $fieldObj = new DataGridEditField();
+            populateFromRequest($fieldObj, $field);
+            if (isset($item[$fieldObj->index])) {
+                if ($fieldObj->type == 'many') {
+                    continue;
+                }
+                $data[$fieldObj->index] = $item[$fieldObj->index];
             }
         }
         $this->applySoftwareAndSiteFields($data, $table);
         $this->applyCreatedFields($data, $table);
 
         $this->db->insert($table, $data);
-        return ['id' => $this->db->insert_id()];
+        $id = $this->db->insert_id();
+        foreach ($fields as $field) {
+            $fieldObj = new DataGridEditField();
+            populateFromRequest($fieldObj, $field);
+            if (
+                $fieldObj->type == 'many'
+                && isset($item[$fieldObj->index])
+                && $item[$fieldObj->index]
+            ) {
+
+                $value = $item[$fieldObj->index];
+                $value = explode(',', $value);
+                $values = [];
+                foreach ($value as $v) {
+                    if ($v) {
+                        $values[] = $v;
+                    }
+                }
+                if (count($values)) {
+                    $linkTable = $fieldObj->linkTable;
+                    $linkField = $fieldObj->linkField;
+                    $tableField = $fieldObj->tableField;
+                    foreach ($values as $value) {
+                        $this->db->query("INSERT INTO $linkTable ($linkField, $tableField) VALUES (?, ?)", [$id, $value]);
+                    }
+                }
+            }
+        }
+        return ['id' => $id];
     }
 
     public function update_column($table, $column, $values)
