@@ -71,6 +71,7 @@ const gridAddFields: DataGridEditField[] = [
     DataGridEditFields.roomId,
     DataGridEditFields.subjectId,
     DataGridEditFields.teacherId,
+    DataGridEditFields.payment_periods,
     DataGridEditFields.level,
     DataGridEditFields.amount,
     DataGridEditFields.feeType,

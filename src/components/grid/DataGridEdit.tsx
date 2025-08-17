@@ -29,7 +29,7 @@ const DataGridEdit: React.FC<DataGridEditProps> = ({ mode, table, itemId, addNew
         const setMapsForFields = () => {
             let updatedMaps = { ...maps };
             fields.forEach((field) => {
-                if (field.type === EditFieldType.SELECT && field.table) {
+                if ((field.type === EditFieldType.SELECT || field.type === EditFieldType.MANY) && field.table) {
 
                     let condition = null;
                     if (field.tableCondition) {

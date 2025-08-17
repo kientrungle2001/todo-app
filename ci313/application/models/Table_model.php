@@ -90,8 +90,9 @@ class Table_model extends CI_Model
         return $this->casting_numeric_fields($this->db->query($query)->result_array());
     }
 
-    public function detail($table, $id)
+    public function detail($table, $id, $settings)
     {
+        // TODO: detail by settings
         $item = $this->db->query("SELECT * FROM `$table` WHERE id =?", [$id])->row_array();
         $cast = $this->casting_numeric_fields([$item]);
         return isset($cast[0]) ? $cast[0] : null;

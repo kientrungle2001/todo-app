@@ -34,7 +34,8 @@ class Tables extends MY_Controller
 
     public function detail($table, $id)
     {
-        $response = $this->Table_model->detail($table, $id);
+        $settings = $this->input->post('settings');
+        $response = $this->Table_model->detail($table, $id, $settings);
         if ($response) {
             $this->json($response);
         } else {

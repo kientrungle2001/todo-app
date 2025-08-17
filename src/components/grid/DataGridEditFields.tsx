@@ -163,6 +163,20 @@ export const DataGridEditFields: { [key: string]: DataGridEditField } = {
         tableCondition: 'status=1',
         size: 6
     },
+    payment_periods: {
+        index: "payment_periods",
+        label: "Kỳ học phí",
+        type: DataGridEditFieldType.MANY,
+        multipleSize: 10,
+        table: "payment_period",
+        tableCondition: "status=1",
+        tableField: "paymentPeriodId",
+        linkTable: "class_payment_period",
+        linkField: "classId",
+        valueField: "id",
+        labelField: "name",
+        size: 6
+    },
     className: {
         index: 'name',
         label: 'Tên lớp',
