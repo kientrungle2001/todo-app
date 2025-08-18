@@ -187,7 +187,7 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
                                     {viewMode === 'grid' ? (
                                         <tr>
                                             <td colSpan={columns.length + 1}>
-                                                <Row className="g-3">
+                                                <Row className="g-1">
                                                     {items.length > 0 ? items.map((item, index) => (
                                                         <Col key={index} sm={6} md={4} lg={4}>
                                                             <Card
