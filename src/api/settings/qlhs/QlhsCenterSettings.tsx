@@ -16,6 +16,7 @@ import { QlhsRoomSettings } from "./QlhsRoomSettings";
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
 import { Card, Form } from "react-bootstrap";
 import { renderColumn } from "@/types/grid/columns/renderColumn";
+import { QlhsClassSettings } from "./QlhsClassSettings";
 
 const gridTitle: string = "Quản lý Trung tâm";
 const gridAddNewLabel: string = "Thêm Trung tâm";
@@ -33,6 +34,7 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.addressCenter,
     DataGridColumns.status,
     DataGridColumns.centerRooms,
+    DataGridColumns.centerClasses,
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
 ];
@@ -48,17 +50,6 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
                     {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
                 </div>
             ));
-    }
-    const renderColumnsExclude = (names: string[]) => {
-        return columns
-            .filter(column => !defaultFilters || !defaultFilters[column.index])
-            .filter(column => !names.includes(column.index))
-            .map(column => (
-                <div key={column.index} style={{ marginBottom: '0.5rem' }}>
-                    <strong>{column.label || column.index}: </strong>
-                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
-                </div>
-            ))
     }
     return <>
         <Card.Title className="d-flex align-items-center">
@@ -76,10 +67,10 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
         <div className="d-flex align-items-center justify-content-between mb-2">
             {renderColumnName('address', undefined, false)}
         </div>
-
-        {renderColumnsExclude([
-            'id', 'name', 'code', 'address', 'status', 'editAction', 'deleteAction'
-        ])}
+        <div className="d-flex align-items-center justify-content-between mb-2">
+            {renderColumnName('centerRooms', undefined, false)}
+            {renderColumnName('centerClasses', undefined, false)}
+        </div>
         <div className="d-flex align-items-center justify-content-between">
             {renderColumnName('editAction')}
             {renderColumnName('status', undefined, false)}
@@ -126,6 +117,15 @@ const gridDetails: TableGridDetail[] = [
         referenceField: 'centerId',
         referenceType: 'equal',
         settings: QlhsRoomSettings
+    },
+    {
+        label: 'Danh sách lớp học',
+        type: TableGridDetailType.GRID,
+        index: 'classes',
+        controller: 'class',
+        referenceField: 'centerId',
+        referenceType: 'equal',
+        settings: QlhsClassSettings
     }
 ];
 export const QlhsCenterSettings: TableGridSettings = {
