@@ -12,7 +12,7 @@ const RibbonMenuGrid: React.FC<RibbonMenuGridProps> = () => {
 
   useEffect(() => {
     getAxios(window.location.hostname).post('/tables/admin_menu/map', {
-      fields: ["id", "name", "parent", "admin_controller", "ordering", "status", "shortcut"],
+      fields: ["id", "name", "parent", "admin_controller", "ordering", "status", "shortcut, thumbnail"],
       condition: "status = 1",
       orderBy: "ordering asc"
     }, {

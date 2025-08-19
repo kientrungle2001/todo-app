@@ -14,6 +14,8 @@ import { TableGridDetailType } from "@/types/detail/TableGridDetailType";
 import { TableGridSettings } from "@/types/TableGridSettings";
 import { QlhsClassSettings } from "./QlhsClassSettings";
 import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
+import { Card, Form } from "react-bootstrap";
+import { renderColumn } from "@/types/grid/columns/renderColumn";
 
 const gridTitle: string = "Quản lý Phòng";
 const gridAddNewLabel: string = "Thêm Phòng";
@@ -34,6 +36,55 @@ const gridColumns: DataGridColumn[] = [
     DataGridColumns.editAction,
     DataGridColumns.deleteAction,
 ];
+
+const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGridColumn[], defaultFilters: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: DataGridColumn, item: any) => void, handleEditItem: (item: any) => void, onDeleteItem: (item: any) => void, handleAddChildItem: (item: any, column: DataGridColumn) => void, toggleCheckedItem: (id: number) => void) => {
+    const renderColumnName = (name: string, className?: string, withLabel?: Boolean) => {
+        return columns
+            .filter(column => !defaultFilters || !defaultFilters[column.index])
+            .filter(column => column.index == name)
+            .map(column => (
+                <div key={column.index} className={className}>
+                    {withLabel ? <strong>{column.label || column.index}: </strong> : null}
+                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                </div>
+            ));
+    }
+    const renderColumnsExclude = (names: string[]) => {
+        return columns
+            .filter(column => !defaultFilters || !defaultFilters[column.index])
+            .filter(column => !names.includes(column.index))
+            .map(column => (
+                <div key={column.index} style={{ marginBottom: '0.5rem' }}>
+                    <strong>{column.label || column.index}: </strong>
+                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
+                </div>
+            ))
+    }
+    return <>
+        <Card.Title className="d-flex align-items-center">
+            <Form.Check
+                type="checkbox"
+                checked={checkedItemIds.includes(item.id)}
+                onChange={() => toggleCheckedItem(item.id)}
+            />
+            <div className="ms-1">
+                # {item.id}
+            </div>
+            
+            {renderColumnName('name', 'ms-1')}
+            {renderColumnName('size', 'ms-1', true)}
+        </Card.Title>
+        <div className="d-flex align-items-center justify-content-between mb-2">
+            {renderColumnName('centerId')} {renderColumnName('note', undefined, false)}
+        </div>
+
+        <div className="d-flex align-items-center justify-content-between">
+            {renderColumnName('editAction')}
+            {renderColumnName('status', undefined, false)}
+            {renderColumnName('deleteAction')}
+        </div>
+    </>
+}
 
 const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 20 };
 
@@ -78,6 +129,7 @@ const gridDetails: TableGridDetail[] = [
 export const QlhsRoomSettings: TableGridSettings = {
     title: gridTitle,
     viewMode: 'grid',
+    customRowTemplate: customRowTemplate,
     table: gridTable,
     joins: gridJoins,
     fields: gridFields,

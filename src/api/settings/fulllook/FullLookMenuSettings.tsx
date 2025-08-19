@@ -29,6 +29,10 @@ const gridColumns: DataGridColumn[] = [
     { index: "ordering", label: "Thứ tự", type: DataGridColumnType.NUMBER, inputable: true, treeMode: true },
     DataGridColumns.status,
     {
+        index: "thumbnail", type: DataGridColumnType.IMAGE, label: "Thumbnail",
+        statusToggable: true
+    },
+    {
         index: "shortcut", type: DataGridColumnType.STATUS, label: "Dashboard", map: {
             0: 'Chưa kích hoạt',
             1: 'Đã kích hoạt'
@@ -81,6 +85,7 @@ const gridAddFields: DataGridEditField[] = [
         table: "admin_menu", valueField: "id", labelField: "name", treeMode: true, parentField: "parent", orderBy: "ordering asc"
     },
     { index: "admin_controller", label: "Đường dẫn URL", type: DataGridEditFieldType.TEXT, size: 6 },
+    { index: "thumbnail", label: "Thumbnail", type: DataGridEditFieldType.IMAGE, size: 6 },
     {
         index: "status", label: "Trạng thái", type: DataGridEditFieldType.STATUS, size: 6, map: {
             0: 'Chưa kích hoạt',

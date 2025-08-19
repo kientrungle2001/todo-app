@@ -10,6 +10,7 @@ interface MenuItem {
   name: string;
   admin_controller: string;
   parent: number;
+  thumbnail: string;
   __level: number;
   __children?: MenuItem[];
 }
@@ -82,6 +83,7 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
       {items.map(item => (
         <Col key={item.id} xs="auto">
           <Card className="p-2">
+            
             <Card.Body className="p-2">
               {item.__children?.length ? (
                 <DropdownButtonGroup parent={item} />
@@ -90,7 +92,7 @@ const RibbonMenu: React.FC<RibbonMenuProps> = ({ data }) => {
                   variant="outline-primary"
                   size="sm"
                   onClick={() => window.location.href = (`/Table/${item.admin_controller}`)}>
-                  {item.name}
+                  {item.thumbnail ? <Card.Img style={{width: '48px', height: 'auto'}} src={item.thumbnail} /> : null} {item.name}
                 </Button>
               )}
             </Card.Body>
