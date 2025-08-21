@@ -89,11 +89,12 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
 
   const FilterTextRenderer = (filter: DataGridFilterColumn) => {
     useEffect(() => {
-      if (typeof router.query[filter.index] !== 'undefined' &&
-        (router.query[filter.index] as string).trim() !== '') {
-        console.log('router.query', router.query[filter.index]);
+      let filter_key = 'filter_' + filter.index; 
+      if (typeof router.query[filter_key] !== 'undefined' &&
+        (router.query[filter_key] as string).trim() !== '') {
+        console.log('router.query', router.query[filter_key]);
         setTimeout(() => {
-          setFilterData({ ...filterData, [filter.index]: router.query[filter.index] });
+          setFilterData({ ...filterData, [filter_key]: router.query[filter_key] });
         }, 100);
       }
     }, [filter.index]);

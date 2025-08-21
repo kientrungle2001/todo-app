@@ -59,17 +59,6 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
                 </div>
             ));
     }
-    const renderColumnsExclude = (names: string[]) => {
-        return columns
-            .filter(column => !defaultFilters || !defaultFilters[column.index])
-            .filter(column => !names.includes(column.index))
-            .map(column => (
-                <div key={column.index} style={{ marginBottom: '0.5rem' }}>
-                    <strong>{column.label || column.index}: </strong>
-                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
-                </div>
-            ))
-    }
     return <>
         <Card.Title className="d-flex align-items-center">
             <Form.Check
