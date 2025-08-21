@@ -78,7 +78,7 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
                 onChange={() => toggleCheckedItem(item.id)}
             />
             <div className="ms-1">
-                # {item.id}
+                #{item.id} -
             </div>
             {renderColumnName('name', 'ms-1')}
         </Card.Title>
@@ -91,17 +91,16 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
             {renderColumnName('teacherId', undefined, true)}
         </div>
         <div className="d-flex align-items-center justify-content-between mb-2">
-            {renderColumnName('startDate', undefined, true)} {' ===> '} 
+            {renderColumnName('startDate', undefined, true)} {' ===> '}
             {renderColumnName('endDate', undefined)}
         </div>
         <div className="d-flex align-items-center justify-content-between mb-2">
-            {renderColumnName('amount', undefined, true)} 
+            {renderColumnName('amount', undefined, true)}
             {renderColumnName('feeType', undefined)}
         </div>
-
-        {renderColumnsExclude([
-            'id', 'name', 'centerId', 'roomId', 'subjectId', 'teacherId', 'startDate', 'endDate', 'amount', 'feeType', 'status', 'editAction', 'deleteAction'
-        ])}
+        <div className="d-flex align-items-center justify-content-center fs-5 mb-2">
+            {renderColumnName('attendanceClass', undefined)}
+        </div>
         <div className="d-flex align-items-center justify-content-between">
             {renderColumnName('editAction')}
             {renderColumnName('status', undefined, false)}

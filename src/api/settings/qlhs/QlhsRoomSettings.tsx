@@ -49,17 +49,6 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
                 </div>
             ));
     }
-    const renderColumnsExclude = (names: string[]) => {
-        return columns
-            .filter(column => !defaultFilters || !defaultFilters[column.index])
-            .filter(column => !names.includes(column.index))
-            .map(column => (
-                <div key={column.index} style={{ marginBottom: '0.5rem' }}>
-                    <strong>{column.label || column.index}: </strong>
-                    {renderColumn(column, item, table, inputableMap, setInputableMap, onAfterChangeStatus, handleEditItem, onDeleteItem, handleAddChildItem)}
-                </div>
-            ))
-    }
     return <>
         <Card.Title className="d-flex align-items-center">
             <Form.Check
@@ -68,12 +57,13 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
                 onChange={() => toggleCheckedItem(item.id)}
             />
             <div className="ms-1">
-                # {item.id}
+                #{item.id} - 
             </div>
-            
-            {renderColumnName('name', 'ms-1')}
             {renderColumnName('size', 'ms-1', true)}
         </Card.Title>
+        <div className="d-flex fs-1 align-items-center justify-content-center pt-3 pb-3">
+            {renderColumnName('name', 'ms-1')}
+        </div>
         <div className="d-flex align-items-center justify-content-between mb-2">
             {renderColumnName('centerId')} {renderColumnName('note', undefined, false)}
         </div>

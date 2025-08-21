@@ -59,15 +59,18 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
                 onChange={() => toggleCheckedItem(item.id)}
             />
             <div className="ms-1">
-                # {item.id}
+                #{item.id} - 
             </div>
-            {renderColumnName('name', 'ms-1')}
+            
             {renderColumnName('code', 'ms-1')}
         </Card.Title>
+        <div className="d-flex fs-2">
+            {renderColumnName('name', undefined)}
+        </div>
         <div className="d-flex align-items-center justify-content-between mb-2">
             {renderColumnName('address', undefined, false)}
         </div>
-        <div className="d-flex align-items-center justify-content-between mb-2">
+        <div className="d-flex align-items-center justify-content-between mb-2 fs-3">
             {renderColumnName('centerRooms', undefined, false)}
             {renderColumnName('centerClasses', undefined, false)}
         </div>
