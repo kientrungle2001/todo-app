@@ -94,7 +94,7 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
         (router.query[filter_key] as string).trim() !== '') {
         console.log('router.query', router.query[filter_key]);
         setTimeout(() => {
-          setFilterData({ ...filterData, [filter_key]: router.query[filter_key] });
+          setFilterData({ ...filterData, [filter.index]: router.query[filter_key] });
         }, 100);
       }
     }, [filter.index]);
@@ -138,10 +138,11 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
 
   const FilterSelectRenderer = (filter: DataGridFilterColumn) => {
     useEffect(() => {
-      if (typeof router.query[filter.index] !== 'undefined' &&
-        (router.query[filter.index] as string).trim() !== '') {
+      let filter_key = 'filter_' + filter.index;
+      if (typeof router.query[filter_key] !== 'undefined' &&
+        (router.query[filter_key] as string).trim() !== '') {
         let updatedFilterData = { ...filterData };
-        updatedFilterData[filter.index] = router.query[filter.index];
+        updatedFilterData[filter_key] = router.query[filter_key];
         setFilterData(updatedFilterData);
       }
       console.log('router.query', router.query);
@@ -173,11 +174,12 @@ export const FiltersGrid: React.FC<FiltersGridProps> = ({
 
   const FilterStatusRenderer = (filter: DataGridFilterColumn) => {
     useEffect(() => {
-      if (typeof router.query[filter.index] !== 'undefined' &&
-        (router.query[filter.index] as string).trim() !== '') {
-        console.log('router.query', router.query[filter.index]);
+      let filter_key = 'filter_' + filter.index;
+      if (typeof router.query[filter_key] !== 'undefined' &&
+        (router.query[filter_key] as string).trim() !== '') {
+        console.log('router.query', router.query[filter_key]);
         setTimeout(() => {
-          setFilterData({ ...filterData, [filter.index]: router.query[filter.index] });
+          setFilterData({ ...filterData, [filter.index]: router.query[filter_key] });
         }, 100);
       }
     }, [filter.index]);
