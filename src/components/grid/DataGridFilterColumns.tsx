@@ -45,7 +45,7 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         table: 'room',
         valueField: 'id',
         labelField: 'name',
-        tableCondition: 'status=1',
+        tableCondition: (filterData) => 'status=1' + (filterData.centerId ? ' and centerId=' + filterData.centerId : ''),
         comparisonOperator: 'equal'
     },
     subjectId: {
@@ -92,7 +92,7 @@ export const DataGridFilterColumns: { [key: string]: DataGridFilterColumn } = {
         table: 'teacher',
         valueField: 'id',
         labelField: 'name',
-        tableCondition: 'status=1',
+        tableCondition: (filterData) => 'status=1' + (filterData.subjectId ? ' and subjectId=' + filterData.subjectId : ''),
         comparisonOperator: 'equal'
     },
     courseId: {
