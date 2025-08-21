@@ -43,12 +43,19 @@ export const TableGridDetail: React.FC<TableGridDetailProps> = ({ controller, se
         window.location.href = (`/Table/${controller}`);
     };
 
+    const handleEdit = () => {
+        window.location.href = (`/Table/${controller}/${itemId}/edit/`);
+    };
+
     return (
         <Container fluid>
             <Row className="mb-3">
-                <Col>
+                <Col className="d-flex align-items-center justify-content-end">
                     <Button variant="secondary" onClick={handleBack}>
-                        ← Quay lại danh sách
+                        ← Quay lại
+                    </Button>
+                    <Button variant="danger" onClick={handleEdit} className="ms-3">
+                        Edit
                     </Button>
                 </Col>
             </Row>
