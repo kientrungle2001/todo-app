@@ -16,7 +16,16 @@ export const DataGridColumns: { [key: string]: DataGridColumn } = {
             return '/Table/class/' + item.id + '/detail#tab-attendance';
         }
     },
-    studyDate: { index: "studyDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
+    studentClass: {
+        index: "studentClass", label: "Danh sách lớp",
+        sortable: false,
+        type: DataGridColumnType.ACTIONS,
+        actionType: DataGridColumnActionType.CUSTOM_LINK, 
+        actionLinkFormat: (item: any, column: DataGridColumn, table: string): string => {
+            return '/Table/class/' + item.id + '/detail#tab-students';
+        }
+    },
+    // studyDate: { index: "studyDate", label: "Ngày Điểm danh", type: DataGridColumnType.DATE },
     categoryId: {
         index: "categoryId",
         label: "Danh mục",

@@ -1,22 +1,22 @@
-import { DataGridSortOptions } from "@/components/grid/DataGridSortOptions";
-import { DataGridPagination } from "@/types/grid/DataGridPagination";
-import { DataGridSortOption } from "@/types/grid/DataGridSortOption";
-import { DataGridSortDirection } from "@/types/grid/DataGridSortDirection";
-import { DataGridSort } from "@/types/grid/DataGridSort";
-import { DataGridFilterColumn } from "@/types/grid/DataGridFilterColumn";
-import { DataGridTableJoin } from "@/types/grid/DataGridTableJoin";
-import { DataGridColumn } from "@/types/grid/DataGridColumn";
-import { DataGridColumns } from "@/components/grid/DataGridColumns";
-import { DataGridEditField } from "@/types/edit/DataGridEditField";
-import { DataGridFilterColumns } from "@/components/grid/DataGridFilterColumns";
-import { TableGridDetail } from "@/types/detail/TableGridDetail";
-import { TableGridDetailType } from "@/types/detail/TableGridDetailType";
-import { TableGridSettings } from "@/types/TableGridSettings";
-import { QlhsClassStudentSettings } from "./QlhsClassStudentSettings";
-import { QlhsClassScheduleSettings } from "./QlhsClassScheduleSettings";
-import { QlhsClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings";
-import { DataGridEditFields } from "@/components/grid/DataGridEditFields";
-import { QlhsGridClassStudentSettings } from "./QlhsGridClassStudentSettings";
+import { DataGridSortOptions as SortOptions } from "@/components/grid/DataGridSortOptions";
+import { DataGridPagination as Pagination } from "@/types/grid/DataGridPagination";
+import { DataGridSortOption as SortOption } from "@/types/grid/DataGridSortOption";
+import { DataGridSortDirection as SortDirection } from "@/types/grid/DataGridSortDirection";
+import { DataGridSort as Sort} from "@/types/grid/DataGridSort";
+import { DataGridFilterColumn as FilterColumn } from "@/types/grid/DataGridFilterColumn";
+import { DataGridTableJoin as Join } from "@/types/grid/DataGridTableJoin";
+import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
+import { DataGridColumns as Columns } from "@/components/grid/DataGridColumns";
+import { DataGridEditField as EditField } from "@/types/edit/DataGridEditField";
+import { DataGridFilterColumns as FilterColumns } from "@/components/grid/DataGridFilterColumns";
+import { TableGridDetail as Detail } from "@/types/detail/TableGridDetail";
+import { TableGridDetailType as DetailType } from "@/types/detail/TableGridDetailType";
+import { TableGridSettings as Settings } from "@/types/TableGridSettings";
+import { QlhsClassStudentSettings as ClassStudentSettings } from "./QlhsClassStudentSettings";
+import { QlhsClassScheduleSettings as ClassScheduleSettings } from "./QlhsClassScheduleSettings";
+import { QlhsClassPaymentPeriodSettings as ClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings";
+import { DataGridEditFields as EditFields } from "@/components/grid/DataGridEditFields";
+import { QlhsGridClassStudentSettings as GridClassStudentSettings } from "./QlhsGridClassStudentSettings";
 import ClassAttendance from "@/components/class/ClassAttendance";
 import { Card, Form } from "react-bootstrap";
 import { renderColumn } from "@/types/grid/columns/renderColumn";
@@ -26,28 +26,29 @@ const gridAddNewLabel: string = "Thêm Lớp";
 const gridUpdateLabel: string = "Cập nhật Lớp";
 const gridDeleteSelectedsLabel: string = "Xóa các Lớp đã chọn";
 const gridTable: string = "classes";
-const gridJoins: DataGridTableJoin[] = [];
+const gridJoins: Join[] = [];
 const gridSearchFields: string[] = ["id", "name"];
 const gridFields: string[] = ["id", "name", "subjectId", "teacherId", "centerId", "roomId", "startDate", "endDate", "amount", "feeType", "status"];
 
-const gridColumns: DataGridColumn[] = [
-    DataGridColumns.id,
-    DataGridColumns.attendanceClass,
-    DataGridColumns.nameClass,
-    DataGridColumns.subjectId,
-    DataGridColumns.teacherId,
-    DataGridColumns.centerId,
-    DataGridColumns.roomId,
-    DataGridColumns.startDate,
-    DataGridColumns.endDate,
-    DataGridColumns.amount,
-    DataGridColumns.feeType,
-    DataGridColumns.status,
-    DataGridColumns.editAction,
-    DataGridColumns.deleteAction,
+const gridColumns: Column[] = [
+    Columns.id,
+    Columns.attendanceClass,
+    Columns.studentClass,
+    Columns.nameClass,
+    Columns.subjectId,
+    Columns.teacherId,
+    Columns.centerId,
+    Columns.roomId,
+    Columns.startDate,
+    Columns.endDate,
+    Columns.amount,
+    Columns.feeType,
+    Columns.status,
+    Columns.editAction,
+    Columns.deleteAction,
 ];
 
-const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGridColumn[], defaultFilters: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: DataGridColumn, item: any) => void, handleEditItem: (item: any) => void, onDeleteItem: (item: any) => void, handleAddChildItem: (item: any, column: DataGridColumn) => void, toggleCheckedItem: (id: number) => void) => {
+const customRowTemplate = (item: any, checkedItemIds: number[], columns: Column[], defaultFilters: any, table: string, inputableMap: any, setInputableMap: (inputableMap: any) => void, onAfterChangeStatus: (column: Column, item: any) => void, handleEditItem: (item: any) => void, onDeleteItem: (item: any) => void, handleAddChildItem: (item: any, column: Column) => void, toggleCheckedItem: (id: number) => void) => {
     const renderColumnName = (name: string, className?: string, withLabel?: Boolean) => {
         return columns
             .filter(column => !defaultFilters || !defaultFilters[column.index])
@@ -87,7 +88,8 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
             {renderColumnName('amount', undefined, true)}
             {renderColumnName('feeType', undefined)}
         </div>
-        <div className="d-flex align-items-center justify-content-center fs-5 mb-2">
+        <div className="d-flex align-items-center justify-content-between fs-5 mb-2">
+            {renderColumnName('studentClass', undefined)}
             {renderColumnName('attendanceClass', undefined)}
         </div>
         <div className="d-flex align-items-center justify-content-between">
@@ -98,88 +100,89 @@ const customRowTemplate = (item: any, checkedItemIds: number[], columns: DataGri
     </>
 }
 
-const gridPagination: DataGridPagination = { currentPage: 1, pageSize: 100 };
+const gridPagination: Pagination = { currentPage: 1, pageSize: 100 };
 
-const gridFilters: DataGridFilterColumn[] = [
-    DataGridFilterColumns.subjectId,
-    DataGridFilterColumns.teacherId,
-    DataGridFilterColumns.centerId,
-    DataGridFilterColumns.roomId,
-    DataGridFilterColumns.status
+const gridFilters: FilterColumn[] = [
+    FilterColumns.subjectId,
+    FilterColumns.teacherId,
+    FilterColumns.centerId,
+    FilterColumns.roomId,
+    FilterColumns.status
 ];
 
-const gridSortOptions: DataGridSortOption[] = [
-    DataGridSortOptions.idAsc,
-    DataGridSortOptions.idDesc,
+const gridSortOptions: SortOption[] = [
+    SortOptions.idAsc,
+    SortOptions.idDesc,
 ];
 
-const gridDefaultSorts: DataGridSort[] = [{ index: "id", direction: DataGridSortDirection.DESCENDING }];
+const gridDefaultSorts: Sort[] = [{ index: "id", direction: SortDirection.DESCENDING }];
 
-const gridAddFields: DataGridEditField[] = [
-    DataGridEditFields.className,
-    DataGridEditFields.classCode,
-    DataGridEditFields.startDate,
-    DataGridEditFields.endDate,
-    DataGridEditFields.centerId,
-    DataGridEditFields.roomId,
-    DataGridEditFields.subjectId,
-    DataGridEditFields.teacherId,
-    DataGridEditFields.payment_periods,
-    DataGridEditFields.level,
-    DataGridEditFields.amount,
-    DataGridEditFields.feeType,
-    DataGridEditFields.classed,
-    DataGridEditFields.status,
+const gridAddFields: EditField[] = [
+    EditFields.className,
+    EditFields.classCode,
+    EditFields.startDate,
+    EditFields.endDate,
+    EditFields.centerId,
+    EditFields.roomId,
+    EditFields.subjectId,
+    EditFields.teacherId,
+    EditFields.payment_periods,
+    EditFields.level,
+    EditFields.amount,
+    EditFields.feeType,
+    EditFields.classed,
+    EditFields.status,
 ];
 
-const gridDetails: TableGridDetail[] = [
+const gridDetails: Detail[] = [
     {
         label: 'Chi tiết lớp học',
-        type: TableGridDetailType.DETAIL,
+        type: DetailType.DETAIL,
         fields: [
-            { ...DataGridColumns.id, size: 4 },
+            { ...Columns.id, size: 4 },
             { index: "name", label: "Tên Lớp", size: 4 },
-            { ...DataGridColumns.status, size: 4 }
+            { ...Columns.status, size: 4 }
         ]
     },
     {
         label: 'Điểm danh',
         index: 'attendance',
-        type: TableGridDetailType.CUSTOM,
+        type: DetailType.CUSTOM,
         controller: 'class_student',
         referenceField: 'classId',
         referenceType: 'equal',
-        settings: QlhsGridClassStudentSettings,
-        renderer: (itemId: number, detail: TableGridDetail) => {
+        settings: GridClassStudentSettings,
+        renderer: (itemId: number, detail: Detail) => {
             return <ClassAttendance classId={itemId} detail={detail} />
         }
     },
     {
         label: 'Danh sách lớp',
-        type: TableGridDetailType.GRID,
+        index: 'students',
+        type: DetailType.GRID,
         controller: 'class_student',
         referenceField: 'classId',
         referenceType: 'equal',
-        settings: QlhsClassStudentSettings
+        settings: ClassStudentSettings
     },
     {
         label: 'Lịch học lớp',
-        type: TableGridDetailType.GRID,
+        type: DetailType.GRID,
         controller: 'class_schedule',
         referenceField: 'classId',
         referenceType: 'equal',
-        settings: QlhsClassScheduleSettings
+        settings: ClassScheduleSettings
     },
     {
         label: 'Kỳ thanh toán lớp',
-        type: TableGridDetailType.GRID,
+        type: DetailType.GRID,
         controller: 'class_payment_period',
         referenceField: 'classId',
         referenceType: 'equal',
-        settings: QlhsClassPaymentPeriodSettings
+        settings: ClassPaymentPeriodSettings
     }
 ];
-export const QlhsClassSettings: TableGridSettings = {
+export const QlhsClassSettings: Settings = {
     title: gridTitle,
     viewMode: 'grid',
     customRowTemplate: customRowTemplate,
