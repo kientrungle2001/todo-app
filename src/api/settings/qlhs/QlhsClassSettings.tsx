@@ -2,7 +2,7 @@ import { DataGridSortOptions as SortOptions } from "@/components/grid/DataGridSo
 import { DataGridPagination as Pagination } from "@/types/grid/DataGridPagination";
 import { DataGridSortOption as SortOption } from "@/types/grid/DataGridSortOption";
 import { DataGridSortDirection as SortDirection } from "@/types/grid/DataGridSortDirection";
-import { DataGridSort as Sort} from "@/types/grid/DataGridSort";
+import { DataGridSort as Sort } from "@/types/grid/DataGridSort";
 import { DataGridFilterColumn as FilterColumn } from "@/types/grid/DataGridFilterColumn";
 import { DataGridTableJoin as Join } from "@/types/grid/DataGridTableJoin";
 import { DataGridColumn as Column } from "@/types/grid/DataGridColumn";
@@ -17,9 +17,11 @@ import { QlhsClassScheduleSettings as ClassScheduleSettings } from "./QlhsClassS
 import { QlhsClassPaymentPeriodSettings as ClassPaymentPeriodSettings } from "./QlhsClassPaymentPeriodSettings";
 import { DataGridEditFields as EditFields } from "@/components/grid/DataGridEditFields";
 import { QlhsGridClassStudentSettings as GridClassStudentSettings } from "./QlhsGridClassStudentSettings";
-import ClassAttendance from "@/components/class/ClassAttendance";
+import ClassDailyAttendance from "@/components/class/ClassDailyAttendance";
 import { Card, Form } from "react-bootstrap";
 import { renderColumn } from "@/types/grid/columns/renderColumn";
+import ClassAttendance from "@/components/class/ClassAttendance";
+import ClassCalendar from "@/components/class/ClassCalendar";
 
 const gridTitle: string = "Quản lý Lớp";
 const gridAddNewLabel: string = "Thêm Lớp";
@@ -153,7 +155,31 @@ const gridDetails: Detail[] = [
         referenceType: 'equal',
         settings: GridClassStudentSettings,
         renderer: (itemId: number, detail: Detail) => {
+            return <ClassDailyAttendance classId={itemId} detail={detail} />
+        }
+    },
+    {
+        label: 'Học phí',
+        index: 'fee',
+        type: DetailType.CUSTOM,
+        controller: 'class_student',
+        referenceField: 'classId',
+        referenceType: 'equal',
+        settings: GridClassStudentSettings,
+        renderer: (itemId: number, detail: Detail) => {
             return <ClassAttendance classId={itemId} detail={detail} />
+        }
+    },
+    {
+        label: 'Lịch học',
+        index: 'calendar',
+        type: DetailType.CUSTOM,
+        controller: 'class_student',
+        referenceField: 'classId',
+        referenceType: 'equal',
+        settings: GridClassStudentSettings,
+        renderer: (itemId: number, detail: Detail) => {
+            return <ClassCalendar classId={itemId} detail={detail} />
         }
     },
     {

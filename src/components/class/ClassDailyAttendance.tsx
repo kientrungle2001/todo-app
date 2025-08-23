@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { TableGridDetail as GridDetail } from "@/types/detail/TableGridDetail";
-import { Table } from "react-bootstrap";
+import { Col, Row, Table } from "react-bootstrap";
 import { QlhsGridClassPaymentPeriodSettings as ClassPaymentPeriodSettings } from "@/api/settings/qlhs/QlhsGridClassPaymentPeriodSettings";
 import { QlhsGridClassScheduleSettings as ClassScheduleSettings } from "@/api/settings/qlhs/QlhsGridClassScheduleSettings";
 import { formatShortDate } from "@/api/defaultSettings";
 import { classRepository } from "@/api/repositories/ClassRepository";
 import { QlhsStudentAttendanceSettings as StudentAttendanceSettings } from "@/api/settings/qlhs/QlhsStudentAttendanceSettings";
-
 interface ClassAttendanceProps {
     classId: number;
     detail: GridDetail;
@@ -18,6 +17,7 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
     const [periods, setPeriods] = useState<any[]>([]);
     const [schedules, setSchedules] = useState<any[]>([]);
     const [selectedPeriodId, setSelectedPeriodId] = useState<number | string>('');
+    const [selectedScheduleDate, setSelectedScheduleDate] = useState<string>('');
     const [attendances, setAttendances] = useState<any>({});
     useEffect(() => {
         if (detail.settings) {
@@ -42,8 +42,18 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
             loadSchedule(selectedPeriodId);
         } else {
             setSchedules([]);
+            setAttendances([]);
         }
+        setSelectedScheduleDate('');
     }, [selectedPeriodId]);
+
+    useEffect(() => {
+        if (selectedScheduleDate) {
+            loadDailySchedule(selectedScheduleDate);
+        } else {
+            setAttendances([]);
+        }
+    }, [selectedScheduleDate]);
 
     function loadSchedule(selectedPeriodId: string | number) {
         let selectedPeriod = periods.find(period => selectedPeriodId == period.paymentPeriodId[0].id);
@@ -55,8 +65,11 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
             .then((resp: any) => {
                 setSchedules(resp.data.items);
             });
+    }
+
+    function loadDailySchedule(scheduleDate: string) {
         let attendanceSettings = StudentAttendanceSettings;
-        classRepository.getAttendances(attendanceSettings, classId, selectedPeriodId, startDate, endDate).then((resp: any) => {
+        classRepository.getAttendances(attendanceSettings, classId, selectedPeriodId, scheduleDate, scheduleDate).then((resp: any) => {
             let mapAttendances: any = {};
             resp.data.items.forEach((attendance: any) => {
                 let currentStudentId = attendance.studentId[0].id;
@@ -66,7 +79,7 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
                 mapAttendances[currentStudentId][attendance.studyDate] = attendance.status;
             });
             setAttendances(mapAttendances);
-        })
+        });
     }
 
     function handleChangeAttendance(studentId: number, studyDate: string, value: string | number) {
@@ -104,15 +117,31 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
     return <>
         <div className="d-flex align-items-center justify-content-between">
             <h1>{detail.label}</h1>
-            <div style={{ width: "20rem" }}>
-                <select className="form-select" value={selectedPeriodId} onChange={(evt: any) => {
-                    setSelectedPeriodId(evt.target.value);
-                }}>
-                    <option value={""}>Chọn kỳ học phí</option>
-                    {periods.map((period) => {
-                        return <option key={'period-' + period.id} value={period.paymentPeriodId[0].id}>{period.paymentPeriodName}</option>
-                    })}
-                </select>
+            <div style={{ width: "40rem" }}>
+                <Row>
+                    <Col>
+                        <select className="form-select" value={selectedPeriodId} onChange={(evt: any) => {
+                            setSelectedPeriodId(evt.target.value);
+                        }}>
+                            <option value={""}>Chọn kỳ học phí</option>
+                            {periods.map((period) => {
+                                return <option key={'period-' + period.id} value={period.paymentPeriodId[0].id}>{period.paymentPeriodName}</option>
+                            })}
+                        </select>
+                    </Col>
+                    <Col>
+                        <select className="form-select" value={selectedScheduleDate} onChange={(evt: any) => {
+                            setSelectedScheduleDate(evt.target.value);
+                        }}>
+                            <option value={""}>Chọn Ngày học</option>
+                            {schedules.map((schedule) => {
+                                return <option key={'date-' + schedule.id} value={schedule.studyDate}>{schedule.studyDate}</option>
+                            })}
+                        </select>
+                    </Col>
+                </Row>
+
+
             </div>
         </div>
         <Table>
@@ -120,10 +149,10 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
                 <tr>
                     <th>#</th>
                     <th>Họ và tên</th>
-                    {schedules.map((schedule) => {
-                        return <th key={'schedule-' + schedule.id} className="text-center">{formatShortDate(new Date(schedule.studyDate))}<br />
+                    {selectedScheduleDate && 
+                        <th key={'schedule-' + selectedScheduleDate} className="text-center">{formatShortDate(new Date(selectedScheduleDate))}<br />
                             <select onChange={(evt: any) => {
-                                handleAllAttendance(schedule.studyDate, evt.target.value);
+                                handleAllAttendance(selectedScheduleDate, evt.target.value);
                             }}>
                                 <option value="">Chọn</option>
                                 <option value="1">CM</option>
@@ -133,8 +162,7 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
                                 <option value="5">DH</option>
                             </select>
                         </th>
-                    })}
-                    {schedules.length > 0 && <th>Tạo HĐ</th>}
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -142,10 +170,10 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
                     return <tr key={'attendance-' + student.id}>
                         <td>{student.id}</td>
                         <td>{student.studentName}</td>
-                        {schedules.map((schedule) => {
-                            return <td key={'schedule-' + schedule.id} className="text-center">
-                                <select value={attendances[student.studentId] && attendances[student.studentId][schedule.studyDate]} onChange={(evt: any) => {
-                                    handleChangeAttendance(student.studentId, schedule.studyDate, evt.target.value);
+                        {selectedScheduleDate && 
+                            <td key={'schedule-' + selectedScheduleDate} className="text-center">
+                                <select value={attendances[student.studentId] && attendances[student.studentId][selectedScheduleDate]} onChange={(evt: any) => {
+                                    handleChangeAttendance(student.studentId, selectedScheduleDate, evt.target.value);
                                 }}>
                                     <option value="">Chọn</option>
                                     <option value="1">CM</option>
@@ -155,8 +183,7 @@ const ClassDailyAttendance: React.FC<ClassAttendanceProps> = ({ classId, detail 
                                     <option value="5">DH</option>
                                 </select>
                             </td>
-                        })}
-                        {schedules.length > 0 && <td><a href={"/fee/create?centerId=" + klass.centerId + "&subjectId=" + klass.subjectId + "&classId=" + classId + "&studentId=" + student.studentId + "&periodId=" + selectedPeriodId}>Tạo HĐ</a></td>}
+                        }
                     </tr>
                 })}
             </tbody>
