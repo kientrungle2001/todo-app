@@ -20,7 +20,7 @@ export const classRepository = {
             settings: JSON.parse(JSON.stringify(settings)),
             search: '', defaultFilters: JSON.parse(JSON.stringify({
                 classId: classId,
-                status: 1
+                // status: 1
             })),
             sorts: settings.defaultSorts,
             page: 0, pageSize: 100,
