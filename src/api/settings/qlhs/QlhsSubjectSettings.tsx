@@ -12,13 +12,22 @@ const gridDeleteSelectedsLabel: string = "Xóa các Môn học đã chọn";
 const gridTable: string = "subject";
 const gridJoins: DataGridTableJoin[] = [];
 const gridSearchFields: string[] = ["id", "name"];
-const gridFields: string[] = ["id", "name", "status"];
+const gridFields: string[] = ["id", "name", "online", "status"];
 
 const gridColumns: DataGridColumn[] = [
     DataGridColumns.id,
     {
         index: "name", label: "Tên Lớp", linkFormat: (name: any, item: any): string => {
             return '/Table/subject/' + item.id + '/detail';
+        }
+    },
+    {
+        index: "online",
+        label: "Loại",
+        map: {
+            "-1": "Môn học - Sách",
+            "0": "Môn học - Trung tâm",
+            "1": "Môn học - Online"
         }
     },
     DataGridColumns.status,
@@ -52,10 +61,21 @@ const gridAddFields: DataGridEditField[] = [
 
 const gridDetails: TableGridDetail[] = [
     {
+        label: 'Chi tiết môn học',
         type: TableGridDetailType.DETAIL,
         fields: [
             { ...DataGridColumns.id, size: 4 },
             { index: "name", label: "Tên Lớp", size: 4 },
+            {
+                index: "online",
+                label: "Loại",
+                map: {
+                    "-1": "Môn học - Sách",
+                    "0": "Môn học - Trung tâm",
+                    "1": "Môn học - Online"
+                },
+                size: 4
+            },
             { ...DataGridColumns.status, size: 4 }
         ]
     },

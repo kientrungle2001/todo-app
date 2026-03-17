@@ -16,6 +16,7 @@ import { DataGridTitle } from "./title/DataGridTitle";
 import { DataGridBottomToolbar } from "./bottom/DataGridBottomToolbar";
 import { DataGridHead } from "./header/DataGridHead";
 import { renderColumn } from "./columns/renderColumn";
+import { TableGridSettings } from "./TableGrid";
 
 interface DataGridProps {
     title: string;
@@ -49,12 +50,24 @@ interface DataGridProps {
     setCheckedItemIds: (checkedItemIds: number[]) => void;
     addNewLabel?: string;
     deleteSelectedsLabel?: string;
+    parentController?: string;
+    parentSettings?: TableGridSettings;
+    parentItem?: any;
 }
 
-const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onDeleteItem, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn }) => {
+const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software, site, columns = [], filters = [], defaultSorts, sortOptions, items = [], pagination, setCurrentPage, setPageSize, searchText, setSearchText, filterData, setFilterData, sorts, setSorts, totalItems, onDeleteItem, messages, setMessages, isCheckedAll, setIsCheckedAll, checkedItemIds, setCheckedItemIds, addNewLabel, deleteSelectedsLabel, onAfterChangeStatus, onAfterSaveInputableColumn, parentController, parentSettings, parentItem }) => {
     const router = useRouter();
     // Function to handle navigation
-    const handleNavigation = (path: string) => { router.push(path); };
+    const handleNavigation = (path: string) => {
+        if (parentController) {
+            if (path.includes('?')) {
+                path += `&backHref=/Table/${parentController}/${parentItem.id}/detail`;
+            } else {
+                path += `?backHref=/Table/${parentController}/${parentItem.id}/detail`;
+            }
+        } 
+        router.push(path); 
+    };
     const handleEditItem = (item: any) => { handleNavigation(`/Table/${controller}/${item.id}/edit`); }
 
     const handleAddChildItem = (item: any, column: Column) => {
@@ -105,7 +118,8 @@ const DataGrid: React.FC<DataGridProps> = ({ title, controller, table, software,
             <Col sm={12} md={9} lg={12}>
                 <Card className="border-0">
                     <Card.Body className="border-0 pt-0">
-                        <DataGridTitle controller={controller} title={title} addNewLabel={addNewLabel} deleteSelectedsLabel={deleteSelectedsLabel} />
+                        <DataGridTitle controller={controller} title={title} addNewLabel={addNewLabel} deleteSelectedsLabel={deleteSelectedsLabel} parentController={parentController}
+                        parentSettings={parentSettings} parentItem={parentItem} />
                         <DataGridMessages messages={messages} setMessages={setMessages} />
                         <div className="table-responsive">
                             <Table size="sm" striped hover>

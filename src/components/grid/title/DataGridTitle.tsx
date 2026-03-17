@@ -1,17 +1,30 @@
 import { useRouter } from "next/navigation";
 import { Button, Card } from "react-bootstrap";
+import { TableGridSettings } from "../TableGrid";
 
 interface DataGridTitleProps {
     title: string;
     controller: string;
     addNewLabel?: string;
     deleteSelectedsLabel?: string;
+    parentController?: string;
+    parentSettings?: TableGridSettings;
+    parentItem?: any;
 }
 
-export const DataGridTitle: React.FC<DataGridTitleProps> = ({ title, controller, addNewLabel, deleteSelectedsLabel }) => {
+export const DataGridTitle: React.FC<DataGridTitleProps> = ({ title, controller, addNewLabel, deleteSelectedsLabel, parentController, parentSettings, parentItem }) => {
     const router = useRouter();
     // Function to handle navigation
-    const handleNavigation = (path: string) => { router.push(path); };
+    const handleNavigation = (path: string) => {
+        if (parentController) {
+            if (path.includes('?')) {
+                path += `&backHref=/Table/${parentController}/${parentItem.id}/detail`;
+            } else {
+                path += `?backHref=/Table/${parentController}/${parentItem.id}/detail`;
+            }
+        }
+        router.push(path);
+    };
     const handleAddItem = () => { handleNavigation(`/Table/${controller}/add`); }
     return <Card.Title className="d-flex justify-content-between align-items-center">
         {/* Title on the left */}

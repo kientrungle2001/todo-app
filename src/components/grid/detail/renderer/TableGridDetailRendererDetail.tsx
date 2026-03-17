@@ -21,12 +21,13 @@ export const TableGridDetailRendererDetail: React.FC<TableGridDetailRendererDeta
     if (!item)
         return <></>
     return <>
+        {detail.label && <h2 className="text-center mb-3">{detail.label}</h2>}
         <Row>
             {detail.fields?.map((field: DataGridDetailField, index: number) => {
                 return <React.Fragment key={index}>
                     <Col md={field.size ?? 12} className="mb-3 bordered">
                         <strong>{field.label}</strong>: {' '}
-                        {renderColumn(field, item, settings.table, {}, () => {}, () => {}, () => {}, () => {}, () => {})}
+                        {renderColumn(field, item, settings.table, {}, () => { }, () => { }, () => { }, () => { }, () => { })}
                     </Col>
                 </React.Fragment>
             })}

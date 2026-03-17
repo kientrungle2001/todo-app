@@ -15,6 +15,7 @@ export interface DataGridDetailField extends DataGridColumn {
 
 export interface TableGridDetail {
     type?: TableGridDetailType;
+    label?: string;
     referenceField?: string;
     referenceType?: string;
     fields?: DataGridDetailField[];
@@ -50,9 +51,12 @@ interface TableGridProps {
     // Add any additional props you need here
     settings: TableGridSettings,
     defaultFilters?: any;
+    parentController?: string;
+    parentSettings?: TableGridSettings;
+    parentItem?: any;
 }
 
-export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defaultFilters }): React.ReactElement => {
+export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defaultFilters, parentController, parentSettings, parentItem }): React.ReactElement => {
 
     const [pagination, setPagination] = React.useState<DataGridPagination>(settings.pagination);
     const [items, setItems] = React.useState<any[]>([]);
@@ -158,6 +162,7 @@ export const TableGrid: React.FC<TableGridProps> = ({ controller, settings, defa
             onAfterSaveInputableColumn={handleAfterSaveInputableColumn}
             isCheckedAll={isCheckedAll} setIsCheckedAll={setIsCheckedAll}
             checkedItemIds={checkedItemIds} setCheckedItemIds={setCheckedItemIds}
-            addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel} />
+            addNewLabel={settings.addNewLabel} deleteSelectedsLabel={settings.deleteSelectedsLabel}
+            parentController={parentController} parentSettings={parentSettings} parentItem={parentItem} />
     </>
 }

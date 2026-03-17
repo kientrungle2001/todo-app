@@ -24,7 +24,7 @@ export const TableGridDetailRendererGrid: React.FC<TableGridDetailRendererGridPr
     return <>
         <Row>
             {detail.settings ?
-                <TableGrid controller={detail.controller as string} settings={detail.settings} defaultFilters={defaultFilters} /> : <></>}
+                <TableGrid controller={detail.controller as string} settings={detail.settings} defaultFilters={defaultFilters} parentController={controller} parentSettings={settings} parentItem={item} /> : <></>}
         </Row>
     </>
 }
